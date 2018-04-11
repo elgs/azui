@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible">
+    <title>azWindow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        #fout {
+            display: none;
+        }
+    </style>
+
+    <script src="./index.js"></script>
+</head>
+
+<body id='fout'>
+    <div id='myWindow0'>
+        <div id='myWindow00'></div>
+        <div id='myWindow01'></div>
+    </div>
+    <div id='myWindow1'>
+        <div id='myWindow10'></div>
+        <div id='myWindow11'></div>
+    </div>
+    <div id='myWindow2'>
+        <div id='myWindow20'>
+            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus consequuntur
+                repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque iure blanditiis
+                facere sunt provident vero?</span>
+            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus consequuntur
+                repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque iure blanditiis
+                facere sunt provident vero?</span>
+        </div>
+        <div id='myWindow21'>
+            <div style="border:1px solid tomato;box-sizing: border-box;height:100%;width:100%;">
+
+            </div>
+        </div>
+    </div>
+    <script>
+        // $('<div/>').azDebugDiv();
+        const width0 = '400px';
+        const height0 = '300px';
+        const width1 = '240px';
+        const height1 = '180px';
+        new azui.Window(document.querySelectorAll("#myWindow0"), {
+            width: width0,
+            height: height0,
+        });
+        new azui.Window(document.querySelectorAll("#myWindow00"), {
+            width: width1,
+            height: height1,
+        });
+        new azui.Window(document.querySelectorAll("#myWindow01"), {
+            width: width1,
+            height: height1,
+        });
+
+        new azui.Window(document.querySelectorAll("#myWindow1"), {
+            width: width0,
+            height: height0,
+        });
+        new azui.Window(document.querySelectorAll("#myWindow10"), {
+            width: width1,
+            height: height1,
+        });
+        new azui.Window(document.querySelectorAll("#myWindow11"), {
+            width: width1,
+            height: height1,
+        });
+
+        new azui.Window(document.querySelectorAll("#myWindow2"), {
+            width: width0,
+            height: height0,
+        });
+        new azui.Window(document.querySelectorAll("#myWindow20"), {
+            width: width1,
+            height: height1,
+            title: 'Lorem'
+        });
+        new azui.Window(document.querySelectorAll("#myWindow21"), {
+            width: width1,
+            height: height1,
+        });
+        document.querySelector('#fout').style['display'] = 'block';
+    </script>
+</body>
+
+</html>

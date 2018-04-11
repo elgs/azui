@@ -1,0 +1,52 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azInlineEdit</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+        }
+    </style>
+    <style>
+        #div0 {
+            width: 200px;
+            height: 20px;
+            border: 1px solid gray;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="div0">
+        <span>123</span>
+    </div>
+    <script>
+        const elem = document.querySelectorAll('#div0 span');
+        new azui.InlineEdit(elem, {
+            foo: 'bar',
+            type: 'number',
+            options: [{
+                    key: '0',
+                    title: 'Close'
+                },
+                'Close Others',
+                // null,
+                'Close All',
+            ],
+            edit: function (e, target) {
+                console.log(e, target);
+            },
+            done: function (e, target) {
+                console.log(e, target);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+sysctl fs.inotify.max_user_watches=524288
+
+window:
+DONE: resizable
+DONE: plain jquery plugin
+TODO: active window
+TOOD: minimize bar
+TODO: window manager/window ID
+
+datatable:
+DONE: header right click menu
+TODO: row right click menu
+TODO: cell types
+DONE: sort
+TODO: row/cell selection
+DONE: number cell up/down button
+
+tabs:
+TODO: drag out to create new tabset
+TODO: drag tab between tabsets
+TODO: scroll to switch tab
+
+contextmenu:
+DONE: function to return content
+DONE: optionally click on menu to dismiss
+TODO: multi level menus
+
+draggable:
+DONE: touch and pointer devices work together
+DONE: auto is returned for css left on Edge
+
+inlineedit:
+TODO: dropdown
+
+select:
+DONE: click dropdown button to toggle dropdown list
+DONE: keyboard navigate
+DONE: keyboard to filter dropdown list
+DONE: click input not to dismiss the dropdown

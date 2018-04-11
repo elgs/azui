@@ -1,0 +1,93 @@
+@import "../utilities/utilities.scss";
+$bg-color:#1E1E1E;
+html,
+body {
+    overflow: hidden;
+    height: 100%; // background-color: $bg-color;
+    width: 100%;
+    // position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.azWindow {
+    overflow: hidden; // border: 1px solid darken($color: $main-color, $amount: 20%);
+    box-sizing: border-box;
+    background-color: white;
+    display: grid;
+    box-shadow: $shadow;
+    &:hover {
+        box-shadow: $shadow-hovered;
+    }
+}
+
+.azWindowHeader {
+    background-color: $main-color;
+    box-sizing: border-box;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(80px, 1fr) minmax(30px, 1fr) minmax(120px, 1fr);
+    align-items: center;
+    grid-row: 1/2;
+    & div * {
+        // border: 1px solid black;
+        user-select: none;
+    }
+    & .left {
+        white-space: nowrap;
+        grid-column: 1/2;
+        text-align: left;
+        & span.title {
+            cursor: default;
+        }
+        & span.icon {
+            padding: 8px;
+            cursor: default;
+        }
+    }
+    & .center {
+        grid-column: 2/3;
+        text-align: center;
+    }
+    & .right {
+        grid-column: 3/4;
+        text-align: right;
+    }
+}
+
+.azWindowContent {
+    position: relative;
+    width: 100%;
+    grid-row: 2/3;
+    overflow: auto; // box-sizing: border-box;
+}
+
+span.azHeaderIcon {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+    }
+    &:hover {
+        border: 1px solid darken($color: $main-color, $amount: 10%);
+    }
+    & svg {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+// .azResizable {
+//     &>.handle {
+//         opacity: 1;
+//         position: absolute;
+//         border: 1px solid black;
+//         box-sizing: border-box;
+//     }
+// }

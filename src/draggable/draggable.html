@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azDraggable</title>
+    <style>
+        html,
+        body {
+            /* margin: 50px; */
+            /* position: fixed; */
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            border: 7px solid red;
+            box-sizing: border-box;
+        }
+
+        #p {
+            border: 2px solid blue;
+            width: 400px;
+            /* height: 100px; */
+            padding: 15px 20px 30px 45px;
+            margin: 33px;
+            position: fixed;
+        }
+
+        #c {
+            /* background-color: yellow; */
+            width: 100px;
+            margin: 10px 30px 20px 10px;
+            /* top: 12px;
+            left: 24px; */
+            height: 100px;
+            position: relative;
+        }
+
+        #f {
+            /* background-color: green; */
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="f"></div>
+    <div id="p">
+        <div id="c"></div>
+    </div>
+
+
+    <script>
+        // $.azDebugDiv();
+        new azui.Draggable('#c', {
+            containment: '#p',
+        });
+        new azui.Draggable('#f', {
+            create: function (e) {
+                if (e.type === 'touchstart') {
+                    e.preventDefault();
+                }
+            },
+            axis: 'y'
+        });
+        new azui.Draggable('#p', {
+            create: function (e) {
+                if (e.type === 'touchstart') {
+                    e.preventDefault();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

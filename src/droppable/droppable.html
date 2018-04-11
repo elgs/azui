@@ -1,0 +1,104 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azDroppable</title>
+    <style>
+        div {
+            border: 1px solid gray;
+            box-sizing: border-box;
+            margin: 50px;
+            display: grid;
+            align-content: center;
+            justify-content: center;
+            float: left;
+        }
+
+        div#target0 {
+            width: 300px;
+            height: 300px;
+        }
+
+        div#target1 {
+            width: 150px;
+            height: 150px;
+        }
+
+        div#source0 {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="source0">+</div>
+    <div class="target" id="target0"></div>
+    <div class="target" id="target1"></div>
+    <script>
+        const dndStateConsts = {
+            touch: 1,
+            source_all: 2,
+            target_all: 4,
+            source_center: 8,
+            target_center: 16,
+        };
+
+        const source0 = document.querySelectorAll('div#source0');
+        new azui.Draggable(source0, {
+            triggerDropEvents: true,
+            dropKey: 'foo',
+            create: function (e) {
+                if (e.type === 'touchstart') {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        const target = document.querySelectorAll('div.target');
+        new azui.Droppable(target, {
+            key: 'foo',
+            source_all_in: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            source_all_out: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            target_all_in: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            target_all_out: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            source_center_in: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            source_center_out: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            target_center_in: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            target_center_out: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            touch_in: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            touch_out: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            dragged: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+            dropped: function (e) {
+                e.detail.target.textContent = e.type;
+            },
+        });
+    </script>
+</body>
+
+</html>

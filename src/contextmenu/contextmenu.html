@@ -1,0 +1,56 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azContextMenu</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+    <style>
+        #div0 {
+            width: 50%;
+            height: 50%;
+            border: 1px solid gray;
+            box-sizing: border-box;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="div0"></div>
+    <script>
+        const elem = document.querySelectorAll('#div0');
+        new azui.ContextMenu(elem, {
+            items: [{
+                    icon: '☺',
+                    title: 'Close',
+                    action: function (e, target) {
+                        console.log(target);
+                        console.log(this);
+                        alert(target);
+                    }
+                }, {
+                    icon: '☺',
+                    title: 'Close Others',
+                    action: function (e, target) {}
+                },
+                null,
+                {
+                    icon: '☺',
+                    title: 'Close All',
+                    action: function (e, target) {
+                        return false;
+                    }
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

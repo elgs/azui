@@ -1,0 +1,109 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azSortable</title>
+    <style>
+        div#azSortable0 {
+            border: 1px solid gray;
+            box-sizing: border-box;
+            position: relative;
+            padding: 4px;
+            /* width: 100px; */
+            display: flex;
+        }
+
+        div#azSortable1 {
+            border: 1px solid gray;
+            box-sizing: border-box;
+            position: relative;
+            padding: 4px;
+            width: 100px;
+            /* display: flex; */
+        }
+
+        div#azSortable0 .azSortableItem {
+            height: 40px;
+            flex-grow: 1;
+            flex-basis: 0;
+            border: 1px solid gray;
+            box-sizing: border-box;
+            margin: 2px 4px 6px 8px;
+            display: grid;
+            align-content: center;
+            justify-content: center;
+            /* background-color: white; */
+        }
+
+
+        div#azSortable1 .azSortableItem {
+            height: 40px;
+            /* width: 100px; */
+            /* flex-grow: 1; */
+            /* flex-basis: 0; */
+            border: 1px solid gray;
+            box-sizing: border-box;
+            margin: 2px 4px 6px 8px;
+            display: grid;
+            align-content: center;
+            justify-content: center;
+            /* background-color: white; */
+        }
+
+        div.azSortableItem.azSortableDropBefore {
+            background-color: yellow;
+        }
+
+        div.azSortableItem.azSortableDropAfter {
+            background-color: blue;
+        }
+
+        div.azSortableSelected {
+            opacity: .5;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="azSortable0">
+        <div class="azSortableItem">0</div>
+        <div class="azSortableItem">1</div>
+        <div class="azSortableItem">2</div>
+        <div class="azSortableItem">3</div>
+        <div class="azSortableItem">4</div>
+        <div class="azSortableItem">5</div>
+    </div>
+    <br>
+    <div id="azSortable1">
+        <div class="azSortableItem">0</div>
+        <div class="azSortableItem">1</div>
+        <div class="azSortableItem">2</div>
+        <div class="azSortableItem">3</div>
+        <div class="azSortableItem">4</div>
+        <div class="azSortableItem">5</div>
+
+    </div>
+    <script>
+        // $('<div/>').azDebugDiv();
+        const elem0 = document.querySelectorAll('#azSortable0');
+        new azui.Sortable(elem0, {
+            placeholder: true,
+            create: function (e, target) {
+                e.preventDefault();
+            }
+        });
+
+        const elem1 = document.querySelectorAll('#azSortable1');
+        new azui.Sortable(elem1, {
+            placeholder: false,
+            create: function (e, target) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+
+</html>

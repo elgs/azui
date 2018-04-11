@@ -1,0 +1,78 @@
+#!/usr/bin/env node
+
+(() => {
+    const pkg = require('./package.json');
+    const ver = pkg.version;
+
+    const run = (comm, args) => {
+        const {
+            spawn
+        } = require('child_process');
+        const command = spawn(comm, args);
+
+        command.stdout.on('data', data => {
+            console.log(`${data}`);
+        });
+
+        command.stderr.on('data', data => {
+            console.error(`${data}`);
+        });
+
+        command.on('close', code => {
+            if (code !== 0) {
+                console.log(`child process exited with code ${code}`);
+            }
+        });
+    };
+
+    const command = process.argv[2];
+    const args = process.argv.slice(3);
+    if (!command) {
+        console.log('run start|build|dist|clean');
+    } else if (command === 'dist') {
+        if (args.length === 0) {
+            const fs = require('fs');
+            const path = require('path')
+            const dir = './src/';
+            const mods = fs.readdirSync(dir).filter(item => fs.statSync(path.join(dir, item)).isDirectory());
+            mods.map(mod => {
+                run('parcel', ['build', '--no-source-maps', '-d', `./dist/${ver}/`, '-o', `azui.${mod}.min.js`, `./src/${mod}/index.js`]);
+            });
+        } else {
+            const mod = args[0];
+            run('parcel', ['build', '--no-source-maps', '-d', `./dist/${ver}/`, '-o', `azui.${mod}.min.js`, `./src/${mod}/index.js`]);
+        }
+    } else if (command === 'build') {
+        if (args.length === 0) {
+            const fs = require('fs');
+            const path = require('path')
+            const dir = './src/';
+            const mods = fs.readdirSync(dir).filter(item => fs.existsSync(path.join(dir, item, `${item}.html`)));
+            mods.map(mod => {
+                run('parcel', ['build',
+                    '--no-minify',
+                    '--no-source-maps',
+                    '-d', `./build/${ver}/`, '--public-url', './', `./src/${mod}/${mod}.html`
+                ]);
+            });
+        } else {
+            const mod = args[0];
+            run('parcel', ['build',
+                '--no-minify',
+                '--no-source-maps',
+                '-d', `./build/${ver}/`,
+                '--public-url', './',
+                `./src/${mod}/${mod}.html`
+            ]);
+        }
+    } else if (command === 'start') {
+        const mod = args[0];
+        run('parcel', ['-d', 'dev', `./src/${mod}/${mod}.html`]);
+    } else if (command === 'clean') {
+        if (args.length === 0) {
+            run('rm', ['-rf', `./dist/${ver}/`, `.cache/`]);
+        } else if (args[0] === 'all') {
+            run('rm', ['-rf', `./dist/`, `.cache/`, `./build/`, `./dev/`]);
+        }
+    }
+})();

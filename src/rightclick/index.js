@@ -1,0 +1,1 @@
+import './rightclick.js';

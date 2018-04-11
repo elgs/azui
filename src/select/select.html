@@ -1,0 +1,35 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azSelect</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id='select0' />
+    <script>
+        const elem = document.querySelectorAll('#select0');
+        new azui.Select(elem, {
+            items: [{
+                    key: '0',
+                    title: 'Close'
+                },
+                'Close Others',
+                // null,
+                'Close All',
+            ]
+        });
+    </script>
+</body>
+
+</html>

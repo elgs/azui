@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azTabs</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+        }
+
+        #tab0 {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="tab0">
+        <div class="azTabHeaders">
+            <div class="azTabHeader azSortableItem" id="azTabHeader-Paris">
+                <div class="icon">☺</div>
+                <div class="title">Paris</div>
+                <div class="close">×</div>
+            </div>
+            <div class="newTab">+</div>
+        </div>
+
+        <div id="azTabContent-Paris" class="azTabContent">
+            <h3>Paris</h3>
+            <p>Paris is the capital of France.</p>
+        </div>
+    </div>
+    <script>
+        const elem = document.querySelectorAll('#tab0');
+        new azui.Tabs(elem, {
+            foo: 'bar'
+        });
+        new azui.Draggable(elem, {
+            handle: '.azTabHeaders',
+        });
+        new azui.Resizable(elem);
+    </script>
+</body>
+
+</html>

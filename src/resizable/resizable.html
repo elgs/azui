@@ -1,0 +1,59 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azResizable</title>
+    <style>
+        body {
+            margin: 80px;
+            padding: 80px;
+        }
+
+
+        #div0 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid gray;
+            /* padding: 20px; */
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        #div1 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid gray;
+            /* padding: 20px; */
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .azResizable>.handle {
+            opacity: 1;
+            border: 1px solid black;
+            box-sizing: border-box;
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div style="border: 1px solid red;">
+        <div id="div0"></div>
+        <div id="div1"></div>
+    </div>
+    <script>
+        const elem = document.querySelectorAll('#div0, #div1');
+        const resizable = new azui.Resizable(elem, {
+            handles: 'all'
+        });
+        new azui.Draggable(elem);
+
+        // console.log($('#div1').width());
+        // console.log($('#div1')[0].getBoundingClientRect().width);
+    </script>
+</body>
+
+</html>

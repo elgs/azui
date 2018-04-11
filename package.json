@@ -1,0 +1,14 @@
+{
+  "name": "azui",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "publish": "rsync -avz --delete --exclude \"node_modules/\"  ./* az.ht:/var/www/az.ht/ui/"
+  },
+  "author": "Qian Chen",
+  "license": "MIT",
+  "devDependencies": {
+    "node-sass": "^4.8.3"
+  },
+  "dependencies": {}
+}

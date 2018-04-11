@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+
+const header = `const jsdom = require("jsdom");
+const dom = new jsdom.JSDOM("<!DOCTYPE html>");
+var $ = require("jquery")(dom.window);`;
+
+const pluginCode = fs.readFileSync('./dist/1.0.2/azui.pager.min.js', 'utf8');
+
+const clientCode = `;$(function () { 
+    const $pager = $('<div/>').azPager(); 
+    console.log($pager.data('settings'));
+    console.log($pager.data('plugin'));
+});`;
+
+eval(header + pluginCode + clientCode);
