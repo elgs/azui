@@ -20,11 +20,13 @@
     <div id="div0"></div>
     <div id="div1"></div>
     <script>
-        const elem = document.querySelectorAll('div');
-        azui.DoubleClick(elem, {
-            onDoubleClick: function (e) {
-                alert(e.target.id);
-            }
+        const elems = document.querySelectorAll('div');
+        elems.forEach(el => {
+            azui.DoubleClick(el, {
+                onDoubleClick: function (e) {
+                    alert(e.target.id);
+                }
+            });
         });
     </script>
 </body>

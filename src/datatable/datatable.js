@@ -31,282 +31,281 @@ class DataTable extends Base {
         }, options);
 
         const self = this;
+        const node = this.node;
 
-        for (const node of this.nodeList) {
-            node.classList.add('azDataTable');
+        node.classList.add('azDataTable');
 
-            let totalSize = 0;
+        let totalSize = 0;
 
-            const refresh = function (pageData, _totalSize) {
-                tbody.innerHTML = '';
+        const refresh = function (pageData, _totalSize) {
+            tbody.innerHTML = '';
 
-                totalSize = _totalSize;
-                pageData.map(row => {
-                    const tr = document.createElement('div');
-                    tr.classList.add('tr');
-                    tbody.appendChild(tr);
+            totalSize = _totalSize;
+            pageData.map(row => {
+                const tr = document.createElement('div');
+                tr.classList.add('tr');
+                tbody.appendChild(tr);
 
-                    settings.columns.map(col => {
-                        // const $th  = $thead.find('.th').eq()
-                        const cell = parseDOMElement(`<span>${row[col.dataIndex]}</span>`)[0];
-                        const td = document.createElement('div');
-                        td.classList.add(`td`, `col-${col.key}`);
-                        td.appendChild(cell);
+                settings.columns.map(col => {
+                    // const $th  = $thead.find('.th').eq()
+                    const cell = parseDOMElement(`<span>${row[col.dataIndex]}</span>`)[0];
+                    const td = document.createElement('div');
+                    td.classList.add(`td`, `col-${col.key}`);
+                    td.appendChild(cell);
 
-                        if (settings.editor === 'cell') {
-                            azui.InlineEdit(cell, {
-                                type: col.type,
-                                options: col.options,
-                            });
-                        }
-                        if (col.hidden) {
-                            td.style.display = 'none';
-                        }
-                        tr.appendChild(td);
-
-                        if (col.width) {
-                            setOuterWidth(td, col.width);
-                        }
-                    });
-                    if (settings.editor === 'row') {
-                        tr.querySelectorAll('div.td>span').forEach(el => {
-                            azui.InlineEdit(el);
+                    if (settings.editor === 'cell') {
+                        azui.InlineEdit(cell, {
+                            type: col.type,
+                            options: col.options,
                         });
                     }
-
-                    // sorting
-                    if (settings.sortDirection) {
-                        const th = thead.querySelector(`.th.col-${settings.sortColumnKey}`);
-                        thead.querySelectorAll('.azThSort').forEach(el => {
-                            el.style['display'] = 'none';
-                        });
-                        th.querySelectorAll(settings.sortDirection === 'asc' ? '.azThSortUp' : '.azThSortDown')
-                            .forEach(el => {
-                                el.style['display'] = 'inline-block';
-                            });
+                    if (col.hidden) {
+                        td.style.display = 'none';
                     }
+                    tr.appendChild(td);
 
-                    pager.update(settings.pageNumber, totalSize, settings.pageSize);
+                    if (col.width) {
+                        setOuterWidth(td, col.width);
+                    }
                 });
-            };
-
-            const thead = document.createElement('div');
-            thead.classList.add('thead')
-            node.appendChild(thead);
-
-            const tbody = document.createElement('div');
-            tbody.classList.add('tbody')
-            node.appendChild(tbody);
-
-            const tfoot = document.createElement('div');
-            tfoot.classList.add('tfoot')
-            node.appendChild(tfoot);
-
-            const totalWidth = settings.columns.reduce((a, c) => a + (c.width || 100), 0);
-
-            setWidth(node, 2 + totalWidth);
-            const pager = azui.Pager(tfoot, {
-                pageSize: settings.pageSize,
-                totalSize: totalSize,
-                pageNumber: settings.pageNumber,
-                onPageChange: function (pageNumber) {
-                    settings.loadData(pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-                    this.update(pageNumber, totalSize, settings.pageSize);
-                },
-            });
-
-            settings.columns = settings.columns.map((col, index) => {
-                const ncol = this._normalizeCol(col);
-                if (typeof ncol.dataIndex !== 'number') {
-                    ncol.dataIndex = index;
-                }
-                if (ncol.key === undefined || ncol.key === null) {
-                    ncol.key = index;
-                }
-                return ncol;
-            });
-
-            settings.columns.map(col => {
-                const sortUp = parseDOMElement(icons.svgTriangleUp)[0];
-                sortUp.classList.add('azThSort', 'azThSortUp');
-                const sortDown = parseDOMElement(icons.svgTriangleDown)[0];
-                sortDown.classList.add('azThSort', 'azThSortDown');
-                const th = document.createElement('div');
-                th.classList.add(`th`, `azSortableItem`, `col-${col.key}`);
-                th.innerHTML = col.text;
-                th.appendChild(sortUp);
-                th.appendChild(sortDown);
-                th.setAttribute('col-key', col.key);
-                if (col.hidden) {
-                    th.style.display = 'none';
-                    // console.log(col.key);
-                    // node.querySelector(`.col-${col.key}`).style.display = 'none';
-                }
-                thead.appendChild(th);
-                if (col.width) {
-                    setOuterWidth(th, col.width);
-                }
-            });
-
-            // resizing columns
-            azui.Resizable(thead.querySelectorAll('.th'), {
-                handles: 'e',
-                minWidth: 100,
-                // maxWidth: 400,
-                create: function (e, target) {
-                    target.setAttribute('widthOnCreate', getWidth(target));
-                },
-                stop: function (e, target) {
-                    // console.log(index(target));
-                    const woc = target.getAttribute('widthOnCreate') * 1;
-                    target.removeAttribute('widthOnCreate');
-                    const dw = getWidth(target) - woc;
-                    const newWidth = getWidth(node) + dw;
-                    setWidth(node, newWidth);
-                    const tds = tbody.querySelectorAll(`div.td:nth-of-type(${index(target)+1})`);
-                    tds.forEach(el => {
-                        setWidth(el, getWidth(el) + dw);
+                if (settings.editor === 'row') {
+                    tr.querySelectorAll('div.td>span').forEach(el => {
+                        azui.InlineEdit(el);
                     });
-                    settings.columns[index(target)].width = tds[0].offsetWidth;
-                },
-                onDoubleClick: function (event) {
-                    const th = event.target.parentNode;
-                    const idx = index(th);
-                    const tds = tbody.querySelectorAll(`div.td:nth-of-type(${idx + 1})`);
-                    let maxWidth = 0;
-                    tds.forEach(el => {
-                        maxWidth = Math.max(textWidth(el), maxWidth);
-                    });
-                    maxWidth = Math.max(80, maxWidth) + 10;
-                    const newWidth = getWidth(node) + maxWidth - getWidth(tds[0]);
-                    setWidth(node, newWidth);
-                    tds.forEach(el => {
-                        setOuterWidth(el, maxWidth);
-                    });
-                    setOuterWidth(th, maxWidth);
-                    settings.columns[idx].width = tds[0].offsetWidth;
-
-                    event.stopPropagation();
-                },
-            });
-
-            const sortCmItems = [{
-                icon: parseDOMElement(icons.svgTriangleUp)[0],
-                title: 'Sort Ascending',
-                action: function (e, target) {
-                    settings.sortDirection = 'desc';
-                    sortAll(target.getAttribute('col-key'));
-                    // console.log(index(target));
-                    // sortAll(index(target));
-                    return false;
                 }
-            }, {
-                icon: parseDOMElement(icons.svgTriangleDown)[0],
-                title: 'Sort Descending',
-                action: function (e, target) {
-                    settings.sortDirection = 'asc';
-                    sortAll(target.getAttribute('col-key'));
-                    // sortAll(index(target));
-                    return false;
+
+                // sorting
+                if (settings.sortDirection) {
+                    const th = thead.querySelector(`.th.col-${settings.sortColumnKey}`);
+                    thead.querySelectorAll('.azThSort').forEach(el => {
+                        el.style['display'] = 'none';
+                    });
+                    th.querySelectorAll(settings.sortDirection === 'asc' ? '.azThSortUp' : '.azThSortDown')
+                        .forEach(el => {
+                            el.style['display'] = 'inline-block';
+                        });
                 }
-            }];
-            const colCmItems = () => {
-                return settings.columns.map((col) => {
-                    return {
-                        icon: function () {
-                            const cb = parseDOMElement(`<input type="checkbox" ${col.hidden?'':'checked="checked"'}>`)[0];
-                            cb.addEventListener('click', function (e) {
-                                e.preventDefault();
-                            });
-                            return cb;
-                        },
-                        title: function () {
-                            return col.text;
-                        },
-                        action: function (e, target) {
-                            const cb = e.currentTarget.querySelector('div.icon>input[type=checkbox]');
-                            setTimeout(() => {
-                                // neglect the effect of e.preventDefault in the icon function;
-                                cb.checked = !cb.checked;
-                                if (cb.checked) {
-                                    node.querySelectorAll(`.col-${col.key}`).forEach(el => {
-                                        el.style.display = '';
-                                    });
-                                    col.hidden = false;
-                                } else {
-                                    node.querySelectorAll(`.col-${col.key}`).forEach(el => {
-                                        el.style.display = 'none';
-                                    });
-                                    col.hidden = true;
-                                }
-                            });
-                        },
-                    };
-                })
-            };
 
-            azui.ContextMenu(thead.querySelectorAll('.th'), {
-                items: () => [
-                    ...sortCmItems,
-                    null,
-                    ...colCmItems(),
-                ]
+                pager.update(settings.pageNumber, totalSize, settings.pageSize);
             });
+        };
 
-            // moving columns
-            azui.Sortable(thead, {
-                placeholder: false,
-                create: function (e, data) {
-                    if (isTouchDevice()) {
-                        e.target.click();
-                        e.preventDefault();
+        const thead = document.createElement('div');
+        thead.classList.add('thead')
+        node.appendChild(thead);
+
+        const tbody = document.createElement('div');
+        tbody.classList.add('tbody')
+        node.appendChild(tbody);
+
+        const tfoot = document.createElement('div');
+        tfoot.classList.add('tfoot')
+        node.appendChild(tfoot);
+
+        const totalWidth = settings.columns.reduce((a, c) => a + (c.width || 100), 0);
+
+        setWidth(node, 2 + totalWidth);
+        const pager = azui.Pager(tfoot, {
+            pageSize: settings.pageSize,
+            totalSize: totalSize,
+            pageNumber: settings.pageNumber,
+            onPageChange: function (pageNumber) {
+                settings.loadData(pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
+                this.update(pageNumber, totalSize, settings.pageSize);
+            },
+        });
+
+        settings.columns = settings.columns.map((col, index) => {
+            const ncol = this._normalizeCol(col);
+            if (typeof ncol.dataIndex !== 'number') {
+                ncol.dataIndex = index;
+            }
+            if (ncol.key === undefined || ncol.key === null) {
+                ncol.key = index;
+            }
+            return ncol;
+        });
+
+        settings.columns.map(col => {
+            const sortUp = parseDOMElement(icons.svgTriangleUp)[0];
+            sortUp.classList.add('azThSort', 'azThSortUp');
+            const sortDown = parseDOMElement(icons.svgTriangleDown)[0];
+            sortDown.classList.add('azThSort', 'azThSortDown');
+            const th = document.createElement('div');
+            th.classList.add(`th`, `azSortableItem`, `col-${col.key}`);
+            th.innerHTML = col.text;
+            th.appendChild(sortUp);
+            th.appendChild(sortDown);
+            th.setAttribute('col-key', col.key);
+            if (col.hidden) {
+                th.style.display = 'none';
+                // console.log(col.key);
+                // node.querySelector(`.col-${col.key}`).style.display = 'none';
+            }
+            thead.appendChild(th);
+            if (col.width) {
+                setOuterWidth(th, col.width);
+            }
+        });
+
+        // resizing columns
+        azui.Resizable(thead.querySelectorAll('.th'), {
+            handles: 'e',
+            minWidth: 100,
+            // maxWidth: 400,
+            create: function (e, target) {
+                target.setAttribute('widthOnCreate', getWidth(target));
+            },
+            stop: function (e, target) {
+                // console.log(index(target));
+                const woc = target.getAttribute('widthOnCreate') * 1;
+                target.removeAttribute('widthOnCreate');
+                const dw = getWidth(target) - woc;
+                const newWidth = getWidth(node) + dw;
+                setWidth(node, newWidth);
+                const tds = tbody.querySelectorAll(`div.td:nth-of-type(${index(target)+1})`);
+                tds.forEach(el => {
+                    setWidth(el, getWidth(el) + dw);
+                });
+                settings.columns[index(target)].width = tds[0].offsetWidth;
+            },
+            onDoubleClick: function (event) {
+                const th = event.target.parentNode;
+                const idx = index(th);
+                const tds = tbody.querySelectorAll(`div.td:nth-of-type(${idx + 1})`);
+                let maxWidth = 0;
+                tds.forEach(el => {
+                    maxWidth = Math.max(textWidth(el), maxWidth);
+                });
+                maxWidth = Math.max(80, maxWidth) + 10;
+                const newWidth = getWidth(node) + maxWidth - getWidth(tds[0]);
+                setWidth(node, newWidth);
+                tds.forEach(el => {
+                    setOuterWidth(el, maxWidth);
+                });
+                setOuterWidth(th, maxWidth);
+                settings.columns[idx].width = tds[0].offsetWidth;
+
+                event.stopPropagation();
+            },
+        });
+
+        const sortCmItems = [{
+            icon: parseDOMElement(icons.svgTriangleUp)[0],
+            title: 'Sort Ascending',
+            action: function (e, target) {
+                settings.sortDirection = 'desc';
+                sortAll(target.getAttribute('col-key'));
+                // console.log(index(target));
+                // sortAll(index(target));
+                return false;
+            }
+        }, {
+            icon: parseDOMElement(icons.svgTriangleDown)[0],
+            title: 'Sort Descending',
+            action: function (e, target) {
+                settings.sortDirection = 'asc';
+                sortAll(target.getAttribute('col-key'));
+                // sortAll(index(target));
+                return false;
+            }
+        }];
+        const colCmItems = () => {
+            return settings.columns.map((col) => {
+                return {
+                    icon: function () {
+                        const cb = parseDOMElement(`<input type="checkbox" ${col.hidden?'':'checked="checked"'}>`)[0];
+                        cb.addEventListener('click', function (e) {
+                            e.preventDefault();
+                        });
+                        return cb;
+                    },
+                    title: function () {
+                        return col.text;
+                    },
+                    action: function (e, target) {
+                        const cb = e.currentTarget.querySelector('div.icon>input[type=checkbox]');
+                        setTimeout(() => {
+                            // neglect the effect of e.preventDefault in the icon function;
+                            cb.checked = !cb.checked;
+                            if (cb.checked) {
+                                node.querySelectorAll(`.col-${col.key}`).forEach(el => {
+                                    el.style.display = '';
+                                });
+                                col.hidden = false;
+                            } else {
+                                node.querySelectorAll(`.col-${col.key}`).forEach(el => {
+                                    el.style.display = 'none';
+                                });
+                                col.hidden = true;
+                            }
+                        });
+                    },
+                };
+            })
+        };
+
+        azui.ContextMenu(thead.querySelectorAll('.th'), {
+            items: () => [
+                ...sortCmItems,
+                null,
+                ...colCmItems(),
+            ]
+        });
+
+        // moving columns
+        azui.Sortable(thead, {
+            placeholder: false,
+            create: function (e, data) {
+                if (isTouchDevice()) {
+                    e.target.click();
+                    e.preventDefault();
+                }
+            },
+            stop: function (e, data) {
+                if (!data.source || !data.target) {
+                    return;
+                }
+                const sIndex = index(data.source);
+                const tIndex = index(data.target);
+                settings.columns.splice(tIndex, 0, settings.columns.splice(sIndex, 1)[0]);
+
+                tbody.querySelectorAll('div.tr').forEach(tr => {
+                    const std = tr.querySelectorAll('div.td')[sIndex];
+                    const ttd = tr.querySelectorAll('div.td')[tIndex];
+                    if (sIndex < tIndex) {
+                        insertAfter(std, ttd);
+                        // ttd.after(std);
+                    } else {
+                        insertBefore(std, ttd);
+                        // ttd.before(std);
                     }
-                },
-                stop: function (e, data) {
-                    if (!data.source || !data.target) {
-                        return;
-                    }
-                    const sIndex = index(data.source);
-                    const tIndex = index(data.target);
-                    settings.columns.splice(tIndex, 0, settings.columns.splice(sIndex, 1)[0]);
+                });
+            }
+        });
 
-                    tbody.querySelectorAll('div.tr').forEach(tr => {
-                        const std = tr.querySelectorAll('div.td')[sIndex];
-                        const ttd = tr.querySelectorAll('div.td')[tIndex];
-                        if (sIndex < tIndex) {
-                            insertAfter(std, ttd);
-                            // ttd.after(std);
-                        } else {
-                            insertBefore(std, ttd);
-                            // ttd.before(std);
-                        }
-                    });
-                }
-            });
-
-            const sortAll = function (colKey) {
-                const th = thead.querySelector(`.th.col-${colKey}`);
-                const column = settings.columns.find(column => column.key == colKey);
-                const sortKey = column.key;
-                if (sortKey !== settings.sortColumnKey || settings.sortDirection === 'desc') {
-                    settings.sortDirection = 'asc';
-                } else {
-                    settings.sortDirection = 'desc';
-                }
-                settings.sortColumnKey = sortKey;
-
-                settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-            };
-
-            azui.DoubleClick(thead.querySelectorAll('.th'), {
-                onDoubleClick: function (e) {
-                    // console.log(this);
-                    sortAll(this.getAttribute('col-key'));
-                }
-            });
+        const sortAll = function (colKey) {
+            const th = thead.querySelector(`.th.col-${colKey}`);
+            const column = settings.columns.find(column => column.key == colKey);
+            const sortKey = column.key;
+            if (sortKey !== settings.sortColumnKey || settings.sortDirection === 'desc') {
+                settings.sortDirection = 'asc';
+            } else {
+                settings.sortDirection = 'desc';
+            }
+            settings.sortColumnKey = sortKey;
 
             settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-        }
+        };
+
+        azui.DoubleClick(thead.querySelectorAll('.th'), {
+            onDoubleClick: function (e) {
+                // console.log(this);
+                sortAll(this.getAttribute('col-key'));
+            }
+        });
+
+        settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
     }
 
     _normalizeCol(col) {

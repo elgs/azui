@@ -32,31 +32,29 @@ class Droppable extends Base {
             // dropped: function (e, data) {},
         }, options);
 
-        for (const node of this.nodeList) {
-            const self = node;
+        const node = this.node;
 
-            self.setAttribute('az-drop-id', randGen(8, randGenConsts.LowerUpperDigit, '', ''));
-            self.classList.add('azDroppable');
-            if (!settings.key) {
-                return;
+        node.setAttribute('az-drop-id', randGen(8, randGenConsts.LowerUpperDigit, '', ''));
+        node.classList.add('azDroppable');
+        if (!settings.key) {
+            return;
+        }
+        registerDropTarget(settings.key, node);
+        Object.keys(dndStateConsts).map(state => {
+            const stateIn = state + '_in';
+            const stateOut = state + '_out';
+            if (settings[stateIn]) {
+                node.addEventListener(stateIn, settings[stateIn]);
             }
-            registerDropTarget(settings.key, self);
-            Object.keys(dndStateConsts).map(state => {
-                const stateIn = state + '_in';
-                const stateOut = state + '_out';
-                if (settings[stateIn]) {
-                    self.addEventListener(stateIn, settings[stateIn]);
-                }
-                if (settings[stateOut]) {
-                    self.addEventListener(stateOut, settings[stateOut]);
-                }
-            });
-            if (settings.dragged) {
-                self.addEventListener('dragged', settings.dragged);
+            if (settings[stateOut]) {
+                node.addEventListener(stateOut, settings[stateOut]);
             }
-            if (settings.dropped) {
-                self.addEventListener('dropped', settings.dropped);
-            }
+        });
+        if (settings.dragged) {
+            node.addEventListener('dragged', settings.dragged);
+        }
+        if (settings.dropped) {
+            node.addEventListener('dropped', settings.dropped);
         }
     }
 };

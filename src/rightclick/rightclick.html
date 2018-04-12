@@ -20,20 +20,22 @@
     <div id="div0"></div>
     <div id="div1"></div>
     <script>
-        const elem = document.querySelectorAll('div');
-        azui.RightClick(elem, {
-            onRightClick: function (e) {
-                console.log(e);
-                alert(e);
-            },
-            onTouchStart: function (e) {
-                console.log(e);
-                alert(e);
-            },
-            onTouchEnd: function (e) {
-                console.log(e);
-                alert(e);
-            },
+        const elems = document.querySelectorAll('div');
+        elems.forEach(el => {
+            azui.RightClick(el, {
+                onRightClick: function (e) {
+                    console.log(e);
+                    alert(e);
+                },
+                onTouchStart: function (e) {
+                    console.log(e);
+                    alert(e);
+                },
+                onTouchEnd: function (e) {
+                    console.log(e);
+                    alert(e);
+                },
+            });
         });
     </script>
 </body>

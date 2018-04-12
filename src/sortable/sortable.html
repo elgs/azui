@@ -88,7 +88,7 @@
     </div>
     <script>
         // $('<div/>').azDebugDiv();
-        const elem0 = document.querySelectorAll('#azSortable0');
+        const elem0 = document.querySelector('#azSortable0');
         azui.Sortable(elem0, {
             placeholder: true,
             create: function (e, target) {
@@ -96,7 +96,7 @@
             }
         });
 
-        const elem1 = document.querySelectorAll('#azSortable1');
+        const elem1 = document.querySelector('#azSortable1');
         azui.Sortable(elem1, {
             placeholder: false,
             create: function (e, target) {

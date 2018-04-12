@@ -24,18 +24,17 @@ class Pager extends Base {
 
         this.settings = settings;
 
-        for (const node of this.nodeList) {
-            node.classList.add('azPager');
+        const node = this.node;
+        node.classList.add('azPager');
 
-            const pageBar = this._createPagerBar();
-            node.appendChild(pageBar);
-            const pageInfo = this._createPageInfo();
-            pageInfo.style.display = 'none';
-            node.appendChild(pageInfo);
+        const pageBar = this._createPagerBar();
+        node.appendChild(pageBar);
+        const pageInfo = this._createPageInfo();
+        pageInfo.style.display = 'none';
+        node.appendChild(pageInfo);
 
-            this._updatePager(node);
-            pageInfo.style.display = '';
-        }
+        this._updatePager(node);
+        pageInfo.style.display = '';
     }
 
     _createIcon(icon, pagerBar, callback) {
@@ -105,8 +104,6 @@ class Pager extends Base {
         this.settings.pageNumber = Math.min(Math.ceil(totalSize / pageSize), Math.max(1, pageNumber));
         this.settings.pageSize = pageSize;
         this.settings.totalSize = totalSize;
-        for (const node of this.nodeList) {
-            this._updatePager(node);
-        }
+        this._updatePager(this.node);
     };
 };

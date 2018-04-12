@@ -20,25 +20,23 @@ class DoubleClick extends Base {
             }
         }, options);
 
-        for (const node of this.nodeList) {
-            const self = node;
-            self.addEventListener('dblclick', function (event) {
-                settings.onDoubleClick.call(this, event);
-            });
+        const node = this.node;
+        node.addEventListener('dblclick', function (event) {
+            settings.onDoubleClick.call(this, event);
+        });
 
-            let touchtime = 0;
-            self.addEventListener('touchstart', function (event) {
-                if (touchtime == 0) {
-                    touchtime = new Date().getTime();
+        let touchtime = 0;
+        node.addEventListener('touchstart', function (event) {
+            if (touchtime == 0) {
+                touchtime = new Date().getTime();
+            } else {
+                if ((new Date().getTime()) - touchtime < settings.delay) {
+                    settings.onDoubleClick.call(this, event);
+                    touchtime = 0;
                 } else {
-                    if ((new Date().getTime()) - touchtime < settings.delay) {
-                        settings.onDoubleClick.call(this, event);
-                        touchtime = 0;
-                    } else {
-                        touchtime = new Date().getTime();
-                    }
+                    touchtime = new Date().getTime();
                 }
-            });
-        }
+            }
+        });
     }
 };

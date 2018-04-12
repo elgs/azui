@@ -15,38 +15,31 @@ class RightClick extends Base {
             onTouchEnd: function (e) {},
         }, options);
 
-        for (const node of this.nodeList) {
-            const self = node;
+        const node = this.node;
 
-            let timer;
-            let triggered = false;
-            self.addEventListener('contextmenu', settings.onRightClick);
-            'touchmove touchend touchcancel'.split(' ').forEach(e => self.addEventListener(e, function (e) {
-                settings.onTouchEnd(e);
-                clearTimeout(timer);
-                if (triggered) {
-                    triggered = false;
-                } else {
-                    e.target.dispatchEvent(new CustomEvent('click'));
+        let timer;
+        let triggered = false;
+        node.addEventListener('contextmenu', settings.onRightClick);
+        'touchmove touchend touchcancel'.split(' ').forEach(e => node.addEventListener(e, function (e) {
+            settings.onTouchEnd(e);
+            clearTimeout(timer);
+            if (triggered) {
+                triggered = false;
+            } else {
+                e.target.dispatchEvent(new CustomEvent('click'));
+            }
+        }));
+        node.addEventListener('touchstart', function (e) {
+            // blurFocusDetector(e);
+            settings.onTouchStart(e);
+            timer = setTimeout(function () {
+                triggered = true;
+                if (node === document || node === window || node.parentNode) {
+                    // don't call if self is removed.
+                    settings.onRightClick(e);
                 }
-            }));
-            self.addEventListener('touchstart', function (e) {
-                // blurFocusDetector(e);
-                settings.onTouchStart(e);
-                timer = setTimeout(function () {
-                    triggered = true;
-                    if (self === document || self === window || self.parentNode) {
-                        // don't call if self is removed.
-                        settings.onRightClick(e);
-                    }
-                }, 500);
-                e.preventDefault(); // prevent browser default behavior;
-            });
-            // self.addEventListener('remove', function (e) {
-            //     if (timer) {
-            //         clearTimeout(timer);
-            //     }
-            // });
-        }
+            }, 500);
+            e.preventDefault(); // prevent browser default behavior;
+        });
     }
 };

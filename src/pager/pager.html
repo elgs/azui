@@ -13,7 +13,7 @@
 <body>
     <div id="pager0"></div>
     <script>
-        const elem = document.querySelectorAll('#pager0');
+        const elem = document.querySelector('#pager0');
         azui.Pager(elem, {
             onPageChange: function (pageNumber) {
                 this.update(pageNumber, 101, 25);

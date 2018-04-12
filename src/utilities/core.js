@@ -5,11 +5,11 @@ global.azui = global.azui || {
 export class Base {
     constructor(el) {
         if (typeof el === 'string') {
-            this.nodeList = document.querySelectorAll(el);
+            this.node = document.querySelector(el);
         } else if (el instanceof Node) {
-            this.nodeList = [el];
-        } else if (el instanceof NodeList || Array.isArray(el)) {
-            this.nodeList = el;
+            this.node = el;
+        } else if ((el instanceof NodeList || Array.isArray(el)) && el.length > 0) {
+            this.node = el[0];
         } else {
             throw `${el} cannot be targeted.`;
         }
