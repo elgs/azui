@@ -24,8 +24,11 @@ import {
 //     }
 // };
 
+azui.Draggable = function (el, options) {
+    return new Draggable(el, options);
+};
 
-azui.Draggable = class Draggable extends Base {
+class Draggable extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({

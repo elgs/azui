@@ -21,8 +21,11 @@ import {
     position,
 } from '../utilities/utilities.js';
 
+azui.Sortable = function (el, options) {
+    return new Sortable(el, options);
+};
 
-azui.Sortable = class Sortable extends Base {
+class Sortable extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
@@ -223,17 +226,17 @@ azui.Sortable = class Sortable extends Base {
                 stop: onDragStop,
                 dropKey: dropKey
             };
-            new azui.Draggable(Array.prototype.filter.call(self.children, n => matches(n, '.' + settings.className)), dragConfig);
+            azui.Draggable(Array.prototype.filter.call(self.children, n => matches(n, '.' + settings.className)), dragConfig);
 
             const dropConfig = {
                 key: dropKey
             };
-            new azui.Droppable(Array.prototype.filter.call(self.children, n => matches(n, '.' + settings.className)), dropConfig);
+            azui.Droppable(Array.prototype.filter.call(self.children, n => matches(n, '.' + settings.className)), dropConfig);
 
             self.addEventListener('add', function (e, elem) {
                 elem.classList.add(settings.className);
-                new azui.Draggable(elem, dragConfig);
-                new azui.Droppable(elem, dropConfig);
+                azui.Draggable(elem, dragConfig);
+                azui.Droppable(elem, dropConfig);
             });
         }
     }

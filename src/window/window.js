@@ -13,7 +13,11 @@ import {
 
 import * as icons from '../utilities/icons.js';
 
-azui.Window = class Window extends Base {
+azui.Window = function (el, options) {
+    return new Window(el, options);
+};
+
+class Window extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
@@ -31,7 +35,7 @@ azui.Window = class Window extends Base {
             add: function (event, widget) {
                 const newWindow = document.createElement('div');
                 widget.querySelector('.azWindowContent').appendChild(newWindow);
-                new azui.Window(newWindow, {
+                azui.Window(newWindow, {
                     width: '240px',
                     height: '180px',
                 });
@@ -231,7 +235,7 @@ azui.Window = class Window extends Base {
             header.appendChild(parseDOMElement('<div class="right"></div>')[0]);
             setHeaderIcon(settings.icon);
             setHeaderTitle(settings.title);
-            new azui.InlineEdit(header.querySelector('.left span.title'));
+            azui.InlineEdit(header.querySelector('.left span.title'));
             initHeader();
             // header.prependTo(node);
             node.insertBefore(header, node.firstChild);
@@ -244,7 +248,7 @@ azui.Window = class Window extends Base {
 
             let pb;
 
-            new azui.Resizable(node, {
+            azui.Resizable(node, {
                 minHeight: settings.headerHeight * 2,
                 minWidth: 240,
                 start: function (event, ui) {
@@ -256,7 +260,7 @@ azui.Window = class Window extends Base {
                     }
                 },
             });
-            new azui.Draggable(node, {
+            azui.Draggable(node, {
                 handle: header,
                 create: function (event, ui) {
                     const target = event.target;
@@ -277,7 +281,7 @@ azui.Window = class Window extends Base {
                 },
             });
 
-            new azui.DoubleClick(header, {
+            azui.DoubleClick(header, {
                 onDoubleClick: function (event) {
                     if (!matches(event.target, 'div.azWindowHeader')) {
                         return;

@@ -46,10 +46,10 @@
     </div>
     <script>
         const elem = document.querySelectorAll('#div0, #div1');
-        const resizable = new azui.Resizable(elem, {
+        const resizable = azui.Resizable(elem, {
             handles: 'all'
         });
-        new azui.Draggable(elem);
+        azui.Draggable(elem);
 
         // console.log($('#div1').width());
         // console.log($('#div1')[0].getBoundingClientRect().width);

@@ -2,7 +2,11 @@ import {
     Base
 } from '../utilities/core.js';
 
-azui.RightClick = class RightClick extends Base {
+azui.RightClick = function (el, options) {
+    return new RightClick(el, options);
+};
+
+class RightClick extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({

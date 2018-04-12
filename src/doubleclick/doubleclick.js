@@ -6,7 +6,11 @@ import {
     touchDelayTime
 } from '../utilities/utilities.js';
 
-azui.DoubleClick = class DoubleClick extends Base {
+azui.DoubleClick = function (el, options) {
+    return new DoubleClick(el, options);
+};
+
+class DoubleClick extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({

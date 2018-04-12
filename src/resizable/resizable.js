@@ -12,7 +12,11 @@ import {
     setOuterHeight,
 } from '../utilities/utilities.js';
 
-azui.Resizable = class Resizable extends Base {
+azui.Resizable = function (el, options) {
+    return new Resizable(el, options);
+};
+
+class Resizable extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
@@ -118,7 +122,7 @@ azui.Resizable = class Resizable extends Base {
                         eld.style['cursor'] = `${d}-resize`;
                         self.appendChild(eld);
                         if (settings.onDoubleClick) {
-                            new azui.DoubleClick(eld, {
+                            azui.DoubleClick(eld, {
                                 onDoubleClick: settings.onDoubleClick
                             });
                         }
@@ -292,7 +296,7 @@ azui.Resizable = class Resizable extends Base {
                     checkAspectRatio();
                 };
 
-                h.n && new azui.Draggable(eh.n, {
+                h.n && azui.Draggable(eh.n, {
                     axis: 'y',
                     create: onCreate,
                     start: onStart,
@@ -310,7 +314,7 @@ azui.Resizable = class Resizable extends Base {
                     },
                     stop: onStop,
                 });
-                h.e && new azui.Draggable(eh.e, {
+                h.e && azui.Draggable(eh.e, {
                     axis: 'x',
                     create: onCreate,
                     start: onStart,
@@ -326,7 +330,7 @@ azui.Resizable = class Resizable extends Base {
                     },
                     stop: onStop,
                 });
-                h.s && new azui.Draggable(eh.s, {
+                h.s && azui.Draggable(eh.s, {
                     axis: 'y',
                     create: onCreate,
                     start: onStart,
@@ -343,7 +347,7 @@ azui.Resizable = class Resizable extends Base {
                     },
                     stop: onStop,
                 });
-                h.w && new azui.Draggable(eh.w, {
+                h.w && azui.Draggable(eh.w, {
                     axis: 'x',
                     create: onCreate,
                     start: onStart,
@@ -363,7 +367,7 @@ azui.Resizable = class Resizable extends Base {
                     stop: onStop,
                 });
 
-                h.ne && new azui.Draggable(eh.ne, {
+                h.ne && azui.Draggable(eh.ne, {
                     create: onCreate,
                     start: onStart,
                     drag: function (event, elem) {
@@ -383,7 +387,7 @@ azui.Resizable = class Resizable extends Base {
                     },
                     stop: onStop,
                 });
-                h.se && new azui.Draggable(eh.se, {
+                h.se && azui.Draggable(eh.se, {
                     create: onCreate,
                     start: onStart,
                     drag: function (event, elem) {
@@ -401,7 +405,7 @@ azui.Resizable = class Resizable extends Base {
                     },
                     stop: onStop,
                 });
-                h.sw && new azui.Draggable(eh.sw, {
+                h.sw && azui.Draggable(eh.sw, {
                     create: onCreate,
                     start: onStart,
                     drag: function (event, elem) {
@@ -421,7 +425,7 @@ azui.Resizable = class Resizable extends Base {
                     },
                     stop: onStop,
                 });
-                h.nw && new azui.Draggable(eh.nw, {
+                h.nw && azui.Draggable(eh.nw, {
                     create: onCreate,
                     start: onStart,
                     drag: function (event, elem) {

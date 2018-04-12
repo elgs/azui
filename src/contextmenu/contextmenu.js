@@ -11,7 +11,11 @@ import {
     normalizeIcon,
 } from '../utilities/utilities.js';
 
-azui.ContextMenu = class ContextMenu extends Base {
+azui.ContextMenu = function (el, options) {
+    return new ContextMenu(el, options);
+};
+
+class ContextMenu extends Base {
     constructor(el, options) {
         super(el, options);
         const settings = Object.assign({
@@ -112,7 +116,7 @@ azui.ContextMenu = class ContextMenu extends Base {
                 e.preventDefault(); // prevent browser context menu
             }
 
-            new azui.RightClick(self, {
+            azui.RightClick(self, {
                 onRightClick: onContextMenu,
                 onTouchStart: blurFocusDetector,
             });

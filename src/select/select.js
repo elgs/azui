@@ -9,7 +9,11 @@ import {
 
 import * as icons from '../utilities/icons.js';
 
-azui.Select = class Select extends Base {
+azui.Select = function (el, options) {
+    return new Select(el, options);
+};
+
+class Select extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({

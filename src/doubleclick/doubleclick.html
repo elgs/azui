@@ -21,7 +21,7 @@
     <div id="div1"></div>
     <script>
         const elem = document.querySelectorAll('div');
-        new azui.DoubleClick(elem, {
+        azui.DoubleClick(elem, {
             onDoubleClick: function (e) {
                 alert(e.target.id);
             }

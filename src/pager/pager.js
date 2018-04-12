@@ -8,7 +8,11 @@ import {
 
 import * as icons from '../utilities/icons.js';
 
-azui.Pager = class Pager extends Base {
+azui.Pager = function (el, options) {
+    return new Pager(el, options);
+};
+
+class Pager extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({

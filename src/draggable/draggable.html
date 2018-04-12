@@ -57,10 +57,10 @@
 
     <script>
         // $.azDebugDiv();
-        new azui.Draggable('#c', {
+        azui.Draggable('#c', {
             containment: '#p',
         });
-        new azui.Draggable('#f', {
+        azui.Draggable('#f', {
             create: function (e) {
                 if (e.type === 'touchstart') {
                     e.preventDefault();
@@ -68,7 +68,7 @@
             },
             axis: 'y'
         });
-        new azui.Draggable('#p', {
+        azui.Draggable('#p', {
             create: function (e) {
                 if (e.type === 'touchstart') {
                     e.preventDefault();

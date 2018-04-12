@@ -15,7 +15,11 @@ import {
     insertBefore,
 } from '../utilities/utilities.js';
 
-azui.DataTable = class DataTable extends Base {
+azui.DataTable = function (el, options) {
+    return new DataTable(el, options);
+};
+
+class DataTable extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
@@ -50,7 +54,7 @@ azui.DataTable = class DataTable extends Base {
                         td.appendChild(cell);
 
                         if (settings.editor === 'cell') {
-                            new azui.InlineEdit(cell, {
+                            azui.InlineEdit(cell, {
                                 type: col.type,
                                 options: col.options,
                             });
@@ -66,7 +70,7 @@ azui.DataTable = class DataTable extends Base {
                     });
                     if (settings.editor === 'row') {
                         tr.querySelectorAll('div.td>span').forEach(el => {
-                            new azui.InlineEdit(el);
+                            azui.InlineEdit(el);
                         });
                     }
 
@@ -101,7 +105,7 @@ azui.DataTable = class DataTable extends Base {
             const totalWidth = settings.columns.reduce((a, c) => a + (c.width || 100), 0);
 
             setWidth(node, 2 + totalWidth);
-            const pager = new azui.Pager(tfoot, {
+            const pager = azui.Pager(tfoot, {
                 pageSize: settings.pageSize,
                 totalSize: totalSize,
                 pageNumber: settings.pageNumber,
@@ -145,7 +149,7 @@ azui.DataTable = class DataTable extends Base {
             });
 
             // resizing columns
-            new azui.Resizable(thead.querySelectorAll('.th'), {
+            azui.Resizable(thead.querySelectorAll('.th'), {
                 handles: 'e',
                 minWidth: 100,
                 // maxWidth: 400,
@@ -241,7 +245,7 @@ azui.DataTable = class DataTable extends Base {
                 })
             };
 
-            new azui.ContextMenu(thead.querySelectorAll('.th'), {
+            azui.ContextMenu(thead.querySelectorAll('.th'), {
                 items: () => [
                     ...sortCmItems,
                     null,
@@ -250,7 +254,7 @@ azui.DataTable = class DataTable extends Base {
             });
 
             // moving columns
-            new azui.Sortable(thead, {
+            azui.Sortable(thead, {
                 placeholder: false,
                 create: function (e, data) {
                     if (isTouchDevice()) {
@@ -294,7 +298,7 @@ azui.DataTable = class DataTable extends Base {
                 settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
             };
 
-            new azui.DoubleClick(thead.querySelectorAll('.th'), {
+            azui.DoubleClick(thead.querySelectorAll('.th'), {
                 onDoubleClick: function (e) {
                     // console.log(this);
                     sortAll(this.getAttribute('col-key'));

@@ -38,13 +38,13 @@
     </div>
     <script>
         const elem = document.querySelectorAll('#tab0');
-        new azui.Tabs(elem, {
+        azui.Tabs(elem, {
             foo: 'bar'
         });
-        new azui.Draggable(elem, {
+        azui.Draggable(elem, {
             handle: '.azTabHeaders',
         });
-        new azui.Resizable(elem);
+        azui.Resizable(elem);
     </script>
 </body>
 

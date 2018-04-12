@@ -9,7 +9,11 @@ import {
     randGenConsts,
 } from '../utilities/utilities.js';
 
-azui.Droppable = class Droppable extends Base {
+azui.Droppable = function (el, options) {
+    return new Droppable(el, options);
+};
+
+class Droppable extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({

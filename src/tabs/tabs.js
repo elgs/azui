@@ -13,7 +13,11 @@ import {
     insertAfter,
 } from '../utilities/utilities.js';
 
-azui.Tabs = class Tabs extends Base {
+azui.Tabs = function (el, options) {
+    return new Tabs(el, options);
+};
+
+class Tabs extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
@@ -132,9 +136,9 @@ azui.Tabs = class Tabs extends Base {
             tabHeaderList[0].click();
             node.querySelector('.newTab').addEventListener('click', newTabClicked);
 
-            new azui.Sortable(tabHeaderContainer);
+            azui.Sortable(tabHeaderContainer);
 
-            new azui.ContextMenu(tabHeaderList, {
+            azui.ContextMenu(tabHeaderList, {
                 items: tabContextMenu
             });
 
@@ -185,7 +189,7 @@ azui.Tabs = class Tabs extends Base {
                     el.addEventListener('click', closeClicked);
                 });
 
-                new azui.ContextMenu(header, {
+                azui.ContextMenu(header, {
                     items: tabContextMenu
                 });
             });

@@ -9,7 +9,11 @@ import {
 
 import * as icons from '../utilities/icons.js';
 
-azui.InlineEdit = class InlineEdit extends Base {
+azui.InlineEdit = function (el, options) {
+    return new InlineEdit(el, options);
+};
+
+class InlineEdit extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
@@ -87,7 +91,7 @@ azui.InlineEdit = class InlineEdit extends Base {
                 editorWrapper.classList.add(settings.inlineEditClass + 'Wrapper');
 
                 if (settings.type === 'select') {
-                    new azui.Select(editorWrapper, {
+                    azui.Select(editorWrapper, {
                         items: settings.options,
                     });
                     editorWrapper.querySelector('input').classList.add(settings.inlineEditClass);
@@ -188,7 +192,7 @@ azui.InlineEdit = class InlineEdit extends Base {
             return false;
         };
 
-        new azui.DoubleClick(nodeList, {
+        azui.DoubleClick(nodeList, {
             onDoubleClick: edit
         });
     }

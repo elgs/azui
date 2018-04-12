@@ -48,7 +48,7 @@
         };
 
         const source0 = document.querySelectorAll('div#source0');
-        new azui.Draggable(source0, {
+        azui.Draggable(source0, {
             triggerDropEvents: true,
             dropKey: 'foo',
             create: function (e) {
@@ -59,7 +59,7 @@
         });
 
         const target = document.querySelectorAll('div.target');
-        new azui.Droppable(target, {
+        azui.Droppable(target, {
             key: 'foo',
             source_all_in: function (e) {
                 e.detail.target.textContent = e.type;
