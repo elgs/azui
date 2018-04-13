@@ -20,6 +20,7 @@ azui.DataTable = function (el, options) {
 };
 
 class DataTable extends Base {
+
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
@@ -35,19 +36,18 @@ class DataTable extends Base {
 
         node.classList.add('azDataTable');
 
-        let totalSize = 0;
+        this.totalSize = 0;
 
-        const refresh = function (pageData, _totalSize) {
+        const refresh = function (pageData, totalSize) {
+            self.totalSize = totalSize;
             tbody.innerHTML = '';
 
-            totalSize = _totalSize;
             pageData.map(row => {
                 const tr = document.createElement('div');
                 tr.classList.add('tr');
                 tbody.appendChild(tr);
 
                 settings.columns.map(col => {
-                    // const $th  = $thead.find('.th').eq()
                     const cell = parseDOMElement(`<span>${row[col.dataIndex]}</span>`)[0];
                     const td = document.createElement('div');
                     td.classList.add(`td`, `col-${col.key}`);
@@ -107,11 +107,11 @@ class DataTable extends Base {
         setWidth(node, 2 + totalWidth);
         const pager = azui.Pager(tfoot, {
             pageSize: settings.pageSize,
-            totalSize: totalSize,
+            totalSize: self.totalSize,
             pageNumber: settings.pageNumber,
             onPageChange: function (pageNumber) {
                 settings.loadData(pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-                this.update(pageNumber, totalSize, settings.pageSize);
+                this.update(pageNumber, self.totalSize, settings.pageSize);
             },
         });
 
@@ -149,45 +149,47 @@ class DataTable extends Base {
         });
 
         // resizing columns
-        azui.Resizable(thead.querySelectorAll('.th'), {
-            handles: 'e',
-            minWidth: 100,
-            // maxWidth: 400,
-            create: function (e, target) {
-                target.setAttribute('widthOnCreate', getWidth(target));
-            },
-            stop: function (e, target) {
-                // console.log(index(target));
-                const woc = target.getAttribute('widthOnCreate') * 1;
-                target.removeAttribute('widthOnCreate');
-                const dw = getWidth(target) - woc;
-                const newWidth = getWidth(node) + dw;
-                setWidth(node, newWidth);
-                const tds = tbody.querySelectorAll(`div.td:nth-of-type(${index(target)+1})`);
-                tds.forEach(el => {
-                    setWidth(el, getWidth(el) + dw);
-                });
-                settings.columns[index(target)].width = tds[0].offsetWidth;
-            },
-            onDoubleClick: function (event) {
-                const th = event.target.parentNode;
-                const idx = index(th);
-                const tds = tbody.querySelectorAll(`div.td:nth-of-type(${idx + 1})`);
-                let maxWidth = 0;
-                tds.forEach(el => {
-                    maxWidth = Math.max(textWidth(el), maxWidth);
-                });
-                maxWidth = Math.max(80, maxWidth) + 10;
-                const newWidth = getWidth(node) + maxWidth - getWidth(tds[0]);
-                setWidth(node, newWidth);
-                tds.forEach(el => {
-                    setOuterWidth(el, maxWidth);
-                });
-                setOuterWidth(th, maxWidth);
-                settings.columns[idx].width = tds[0].offsetWidth;
+        thead.querySelectorAll('.th').forEach(el => {
+            azui.Resizable(el, {
+                handles: 'e',
+                minWidth: 100,
+                // maxWidth: 400,
+                create: function (e, target) {
+                    target.setAttribute('widthOnCreate', getWidth(target));
+                },
+                stop: function (e, target) {
+                    // console.log(index(target));
+                    const woc = target.getAttribute('widthOnCreate') * 1;
+                    target.removeAttribute('widthOnCreate');
+                    const dw = getWidth(target) - woc;
+                    const newWidth = getWidth(node) + dw;
+                    setWidth(node, newWidth);
+                    const tds = tbody.querySelectorAll(`div.td:nth-of-type(${index(target)+1})`);
+                    tds.forEach(el => {
+                        setWidth(el, getWidth(el) + dw);
+                    });
+                    settings.columns[index(target)].width = tds[0].offsetWidth;
+                },
+                onDoubleClick: function (event) {
+                    const th = event.target.parentNode;
+                    const idx = index(th);
+                    const tds = tbody.querySelectorAll(`div.td:nth-of-type(${idx + 1})`);
+                    let maxWidth = 0;
+                    tds.forEach(el => {
+                        maxWidth = Math.max(textWidth(el), maxWidth);
+                    });
+                    maxWidth = Math.max(80, maxWidth) + 10;
+                    const newWidth = getWidth(node) + maxWidth - getWidth(tds[0]);
+                    setWidth(node, newWidth);
+                    tds.forEach(el => {
+                        setOuterWidth(el, maxWidth);
+                    });
+                    setOuterWidth(th, maxWidth);
+                    settings.columns[idx].width = tds[0].offsetWidth;
 
-                event.stopPropagation();
-            },
+                    event.stopPropagation();
+                },
+            });
         });
 
         const sortCmItems = [{
@@ -245,12 +247,14 @@ class DataTable extends Base {
             })
         };
 
-        azui.ContextMenu(thead.querySelectorAll('.th'), {
-            items: () => [
-                ...sortCmItems,
-                null,
-                ...colCmItems(),
-            ]
+        thead.querySelectorAll('.th').forEach(el => {
+            azui.ContextMenu(el, {
+                items: () => [
+                    ...sortCmItems,
+                    null,
+                    ...colCmItems(),
+                ]
+            });
         });
 
         // moving columns
@@ -298,11 +302,13 @@ class DataTable extends Base {
             settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
         };
 
-        azui.DoubleClick(thead.querySelectorAll('.th'), {
-            onDoubleClick: function (e) {
-                // console.log(this);
-                sortAll(this.getAttribute('col-key'));
-            }
+        thead.querySelectorAll('.th').forEach(el => {
+            azui.DoubleClick(el, {
+                onDoubleClick: function (e) {
+                    // console.log(this);
+                    sortAll(this.getAttribute('col-key'));
+                }
+            });
         });
 
         settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
