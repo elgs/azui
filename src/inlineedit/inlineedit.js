@@ -82,8 +82,11 @@ class InlineEdit extends Base {
             editorWrapper.classList.add(settings.inlineEditClass + 'Wrapper');
 
             if (settings.type === 'select') {
-                azui.Select(editorWrapper, {
+                const select = azui.Select(editorWrapper, {
                     items: settings.options,
+                });
+                select.node.addEventListener('done', function (e) {
+                    done(e);
                 });
                 editorWrapper.querySelector('input').classList.add(settings.inlineEditClass);
                 editorWrapper.value = originalValue;
@@ -157,10 +160,12 @@ class InlineEdit extends Base {
                     editorWrapper.appendChild(downButton);
 
                     upButton.addEventListener('click', function (event) {
+                        event.stopPropagation();
                         editor.value = editor.value * 1 + 1;
                         _checkDirty();
                     });
                     downButton.addEventListener('click', function (event) {
+                        event.stopPropagation();
                         editor.value = editor.value * 1 - 1;
                         _checkDirty();
                     });

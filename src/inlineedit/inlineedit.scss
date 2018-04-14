@@ -28,16 +28,37 @@
         position: absolute;
         right: 0;
         width: 20px;
-        border: 1px solid gray;
         height: 50%;
         display: grid;
         align-content: center;
         justify-content: center;
+        background: $main-color;
         &.upButton {
             top: 0;
+            border-width: 1px;
+            border-style: solid;
+            border-color: darken($color: $main-color, $amount: 7%);
+            &:hover {
+                background-color: darken($color: $main-color, $amount: 10%);
+            }
+            &:active {
+                background-color: darken($color: $main-color, $amount: 20%);
+            }
         }
         &.downButton {
             bottom: 0;
+            border-width: 1px;
+            border-style: solid;
+            border-top-color: white;
+            border-left-color: darken($color: $main-color, $amount: 7%);
+            border-right-color: darken($color: $main-color, $amount: 7%);
+            border-bottom-color: darken($color: $main-color, $amount: 7%);
+            &:hover {
+                background-color: darken($color: $main-color, $amount: 10%);
+            }
+            &:active {
+                background-color: darken($color: $main-color, $amount: 20%);
+            }
         }
         & svg {
             width: 10px;

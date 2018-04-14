@@ -140,7 +140,6 @@ class DataTable extends Base {
             if (col.hidden) {
                 th.style.display = 'none';
                 // console.log(col.key);
-                // node.querySelector(`.col-${col.key}`).style.display = 'none';
             }
             thead.appendChild(th);
             if (col.width) {
@@ -198,8 +197,6 @@ class DataTable extends Base {
             action: function (e, target) {
                 settings.sortDirection = 'desc';
                 sortAll(target.getAttribute('col-key'));
-                // console.log(index(target));
-                // sortAll(index(target));
                 return false;
             }
         }, {
@@ -208,7 +205,6 @@ class DataTable extends Base {
             action: function (e, target) {
                 settings.sortDirection = 'asc';
                 sortAll(target.getAttribute('col-key'));
-                // sortAll(index(target));
                 return false;
             }
         }];
@@ -279,10 +275,8 @@ class DataTable extends Base {
                     const ttd = tr.querySelectorAll('div.td')[tIndex];
                     if (sIndex < tIndex) {
                         insertAfter(std, ttd);
-                        // ttd.after(std);
                     } else {
                         insertBefore(std, ttd);
-                        // ttd.before(std);
                     }
                 });
             }

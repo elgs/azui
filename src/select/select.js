@@ -25,7 +25,6 @@ class Select extends Base {
 
         const onDropdown = function (e) {
             // console.log(e.currentTarget);
-            // console.log($this[0]);
             const createMenuItem = function (item) {
                 if (!item) {
                     const sep = document.createElement('div');
@@ -166,6 +165,11 @@ class Select extends Base {
                     document.documentElement.dispatchEvent(new e.constructor(e.type, e));
                 } else {
                     // submit
+                    node.dispatchEvent(new CustomEvent('done', {
+                        detail: {
+                            value: selectInput.value
+                        }
+                    }));
                 }
             } else if (selectInput.value.trim().length > 0) {
                 // if input.val().trim().length>0, trigger filtered dropdown
@@ -187,7 +191,6 @@ class Select extends Base {
         selectInput.classList.add('azSelectInput');
         node.appendChild(selectInput);
 
-        // const selectInput = $('<input type="text">').addClass('azSelectInput').appendTo($this);
         selectInput.addEventListener('keyup', onInputKeyUp);
 
         const dropdownButton = document.createElement('div');
@@ -195,7 +198,6 @@ class Select extends Base {
         dropdownButton.classList.add('azSelectdropdownButton');
         node.appendChild(dropdownButton);
 
-        // const dropdownButton = $('<div/>').append($(icons.svgTriangleDown)).addClass('azSelectdropdownButton').appendTo($this);
         dropdownButton.addEventListener('click', toggleDropdown);
     }
 };
