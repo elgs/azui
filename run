@@ -50,7 +50,7 @@
             const mods = fs.readdirSync(dir).filter(item => fs.existsSync(path.join(dir, item, `${item}.html`)));
             mods.map(mod => {
                 run('parcel', ['build',
-                    '--no-minify',
+                    // '--no-minify',
                     '--no-source-maps',
                     '-d', `./build/${ver}/`, '--public-url', './', `./src/${mod}/${mod}.html`
                 ]);
@@ -58,7 +58,7 @@
         } else {
             const mod = args[0];
             run('parcel', ['build',
-                '--no-minify',
+                // '--no-minify',
                 '--no-source-maps',
                 '-d', `./build/${ver}/`,
                 '--public-url', './',

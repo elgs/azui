@@ -26,12 +26,12 @@ class Window extends Base {
             headerHeight: 30,
             icon: '',
             title: 'az',
-            slideup: function (event, widget) { },
-            slidedown: function (event, widget) { },
-            minimize: function (event, widget) { },
-            maximize: function (event, widget) { },
-            restore: function (event, widget) { },
-            close: function (event, widget) { },
+            slideup: function (event, widget) {},
+            slidedown: function (event, widget) {},
+            minimize: function (event, widget) {},
+            maximize: function (event, widget) {},
+            restore: function (event, widget) {},
+            close: function (event, widget) {},
             // add: function (event, widget) {
             //     const newWindow = document.createElement('div');
             //     widget.querySelector('.azWindowContent').appendChild(newWindow);
@@ -94,6 +94,7 @@ class Window extends Base {
             }, 200);
         };
         const minimize = function () {
+            // console.log(node.parentNode);
             hideHeaderIcon('slidedown');
             hideHeaderIcon('slideup');
             showHeaderIcon('maximize');
@@ -302,5 +303,10 @@ class Window extends Base {
         node.parentNode.setAttribute('_azWindowX', _x * 1 + settings.headerHeight);
         node.parentNode.setAttribute('_azWindowY', _y * 1 + settings.headerHeight);
         node.parentNode.setAttribute('_azWindowZ', _z + 1);
+
+        // const dockerBar = document.createElement('div');
+        // dockerBar.classList.add('azWindowDockerBar');
+        // node.appendChild(dockerBar);
     }
+
 };

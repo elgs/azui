@@ -216,7 +216,7 @@ class Sortable extends Base {
 
         const dropKey = randGen(8, randGenConsts.LowerUpperDigit, '', '');
 
-        const dragConfig = {
+        this.dragConfig = {
             containment: node,
             resist: 10,
             create: onDragCreate,
@@ -226,19 +226,19 @@ class Sortable extends Base {
             dropKey: dropKey
         };
 
-        const dropConfig = {
+        this.dropConfig = {
             key: dropKey
         };
         const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className));
         items.forEach(item => {
-            azui.Draggable(item, dragConfig);
-            azui.Droppable(item, dropConfig);
+            azui.Draggable(item, this.dragConfig);
+            azui.Droppable(item, this.dropConfig);
         });
+    }
 
-        node.addEventListener('add', function (e, elem) {
-            elem.classList.add(settings.className);
-            azui.Draggable(elem, dragConfig);
-            azui.Droppable(elem, dropConfig);
-        });
+    add(e, elem) {
+        elem.classList.add(this.settings.className);
+        azui.Draggable(elem, this.dragConfig);
+        azui.Droppable(elem, this.dropConfig);
     }
 };

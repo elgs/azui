@@ -13,5 +13,18 @@ export class Base {
         } else {
             throw `${el} cannot be targeted.`;
         }
-    };
+    }
+
+    on(eventName, eventHandler) {
+        const self = this;
+        if (eventName && eventHandler) {
+            eventName.split(/\s+/).forEach(e => self.node.addEventListener(e, eventHandler));
+        }
+    }
+    off(eventName, eventHandler) {
+        const self = this;
+        if (eventName && eventHandler) {
+            eventName.split(/\s+/).forEach(e => self.node.removeEventListener(e, eventHandler));
+        }
+    }
 };
