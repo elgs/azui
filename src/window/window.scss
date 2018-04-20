@@ -18,19 +18,10 @@ body {
     &:hover {
         box-shadow: $shadow-hovered;
     }
-    // & .azWindowDockerBar {
-    //     position: absolute;
-    //     bottom: 0;
-    //     width: 100%;
-    //     height: 30px;
-    //     background: red;
-    // }
     & .azWindowHeader {
         background-color: $main-color;
         box-sizing: border-box;
-        width: 100%;
-        display: grid;
-        grid-template-columns: minmax(80px, 1fr) minmax(30px, 1fr) minmax(120px, 1fr);
+        width: 100%; // display: inline-block;
         align-items: center;
         grid-row: 1/2;
         & div * {
@@ -58,9 +49,16 @@ body {
             }
         }
         & .left {
-            white-space: nowrap;
-            grid-column: 1/2;
+            white-space: nowrap; 
+            float: left;
+            height: 100%;
             text-align: left;
+            &::before {
+                content: "";
+                display: inline-block;
+                vertical-align: middle;
+                height: 100%;
+            }
             & span.title {
                 cursor: default;
             }
@@ -70,11 +68,19 @@ body {
             }
         }
         & .center {
-            grid-column: 2/3;
+            display: inline-block;
+            height: 100%;
             text-align: center;
         }
         & .right {
-            grid-column: 3/4;
+            &::before {
+                content: "";
+                display: inline-block;
+                vertical-align: middle;
+                height: 100%;
+            }
+            float: right;
+            height: 100%;
             text-align: right;
         }
     }

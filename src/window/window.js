@@ -26,6 +26,7 @@ class Window extends Base {
             headerHeight: 30,
             icon: '',
             title: 'az',
+            dockBar: false,
             slideup: function (event, widget) {},
             slidedown: function (event, widget) {},
             minimize: function (event, widget) {},
@@ -53,6 +54,13 @@ class Window extends Base {
         node.classList.add('azWindow');
 
         node.style['position'] = 'absolute';
+
+        if (settings.dockBar) {
+            if (typeof settings.dockBar === 'string') {
+                settings.dockBar = document.querySelector(settings.dockBar);
+            }
+        }
+
         // stored states
         const ss = {
             state: 'normal',

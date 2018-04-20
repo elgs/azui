@@ -9,6 +9,7 @@ import '../splitter/index.js';
 import '../inlineedit/index.js';
 import '../resizable/index.js';
 import '../sortable/index.js';
+import '../docker/index.js';
 import '../tabs/index.js';
 import '../window/index.js';
 import '../pager/index.js';
