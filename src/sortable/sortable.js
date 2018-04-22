@@ -45,6 +45,8 @@ class Sortable extends Base {
             },
         }, options);
 
+        this.settings = settings;
+
         const node = this.node;
         node.classList.add('azSortable');
 
@@ -236,7 +238,8 @@ class Sortable extends Base {
         });
     }
 
-    add(e, elem) {
+    add(elem) {
+        this.node.appendChild(elem);
         elem.classList.add(this.settings.className);
         azui.Draggable(elem, this.dragConfig);
         azui.Droppable(elem, this.dropConfig);

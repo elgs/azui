@@ -1,0 +1,56 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>azDocker</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+        }
+
+        div#docker0 {
+            border: 1px solid gray;
+            box-sizing: border-box;
+            position: relative;
+            padding: 4px;
+            /* width: 100px; */
+            display: flex;
+        }
+
+        div#docker0 .azSortableItem {
+            height: 40px;
+            flex-grow: 1;
+            flex-basis: 0;
+            border: 1px solid gray;
+            box-sizing: border-box;
+            /* margin: 2px 4px 6px 8px; */
+            display: grid;
+            align-content: center;
+            justify-content: center;
+            user-select: none;
+            /* background-color: white; */
+        }
+    </style>
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="w0">w0</div>
+    <div id="w1">w1</div>
+    <div id='docker0'></div>
+    <script>
+        const elem = document.querySelector('#docker0');
+        const docker = azui.Docker(elem);
+
+        const w0 = document.querySelector('#w0');
+        const w1 = document.querySelector('#w1');
+        docker.dock(w0);
+        docker.dock(w1);
+    </script>
+</body>
+
+</html>
