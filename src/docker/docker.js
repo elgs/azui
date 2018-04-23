@@ -45,16 +45,24 @@ class Docker extends Base {
     }
 
     activate(dockId) {
+        const self = this;
         this.node.querySelectorAll('.azSortableItem').forEach(el => {
-            el.classList.remove('dock-active');
+            const otherDockId = el.getAttribute('data-dock-id');
+            self.inactivate(otherDockId);
         });
         const docked = this.node.querySelector(`[data-dock-id='${dockId}']`);
         docked.classList.add('dock-active');
+
+        const dockedRef = document.querySelector(`[data-dock-ref='${dockId}']`);
+        dockedRef.dispatchEvent(new CustomEvent('activated'));
     }
 
     inactivate(dockId) {
         const docked = this.node.querySelector(`[data-dock-id='${dockId}']`);
         docked.classList.remove('dock-active');
+
+        const dockedRef = document.querySelector(`[data-dock-ref='${dockId}']`);
+        dockedRef.dispatchEvent(new CustomEvent('inactivated'));
     }
 
     toggle(dockId) {
