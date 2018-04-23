@@ -5,6 +5,7 @@ import {
 import {
     randGen,
     randGenConsts,
+    remove,
 } from '../utilities/utilities.js';
 
 azui.Docker = function (el, options) {
@@ -26,22 +27,28 @@ class Docker extends Base {
 
     dock(el) {
         const id = randGen(8, randGenConsts.LowerUpperDigit, '', '');
-        const icon = document.createElement('div');
-        icon.innerHTML = 'w0';
-        icon.setAttribute('dock-id', id);
-        this.sortable.add(icon);
-        el.setAttribute('dock-id', id);
+        const docked = document.createElement('div');
+        docked.setAttribute('data-dock-id', id);
+        this.sortable.add(docked);
+        el.setAttribute('data-dock-ref', id);
+        return id;
     }
 
-    undock(el) {
-
+    undock(dockId) {
+        remove(this.node.querySelector(`[data-dock-id='${dockId}']`));
+        document.querySelector(`[data-dock-ref='${dockId}']`).removeAttribute('data-dock-ref');
     }
 
-    activate(el) {
-
+    activate(dockId) {
+        this.node.querySelectorAll('.azSortableItem').forEach(el => {
+            el.classList.remove('dock-active');
+        });
+        const docked = this.node.querySelector(`[data-dock-id='${dockId}']`);
+        docked.classList.add('dock-active');
     }
 
-    inactivate(el) {
-
+    inactivate(dockId) {
+        const docked = this.node.querySelector(`[data-dock-id='${dockId}']`);
+        docked.classList.remove('dock-active');
     }
 }

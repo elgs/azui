@@ -48,8 +48,9 @@
 
         const w0 = document.querySelector('#w0');
         const w1 = document.querySelector('#w1');
-        docker.dock(w0);
-        docker.dock(w1);
+        const d0 = docker.dock(w0);
+        const d1 = docker.dock(w1);
+        docker.undock(d1);
     </script>
 </body>
 
