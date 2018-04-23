@@ -36,11 +36,16 @@ class Docker extends Base {
         docked.setAttribute('data-dock-id', id);
         this.sortable.add(docked);
         el.setAttribute('data-dock-ref', id);
+        el.dispatchEvent(new CustomEvent('docked'));
         return id;
     }
 
     undock(dockId) {
         remove(this.node.querySelector(`[data-dock-id='${dockId}']`));
+
+        const dockedRef = document.querySelector(`[data-dock-ref='${dockId}']`);
+        dockedRef.dispatchEvent(new CustomEvent('undocked'));
+
         document.querySelector(`[data-dock-ref='${dockId}']`).removeAttribute('data-dock-ref');
     }
 
