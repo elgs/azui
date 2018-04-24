@@ -21,8 +21,19 @@ class Docker extends Base {
         const node = this.node;
         node.classList.add('azDocker');
 
+        const self = this;
+        this.dragging = false;
+
         this.sortable = azui.Sortable(this.node, {
             placeholder: true,
+            start: (e, data) => {
+                // console.log('start dragging');
+                self.dragging = true;
+            },
+            stop: (e, data) => {
+                // console.log('stop dragging');
+                self.dragging = false;
+            }
         });
     }
 
@@ -30,48 +41,53 @@ class Docker extends Base {
         const self = this;
         const id = randGen(8, randGenConsts.LowerUpperDigit, '', '');
         const docked = document.createElement('div');
-        docked.addEventListener('click', e => {
-            self.toggle(id);
-        });
-        docked.setAttribute('data-dock-id', id);
+        docked.setAttribute('az-dock-id', id);
         this.sortable.add(docked);
-        el.setAttribute('data-dock-ref', id);
+        docked.addEventListener('mouseup', e => {
+            if (!self.dragging) {
+                self.toggle(id);
+            }
+        });
+        el.setAttribute('az-dock-ref', id);
         el.dispatchEvent(new CustomEvent('docked'));
-        return id;
+        return docked;
     }
 
     undock(dockId) {
-        remove(this.node.querySelector(`[data-dock-id='${dockId}']`));
+        remove(this.node.querySelector(`[az-dock-id='${dockId}']`));
 
-        const dockedRef = document.querySelector(`[data-dock-ref='${dockId}']`);
+        const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         dockedRef.dispatchEvent(new CustomEvent('undocked'));
 
-        document.querySelector(`[data-dock-ref='${dockId}']`).removeAttribute('data-dock-ref');
+        document.querySelector(`[az-dock-ref='${dockId}']`).removeAttribute('az-dock-ref');
     }
 
     activate(dockId) {
         const self = this;
         this.node.querySelectorAll('.azSortableItem').forEach(el => {
-            const otherDockId = el.getAttribute('data-dock-id');
-            self.inactivate(otherDockId);
+            if (!matches(el, 'dock-active')) {
+                const otherDockId = el.getAttribute('az-dock-id');
+                self.inactivate(otherDockId);
+            }
         });
-        const docked = this.node.querySelector(`[data-dock-id='${dockId}']`);
+
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         docked.classList.add('dock-active');
 
-        const dockedRef = document.querySelector(`[data-dock-ref='${dockId}']`);
+        const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         dockedRef.dispatchEvent(new CustomEvent('activated'));
     }
 
     inactivate(dockId) {
-        const docked = this.node.querySelector(`[data-dock-id='${dockId}']`);
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         docked.classList.remove('dock-active');
 
-        const dockedRef = document.querySelector(`[data-dock-ref='${dockId}']`);
+        const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         dockedRef.dispatchEvent(new CustomEvent('inactivated'));
     }
 
     toggle(dockId) {
-        const docked = this.node.querySelector(`[data-dock-id='${dockId}']`);
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
         if (matches(docked, '.dock-active')) {
             this.inactivate(dockId);
         } else {

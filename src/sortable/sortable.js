@@ -69,20 +69,13 @@ class Sortable extends Base {
             }
             dropTargetCenterStates = {};
 
-            // const mn = parseInt(selected.css('margin-top'));
-            // const me = parseInt(selected.css('margin-right'));
-            // const ms = parseInt(selected.css('margin-bottom'));
-            // const mw = parseInt(selected.css('margin-left'));
-
-            // const pn = parseInt(self.css('padding-top'));
-            // const pe = parseInt(self.css('padding-right'));
-            // const ps = parseInt(self.css('padding-bottom'));
-            // const pw = parseInt(self.css('padding-left'));
             target.style['z-index'] = ++z;
             selected.classList.add('azSortableSelected');
 
             if (settings.placeholder) {
                 ph = target.cloneNode(false);
+                ph.removeAttribute('id');
+                ph.classList.add('az-placeholder');
                 ph.style['visibility'] = 'hidden';
 
                 const w = getWidth(selected);
@@ -177,13 +170,13 @@ class Sortable extends Base {
 
         const onDragStop = function (e, target) {
             // console.log(selected, ph);
+            if (settings.stop(e, {
+                    source: selected,
+                    target: ph
+                }) === false) {
+                return false;
+            }
             setTimeout(() => {
-                if (settings.stop(e, {
-                        source: selected,
-                        target: ph
-                    }) === false) {
-                    return false;
-                }
                 if (selected) {
                     selected.classList.remove('azSortableSelected');
                     selected.classList.remove('azSortableAllow');
