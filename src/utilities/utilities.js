@@ -296,11 +296,13 @@ export const matches = function (el, selector) {
 };
 
 export const position = function (el) {
-    const marginTop = parseInt(getComputedStyle(el)["margin-top"]);
-    const marginLeft = parseInt(getComputedStyle(el)["margin-left"]);
+    const elStyles = getComputedStyle(el);
+    const marginTop = parseInt(elStyles["margin-top"]);
+    const marginLeft = parseInt(elStyles["margin-left"]);
 
-    const pBorderTop = parseInt(getComputedStyle(el.parentNode)["border-top-width"]);
-    const pBorderLeft = parseInt(getComputedStyle(el.parentNode)["border-left-width"]);
+    const elpStyles = getComputedStyle(el.parentNode);
+    const pBorderTop = parseInt(elpStyles["border-top-width"]);
+    const pBorderLeft = parseInt(elpStyles["border-left-width"]);
 
     const bcr = el.getBoundingClientRect();
     const pbcr = el.parentNode.getBoundingClientRect();
@@ -308,6 +310,17 @@ export const position = function (el) {
     const ret = {
         top: bcr.top - pbcr.top - pBorderTop - marginTop,
         left: bcr.left - pbcr.left - pBorderLeft - marginLeft,
+    };
+    return ret;
+};
+
+export const diffPosition = function (el0, el1) {
+    const bcr0 = el0.getBoundingClientRect();
+    const bcr1 = el1.getBoundingClientRect();
+
+    const ret = {
+        top: bcr0.top - bcr1.top,
+        left: bcr0.left - bcr1.left,
     };
     return ret;
 };

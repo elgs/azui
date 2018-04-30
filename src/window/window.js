@@ -50,6 +50,7 @@ class Window extends Base {
             // }]
         }, options);
 
+        const self = this;
         const node = this.node;
         node.classList.add('azWindow');
 

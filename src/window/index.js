@@ -4,5 +4,6 @@ import '../draggable/index.js';
 import '../inlineedit/index.js';
 import '../resizable/index.js';
 import '../sortable/index.js';
+import '../docker/index.js';
 import './window.scss';
 import './window.js';

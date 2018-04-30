@@ -8,10 +8,11 @@
     <style>
         html,
         body {
-            /* margin: 50px; */
-            /* position: fixed; */
-            margin: 0;
-            padding: 0;
+            border: 2px solid black;
+            height: 100%;
+            position: relative;
+            margin: 10px;
+            padding: 10px;
         }
 
         div {
@@ -22,9 +23,9 @@
         #p {
             border: 2px solid blue;
             width: 400px;
-            /* height: 100px; */
+            height: 400px;
             padding: 15px 20px 30px 45px;
-            margin: 33px;
+            margin: 43px;
             position: fixed;
         }
 
@@ -35,14 +36,18 @@
             /* top: 12px;
             left: 24px; */
             height: 100px;
-            position: relative;
+            position: absolute;
         }
 
         #f {
             /* background-color: green; */
             width: 100px;
             height: 100px;
-            position: relative;
+            /* top: 100px;
+            left: 100px; */
+            padding: 15px 20px 30px 45px;
+            margin: 43px;
+            position: absolute;
         }
     </style>
     <script src="./index.js"></script>
@@ -66,7 +71,8 @@
                     e.preventDefault();
                 }
             },
-            axis: 'y'
+            // axis: 'y'
+            containment: document.documentElement
         });
         azui.Draggable('#p', {
             create: function (e) {

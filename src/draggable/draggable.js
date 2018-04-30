@@ -50,6 +50,7 @@ class Draggable extends Base {
             node.style['position'] = 'relative';
         }
         position = getComputedStyle(node)['position'];
+
         // console.log(self.style['position'));
         let savedZIndex;
 
@@ -359,6 +360,7 @@ class Draggable extends Base {
         };
 
         const initDrag = function (e) {
+            const nodeStyles = getComputedStyle(node);
             if (settings.containment) {
                 let containment;
                 if (typeof settings.containment === 'string') {
@@ -393,10 +395,11 @@ class Draggable extends Base {
                 }
 
                 if (typeof containment === 'object' && containment.length) {
-                    cbn = parseInt(getComputedStyle(containment[0])["border-top-width"]);
-                    cbe = parseInt(getComputedStyle(containment[0])["border-right-width"]);
-                    cbs = parseInt(getComputedStyle(containment[0])["border-bottom-width"]);
-                    cbw = parseInt(getComputedStyle(containment[0])["border-left-width"]);
+                    const containerStyles = getComputedStyle(containment[0]);
+                    cbn = parseInt(containerStyles["border-top-width"]);
+                    cbe = parseInt(containerStyles["border-right-width"]);
+                    cbs = parseInt(containerStyles["border-bottom-width"]);
+                    cbw = parseInt(containerStyles["border-left-width"]);
 
                     const hb = containment[0].getBoundingClientRect();
                     cScrN = hb.top;
@@ -404,25 +407,27 @@ class Draggable extends Base {
                     cScrS = hb.bottom;
                     cScrW = hb.left;
 
-                    cpn = parseInt(getComputedStyle(containment[0])["padding-top"]);
-                    cpe = parseInt(getComputedStyle(containment[0])["padding-right"]);
-                    cps = parseInt(getComputedStyle(containment[0])["padding-bottom"]);
-                    cpw = parseInt(getComputedStyle(containment[0])["padding-left"]);
+                    cpn = parseInt(containerStyles["padding-top"]);
+                    cpe = parseInt(containerStyles["padding-right"]);
+                    cps = parseInt(containerStyles["padding-bottom"]);
+                    cpw = parseInt(containerStyles["padding-left"]);
                     // console.log(cpn, cpe, cps, cpw);
                 }
-                sbn = parseInt(getComputedStyle(node)["border-top-width"]);
-                sbe = parseInt(getComputedStyle(node)["border-right-width"]);
-                sbs = parseInt(getComputedStyle(node)["border-bottom-width"]);
-                sbw = parseInt(getComputedStyle(node)["border-left-width"]);
+                sbn = parseInt(nodeStyles["border-top-width"]);
+                sbe = parseInt(nodeStyles["border-right-width"]);
+                sbs = parseInt(nodeStyles["border-bottom-width"]);
+                sbw = parseInt(nodeStyles["border-left-width"]);
 
-                spn = parseInt(getComputedStyle(node)["padding-top"]);
-                spe = parseInt(getComputedStyle(node)["padding-right"]);
-                sps = parseInt(getComputedStyle(node)["padding-bottom"]);
-                spw = parseInt(getComputedStyle(node)["padding-left"]);
+                spn = parseInt(nodeStyles["padding-top"]);
+                spe = parseInt(nodeStyles["padding-right"]);
+                sps = parseInt(nodeStyles["padding-bottom"]);
+                spw = parseInt(nodeStyles["padding-left"]);
                 // console.log(spn, spe, sps, spw);
             }
 
-            const parent = node.offsetParent || document.documentElement;
+            const parent = node.offsetParent || document.body;
+            const parentStyles = getComputedStyle(parent);
+
             // console.log(parent, self.offsetParent);
             const pb = parent.getBoundingClientRect();
             pScrN = pb.top;
@@ -431,22 +436,22 @@ class Draggable extends Base {
             pScrW = pb.left;
             // console.log(pScrN, pScrE, pScrS, pScrW);
 
-            pbn = parseInt(getComputedStyle(parent)["border-top-width"]);
-            pbe = parseInt(getComputedStyle(parent)["border-right-width"]);
-            pbs = parseInt(getComputedStyle(parent)["border-bottom-width"]);
-            pbw = parseInt(getComputedStyle(parent)["border-left-width"]);
+            pbn = parseInt(parentStyles["border-top-width"]);
+            pbe = parseInt(parentStyles["border-right-width"]);
+            pbs = parseInt(parentStyles["border-bottom-width"]);
+            pbw = parseInt(parentStyles["border-left-width"]);
             // console.log(pbn, pbe, pbs, pbw);
 
-            ppn = parseInt(getComputedStyle(parent)["padding-top"]);
-            ppe = parseInt(getComputedStyle(parent)["padding-right"]);
-            pps = parseInt(getComputedStyle(parent)["padding-bottom"]);
-            ppw = parseInt(getComputedStyle(parent)["padding-left"]);
+            ppn = parseInt(parentStyles["padding-top"]);
+            ppe = parseInt(parentStyles["padding-right"]);
+            pps = parseInt(parentStyles["padding-bottom"]);
+            ppw = parseInt(parentStyles["padding-left"]);
             // console.log(ppn, ppe, pps, ppw);
 
-            smn = parseInt(getComputedStyle(node)["margin-top"]);
-            sme = parseInt(getComputedStyle(node)["margin-right"]);
-            sms = parseInt(getComputedStyle(node)["margin-bottom"]);
-            smw = parseInt(getComputedStyle(node)["margin-left"]);
+            smn = parseInt(nodeStyles["margin-top"]);
+            sme = parseInt(nodeStyles["margin-right"]);
+            sms = parseInt(nodeStyles["margin-bottom"]);
+            smw = parseInt(nodeStyles["margin-left"]);
             // console.log(smn, sme, sms, smw);
 
             const selfbcr = selected.getBoundingClientRect();
@@ -462,18 +467,18 @@ class Draggable extends Base {
             // selfS = parseInt(getComputedStyle(self)['bottom'));
             // console.log(selfN, selfE, selfS, selfW);
 
-            if (node.style['position'] === 'relative') {
-                selfW = parseInt(getComputedStyle(node)['left'] === 'auto' ? '0' : getComputedStyle(node)['left']);
-                selfE = parseInt(getComputedStyle(node)['right'] === 'auto' ? '0' : getComputedStyle(node)['right']);
-                selfN = parseInt(getComputedStyle(node)['top'] === 'auto' ? '0' : getComputedStyle(node)['top']);
-                selfS = parseInt(getComputedStyle(node)['bottom'] === 'auto' ? '0' : getComputedStyle(node)['bottom']);
+            if (nodeStyles['position'] === 'relative') {
+                selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
+                selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
+                selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
+                selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
                 // console.log(selfN, selfE, selfS, selfW, self.style['position'));
-            } else {
+            } else if (nodeStyles['position'] === 'absolute') {
                 selfW = scrW - pScrW - smw - pbw;
-                selfE = -scrE + pScrE - sme - pbe;
                 selfN = scrN - pScrN - smn - pbn;
-                selfS = -scrS + pScrS - sms - pbs;
-                // console.log(selfN, selfE, selfS, selfW);
+            } else if (nodeStyles['position'] === 'fixed') {
+                selfW = scrW - smw;
+                selfN = scrN - smn;
             }
 
             selfWidth = selfbcr.width;

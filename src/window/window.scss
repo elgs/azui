@@ -1,14 +1,5 @@
 @import "../utilities/utilities.scss";
 $bg-color:#1E1E1E;
-html,
-body {
-    overflow: hidden;
-    height: 100%; // background-color: $bg-color;
-    width: 100%; // position: relative;
-    margin: 0;
-    padding: 0;
-}
-
 .azWindow {
     overflow: hidden; // border: 1px solid darken($color: $main-color, $amount: 20%);
     box-sizing: border-box;
@@ -49,7 +40,7 @@ body {
             }
         }
         & .left {
-            white-space: nowrap; 
+            white-space: nowrap;
             float: left;
             height: 100%;
             text-align: left;
