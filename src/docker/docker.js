@@ -28,8 +28,6 @@ class Docker extends Base {
 
         const self = this;
 
-        this.state = 'normal';
-
         this.dragging = false;
         this.sortable = azui.Sortable(this.node, {
             placeholder: true,
@@ -49,13 +47,21 @@ class Docker extends Base {
         const id = randGen(8, randGenConsts.LowerUpperDigit, '', '');
         const docked = document.createElement('div');
         docked.setAttribute('az-dock-id', id);
+        docked.setAttribute('state', 'normal');
         docked.style.width = this.settings.width + 'px';
         docked.style.height = this.settings.height + 'px';
         this.sortable.add(docked);
         docked.addEventListener('mouseup', e => {
             if (!self.dragging) {
-                self.toggle(id);
-                self.minimize(id);
+                self.activate(id);
+
+                const docked = self.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
+                // console.log(docked.getAttribute('state'));
+                if (docked.getAttribute('state') === 'normal') {
+                    self.minimize(id);
+                } else if (docked.getAttribute('state') === 'minimized') {
+                    self.normalize(id);
+                }
             }
         });
         el.setAttribute('az-dock-ref', id);
@@ -106,22 +112,20 @@ class Docker extends Base {
     }
 
     maximize(dockId) {
+        this.storeState(dockId);
+
         const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
-        const diff = diffPosition(dockedRef, docked);
+        docked.setAttribute('state', 'maximized');
 
-        // storeStates();
-        // ss.state = 'maximized';
-
-        // dockedRef.style.transition = 'all .2s ease-in';
-        // node.style.left = 0;
-        // node.style.top = 0;
-        // node.style.bottom = '';
-        // node.style.height = '100%';
-        // node.style.width = '100%';
-        // setTimeout(() => {
-        //     node.style.transition = '';
-        // }, 200);
+        dockedRef.style.transition = 'all .3s ease-in';
+        dockedRef.style.left = 0;
+        dockedRef.style.top = 0;
+        dockedRef.style.height = '100%';
+        dockedRef.style.width = '100%';
+        setTimeout(() => {
+            dockedRef.style.transition = '';
+        }, 300);
     }
 
     minimize(dockId) {
@@ -129,6 +133,8 @@ class Docker extends Base {
 
         const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
+        docked.setAttribute('state', 'minimized');
+
         const diff = diffPosition(dockedRef, docked);
 
         dockedRef.style.top = dockedRef.style.top || 0;
@@ -149,18 +155,32 @@ class Docker extends Base {
         }, 300);
     }
 
-    normalize(dockId) {}
+    normalize(dockId) {
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
+        docked.setAttribute('state', 'normal');
+
+        dockedRef.style.transition = 'all .3s ease-in';
+        dockedRef.style.left = docked.getAttribute('x') + 'px';
+        dockedRef.style.top = docked.getAttribute('y') + 'px';
+        dockedRef.style.height = docked.getAttribute('height') + 'px';
+        dockedRef.style.width = docked.getAttribute('width') + 'px';
+        dockedRef.style.visibility = 'visible';
+        setTimeout(() => {
+            dockedRef.style.transition = '';
+        }, 300);
+    }
 
     storeState(dockId) {
         const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
 
-        if (docked.state !== 'normal') {
+        if (docked.getAttribute('state') !== 'normal') {
             return;
         }
-        docked.height = dockedRef.clientHeight;
-        docked.width = dockedRef.clientWidth;
-        docked.x = dockedRef.offsetLeft;
-        docked.y = dockedRef.offsetTop;
+        docked.setAttribute('height', dockedRef.clientHeight);
+        docked.setAttribute('width', dockedRef.clientWidth);
+        docked.setAttribute('x', dockedRef.offsetLeft);
+        docked.setAttribute('y', dockedRef.offsetTop);
     }
 }
