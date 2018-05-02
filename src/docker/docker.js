@@ -53,15 +53,16 @@ class Docker extends Base {
         this.sortable.add(docked);
         docked.addEventListener('mouseup', e => {
             if (!self.dragging) {
-                self.activate(id);
-
                 const docked = self.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
                 // console.log(docked.getAttribute('state'));
                 if (docked.getAttribute('state') === 'normal') {
-                    self.minimize(id);
+                    if (self.isActive(id)) {
+                        self.minimize(id);
+                    }
                 } else if (docked.getAttribute('state') === 'minimized') {
                     self.normalize(id);
                 }
+                self.activate(id);
             }
         });
         el.setAttribute('az-dock-ref', id);
@@ -102,31 +103,35 @@ class Docker extends Base {
         dockedRef.dispatchEvent(new CustomEvent('inactivated'));
     }
 
-    toggle(dockId) {
+    isActive(dockId) {
         const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
-        if (matches(docked, '.dock-active')) {
+        return matches(docked, '.dock-active');
+    }
+
+    toggleActive(dockId) {
+        if (this.isActive(dockId)) {
             this.inactivate(dockId);
         } else {
             this.activate(dockId);
         }
     }
 
-    maximize(dockId) {
-        this.storeState(dockId);
+    // maximize(dockId) {
+    //     this.storeState(dockId);
 
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
-        const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
-        docked.setAttribute('state', 'maximized');
+    //     const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+    //     const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
+    //     docked.setAttribute('state', 'maximized');
 
-        dockedRef.style.transition = 'all .3s ease-in';
-        dockedRef.style.left = 0;
-        dockedRef.style.top = 0;
-        dockedRef.style.height = '100%';
-        dockedRef.style.width = '100%';
-        setTimeout(() => {
-            dockedRef.style.transition = '';
-        }, 300);
-    }
+    //     dockedRef.style.transition = 'all .3s ease-in';
+    //     dockedRef.style.left = 0;
+    //     dockedRef.style.top = 0;
+    //     dockedRef.style.height = '100%';
+    //     dockedRef.style.width = '100%';
+    //     setTimeout(() => {
+    //         dockedRef.style.transition = '';
+    //     }, 300);
+    // }
 
     minimize(dockId) {
         this.storeState(dockId);
@@ -136,9 +141,6 @@ class Docker extends Base {
         docked.setAttribute('state', 'minimized');
 
         const diff = diffPosition(dockedRef, docked);
-
-        dockedRef.style.top = dockedRef.style.top || 0;
-        dockedRef.style.left = dockedRef.style.left || 0;
 
         const drStyles = getComputedStyle(dockedRef);
         const drTop = parseInt(drStyles["top"]);
