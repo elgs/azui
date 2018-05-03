@@ -13,25 +13,24 @@
             position: relative;
         }
 
-        div#docker0 {
+        div {
             border: 1px solid gray;
             box-sizing: border-box;
+        }
+
+        div#docker0 {
             padding: 4px;
-            /* width: 100px; */
             display: flex;
             position: absolute;
             bottom: 0;
         }
 
         div#docker0 .azSortableItem {
-            border: 1px solid gray;
-            box-sizing: border-box;
             margin: 4px;
             display: grid;
             align-content: center;
             justify-content: center;
             user-select: none;
-            /* background-color: white; */
         }
 
         .dock-active {
@@ -41,7 +40,6 @@
         .win {
             width: 100px;
             height: 100px;
-            border: 1px solid gray;
             display: inline-block;
             position: absolute;
         }
