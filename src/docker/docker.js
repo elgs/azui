@@ -18,8 +18,8 @@ class Docker extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
-            height: 30,
-            width: 30,
+            // height: 30,
+            // width: 30,
         }, options);
         this.settings = settings;
 
@@ -48,8 +48,8 @@ class Docker extends Base {
         const docked = document.createElement('div');
         docked.setAttribute('az-dock-id', id);
         docked.setAttribute('state', 'normal');
-        docked.style.width = this.settings.width + 'px';
-        docked.style.height = this.settings.height + 'px';
+        // docked.style.width = this.settings.width + 'px';
+        // docked.style.height = this.settings.height + 'px';
         this.sortable.add(docked);
         docked.addEventListener('mouseup', e => {
             if (!self.dragging) {
@@ -149,8 +149,8 @@ class Docker extends Base {
         dockedRef.style.transition = 'all .3s ease-in';
         dockedRef.style.left = drLeft - diff.left + 'px';
         dockedRef.style.top = drTop - diff.top + 'px';
-        dockedRef.style.height = this.settings.height + 'px';
-        dockedRef.style.width = this.settings.width + 'px';
+        // dockedRef.style.height = this.settings.height + 'px';
+        // dockedRef.style.width = this.settings.width + 'px';
         dockedRef.style.visibility = 'hidden';
         setTimeout(() => {
             dockedRef.style.transition = '';

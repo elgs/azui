@@ -14,7 +14,7 @@
 
         html,
         body {
-            overflow: hidden;
+            /* overflow: hidden; */
             height: 100%;
             width: 100%;
             position: relative;
@@ -50,15 +50,20 @@
             </div>
         </div>
     </div>
+    <div id="docker0"></div>
     <script>
         // $('<div/>').azDebugDiv();
-        const width0 = '400px';
-        const height0 = '300px';
-        const width1 = '240px';
-        const height1 = '180px';
+        const dockerElem = document.querySelector('#docker0');
+        const docker = azui.Docker(dockerElem);
+
+        const width0 = 400;
+        const height0 = 300;
+        const width1 = 240;
+        const height1 = 180;
         azui.Window(document.querySelector("#myWindow0"), {
             width: width0,
             height: height0,
+            docker,
         });
         azui.Window(document.querySelector("#myWindow00"), {
             width: width1,
@@ -72,6 +77,7 @@
         azui.Window(document.querySelector("#myWindow1"), {
             width: width0,
             height: height0,
+            docker,
         });
         azui.Window(document.querySelector("#myWindow10"), {
             width: width1,
@@ -85,16 +91,18 @@
         azui.Window(document.querySelector("#myWindow2"), {
             width: width0,
             height: height0,
+            docker,
         });
         azui.Window(document.querySelector("#myWindow20"), {
             width: width1,
             height: height1,
-            title: 'Lorem'
+            title: 'Lorem',
         });
         azui.Window(document.querySelector("#myWindow21"), {
             width: width1,
             height: height1,
         });
+
         document.querySelector('#fout').style['display'] = 'block';
     </script>
 </body>

@@ -21,12 +21,12 @@ class Window extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
-            width: '400px',
-            height: '300px',
+            width: 400,
+            height: 300,
             headerHeight: 30,
             icon: '',
             title: 'az',
-            dockBar: false,
+            docker: false,
             slideup: function (event, widget) {},
             slidedown: function (event, widget) {},
             minimize: function (event, widget) {},
@@ -55,12 +55,6 @@ class Window extends Base {
         node.classList.add('azWindow');
 
         node.style['position'] = 'absolute';
-
-        if (settings.dockBar) {
-            if (typeof settings.dockBar === 'string') {
-                settings.dockBar = document.querySelector(settings.dockBar);
-            }
-        }
 
         // stored states
         const ss = {
@@ -111,15 +105,15 @@ class Window extends Base {
             showHeaderIcon('restore');
             storeStates();
             ss.state = 'minimized';
-            node.style.transition = 'all .2s ease-in';
-            node.style.left = 0;
+            node.style.transition = 'all 2s ease-in';
             node.style.bottom = 0;
+            node.style.left = 0;
             node.style.height = settings.headerHeight + 'px';
             node.style.width = '240px';
             node.style.top = '';
             setTimeout(() => {
                 node.style.transition = '';
-            }, 200);
+            }, 2000);
             // console.log('minimized');
         };
         const maximize = function () {
@@ -151,8 +145,8 @@ class Window extends Base {
             hideHeaderIcon('restore');
 
             node.style.top = position(node).top + 'px';
+            node.style.transition = 'all 2s ease-in';
             setTimeout(() => {
-                node.style.transition = 'all .2s ease-in';
                 node.style.left = ss.x + 'px';
                 node.style.top = ss.y + 'px';
                 node.style.bottom = '';
@@ -160,7 +154,7 @@ class Window extends Base {
                 node.style.width = ss.width + 'px';
                 setTimeout(() => {
                     node.style.transition = '';
-                }, 200);
+                }, 2000);
             });
             // console.log('restored');
         };
@@ -305,17 +299,16 @@ class Window extends Base {
 
         node.style['left'] = _x + 'px';
         node.style['top'] = _y + 'px';
-        node.style['height'] = settings.height;
-        node.style['width'] = settings.width;
+        node.style['height'] = settings.height + 'px';
+        node.style['width'] = settings.width + 'px';
         node.style['z-index'] = _z;
         node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
         node.parentNode.setAttribute('_azWindowX', _x * 1 + settings.headerHeight);
         node.parentNode.setAttribute('_azWindowY', _y * 1 + settings.headerHeight);
         node.parentNode.setAttribute('_azWindowZ', _z + 1);
 
-        // const dockerBar = document.createElement('div');
-        // dockerBar.classList.add('azWindowDockerBar');
-        // node.appendChild(dockerBar);
+        if (settings.docker) {
+            const d0 = settings.docker.dock(node);
+        }
     }
-
 };

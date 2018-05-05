@@ -1,0 +1,29 @@
+@import "../utilities/utilities.scss";
+.azDocker {
+    // border: 1px solid gray;
+    box-sizing: border-box;
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fill, minmax(max-content, 300px));
+    grid-gap: 2px;
+    background-color: #2196F3;
+    & .azSortableItem {
+        // border: 1px solid gray;
+        box-sizing: border-box; // margin: 4px; 
+        // display: grid;
+        // align-content: center;
+        // justify-content: center;
+        // height: 30px;
+        user-select: none;
+        background-color: $main-color;
+        text-align: center;
+        padding: 10px 0;
+    }
+    & .dock-active {
+        background-color: darken($color: $main-color, $amount: 20%);
+    }
+}
