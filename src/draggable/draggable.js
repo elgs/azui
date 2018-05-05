@@ -476,6 +476,8 @@ class Draggable extends Base {
             } else if (nodeStyles['position'] === 'absolute') {
                 selfW = scrW - pScrW - smw - pbw;
                 selfN = scrN - pScrN - smn - pbn;
+                selfE = -scrE + pScrE - sme - pbe;
+                selfS = -scrS + pScrS - sms - pbs;
             } else if (nodeStyles['position'] === 'fixed') {
                 selfW = scrW - smw;
                 selfN = scrN - smn;
