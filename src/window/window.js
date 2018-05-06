@@ -24,8 +24,8 @@ class Window extends Base {
             width: 400,
             height: 300,
             headerHeight: 30,
-            icon: '',
-            title: 'az',
+            icon: icons.svgApps,
+            title: 'Arizona',
             docker: false,
             slideup: function (event, widget) {},
             slidedown: function (event, widget) {},
@@ -308,7 +308,7 @@ class Window extends Base {
         node.parentNode.setAttribute('_azWindowZ', _z + 1);
 
         if (settings.docker) {
-            const d0 = settings.docker.dock(node);
+            const d0 = settings.docker.dock(node, settings.icon, settings.title);
         }
     }
 };

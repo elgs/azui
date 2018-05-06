@@ -25,12 +25,16 @@ class Docker extends Base {
 
         const node = this.node;
         node.classList.add('azDocker');
+        node.style['z-index'] = Number.MAX_SAFE_INTEGER;
 
         const self = this;
 
         this.dragging = false;
         this.sortable = azui.Sortable(this.node, {
             placeholder: true,
+            create: (e, target) => {
+                e.preventDefault();
+            },
             start: (e, data) => {
                 // console.log('start dragging');
                 self.dragging = true;
@@ -42,12 +46,23 @@ class Docker extends Base {
         });
     }
 
-    dock(el) {
+    dock(el, icon, title) {
         const self = this;
         const id = randGen(8, randGenConsts.LowerUpperDigit, '', '');
         const docked = document.createElement('div');
         docked.setAttribute('az-dock-id', id);
         docked.setAttribute('state', 'normal');
+
+        const iconSpan = document.createElement('span');
+        iconSpan.classList.add('icon');
+        iconSpan.innerHTML = icon;
+        docked.appendChild(iconSpan);
+
+        const titleSpan = document.createElement('span');
+        titleSpan.classList.add('title');
+        titleSpan.innerHTML = title;
+        docked.appendChild(titleSpan);
+
         // docked.style.width = this.settings.width + 'px';
         // docked.style.height = this.settings.height + 'px';
         this.sortable.add(docked);
@@ -146,15 +161,17 @@ class Docker extends Base {
         const drTop = parseInt(drStyles["top"]);
         const drLeft = parseInt(drStyles["left"]);
 
-        dockedRef.style.transition = 'all .3s ease-in';
+        const dStyles = getComputedStyle(docked);
+
+        dockedRef.style.transition = 'all .25s ease-in';
         dockedRef.style.left = drLeft - diff.left + 'px';
         dockedRef.style.top = drTop - diff.top + 'px';
-        // dockedRef.style.height = this.settings.height + 'px';
-        // dockedRef.style.width = this.settings.width + 'px';
+        dockedRef.style.height = dStyles['height'];
+        dockedRef.style.width = dStyles['width'];
         dockedRef.style.visibility = 'hidden';
         setTimeout(() => {
             dockedRef.style.transition = '';
-        }, 300);
+        }, 250);
     }
 
     normalize(dockId) {

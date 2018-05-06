@@ -1,27 +1,36 @@
 @import "../utilities/utilities.scss";
 .azDocker {
-    // border: 1px solid gray;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 2px;
     position: absolute;
     bottom: 0;
     width: 100%;
     display: grid;
     grid-auto-flow: row;
-    grid-template-columns: repeat(auto-fill, minmax(max-content, 300px));
-    grid-gap: 2px;
-    background-color: #2196F3;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 2px; // background-color: #2196F3;
     & .azSortableItem {
-        // border: 1px solid gray;
-        box-sizing: border-box; // margin: 4px; 
-        // display: grid;
+        box-sizing: border-box; // display: grid;
         // align-content: center;
         // justify-content: center;
         // height: 30px;
+        cursor: pointer;
         user-select: none;
         background-color: $main-color;
-        text-align: center;
         padding: 10px 0;
+        white-space: nowrap;
+        float: left;
+        height: 100%;
+        text-align: left;
+        & span.icon {
+            padding: 8px;
+            & svg {
+                width: 12px;
+                height: 12px;
+                position: relative;
+                top: 2px;
+            }
+        }
     }
     & .dock-active {
         background-color: darken($color: $main-color, $amount: 20%);

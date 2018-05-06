@@ -13,3 +13,4 @@ export const svgClose = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28
 export const svgWindowMax = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path d="M32 0H4C1.79 0 0 1.79 0 4v28c0 2.21 1.79 4 4 4h28c2.21 0 4-1.79 4-4V4c0-2.21-1.79-4-4-4zm0 32H4V4h28v28z"/></svg>`;
 export const svgWindowMin = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 4"><path d="M28 4H0V0h28v4z"/></svg>`;
 export const svgWindowNormal = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 20"><path d="M32 0H4C1.79 0 0 1.79 0 4v12c0 2.21 1.79 4 4 4h28c2.21 0 4-1.79 4-4V4c0-2.21-1.79-4-4-4zm0 16H4V4h28v12z"/></svg>`;
+export const svgApps = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;

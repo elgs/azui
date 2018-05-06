@@ -56,6 +56,12 @@ $bg-color:#1E1E1E;
             & span.icon {
                 padding: 8px;
                 cursor: default;
+                & svg {
+                    width: 12px;
+                    height: 12px;
+                    position: relative;
+                    top: 2px;
+                }
             }
         }
         & .center {
