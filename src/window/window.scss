@@ -9,6 +9,11 @@ $bg-color:#1E1E1E;
     &:hover {
         box-shadow: $shadow-hovered;
     }
+    &.active {
+        &>.azWindowHeader {
+            background: darken($color: $main-color, $amount: 20%);
+        }
+    }
     & .azWindowHeader {
         background-color: $main-color;
         box-sizing: border-box;

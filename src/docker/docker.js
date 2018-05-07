@@ -33,7 +33,9 @@ class Docker extends Base {
         this.sortable = azui.Sortable(this.node, {
             placeholder: true,
             create: (e, target) => {
-                e.preventDefault();
+                if (e.type === 'touchstart') {
+                    e.preventDefault();
+                }
             },
             start: (e, data) => {
                 // console.log('start dragging');
@@ -66,7 +68,8 @@ class Docker extends Base {
         // docked.style.width = this.settings.width + 'px';
         // docked.style.height = this.settings.height + 'px';
         this.sortable.add(docked);
-        docked.addEventListener('mouseup', e => {
+
+        const clicked = e => {
             if (!self.dragging) {
                 const docked = self.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
                 // console.log(docked.getAttribute('state'));
@@ -79,7 +82,10 @@ class Docker extends Base {
                 }
                 self.activate(id);
             }
-        });
+        };
+
+        docked.addEventListener('mouseup', clicked);
+        docked.addEventListener('touchend', clicked);
         el.setAttribute('az-dock-ref', id);
         el.dispatchEvent(new CustomEvent('docked'));
         return docked;
@@ -97,7 +103,7 @@ class Docker extends Base {
     activate(dockId) {
         const self = this;
         this.node.querySelectorAll('.azSortableItem').forEach(el => {
-            if (!matches(el, 'dock-active')) {
+            if (el.getAttribute('az-dock-id') !== dockId) {
                 const otherDockId = el.getAttribute('az-dock-id');
                 self.inactivate(otherDockId);
             }

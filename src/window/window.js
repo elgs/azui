@@ -308,7 +308,20 @@ class Window extends Base {
         node.parentNode.setAttribute('_azWindowZ', _z + 1);
 
         if (settings.docker) {
+            const activated = function (e) {
+                // console.log(e.target, 'activated');
+                e.target.classList.add('active');
+            };
+
+            const inactivated = function (e) {
+                // console.log(e.target, 'inactivated');
+                e.target.classList.remove('active');
+            };
+
             const d0 = settings.docker.dock(node, settings.icon, settings.title);
+
+            node.addEventListener('activated', activated);
+            node.addEventListener('inactivated', inactivated);
         }
     }
 };
