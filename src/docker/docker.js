@@ -100,7 +100,10 @@ class Docker extends Base {
                     icon: icons.svgWindowMax,
                     title: 'Maximize Window',
                     disabled: state === 'maximized',
-                    action: function (e, target) {}
+                    action: function (e, target) {
+                        self.maximize(id);
+                        return false;
+                    }
                 }
             ];
         };
@@ -192,22 +195,23 @@ class Docker extends Base {
         }
     }
 
-    // maximize(dockId) {
-    //     this.storeState(dockId);
+    maximize(dockId) {
+        this.storeState(dockId);
 
-    //     const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
-    //     const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
-    //     docked.setAttribute('state', 'maximized');
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
+        docked.setAttribute('state', 'maximized');
 
-    //     dockedRef.style.transition = 'all .3s ease-in';
-    //     dockedRef.style.left = 0;
-    //     dockedRef.style.top = 0;
-    //     dockedRef.style.height = '100%';
-    //     dockedRef.style.width = '100%';
-    //     setTimeout(() => {
-    //         dockedRef.style.transition = '';
-    //     }, 300);
-    // }
+        dockedRef.style.transition = 'all .3s ease-in';
+        dockedRef.style.left = 0;
+        dockedRef.style.top = 0;
+        dockedRef.style.height = '100%';
+        dockedRef.style.width = '100%';
+        dockedRef.style.visibility = 'visible';
+        setTimeout(() => {
+            dockedRef.style.transition = '';
+        }, 300);
+    }
 
     minimize(dockId) {
         this.storeState(dockId);
