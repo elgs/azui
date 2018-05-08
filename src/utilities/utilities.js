@@ -348,9 +348,6 @@ export const normalizeIcon = function (i) {
     if (typeof i === 'function') {
         i = i();
     }
-    if (typeof i === 'string' || typeof i === 'number') {
-        i = document.createTextNode(i);
-    }
     return i;
 };
 

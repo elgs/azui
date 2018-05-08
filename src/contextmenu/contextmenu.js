@@ -42,29 +42,34 @@ class ContextMenu extends Base {
             });
         };
 
-        const onContextMenu = function (e) {
-            // console.log(e.currentTarget);
+        const createMenuItem = function (item, menu) {
+            if (!item) {
+                const separator = parseDOMElement('<div>&nbsp;</div>')[0];
+                separator.classList.add('azMenuSeparator');
+                return separator;
+            }
+            let icon = item.icon;
+            let title = item.title;
 
-            const createMenuItem = function (item) {
-                if (!item) {
-                    const separator = parseDOMElement('<div>&nbsp;</div>')[0];
-                    separator.classList.add('azMenuSeparator');
-                    return separator;
-                }
-                let icon = item.icon;
-                let title = item.title;
-                icon = normalizeIcon(icon);
-                title = normalizeIcon(title);
-                const iconDiv = document.createElement('div');
-                iconDiv.classList.add('icon');
-                const titleDiv = document.createElement('div');
-                titleDiv.classList.add('title')
-                const menuItem = document.createElement('div');
-                menuItem.classList.add('azMenuItem');
-                menuItem.appendChild(iconDiv);
-                menuItem.appendChild(titleDiv);
-                iconDiv.appendChild(icon);
-                titleDiv.appendChild(title);
+            icon = normalizeIcon(icon);
+            title = normalizeIcon(title);
+
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('icon');
+            const titleDiv = document.createElement('div');
+            titleDiv.classList.add('title')
+
+            const menuItem = document.createElement('div');
+            menuItem.classList.add('azMenuItem');
+            if (item.disabled) {
+                menuItem.classList.add('disabled');
+            }
+
+            menuItem.appendChild(iconDiv);
+            menuItem.appendChild(titleDiv);
+            iconDiv.innerHTML = icon;
+            titleDiv.innerHTML = title;
+            if (!item.disabled) {
                 menuItem.addEventListener('click', function (e) {
                     if (item.action.call(menuItem, e, node) === false) {
                         document.removeEventListener('mousemove', mousePositionTracker);
@@ -77,8 +82,12 @@ class ContextMenu extends Base {
                     }
                     e.stopPropagation();
                 });
-                return menuItem;
-            };
+            }
+            return menuItem;
+        };
+
+        const onContextMenu = function (e) {
+            // console.log(e.currentTarget);
 
             const menu = document.createElement('div');
             menu.classList.add('azContextMenu');
@@ -88,11 +97,12 @@ class ContextMenu extends Base {
 
             // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
 
-            if (typeof settings.items === 'function') {
-                settings.items = settings.items();
+            let items = settings.items;
+            if (typeof items === 'function') {
+                items = items();
             }
-            settings.items.map(item => {
-                const menuItem = createMenuItem(item)
+            items.map(item => {
+                const menuItem = createMenuItem(item, menu)
                 menu.appendChild(menuItem);
             });
 

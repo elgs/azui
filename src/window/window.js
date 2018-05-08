@@ -5,7 +5,6 @@ import {
 import {
     isOutside,
     remove,
-    normalizeIcon,
     parseDOMElement,
     matches,
     position,

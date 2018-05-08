@@ -10,6 +10,8 @@ import {
     diffPosition,
 } from '../utilities/utilities.js';
 
+import * as icons from '../utilities/icons.js';
+
 azui.Docker = function (el, options) {
     return new Docker(el, options);
 };
@@ -65,31 +67,48 @@ class Docker extends Base {
         titleSpan.innerHTML = title;
         docked.appendChild(titleSpan);
 
-        const cm = azui.ContextMenu(docked, {
-            onTouchStart: function (e) {},
-            onTouchEnd: function (e) {},
-            items: [{
-                    icon: '☺',
+        const cmItems = () => {
+            const state = docked.getAttribute('state');
+            return [{
+                    icon: icons.svgClose,
                     title: 'Close',
                     action: function (e, target) {
-                        console.log(target);
-                        console.log(this);
-                        alert(target);
+                        self.undock(id);
+                        return false;
                     }
-                }, {
-                    icon: '☺',
-                    title: 'Close Others',
-                    action: function (e, target) {}
                 },
                 null,
                 {
-                    icon: '☺',
-                    title: 'Close All',
+                    icon: icons.svgWindowMin,
+                    title: 'Minimize Window',
+                    disabled: state === 'minimized',
                     action: function (e, target) {
+                        self.minimize(id);
                         return false;
                     }
+                },
+                {
+                    icon: icons.svgWindowNormal,
+                    disabled: state === 'normal',
+                    title: 'Restore Window',
+                    action: function (e, target) {
+                        self.normalize(id);
+                        return false;
+                    }
+                },
+                {
+                    icon: icons.svgWindowMax,
+                    title: 'Maximize Window',
+                    disabled: state === 'maximized',
+                    action: function (e, target) {}
                 }
-            ]
+            ];
+        };
+
+        const cm = azui.ContextMenu(docked, {
+            onTouchStart: function (e) {},
+            onTouchEnd: function (e) {},
+            items: cmItems,
         });
 
         // docked.style.width = this.settings.width + 'px';

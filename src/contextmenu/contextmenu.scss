@@ -30,9 +30,15 @@
                 margin: 1px 10px 0 8px; // background-color: red;
             }
         }
-        &:hover {
+        &.disabled * {
+            color: gray;
+            fill: gray;
+            cursor: not-allowed;
+        }
+        &:not(.disabled):hover {
             background-color: #498DD5;
             color: $bg-color;
+            cursor: pointer;
         }
     } // & div.azMenuIconSeparator {
     //     left: 24px;
