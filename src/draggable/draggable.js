@@ -96,6 +96,116 @@ class Draggable extends Base {
         let resisted = false;
         let started = false;
 
+        const moveAbsoluteX = function (dx) {
+            if (cScrW === undefined) {
+                selected.style.right = 'auto';
+                selected.style.left = (selfW + dx) + 'px';
+            } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
+                // console.log('hit left wall');
+                const di = cScrW + cbw + cpw - (pScrW + pbw + ppw);
+                selected.style.right = 'auto';
+                selected.style.left = ppw + di + 'px';
+            } else if (dx > cScrE - scrE - cbe - cpe - sme) {
+                // console.log('hit right wall');
+                const di = cScrE - cbe - cpe - (pScrE - pbe - ppe);
+                selected.style.left = 'auto';
+                selected.style.right = ppe - di + 'px';
+            } else {
+                selected.style.right = 'auto';
+                selected.style.left = (selfW + dx) + 'px';
+            }
+        };
+        const moveAbsoluteY = function (dy) {
+            if (cScrW === undefined) {
+                selected.style.bottom = 'auto';
+                selected.style.top = (selfN + dy) + 'px';
+            } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
+                // console.log('hit ceiling');
+                const di = cScrN + cbn + cpn - (pScrN + pbn + ppn);
+                selected.style.bottom = 'auto';
+                selected.style.top = ppn + di + 'px';
+            } else if (dy > cScrS - scrS - cbs - cps - sms) {
+                // console.log('hit floor');
+                const di = cScrS - cbs - cps - (pScrS - pbs - pps);
+                selected.style.top = 'auto';
+                selected.style.bottom = pps - di + 'px';
+            } else {
+                selected.style.bottom = 'auto';
+                selected.style.top = (selfN + dy) + 'px';
+            }
+        };
+
+        const moveFixedX = function (dx) {
+            if (cScrW === undefined) {
+                selected.style.right = 'auto';
+                selected.style.left = (selfW + dx) + 'px';
+            } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
+                // console.log('hit left wall');
+                selected.style.right = 'auto';
+                selected.style.left = cScrW + cbw + cpw + 'px';
+            } else if (dx > cScrE - scrE - cbe - cpe - sme) {
+                // console.log('hit right wall');
+                selected.style.right = 'auto';
+                selected.style.left = cScrE - cbe - cpe - selfWidth - smw - sme + 'px';
+            } else {
+                selected.style.right = 'auto';
+                selected.style.left = (selfW + dx) + 'px';
+            }
+        };
+        const moveFixedY = function (dy) {
+            if (cScrW === undefined) {
+                selected.style.bottom = 'auto';
+                selected.style.top = (selfN + dy) + 'px';
+            } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
+                // console.log('hit ceiling');
+                selected.style.bottom = 'auto';
+                selected.style.top = cScrN + cbn + cpn + 'px';
+            } else if (dy > cScrS - scrS - cbs - cps - sms) {
+                // console.log('hit floor');
+                selected.style.bottom = 'auto';
+                selected.style.top = cScrS - cbs - cps - selfHeight - smn - sms + 'px';
+            } else {
+                selected.style.bottom = 'auto';
+                selected.style.top = (selfN + dy) + 'px';
+            }
+        };
+
+        const moveRelativeX = function (dx) {
+            if (cScrW === undefined) {
+                selected.style.right = 'auto';
+                selected.style.left = (selfW + dx) + 'px';
+            } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
+                // console.log('hit left wall');
+                selected.style.right = 'auto';
+                selected.style.left = -(scrW - cScrW - cbw - cpw - smw) + selfW + 'px';
+            } else if (dx > cScrE - scrE - cbe - cpe - sme) {
+                // console.log('hit right wall');
+                selected.style.left = 'auto';
+                selected.style.right = -(cScrE - scrE - cbe - cpe - sme) + selfE + 'px';
+            } else {
+                selected.style.right = 'auto';
+                selected.style.left = (selfW + dx) + 'px';
+            }
+        };
+        const moveRelativeY = function (dy) {
+            if (cScrW === undefined) {
+                selected.style.bottom = 'auto';
+                selected.style.top = (selfN + dy) + 'px';
+            } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
+                // console.log('hit ceiling');
+                selected.style.bottom = 'auto';
+                selected.style.top = -(scrN - cScrN - cbn - cpn - smn) + selfN + 'px';
+            } else if (dy > cScrS - scrS - cbs - cps - sms) {
+                // console.log('hit floor');
+                selected.style.top = 'auto';
+                selected.style.bottom = -(cScrS - scrS - cbs - cps - sms) + selfS + 'px';
+                // console.log(cScrS, scrS, cbs, cps, sms, selfS);
+            } else {
+                selected.style.bottom = 'auto';
+                selected.style.top = (selfN + dy) + 'px';
+            }
+        };
+
         const onmousemove = function (e) {
             // console.log(e.type, e.currentTarget, self);
             // console.log(e.currentTarget);
@@ -142,142 +252,32 @@ class Draggable extends Base {
             resisted = true;
             // console.log(dx, dy);
 
-            const moveAbsoluteX = function () {
-                if (cScrW === undefined) {
-                    selected.style.right = 'auto';
-                    selected.style.left = (selfW + dx) + 'px';
-                } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
-                    // console.log('hit left wall');
-                    const di = cScrW + cbw + cpw - (pScrW + pbw + ppw);
-                    selected.style.right = 'auto';
-                    selected.style.left = ppw + di + 'px';
-                } else if (dx > cScrE - scrE - cbe - cpe - sme) {
-                    // console.log('hit right wall');
-                    const di = cScrE - cbe - cpe - (pScrE - pbe - ppe);
-                    selected.style.left = 'auto';
-                    selected.style.right = ppe - di + 'px';
-                } else {
-                    selected.style.right = 'auto';
-                    selected.style.left = (selfW + dx) + 'px';
-                }
-            };
-            const moveAbsoluteY = function () {
-                if (cScrW === undefined) {
-                    selected.style.bottom = 'auto';
-                    selected.style.top = (selfN + dy) + 'px';
-                } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
-                    // console.log('hit ceiling');
-                    const di = cScrN + cbn + cpn - (pScrN + pbn + ppn);
-                    selected.style.bottom = 'auto';
-                    selected.style.top = ppn + di + 'px';
-                } else if (dy > cScrS - scrS - cbs - cps - sms) {
-                    // console.log('hit floor');
-                    const di = cScrS - cbs - cps - (pScrS - pbs - pps);
-                    selected.style.top = 'auto';
-                    selected.style.bottom = pps - di + 'px';
-                } else {
-                    selected.style.bottom = 'auto';
-                    selected.style.top = (selfN + dy) + 'px';
-                }
-            };
-
-            const moveFixedX = function () {
-                if (cScrW === undefined) {
-                    selected.style.right = 'auto';
-                    selected.style.left = (selfW + dx) + 'px';
-                } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
-                    // console.log('hit left wall');
-                    selected.style.right = 'auto';
-                    selected.style.left = cScrW + cbw + cpw + 'px';
-                } else if (dx > cScrE - scrE - cbe - cpe - sme) {
-                    // console.log('hit right wall');
-                    selected.style.right = 'auto';
-                    selected.style.left = cScrE - cbe - cpe - selfWidth - smw - sme + 'px';
-                } else {
-                    selected.style.right = 'auto';
-                    selected.style.left = (selfW + dx) + 'px';
-                }
-            };
-            const moveFixedY = function () {
-                if (cScrW === undefined) {
-                    selected.style.bottom = 'auto';
-                    selected.style.top = (selfN + dy) + 'px';
-                } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
-                    // console.log('hit ceiling');
-                    selected.style.bottom = 'auto';
-                    selected.style.top = cScrN + cbn + cpn + 'px';
-                } else if (dy > cScrS - scrS - cbs - cps - sms) {
-                    // console.log('hit floor');
-                    selected.style.bottom = 'auto';
-                    selected.style.top = cScrS - cbs - cps - selfHeight - smn - sms + 'px';
-                } else {
-                    selected.style.bottom = 'auto';
-                    selected.style.top = (selfN + dy) + 'px';
-                }
-            };
-
-            const moveRelativeX = function () {
-                if (cScrW === undefined) {
-                    selected.style.right = 'auto';
-                    selected.style.left = (selfW + dx) + 'px';
-                } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
-                    // console.log('hit left wall');
-                    selected.style.right = 'auto';
-                    selected.style.left = -(scrW - cScrW - cbw - cpw - smw) + selfW + 'px';
-                } else if (dx > cScrE - scrE - cbe - cpe - sme) {
-                    // console.log('hit right wall');
-                    selected.style.left = 'auto';
-                    selected.style.right = -(cScrE - scrE - cbe - cpe - sme) + selfE + 'px';
-                } else {
-                    selected.style.right = 'auto';
-                    selected.style.left = (selfW + dx) + 'px';
-                }
-            };
-            const moveRelativeY = function () {
-                if (cScrW === undefined) {
-                    selected.style.bottom = 'auto';
-                    selected.style.top = (selfN + dy) + 'px';
-                } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
-                    // console.log('hit ceiling');
-                    selected.style.bottom = 'auto';
-                    selected.style.top = -(scrN - cScrN - cbn - cpn - smn) + selfN + 'px';
-                } else if (dy > cScrS - scrS - cbs - cps - sms) {
-                    // console.log('hit floor');
-                    selected.style.top = 'auto';
-                    selected.style.bottom = -(cScrS - scrS - cbs - cps - sms) + selfS + 'px';
-                    // console.log(cScrS, scrS, cbs, cps, sms, selfS);
-                } else {
-                    selected.style.bottom = 'auto';
-                    selected.style.top = (selfN + dy) + 'px';
-                }
-            };
-
             if (settings.axis === 'x') {
                 if (position === 'absolute') {
-                    moveAbsoluteX();
+                    moveAbsoluteX(dx);
                 } else if (position === 'relative') {
-                    moveRelativeX();
+                    moveRelativeX(dx);
                 } else if (position === 'fixed') {
-                    moveFixedX();
+                    moveFixedX(dx);
                 }
             } else if (settings.axis === 'y') {
                 if (position === 'absolute') {
-                    moveAbsoluteY();
+                    moveAbsoluteY(dy);
                 } else if (position === 'relative') {
-                    moveRelativeY();
+                    moveRelativeY(dy);
                 } else if (position === 'fixed') {
-                    moveFixedY();
+                    moveFixedY(dy);
                 }
             } else {
                 if (position === 'absolute') {
-                    moveAbsoluteX();
-                    moveAbsoluteY();
+                    moveAbsoluteX(dx);
+                    moveAbsoluteY(dy);
                 } else if (position === 'relative') {
-                    moveRelativeX();
-                    moveRelativeY();
+                    moveRelativeX(dx);
+                    moveRelativeY(dy);
                 } else if (position === 'fixed') {
-                    moveFixedX();
-                    moveFixedY();
+                    moveFixedX(dx);
+                    moveFixedY(dy);
                 }
 
             }
