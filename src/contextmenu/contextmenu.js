@@ -19,11 +19,16 @@ class ContextMenu extends Base {
     constructor(el, options) {
         super(el, options);
         const settings = Object.assign({
+            onRightClick: function (e) {},
+            onTouchStart: function (e) {},
+            onTouchEnd: function (e) {},
             items: []
         }, options);
 
+        const self = this;
         const node = this.node;
 
+        this.on = false;
         let mx, my = 0;
         const mousePositionTracker = function (e) {
             mx = e.clientX || e.touches[0].clientX;
@@ -65,6 +70,8 @@ class ContextMenu extends Base {
                         document.removeEventListener('mousemove', mousePositionTracker);
                         document.removeEventListener('touchstart', blurFocusDetector);
                         menu.parentNode.removeChild(menu);
+                        self.on = false;
+                        // alert('off');
                     } else {
                         focusDetector.focus();
                     }
@@ -75,8 +82,8 @@ class ContextMenu extends Base {
 
             const menu = document.createElement('div');
             menu.classList.add('azContextMenu');
-            menu.style['display'] = 'none';
-            menu.style['z-index'] = 1000;
+            menu.style['visibility'] = 'hidden';
+            menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
             document.documentElement.appendChild(menu);
 
             // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
@@ -88,10 +95,14 @@ class ContextMenu extends Base {
                 const menuItem = createMenuItem(item)
                 menu.appendChild(menuItem);
             });
+
+            // console.log(getWidth(menu), getHeight(menu));
             const menuPosition = calcMenuPosition(e.clientX || e.touches[0].pageX, e.clientY || e.touches[0].pageY, getWidth(menu), getHeight(menu));
-            menu.style['left'] = menuPosition.x;
-            menu.style['top'] = menuPosition.y;
-            menu.style['display'] = 'block';
+            // console.log(menuPosition);
+            menu.style['position'] = 'absolute';
+            menu.style['left'] = menuPosition.x + 'px';
+            menu.style['top'] = menuPosition.y + 'px';
+            menu.style['visibility'] = 'visible';
 
             document.addEventListener('mousemove', mousePositionTracker);
             document.addEventListener('touchstart', blurFocusDetector);
@@ -99,15 +110,21 @@ class ContextMenu extends Base {
             const focusDetector = parseDOMElement('<input class="azMenuFocusDetector" type="checkbox">')[0];
             focusDetector.style['position'] = 'absolute';
             focusDetector.style['z-index'] = -1000;
+            focusDetector.style['top'] = 0;
+            focusDetector.style['left'] = 0;
             focusDetector.style['opacity'] = 0;
             menu.appendChild(focusDetector);
             focusDetector.focus();
+            self.on = true;
+            // alert('on');
             focusDetector.addEventListener('blur', function (e1) {
                 const pb = menu.getBoundingClientRect();
                 if (isOutside(mx, my, pb)) {
                     document.removeEventListener('mousemove', mousePositionTracker);
                     document.removeEventListener('touchstart', blurFocusDetector);
                     menu.remove();
+                    self.on = false;
+                    // alert('off 0');
                 } else {
                     focusDetector.focus();
                 }
@@ -116,8 +133,17 @@ class ContextMenu extends Base {
         }
 
         azui.RightClick(node, {
-            onRightClick: onContextMenu,
-            onTouchStart: blurFocusDetector,
+            onRightClick: function (e) {
+                onContextMenu(e);
+                settings.onRightClick(e);
+            },
+            onTouchStart: function (e) {
+                blurFocusDetector(e);
+                settings.onTouchStart(e);
+            },
+            onTouchEnd: function (e) {
+                settings.onTouchEnd(e);
+            },
         });
     }
 };

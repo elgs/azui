@@ -52,6 +52,8 @@ class Window extends Base {
 
         const self = this;
         const node = this.node;
+        this.settings = settings;
+
         node.classList.add('azWindow');
 
         node.style['position'] = 'absolute';
@@ -71,107 +73,14 @@ class Window extends Base {
             ss.y = node.offsetTop;
         };
 
-        const slideup = function () {
-            // console.log('hidden');
-            hideHeaderIcon('slideup');
-            showHeaderIcon('slidedown');
-            storeStates();
-            // console.log(ss);
-            ss.state = 'hidden';
-            node.style.transition = 'all .2s ease-in';
-            node.style.height = settings.headerHeight + 'px';
-            setTimeout(() => {
-                node.style.transition = '';
-            }, 200);
-        };
-        const slidedown = function () {
-            // console.log('shown');
-            ss.state = 'normal';
-            hideHeaderIcon('slidedown');
-            showHeaderIcon('slideup');
-            // console.log(ss);
-            node.style.transition = 'all .2s ease-in';
-            node.style.height = ss.height + 'px';
-            setTimeout(() => {
-                node.style.transition = '';
-            }, 200);
-        };
-        const minimize = function () {
-            // console.log(node.parentNode);
-            hideHeaderIcon('slidedown');
-            hideHeaderIcon('slideup');
-            showHeaderIcon('maximize');
-            hideHeaderIcon('minimize');
-            showHeaderIcon('restore');
-            storeStates();
-            ss.state = 'minimized';
-            node.style.transition = 'all 2s ease-in';
-            node.style.bottom = 0;
-            node.style.left = 0;
-            node.style.height = settings.headerHeight + 'px';
-            node.style.width = '240px';
-            node.style.top = '';
-            setTimeout(() => {
-                node.style.transition = '';
-            }, 2000);
-            // console.log('minimized');
-        };
-        const maximize = function () {
-            hideHeaderIcon('slidedown');
-            hideHeaderIcon('slideup');
-            hideHeaderIcon('maximize');
-            showHeaderIcon('minimize');
-            showHeaderIcon('restore');
-            storeStates();
-            ss.state = 'maximized';
-
-            node.style.transition = 'all .2s ease-in';
-            node.style.left = 0;
-            node.style.top = 0;
-            node.style.bottom = '';
-            node.style.height = '100%';
-            node.style.width = '100%';
-            setTimeout(() => {
-                node.style.transition = '';
-            }, 200);
-            // console.log('maximized');
-        };
-        const restore = function () {
-            ss.state = 'normal';
-            hideHeaderIcon('slidedown');
-            showHeaderIcon('slideup');
-            showHeaderIcon('maximize');
-            showHeaderIcon('minimize');
-            hideHeaderIcon('restore');
-
-            node.style.top = position(node).top + 'px';
-            node.style.transition = 'all 2s ease-in';
-            setTimeout(() => {
-                node.style.left = ss.x + 'px';
-                node.style.top = ss.y + 'px';
-                node.style.bottom = '';
-                node.style.height = ss.height + 'px';
-                node.style.width = ss.width + 'px';
-                setTimeout(() => {
-                    node.style.transition = '';
-                }, 2000);
-            });
-            // console.log('restored');
-        };
-        const close = function () {
-            // console.log('closed');
-            ss.state = 'closed';
-            remove(node);
-        };
-
         const initHeader = function () {
             // ↓↑_▫□×
-            addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', slideup);
-            addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', slidedown);
-            addHeaderIcon('minimize', icons.svgWindowMin, 'Minimize', false, 'right', minimize);
-            addHeaderIcon('restore', icons.svgWindowNormal, 'Restore', true, 'right', restore);
-            addHeaderIcon('maximize', icons.svgWindowMax, 'Maximize', false, 'right', maximize);
-            addHeaderIcon('close', icons.svgClose, 'Close', false, 'right', close);
+            addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', self.slideup);
+            addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', self.slidedown);
+            addHeaderIcon('minimize', icons.svgWindowMin, 'Minimize', false, 'right', self.minimize);
+            addHeaderIcon('restore', icons.svgWindowNormal, 'Restore', true, 'right', self.restore);
+            addHeaderIcon('maximize', icons.svgWindowMax, 'Maximize', false, 'right', self.maximize);
+            addHeaderIcon('close', icons.svgClose, 'Close', false, 'right', self.close);
 
             // settings.extIcons.map(icon => {
             //     addHeaderIcon(icon.key, icon.icon, icon.toolTip, icon.hidden, icon.position, icon.callback);
@@ -323,5 +232,103 @@ class Window extends Base {
             node.addEventListener('activated', activated);
             node.addEventListener('inactivated', inactivated);
         }
+    }
+
+    slideup() {
+        // console.log('hidden');
+        hideHeaderIcon('slideup');
+        showHeaderIcon('slidedown');
+        storeStates();
+        // console.log(ss);
+        ss.state = 'hidden';
+        node.style.transition = 'all .25s ease-in';
+        node.style.height = settings.headerHeight + 'px';
+        setTimeout(() => {
+            node.style.transition = '';
+        }, 250);
+    }
+
+    slidedown() {
+        // console.log('shown');
+        ss.state = 'normal';
+        hideHeaderIcon('slidedown');
+        showHeaderIcon('slideup');
+        // console.log(ss);
+        node.style.transition = 'all .25s ease-in';
+        node.style.height = ss.height + 'px';
+        setTimeout(() => {
+            node.style.transition = '';
+        }, 250);
+    }
+
+    minimize() {
+        // console.log(node.parentNode);
+        hideHeaderIcon('slidedown');
+        hideHeaderIcon('slideup');
+        showHeaderIcon('maximize');
+        hideHeaderIcon('minimize');
+        showHeaderIcon('restore');
+        storeStates();
+        ss.state = 'minimized';
+        node.style.transition = 'all .25s ease-in';
+        node.style.bottom = 0;
+        node.style.left = 0;
+        node.style.height = settings.headerHeight + 'px';
+        node.style.width = '240px';
+        node.style.top = '';
+        setTimeout(() => {
+            node.style.transition = '';
+        }, 250);
+        // console.log('minimized');
+    }
+
+    maximize() {
+        hideHeaderIcon('slidedown');
+        hideHeaderIcon('slideup');
+        hideHeaderIcon('maximize');
+        showHeaderIcon('minimize');
+        showHeaderIcon('restore');
+        storeStates();
+        ss.state = 'maximized';
+
+        node.style.transition = 'all .25s ease-in';
+        node.style.left = 0;
+        node.style.top = 0;
+        node.style.bottom = '';
+        node.style.height = '100%';
+        node.style.width = '100%';
+        setTimeout(() => {
+            node.style.transition = '';
+        }, 250);
+        // console.log('maximized');
+    }
+
+    restore() {
+        ss.state = 'normal';
+        hideHeaderIcon('slidedown');
+        showHeaderIcon('slideup');
+        showHeaderIcon('maximize');
+        showHeaderIcon('minimize');
+        hideHeaderIcon('restore');
+
+        node.style.top = position(node).top + 'px';
+        node.style.transition = 'all .25s ease-in';
+        setTimeout(() => {
+            node.style.left = ss.x + 'px';
+            node.style.top = ss.y + 'px';
+            node.style.bottom = '';
+            node.style.height = ss.height + 'px';
+            node.style.width = ss.width + 'px';
+            setTimeout(() => {
+                node.style.transition = '';
+            }, 250);
+        });
+        // console.log('restored');
+    }
+
+    close() {
+        // console.log('closed');
+        ss.state = 'closed';
+        remove(node);
     }
 };

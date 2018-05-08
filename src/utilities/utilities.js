@@ -159,26 +159,41 @@ export const textWidth = function (elem) {
     return width;
 };
 
+export const elemSize = function (elem) {
+    elem.style.visibility = 'hidden';
+    document.body.appendChild(elem);
+    const width = getWidth(elem);
+    const height = getHeight(elem);
+    document.body.removeChild(elem);
+    elem.style.visibility = '';
+    return {
+        width,
+        height
+    };
+};
+
 export const calcMenuPosition = function (mx, my, mw, mh) {
+    // console.log(mx, my, mw, mh);
     // mouse x, y, menu width, height
     const buf = 20;
+    const m2p = 5;
     let x = 0;
     let y = 0;
     const bw = getWidth(document.documentElement);
     const bh = getHeight(document.documentElement);
     if (mx + mw + buf < bw) {
         // enough on right
-        x = mx + 1;
+        x = mx + m2p;
     } else if (mx > mw + buf) {
         // enough on left
-        x = mx - mw - 1;
+        x = mx - mw - m2p;
     }
     if (my + mh + buf < bh) {
         // enough on bottom
-        y = my + 1;
+        y = my + m2p;
     } else if (my > mh + buf) {
         // enough on top
-        y = my - mh - 1;
+        y = my - mh - m2p;
     }
     return {
         x,

@@ -65,6 +65,33 @@ class Docker extends Base {
         titleSpan.innerHTML = title;
         docked.appendChild(titleSpan);
 
+        const cm = azui.ContextMenu(docked, {
+            onTouchStart: function (e) {},
+            onTouchEnd: function (e) {},
+            items: [{
+                    icon: '☺',
+                    title: 'Close',
+                    action: function (e, target) {
+                        console.log(target);
+                        console.log(this);
+                        alert(target);
+                    }
+                }, {
+                    icon: '☺',
+                    title: 'Close Others',
+                    action: function (e, target) {}
+                },
+                null,
+                {
+                    icon: '☺',
+                    title: 'Close All',
+                    action: function (e, target) {
+                        return false;
+                    }
+                }
+            ]
+        });
+
         // docked.style.width = this.settings.width + 'px';
         // docked.style.height = this.settings.height + 'px';
         this.sortable.add(docked);
@@ -84,8 +111,17 @@ class Docker extends Base {
             }
         };
 
-        docked.addEventListener('mouseup', clicked);
-        docked.addEventListener('touchend', clicked);
+        docked.addEventListener('mouseup', e => {
+            if (e.button === 2) {
+                return;
+            }
+            clicked(e);
+        });
+        docked.addEventListener('touchend', e => {
+            if (!cm.on) {
+                clicked(e);
+            }
+        });
         el.setAttribute('az-dock-ref', id);
         el.dispatchEvent(new CustomEvent('docked'));
         return docked;
@@ -185,7 +221,7 @@ class Docker extends Base {
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         docked.setAttribute('state', 'normal');
 
-        dockedRef.style.transition = 'all .3s ease-in';
+        dockedRef.style.transition = 'all .25s ease-in';
         dockedRef.style.left = docked.getAttribute('x') + 'px';
         dockedRef.style.top = docked.getAttribute('y') + 'px';
         dockedRef.style.height = docked.getAttribute('height') + 'px';
@@ -193,7 +229,7 @@ class Docker extends Base {
         dockedRef.style.visibility = 'visible';
         setTimeout(() => {
             dockedRef.style.transition = '';
-        }, 300);
+        }, 250);
     }
 
     storeState(dockId) {
