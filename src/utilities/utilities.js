@@ -149,6 +149,23 @@ export const getDropTargets = function (key) {
     return [];
 };
 
+export const registerWindowDocker = function (key, docker) {
+    azui.data['azWindowDockers'] = azui.data['azWindowDockers'] || {};
+    const dockers = azui.data['azWindowDockers'];
+
+    if (docker) {
+        dockers[key] = docker;
+    }
+};
+
+export const getWindowDocker = function (key) {
+    const dockers = azui.data['azWindowDockers'];
+    if (dockers) {
+        return dockers[key];
+    }
+    return null;
+};
+
 export const textWidth = function (elem) {
     const s = parseDOMElement(`<span>${elem.innerHTML}</span>`)[0];
     s.style.visibility = 'hidden';
