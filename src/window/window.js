@@ -54,6 +54,8 @@ class Window extends Base {
             this.docker = getObject(dockerId);
         }
 
+        this.headerIcons = {};
+
         const initHeader = function () {
             // ↓↑_▫□×
             addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', self.slideup);
@@ -88,25 +90,18 @@ class Window extends Base {
                     callback.call(self, true);
                 }
             });
-            headerIcons[key] = iconSpan;
+            self.headerIcons[key] = iconSpan;
             header.querySelector('.' + position).appendChild(iconSpan);
         };
         const removeHeaderIcon = function (key) {
-            remove(headerIcons[key]);
+            remove(self.headerIcons[key]);
         };
-        const showHeaderIcon = function (key) {
-            headerIcons[key].style.display = 'inline-block';
-        };
-        const hideHeaderIcon = function (key) {
-            headerIcons[key].style.display = 'none';
-        };
-
-        // const increaseZ = function () {
-        //     node.style['z-index'] = ++self.docker.z;
-        //     self.activate(true);
+        // const showHeaderIcon = function (key) {
+        //     self.headerIcons[key].style.display = 'inline-block';
         // };
-
-        const headerIcons = {};
+        // const hideHeaderIcon = function (key) {
+        //     self.headerIcons[key].style.display = 'none';
+        // };
 
         const content = document.createElement('div');
         content.classList.add('azWindowContent');
@@ -195,6 +190,10 @@ class Window extends Base {
             const d0 = self.docker.dock(node, settings.icon, settings.title);
             this.dockId = node.getAttribute('az-dock-ref');
             // console.log(this.dockId);
+
+            const cm = azui.ContextMenu(header, {
+                items: self.docker.getCmItems.call(self.docker, self.dockId),
+            });
         }
 
         node.addEventListener('activated', e => {
@@ -205,6 +204,16 @@ class Window extends Base {
         });
         node.addEventListener('undocked', e => {
             self.close(false);
+        });
+
+        node.addEventListener('minimized', e => {
+            self.minimize(false);
+        });
+        node.addEventListener('maximized', e => {
+            self.maximize(false);
+        });
+        node.addEventListener('normalized', e => {
+            self.restore(false);
         });
     }
 
@@ -242,8 +251,11 @@ class Window extends Base {
     }
 
     slideup() {
-        hideHeaderIcon('slideup');
-        showHeaderIcon('slidedown');
+        const self = this;
+        self.headerIcons['slideup'].style.display = 'none';
+        self.headerIcons['slidedown'].style.display = 'inline-block';
+        // hideHeaderIcon('slideup');
+        // showHeaderIcon('slidedown');
         this.node.style.transition = 'all .25s ease-in';
         this.node.style.height = this.settings.headerHeight + 'px';
         setTimeout(() => {
@@ -252,9 +264,11 @@ class Window extends Base {
     }
 
     slidedown() {
-        // console.log('shown');
-        hideHeaderIcon('slidedown');
-        showHeaderIcon('slideup');
+        const self = this;
+        self.headerIcons['slideup'].style.display = 'inline-block';
+        self.headerIcons['slidedown'].style.display = 'none';
+        // hideHeaderIcon('slidedown');
+        // showHeaderIcon('slideup');
         // console.log(ss);
         this.node.style.transition = 'all .25s ease-in';
         this.node.style.height = ss.height + 'px';
@@ -264,27 +278,41 @@ class Window extends Base {
     }
 
     minimize() {
-        hideHeaderIcon('slidedown');
-        hideHeaderIcon('slideup');
-        showHeaderIcon('maximize');
-        hideHeaderIcon('minimize');
-        showHeaderIcon('restore');
+        // hideHeaderIcon('slidedown');
+        // hideHeaderIcon('slideup');
+        // showHeaderIcon('maximize');
+        // hideHeaderIcon('minimize');
+        // showHeaderIcon('restore');
     }
 
     maximize() {
-        hideHeaderIcon('slidedown');
-        hideHeaderIcon('slideup');
-        hideHeaderIcon('maximize');
-        showHeaderIcon('minimize');
-        showHeaderIcon('restore');
+        const self = this;
+        self.headerIcons['slidedown'].style.display = 'none';
+        self.headerIcons['slideup'].style.display = 'none';
+        self.headerIcons['maximize'].style.display = 'none';
+        self.headerIcons['minimize'].style.display = 'inline-block';
+        self.headerIcons['restore'].style.display = 'inline-block';
+
+        // hideHeaderIcon('slidedown');
+        // hideHeaderIcon('slideup');
+        // hideHeaderIcon('maximize');
+        // showHeaderIcon('minimize');
+        // showHeaderIcon('restore');
     }
 
     restore() {
-        hideHeaderIcon('slidedown');
-        showHeaderIcon('slideup');
-        showHeaderIcon('maximize');
-        showHeaderIcon('minimize');
-        hideHeaderIcon('restore');
+        const self = this;
+        self.headerIcons['slidedown'].style.display = 'none';
+        self.headerIcons['slideup'].style.display = 'inline-block';
+        self.headerIcons['maximize'].style.display = 'inline-block';
+        self.headerIcons['minimize'].style.display = 'inline-block';
+        self.headerIcons['restore'].style.display = 'none';
+
+        // hideHeaderIcon('slidedown');
+        // showHeaderIcon('slideup');
+        // showHeaderIcon('maximize');
+        // showHeaderIcon('minimize');
+        // hideHeaderIcon('restore');
     }
 
     close(notify) {

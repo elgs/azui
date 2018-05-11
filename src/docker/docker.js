@@ -57,24 +57,10 @@ class Docker extends Base {
         });
     }
 
-    dock(el, icon, title, notify) {
+    getCmItems(id) {
         const self = this;
-        const id = randGen(8);
-        const docked = document.createElement('div');
-        docked.setAttribute('az-dock-id', id);
-        docked.setAttribute('state', 'normal');
-
-        const iconSpan = document.createElement('span');
-        iconSpan.classList.add('icon');
-        iconSpan.innerHTML = icon;
-        docked.appendChild(iconSpan);
-
-        const titleSpan = document.createElement('span');
-        titleSpan.classList.add('title');
-        titleSpan.innerHTML = title;
-        docked.appendChild(titleSpan);
-
-        const getCmItems = () => {
+        return function () {
+            const docked = self.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
             const state = docked.getAttribute('state');
             return [{
                     icon: icons.svgClose,
@@ -111,14 +97,49 @@ class Docker extends Base {
                         self.maximize(id, true);
                         return false;
                     }
-                }
+                },
+                null,
+                {
+                    icon: icons.svgArrowUp,
+                    title: 'Slide Up',
+                    disabled: state !== 'normal',
+                    action: function (e, target) {
+                        self.slideup(id, true);
+                        return false;
+                    }
+                },
+                {
+                    icon: icons.svgArrowDown,
+                    title: 'Slide Down',
+                    disabled: state !== 'slideup',
+                    action: function (e, target) {
+                        self.slidedown(id, true);
+                        return false;
+                    }
+                },
             ];
         };
+    };
+
+    dock(el, icon, title, notify) {
+        const self = this;
+        const id = randGen(8);
+        const docked = document.createElement('div');
+        docked.setAttribute('az-dock-id', id);
+        docked.setAttribute('state', 'normal');
+
+        const iconSpan = document.createElement('span');
+        iconSpan.classList.add('icon');
+        iconSpan.innerHTML = icon;
+        docked.appendChild(iconSpan);
+
+        const titleSpan = document.createElement('span');
+        titleSpan.classList.add('title');
+        titleSpan.innerHTML = title;
+        docked.appendChild(titleSpan);
 
         const cm = azui.ContextMenu(docked, {
-            onTouchStart: function (e) {},
-            onTouchEnd: function (e) {},
-            items: getCmItems,
+            items: self.getCmItems.call(self, id),
         });
 
         // docked.style.width = this.settings.width + 'px';
@@ -159,6 +180,7 @@ class Docker extends Base {
     }
 
     undock(dockId, notify) {
+        // docker, window two way notify
         remove(this.node.querySelector(`[az-dock-id='${dockId}']`));
 
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
@@ -171,6 +193,7 @@ class Docker extends Base {
     }
 
     activate(dockId, notify) {
+        // docker, window two way notify
         const self = this;
         this.node.querySelectorAll('.azSortableItem').forEach(el => {
             if (el.getAttribute('az-dock-id') !== dockId) {
@@ -189,6 +212,7 @@ class Docker extends Base {
     }
 
     inactivate(dockId, notify) {
+        // docker, window two way notify
         const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         docked.classList.remove('dock-active');
 
@@ -199,7 +223,7 @@ class Docker extends Base {
     }
 
     isActive(dockId) {
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         return matches(docked, '.dock-active');
     }
 
@@ -212,9 +236,10 @@ class Docker extends Base {
     }
 
     maximize(dockId, notify) {
+        // always docker notifies window
         this.storeState(dockId);
 
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         docked.setAttribute('state', 'maximized');
 
@@ -235,9 +260,10 @@ class Docker extends Base {
     }
 
     minimize(dockId, notify) {
+        // always docker notifies window
         this.storeState(dockId);
 
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         docked.setAttribute('state', 'minimized');
 
@@ -266,7 +292,8 @@ class Docker extends Base {
     }
 
     normalize(dockId, notify) {
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        // always docker notifies window
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         docked.setAttribute('state', 'normal');
 
@@ -287,11 +314,14 @@ class Docker extends Base {
     }
 
     slideup(dockId, notify) {
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        // always docker notifies window
+        this.storeState(dockId);
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
+        docked.setAttribute('state', 'slideup');
 
         dockedRef.style.transition = 'all .25s ease-in';
-        dockedRef.style.height = this.settings.headerHeight + 'px';
+        dockedRef.style.height = '30px';
 
         if (notify) {
             dockedRef.dispatchEvent(new CustomEvent('slideup'));
@@ -303,8 +333,10 @@ class Docker extends Base {
     }
 
     slidedown(dockId, notify) {
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        // always docker notifies window
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
+        docked.setAttribute('state', 'normal');
 
         dockedRef.style.transition = 'all .25s ease-in';
         dockedRef.style.height = docked.getAttribute('height') + 'px';
@@ -319,7 +351,7 @@ class Docker extends Base {
     }
 
     storeState(dockId) {
-        const docked = this.node.querySelector(`[az-dock-id='${dockId}']`);
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
 
         if (docked.getAttribute('state') !== 'normal') {
