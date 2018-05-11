@@ -9,6 +9,7 @@ import {
     matches,
     position,
     registerObject,
+    removeObject,
     getObject,
     randGen,
     siblings,
@@ -38,9 +39,9 @@ class Window extends Base {
         node.classList.add('azWindow');
         node.style['position'] = 'absolute';
 
-        const windowId = randGen(8);
-        node.setAttribute('az-window-id', windowId);
-        registerObject(windowId, this);
+        this.windowId = randGen(8);
+        node.setAttribute('az-window-id', this.windowId);
+        registerObject(this.windowId, this);
 
         const dockers = siblings(node, '.azDocker');
         if (dockers.length === 0) {
@@ -100,10 +101,10 @@ class Window extends Base {
             headerIcons[key].style.display = 'none';
         };
 
-        const increaseZ = function () {
-            node.style['z-index'] = ++self.docker.z;
-            self.activate(true);
-        };
+        // const increaseZ = function () {
+        //     node.style['z-index'] = ++self.docker.z;
+        //     self.activate(true);
+        // };
 
         const headerIcons = {};
 
@@ -128,7 +129,7 @@ class Window extends Base {
         node.insertBefore(header, node.firstChild);
 
         const mouseDownTouchStartEventListener = function (event) {
-            increaseZ();
+            self.activate(true);
         };
         node.addEventListener('mousedown', mouseDownTouchStartEventListener);
         node.addEventListener('touchstart', mouseDownTouchStartEventListener);
@@ -207,6 +208,14 @@ class Window extends Base {
         });
     }
 
+    children() {
+        const children = this.node.querySelectorAll('.azWindowContent>.azWindow');
+        return [...children].map(el => {
+            const windowId = el.getAttribute('az-window-id');
+            return getObject(windowId);
+        });
+    }
+
     activate(notify) {
         const self = this;
         siblings(self.node, '.azWindow').forEach(el => {
@@ -216,6 +225,8 @@ class Window extends Base {
 
         this.node.classList.remove('inactive');
         this.node.classList.add('active');
+
+        self.node.style['z-index'] = ++self.docker.z;
 
         if (notify) {
             this.docker.activate(this.dockId, false);
@@ -278,6 +289,9 @@ class Window extends Base {
 
     close(notify) {
         remove(this.node);
+        // console.log(getObject(this.windowId));
+        removeObject(this.windowId);
+        // console.log(getObject(this.windowId));
         if (notify) {
             this.docker.undock(this.dockId, false);
         }

@@ -166,6 +166,13 @@ export const getObject = function (key) {
     return null;
 };
 
+export const removeObject = function (key) {
+    const objReg = azui.data['azObj'];
+    if (objReg) {
+        delete objReg[key];
+    }
+};
+
 export const textWidth = function (elem) {
     const s = parseDOMElement(`<span>${elem.innerHTML}</span>`)[0];
     s.style.visibility = 'hidden';

@@ -31,9 +31,9 @@ class Docker extends Base {
 
         const self = this;
 
-        const dockerId = randGen(8);
-        node.setAttribute('az-docker-id', dockerId);
-        registerObject(dockerId, this);
+        this.dockerId = randGen(8);
+        node.setAttribute('az-docker-id', this.dockerId);
+        registerObject(this.dockerId, this);
 
         this.x = 30;
         this.y = 30;

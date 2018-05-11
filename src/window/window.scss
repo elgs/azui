@@ -18,6 +18,14 @@ $bg-color:#1E1E1E;
         & .azWindowHeader {
             background: $main-color;
         }
+        & .active {
+            &>.azWindowHeader {
+                background: darken($color: $main-color, $amount: 10%);
+            }
+        }
+        & .dock-active {
+            background-color: darken($color: $main-color, $amount: 10%);
+        }
     }
     & .azWindowHeader {
         background-color: $main-color;
