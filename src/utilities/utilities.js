@@ -16,7 +16,7 @@ const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const digit = "0123456789";
 const punct = "~!@#$%^&*()_+-=";
 
-export function randGen(size, set, include, exclude) {
+export function randGen(size, set = randGenConsts.LowerUpperDigit, include = '', exclude = '') {
     let all = include;
     if ((set & randGenConsts.Lower) > 0) {
         all += lower;
@@ -149,19 +149,19 @@ export const getDropTargets = function (key) {
     return [];
 };
 
-export const registerWindowDocker = function (key, docker) {
-    azui.data['azWindowDockers'] = azui.data['azWindowDockers'] || {};
-    const dockers = azui.data['azWindowDockers'];
+export const registerObject = function (key, value) {
+    azui.data['azObj'] = azui.data['azObj'] || {};
+    const objReg = azui.data['azObj'];
 
-    if (docker) {
-        dockers[key] = docker;
+    if (objReg) {
+        objReg[key] = value;
     }
 };
 
-export const getWindowDocker = function (key) {
-    const dockers = azui.data['azWindowDockers'];
-    if (dockers) {
-        return dockers[key];
+export const getObject = function (key) {
+    const objReg = azui.data['azObj'];
+    if (objReg) {
+        return objReg[key];
     }
     return null;
 };
@@ -307,16 +307,15 @@ export const insertBefore = function (newNode, referenceNode) {
 };
 
 export const siblings = function (el, selector) {
-    let siblings = Array.prototype.filter.call(el.parentNode.children, function (child) {
-        return child !== el;
-    });
     if (selector) {
-        siblings = Array.prototype.filter.call(el.parentNode.children, function (child) {
-            return matches(child, selector);
+        return Array.prototype.filter.call(el.parentNode.children, function (child) {
+            return matches(child, selector) && child !== el;
+        });
+    } else {
+        return Array.prototype.filter.call(el.parentNode.children, function (child) {
+            return child !== el;
         });
     }
-
-    return siblings;
 };
 
 export const index = function (node) {

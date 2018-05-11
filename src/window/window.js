@@ -1,5 +1,5 @@
 import {
-    Base
+    Base,
 } from '../utilities/core.js';
 
 import {
@@ -8,10 +8,10 @@ import {
     parseDOMElement,
     matches,
     position,
-    registerWindowDocker,
-    getWindowDocker,
+    registerObject,
+    getObject,
     randGen,
-    randGenConsts,
+    siblings,
 } from '../utilities/utilities.js';
 
 import * as icons from '../utilities/icons.js';
@@ -38,20 +38,20 @@ class Window extends Base {
         node.classList.add('azWindow');
         node.style['position'] = 'absolute';
 
-        let dockerId = node.parentNode.getAttribute('az-docker-id');
-        if (!dockerId) {
-            dockerId = randGen(8, randGenConsts.LowerUpperDigit, '', '');
-            node.parentNode.setAttribute('az-docker-id', dockerId);
-        }
+        const windowId = randGen(8);
+        node.setAttribute('az-window-id', windowId);
+        registerObject(windowId, this);
 
-        let docker = getWindowDocker(dockerId);
-        if (!docker) {
+        const dockers = siblings(node, '.azDocker');
+        if (dockers.length === 0) {
             const dockerElem = document.createElement('div');
             node.parentNode.appendChild(dockerElem);
-            docker = azui.Docker(dockerElem);
+            this.docker = azui.Docker(dockerElem);
+        } else {
+            const dockerElem = dockers[0];
+            const dockerId = dockerElem.getAttribute('az-docker-id');
+            this.docker = getObject(dockerId);
         }
-        registerWindowDocker(dockerId, docker);
-        this.docker = docker;
 
         const initHeader = function () {
             // ↓↑_▫□×
@@ -102,6 +102,7 @@ class Window extends Base {
 
         const increaseZ = function () {
             node.style['z-index'] = ++self.docker.z;
+            self.activate(true);
         };
 
         const headerIcons = {};
@@ -207,7 +208,15 @@ class Window extends Base {
     }
 
     activate(notify) {
+        const self = this;
+        siblings(self.node, '.azWindow').forEach(el => {
+            el.classList.remove('active');
+            el.classList.add('inactive');
+        });
+
+        this.node.classList.remove('inactive');
         this.node.classList.add('active');
+
         if (notify) {
             this.docker.activate(this.dockId, false);
         }
@@ -215,6 +224,7 @@ class Window extends Base {
 
     inactivate(notify) {
         this.node.classList.remove('active');
+        this.node.classList.add('inactive');
         if (notify) {
             this.docker.inactivate(this.dockId, false);
         }

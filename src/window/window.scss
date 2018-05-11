@@ -14,6 +14,11 @@ $bg-color:#1E1E1E;
             background: darken($color: $main-color, $amount: 20%);
         }
     }
+    &.inactive {
+        & .azWindowHeader {
+            background: $main-color;
+        }
+    }
     & .azWindowHeader {
         background-color: $main-color;
         box-sizing: border-box;

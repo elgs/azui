@@ -2,17 +2,21 @@ global.azui = global.azui || {
     data: {}
 };
 
+export const normalizeElement = function (el) {
+    if (typeof el === 'string') {
+        return document.querySelector(el);
+    } else if (el instanceof Node) {
+        return el;
+    } else if ((el instanceof NodeList || Array.isArray(el)) && el.length > 0) {
+        return el[0];
+    } else {
+        throw `${el} cannot be targeted.`;
+    }
+};
+
 export class Base {
     constructor(el) {
-        if (typeof el === 'string') {
-            this.node = document.querySelector(el);
-        } else if (el instanceof Node) {
-            this.node = el;
-        } else if ((el instanceof NodeList || Array.isArray(el)) && el.length > 0) {
-            this.node = el[0];
-        } else {
-            throw `${el} cannot be targeted.`;
-        }
+        this.node = normalizeElement(el);
     }
 
     on(eventName, eventHandler) {

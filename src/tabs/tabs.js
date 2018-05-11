@@ -4,7 +4,6 @@ import {
 
 import {
     randGen,
-    randGenConsts,
     normalizeIcon,
     matches,
     remove,
@@ -111,7 +110,7 @@ class Tabs extends Base {
         const newTabClicked = function (e) {
             node.dispatchEvent(new CustomEvent('newTab', {
                 detail: {
-                    id: randGen(8, randGenConsts.LowerUpperDigit, '', ''),
+                    id: randGen(8),
                     icon: '☺',
                     title: 'New Tab',
                     closable: true,

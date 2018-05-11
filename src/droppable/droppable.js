@@ -6,7 +6,6 @@ import {
     registerDropTarget,
     dndStateConsts,
     randGen,
-    randGenConsts,
 } from '../utilities/utilities.js';
 
 azui.Droppable = function (el, options) {
@@ -34,7 +33,7 @@ class Droppable extends Base {
 
         const node = this.node;
 
-        node.setAttribute('az-drop-id', randGen(8, randGenConsts.LowerUpperDigit, '', ''));
+        node.setAttribute('az-drop-id', randGen(8));
         node.classList.add('azDroppable');
         if (!settings.key) {
             return;

@@ -8,7 +8,6 @@ import {
     dropTargetStates,
     dndStateConsts,
     randGen,
-    randGenConsts,
     getWidth,
     getHeight,
     setWidth,
@@ -209,7 +208,7 @@ class Sortable extends Base {
             });
         };
 
-        const dropKey = randGen(8, randGenConsts.LowerUpperDigit, '', '');
+        const dropKey = randGen(8);
 
         this.dragConfig = {
             containment: node,

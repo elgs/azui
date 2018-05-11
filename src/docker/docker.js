@@ -4,10 +4,10 @@ import {
 
 import {
     randGen,
-    randGenConsts,
     remove,
     matches,
     diffPosition,
+    registerObject,
 } from '../utilities/utilities.js';
 
 import * as icons from '../utilities/icons.js';
@@ -30,6 +30,10 @@ class Docker extends Base {
         node.style['z-index'] = Number.MAX_SAFE_INTEGER;
 
         const self = this;
+
+        const dockerId = randGen(8);
+        node.setAttribute('az-docker-id', dockerId);
+        registerObject(dockerId, this);
 
         this.x = 30;
         this.y = 30;
@@ -55,7 +59,7 @@ class Docker extends Base {
 
     dock(el, icon, title, notify) {
         const self = this;
-        const id = randGen(8, randGenConsts.LowerUpperDigit, '', '');
+        const id = randGen(8);
         const docked = document.createElement('div');
         docked.setAttribute('az-dock-id', id);
         docked.setAttribute('state', 'normal');
