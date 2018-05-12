@@ -228,7 +228,10 @@ class Window extends Base {
                 self.node.style.transition = '';
             }, 250);
         });
-        node.addEventListener('sliddown', e => {});
+        node.addEventListener('sliddown', e => {
+            self.headerIcons['slideup'].style.display = 'inline-block';
+            self.headerIcons['slidedown'].style.display = 'none';
+        });
     }
 
     children() {
