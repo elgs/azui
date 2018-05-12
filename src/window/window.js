@@ -57,7 +57,6 @@ class Window extends Base {
         this.headerIcons = {};
 
         const initHeader = function () {
-            // ↓↑_▫□×
             addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', self.slideup);
             addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', self.slidedown);
             addHeaderIcon('minimize', icons.svgWindowMin, 'Minimize', false, 'right', self.minimize);
@@ -192,7 +191,7 @@ class Window extends Base {
             // console.log(this.dockId);
 
             const cm = azui.ContextMenu(header, {
-                items: self.docker.getCmItems.call(self.docker, self.dockId),
+                items: self.docker.getContextMenuItems.call(self.docker, self.dockId),
             });
         }
 
@@ -207,13 +206,31 @@ class Window extends Base {
         });
 
         node.addEventListener('minimized', e => {
-            self.minimize(false);
         });
         node.addEventListener('maximized', e => {
-            self.maximize(false);
+            self.headerIcons['slidedown'].style.display = 'none';
+            self.headerIcons['slideup'].style.display = 'none';
+            self.headerIcons['maximize'].style.display = 'none';
+            self.headerIcons['minimize'].style.display = 'inline-block';
+            self.headerIcons['restore'].style.display = 'inline-block';
         });
         node.addEventListener('normalized', e => {
-            self.restore(false);
+            self.headerIcons['slidedown'].style.display = 'none';
+            self.headerIcons['slideup'].style.display = 'inline-block';
+            self.headerIcons['maximize'].style.display = 'inline-block';
+            self.headerIcons['minimize'].style.display = 'inline-block';
+            self.headerIcons['restore'].style.display = 'none';
+        });
+        node.addEventListener('slidup', e => {
+            self.headerIcons['slideup'].style.display = 'none';
+            self.headerIcons['slidedown'].style.display = 'inline-block';
+            self.node.style.transition = 'all .25s ease-in';
+            self.node.style.height = self.settings.headerHeight + 'px';
+            setTimeout(() => {
+                self.node.style.transition = '';
+            }, 250);
+        });
+        node.addEventListener('sliddown', e => {
         });
     }
 
@@ -226,6 +243,7 @@ class Window extends Base {
     }
 
     activate(notify) {
+        // two way notification
         const self = this;
         siblings(self.node, '.azWindow').forEach(el => {
             el.classList.remove('active');
@@ -243,6 +261,7 @@ class Window extends Base {
     }
 
     inactivate(notify) {
+        // two way notification
         this.node.classList.remove('active');
         this.node.classList.add('inactive');
         if (notify) {
@@ -250,72 +269,12 @@ class Window extends Base {
         }
     }
 
-    slideup() {
-        const self = this;
-        self.headerIcons['slideup'].style.display = 'none';
-        self.headerIcons['slidedown'].style.display = 'inline-block';
-        // hideHeaderIcon('slideup');
-        // showHeaderIcon('slidedown');
-        this.node.style.transition = 'all .25s ease-in';
-        this.node.style.height = this.settings.headerHeight + 'px';
-        setTimeout(() => {
-            this.node.style.transition = '';
-        }, 250);
-    }
-
-    slidedown() {
-        const self = this;
-        self.headerIcons['slideup'].style.display = 'inline-block';
-        self.headerIcons['slidedown'].style.display = 'none';
-        // hideHeaderIcon('slidedown');
-        // showHeaderIcon('slideup');
-        // console.log(ss);
-        this.node.style.transition = 'all .25s ease-in';
-        this.node.style.height = ss.height + 'px';
-        setTimeout(() => {
-            this.node.style.transition = '';
-        }, 250);
-    }
-
-    minimize() {
-        // hideHeaderIcon('slidedown');
-        // hideHeaderIcon('slideup');
-        // showHeaderIcon('maximize');
-        // hideHeaderIcon('minimize');
-        // showHeaderIcon('restore');
-    }
-
-    maximize() {
-        const self = this;
-        self.headerIcons['slidedown'].style.display = 'none';
-        self.headerIcons['slideup'].style.display = 'none';
-        self.headerIcons['maximize'].style.display = 'none';
-        self.headerIcons['minimize'].style.display = 'inline-block';
-        self.headerIcons['restore'].style.display = 'inline-block';
-
-        // hideHeaderIcon('slidedown');
-        // hideHeaderIcon('slideup');
-        // hideHeaderIcon('maximize');
-        // showHeaderIcon('minimize');
-        // showHeaderIcon('restore');
-    }
-
-    restore() {
-        const self = this;
-        self.headerIcons['slidedown'].style.display = 'none';
-        self.headerIcons['slideup'].style.display = 'inline-block';
-        self.headerIcons['maximize'].style.display = 'inline-block';
-        self.headerIcons['minimize'].style.display = 'inline-block';
-        self.headerIcons['restore'].style.display = 'none';
-
-        // hideHeaderIcon('slidedown');
-        // showHeaderIcon('slideup');
-        // showHeaderIcon('maximize');
-        // showHeaderIcon('minimize');
-        // hideHeaderIcon('restore');
-    }
-
     close(notify) {
+        // two way notification
+        const self = this;
+        this.children().forEach(child => {
+            child.docker.undock(child.dockId, true);
+        });
         remove(this.node);
         // console.log(getObject(this.windowId));
         removeObject(this.windowId);
@@ -323,5 +282,25 @@ class Window extends Base {
         if (notify) {
             this.docker.undock(this.dockId, false);
         }
+    }
+
+    slideup() {
+        this.docker.slideup(this.dockId, true);
+    }
+
+    slidedown() {
+        this.docker.slidedown(this.dockId, true);
+    }
+
+    minimize() {
+        this.docker.minimize(this.dockId, true);
+    }
+
+    maximize() {
+        this.docker.maximize(this.dockId, true);
+    }
+
+    restore() {
+        this.docker.normalize(this.dockId, true);
     }
 };

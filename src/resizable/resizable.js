@@ -118,7 +118,7 @@ class Resizable extends Base {
                     const eld = document.createElement('div');
                     eld.classList.add('handle');
                     eld.style['position'] = 'absolute';
-                    eld.style['z-index'] = 1;
+                    eld.style['z-index'] = Number.MAX_SAFE_INTEGER;
                     eld.style['cursor'] = `${d}-resize`;
                     node.appendChild(eld);
                     if (settings.onDoubleClick) {
