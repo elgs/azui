@@ -168,10 +168,11 @@ class Window extends Base {
                 if (!matches(event.target, 'div.azWindowHeader')) {
                     return;
                 }
-                if (ss.state === 'normal') {
-                    maximize();
+                const state = self.docked.getAttribute('state');
+                if (state === 'normal') {
+                    self.maximize();
                 } else {
-                    restore();
+                    self.restore();
                 }
             }
         });
@@ -185,15 +186,13 @@ class Window extends Base {
         self.docker.x += settings.headerHeight;
         self.docker.y += settings.headerHeight;
 
-        if (self.docker) {
-            const d0 = self.docker.dock(node, settings.icon, settings.title);
-            this.dockId = node.getAttribute('az-dock-ref');
-            // console.log(this.dockId);
+        this.docked = self.docker.dock(node, settings.icon, settings.title);
+        this.dockId = node.getAttribute('az-dock-ref');
+        // console.log(this.dockId);
 
-            const cm = azui.ContextMenu(header, {
-                items: self.docker.getContextMenuItems.call(self.docker, self.dockId),
-            });
-        }
+        const cm = azui.ContextMenu(header, {
+            items: self.docker.getContextMenuItems.call(self.docker, self.dockId),
+        });
 
         node.addEventListener('activated', e => {
             self.activate(false);
@@ -205,8 +204,7 @@ class Window extends Base {
             self.close(false);
         });
 
-        node.addEventListener('minimized', e => {
-        });
+        node.addEventListener('minimized', e => {});
         node.addEventListener('maximized', e => {
             self.headerIcons['slidedown'].style.display = 'none';
             self.headerIcons['slideup'].style.display = 'none';
@@ -230,8 +228,7 @@ class Window extends Base {
                 self.node.style.transition = '';
             }, 250);
         });
-        node.addEventListener('sliddown', e => {
-        });
+        node.addEventListener('sliddown', e => {});
     }
 
     children() {

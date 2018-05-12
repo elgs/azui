@@ -321,7 +321,7 @@ class Docker extends Base {
         docked.setAttribute('state', 'slidup');
 
         if (notify) {
-            dockedRef.dispatchEvent(new CustomEvent('slideup'));
+            dockedRef.dispatchEvent(new CustomEvent('slidup'));
         }
     }
 
@@ -335,7 +335,7 @@ class Docker extends Base {
         dockedRef.style.height = docked.getAttribute('height') + 'px';
 
         if (notify) {
-            dockedRef.dispatchEvent(new CustomEvent('slidedown'));
+            dockedRef.dispatchEvent(new CustomEvent('sliddown'));
         }
 
         setTimeout(() => {
