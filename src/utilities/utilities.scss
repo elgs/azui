@@ -10,7 +10,6 @@ body {
 
 $main-color:#E8E8E8;
 $active0 :#182848;
-$active1:#4b6cb7;
 $main-active:linear-gradient(to right, $active0, lighten($active0, 10%));
 $less-active:linear-gradient(to right, darken($main-color, 10%), $main-color);
 $bg-color:#E8E8E8;
