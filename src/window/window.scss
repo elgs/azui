@@ -11,7 +11,11 @@ $bg-color:#1E1E1E;
     }
     &.active {
         &>.azWindowHeader {
-            background: darken($color: $main-color, $amount: 20%);
+            background: $main-active;
+            color: $main-color;
+            & svg {
+                fill: $main-color;
+            }
         }
     }
     &.inactive {
@@ -20,15 +24,23 @@ $bg-color:#1E1E1E;
         }
         & .active {
             &>.azWindowHeader {
-                background: darken($color: $main-color, $amount: 10%);
+                background: $less-active;
+                color: black;
+                & svg {
+                    fill: black;
+                }
             }
         }
         & .dock-active {
-            background-color: darken($color: $main-color, $amount: 10%);
+            background: $less-active;
+            color: black;
+            & svg {
+                fill: black;
+            }
         }
     }
     & .azWindowHeader {
-        background-color: $main-color;
+        background: $main-color;
         box-sizing: border-box;
         width: 100%; // display: inline-block;
         align-items: center;

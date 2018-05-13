@@ -4,24 +4,18 @@
     padding: 2px;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: 100%; // background-color: red;
     display: grid;
     grid-auto-flow: row;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    grid-gap: 2px; // background-color: #2196F3;
+    grid-gap: 2px;
     & .azSortableItem {
-        box-sizing: border-box; // display: grid;
-        // align-content: center;
-        // justify-content: center;
-        // height: 30px;
+        box-sizing: border-box;
         cursor: pointer;
         user-select: none;
         background-color: $main-color;
-        padding: 10px 0;
+        padding: 8px 0;
         white-space: nowrap;
-        float: left;
-        height: 100%;
-        text-align: left;
         & span.icon {
             padding: 8px;
             & svg {
@@ -33,6 +27,10 @@
         }
     }
     & .dock-active {
-        background-color: darken($color: $main-color, $amount: 20%);
+        background: $main-active;
+        color: $main-color;
+        & svg {
+            fill: $main-color;
+        }
     }
 }
