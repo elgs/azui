@@ -388,9 +388,9 @@ class Draggable extends Base {
                     cScrS = settings.containment[3];
                 } else if (typeof settings.containment === 'object') {
                     if (settings.containment instanceof NodeList) {
-                        containment = settings.containment;
+                        containment = settings.containment[0];
                     } else if (settings.containment instanceof Node) {
-                        containment = [settings.containment];
+                        containment = settings.containment;
                     }
                 }
 
