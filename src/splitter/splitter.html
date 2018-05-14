@@ -7,19 +7,47 @@
     <title>azSplitter</title>
     <style>
         div {
-            width: 200px;
-            height: 200px;
             border: 1px solid gray;
             box-sizing: border-box;
+            user-select: none;
+        }
+
+        div#container {
+            width: 100%;
+            height: 200px;
+            position: relative;
+        }
+
+        div#div0,
+        div#div1 {
+            position: relative;
+            width: 100px;
+            height: 100%;
+            display: inline-block;
+        }
+
+        div#splitter {
+            position: relative;
+            width: 10px;
+            height: 100%;
+            display: inline-block;
         }
     </style>
+    <script src="./index.js"></script>
 </head>
 
 <body>
-    <div id="div0"></div>
-    <div id="div1"></div>
+    <div id='container'>
+        <div id="div0">0</div>
+        <div id="splitter">s</div>
+        <div id="div1">1</div>
+    </div>
     <script>
-
+        const splitter = document.querySelector('div#splitter');
+        azui.Draggable(splitter, {
+            axis: 'x',
+            containment: 'parent',
+        });
     </script>
 </body>
 

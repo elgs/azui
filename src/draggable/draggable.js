@@ -379,7 +379,7 @@ class Draggable extends Base {
                         cScrE = window.innerWidth;
                         // console.log(cScrN, cScrW, cScrS, cScrE);
                     } else {
-                        containment = document.querySelectorAll(settings.containment);
+                        containment = document.querySelector(settings.containment);
                     }
                 } else if (Array.isArray(settings.containment)) {
                     cScrW = settings.containment[0];
@@ -394,14 +394,14 @@ class Draggable extends Base {
                     }
                 }
 
-                if (typeof containment === 'object' && containment.length) {
-                    const containerStyles = getComputedStyle(containment[0]);
+                if (containment && typeof containment === 'object') {
+                    const containerStyles = getComputedStyle(containment);
                     cbn = parseInt(containerStyles["border-top-width"]);
                     cbe = parseInt(containerStyles["border-right-width"]);
                     cbs = parseInt(containerStyles["border-bottom-width"]);
                     cbw = parseInt(containerStyles["border-left-width"]);
 
-                    const hb = containment[0].getBoundingClientRect();
+                    const hb = containment.getBoundingClientRect();
                     cScrN = hb.top;
                     cScrE = hb.right;
                     cScrS = hb.bottom;
