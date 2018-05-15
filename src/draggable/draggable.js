@@ -41,179 +41,74 @@ class Draggable extends Base {
             },
         }, options);
 
+        const self = this;
         const node = this.node;
         node.classList.add('azDraggable');
 
         let dropTargetStates = {};
-        let position = getComputedStyle(node)['position'];
-        if (position !== 'absolute' && position !== 'fixed') {
+        self.position = getComputedStyle(node)['position'];
+        if (self.position !== 'absolute' && self.position !== 'fixed') {
             node.style['position'] = 'relative';
         }
-        position = getComputedStyle(node)['position'];
+        self.position = getComputedStyle(node)['position'];
 
         // console.log(self.style['position'));
         let savedZIndex;
 
-        let selected = null;
+        self.selected = null;
         let mouseX = 0;
         let mouseY = 0;
-        let selfN = 0;
-        let selfE = 0;
-        let selfS = 0;
-        let selfW = 0;
-        let selfWidth = 0;
-        let selfHeight = 0;
+        self.selfN = 0;
+        self.selfE = 0;
+        self.selfS = 0;
+        self.selfW = 0;
+        self.selfWidth = 0;
+        self.selfHeight = 0;
         // self n, e, s, w, parent n, e ,s, w, contaner n, e, s, w
-        let scrN, scrE, scrS, scrW, pScrN, pScrE, pScrS, pScrW, cScrN, cScrE, cScrS, cScrW;
-        let cbn = 0;
-        let cbe = 0;
-        let cbs = 0;
-        let cbw = 0; // container borders
-        let cpn = 0;
-        let cpe = 0;
-        let cps = 0;
-        let cpw = 0; // container paddings
-        let pbn = 0;
-        let pbe = 0;
-        let pbs = 0;
-        let pbw = 0; // offset parent borders
-        let ppn = 0;
-        let ppe = 0;
-        let pps = 0;
-        let ppw = 0; // offset parent paddings
-        let sbn = 0;
-        let sbe = 0;
-        let sbs = 0;
-        let sbw = 0; // self borders
-        let spn = 0;
-        let spe = 0;
-        let sps = 0;
-        let spw = 0; // self padding
-        let smn = 0;
-        let sme = 0;
-        let sms = 0;
-        let smw = 0; // self margin
+        self.scrN = undefined;
+        self.scrE = undefined;
+        self.scrS = undefined;
+        self.scrW = undefined;
+        self.pScrN = undefined;
+        self.pScrE = undefined;
+        self.pScrS = undefined;
+        self.pScrW = undefined;
+        self.cScrN = undefined;
+        self.cScrE = undefined;
+        self.cScrS = undefined;
+        self.cScrW = undefined;
+
+        self.cbn = 0;
+        self.cbe = 0;
+        self.cbs = 0;
+        self.cbw = 0; // container borders
+        self.cpn = 0;
+        self.cpe = 0;
+        self.cps = 0;
+        self.cpw = 0; // container paddings
+        self.pbn = 0;
+        self.pbe = 0;
+        self.pbs = 0;
+        self.pbw = 0; // offset parent borders
+        self.ppn = 0;
+        self.ppe = 0;
+        self.pps = 0;
+        self.ppw = 0; // offset parent paddings
+        self.smn = 0;
+        self.sme = 0;
+        self.sms = 0;
+        self.smw = 0; // self margin
         let resisted = false;
         let started = false;
-
-        const moveAbsoluteX = function (dx) {
-            if (cScrW === undefined) {
-                selected.style.right = 'auto';
-                selected.style.left = (selfW + dx) + 'px';
-            } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
-                // console.log('hit left wall');
-                const di = cScrW + cbw + cpw - (pScrW + pbw + ppw);
-                selected.style.right = 'auto';
-                selected.style.left = ppw + di + 'px';
-            } else if (dx > cScrE - scrE - cbe - cpe - sme) {
-                // console.log('hit right wall');
-                const di = cScrE - cbe - cpe - (pScrE - pbe - ppe);
-                selected.style.left = 'auto';
-                selected.style.right = ppe - di + 'px';
-            } else {
-                selected.style.right = 'auto';
-                selected.style.left = (selfW + dx) + 'px';
-            }
-        };
-        const moveAbsoluteY = function (dy) {
-            if (cScrW === undefined) {
-                selected.style.bottom = 'auto';
-                selected.style.top = (selfN + dy) + 'px';
-            } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
-                // console.log('hit ceiling');
-                const di = cScrN + cbn + cpn - (pScrN + pbn + ppn);
-                selected.style.bottom = 'auto';
-                selected.style.top = ppn + di + 'px';
-            } else if (dy > cScrS - scrS - cbs - cps - sms) {
-                // console.log('hit floor');
-                const di = cScrS - cbs - cps - (pScrS - pbs - pps);
-                selected.style.top = 'auto';
-                selected.style.bottom = pps - di + 'px';
-            } else {
-                selected.style.bottom = 'auto';
-                selected.style.top = (selfN + dy) + 'px';
-            }
-        };
-
-        const moveFixedX = function (dx) {
-            if (cScrW === undefined) {
-                selected.style.right = 'auto';
-                selected.style.left = (selfW + dx) + 'px';
-            } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
-                // console.log('hit left wall');
-                selected.style.right = 'auto';
-                selected.style.left = cScrW + cbw + cpw + 'px';
-            } else if (dx > cScrE - scrE - cbe - cpe - sme) {
-                // console.log('hit right wall');
-                selected.style.right = 'auto';
-                selected.style.left = cScrE - cbe - cpe - selfWidth - smw - sme + 'px';
-            } else {
-                selected.style.right = 'auto';
-                selected.style.left = (selfW + dx) + 'px';
-            }
-        };
-        const moveFixedY = function (dy) {
-            if (cScrW === undefined) {
-                selected.style.bottom = 'auto';
-                selected.style.top = (selfN + dy) + 'px';
-            } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
-                // console.log('hit ceiling');
-                selected.style.bottom = 'auto';
-                selected.style.top = cScrN + cbn + cpn + 'px';
-            } else if (dy > cScrS - scrS - cbs - cps - sms) {
-                // console.log('hit floor');
-                selected.style.bottom = 'auto';
-                selected.style.top = cScrS - cbs - cps - selfHeight - smn - sms + 'px';
-            } else {
-                selected.style.bottom = 'auto';
-                selected.style.top = (selfN + dy) + 'px';
-            }
-        };
-
-        const moveRelativeX = function (dx) {
-            if (cScrW === undefined) {
-                selected.style.right = 'auto';
-                selected.style.left = (selfW + dx) + 'px';
-            } else if (-dx > scrW - cScrW - cbw - cpw - smw) {
-                // console.log('hit left wall');
-                selected.style.right = 'auto';
-                selected.style.left = -(scrW - cScrW - cbw - cpw - smw) + selfW + 'px';
-            } else if (dx > cScrE - scrE - cbe - cpe - sme) {
-                // console.log('hit right wall');
-                selected.style.left = 'auto';
-                selected.style.right = -(cScrE - scrE - cbe - cpe - sme) + selfE + 'px';
-            } else {
-                selected.style.right = 'auto';
-                selected.style.left = (selfW + dx) + 'px';
-            }
-        };
-        const moveRelativeY = function (dy) {
-            if (cScrW === undefined) {
-                selected.style.bottom = 'auto';
-                selected.style.top = (selfN + dy) + 'px';
-            } else if (-dy > scrN - cScrN - cbn - cpn - smn) {
-                // console.log('hit ceiling');
-                selected.style.bottom = 'auto';
-                selected.style.top = -(scrN - cScrN - cbn - cpn - smn) + selfN + 'px';
-            } else if (dy > cScrS - scrS - cbs - cps - sms) {
-                // console.log('hit floor');
-                selected.style.top = 'auto';
-                selected.style.bottom = -(cScrS - scrS - cbs - cps - sms) + selfS + 'px';
-                // console.log(cScrS, scrS, cbs, cps, sms, selfS);
-            } else {
-                selected.style.bottom = 'auto';
-                selected.style.top = (selfN + dy) + 'px';
-            }
-        };
 
         const onmousemove = function (e) {
             // console.log(e.type, e.currentTarget, self);
             // console.log(e.currentTarget);
-            if (!selected) {
+            if (!self.selected) {
                 return;
             }
             if (!started) {
-                if (settings.start(e, selected) === false) {
+                if (settings.start(e, self.selected) === false) {
                     return false;
                 }
                 initDrag(e);
@@ -238,7 +133,7 @@ class Draggable extends Base {
                 }
             }
 
-            if (settings.drag(e, selected) === false) {
+            if (settings.drag(e, self.selected) === false) {
                 return false;
             }
             const nmx = e.clientX || e.touches[0].clientX;
@@ -253,33 +148,12 @@ class Draggable extends Base {
             // console.log(dx, dy);
 
             if (settings.axis === 'x') {
-                if (position === 'absolute') {
-                    moveAbsoluteX(dx);
-                } else if (position === 'relative') {
-                    moveRelativeX(dx);
-                } else if (position === 'fixed') {
-                    moveFixedX(dx);
-                }
+                self.moveX(dx);
             } else if (settings.axis === 'y') {
-                if (position === 'absolute') {
-                    moveAbsoluteY(dy);
-                } else if (position === 'relative') {
-                    moveRelativeY(dy);
-                } else if (position === 'fixed') {
-                    moveFixedY(dy);
-                }
+                self.moveY(dy);
             } else {
-                if (position === 'absolute') {
-                    moveAbsoluteX(dx);
-                    moveAbsoluteY(dy);
-                } else if (position === 'relative') {
-                    moveRelativeX(dx);
-                    moveRelativeY(dy);
-                } else if (position === 'fixed') {
-                    moveFixedX(dx);
-                    moveFixedY(dy);
-                }
-
+                self.moveX(dx);
+                self.moveY(dy);
             }
 
             if (settings.triggerDropEvents && settings.dropKey) {
@@ -308,12 +182,12 @@ class Draggable extends Base {
                     }
                 });
             }
-            // selected.style['background-color'] = 'red';
+            // self.selected.style['background-color'] = 'red';
         };
 
         const onmouseup = function (e) {
-            // console.log(e.type, e.target, self, selected);
-            if (settings.stop(e, selected) === false) {
+            // console.log(e.type, e.target, self, self.selected);
+            if (settings.stop(e, self.selected) === false) {
                 return false;
             }
             started = false;
@@ -337,8 +211,8 @@ class Draggable extends Base {
             document.removeEventListener('mouseleave', onmouseup);
             // }
 
-            // selected.style['background-color'] = 'white';
-            selected = null;
+            // self.selected.style['background-color'] = 'white';
+            self.selected = null;
 
             if (settings.triggerDropEvents && settings.dropKey) {
                 const dts = getDropTargets(settings.dropKey);
@@ -367,25 +241,25 @@ class Draggable extends Base {
                     if (settings.containment === 'parent') {
                         containment = node.parentNode;
                     } else if (settings.containment === 'document') {
-                        cScrN = -document.documentElement.scrollLeft;
-                        cScrW = -document.documentElement.scrollTop;
-                        cScrS = getDocHeight();
-                        cScrE = getDocWidth();
-                        // console.log(cScrN, cScrW, cScrS, cScrE);
+                        self.cScrN = -document.documentElement.scrollLeft;
+                        self.cScrW = -document.documentElement.scrollTop;
+                        self.cScrS = getDocHeight();
+                        self.cScrE = getDocWidth();
+                        // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
                     } else if (settings.containment === 'window') {
-                        cScrN = 0;
-                        cScrW = 0;
-                        cScrS = window.innerHeight;
-                        cScrE = window.innerWidth;
-                        // console.log(cScrN, cScrW, cScrS, cScrE);
+                        self.cScrN = 0;
+                        self.cScrW = 0;
+                        self.cScrS = window.innerHeight;
+                        self.cScrE = window.innerWidth;
+                        // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
                     } else {
                         containment = document.querySelector(settings.containment);
                     }
                 } else if (Array.isArray(settings.containment)) {
-                    cScrW = settings.containment[0];
-                    cScrN = settings.containment[1];
-                    cScrE = settings.containment[2];
-                    cScrS = settings.containment[3];
+                    self.cScrW = settings.containment[0];
+                    self.cScrN = settings.containment[1];
+                    self.cScrE = settings.containment[2];
+                    self.cScrS = settings.containment[3];
                 } else if (typeof settings.containment === 'object') {
                     if (settings.containment instanceof NodeList) {
                         containment = settings.containment[0];
@@ -396,33 +270,23 @@ class Draggable extends Base {
 
                 if (containment && typeof containment === 'object') {
                     const containerStyles = getComputedStyle(containment);
-                    cbn = parseInt(containerStyles["border-top-width"]);
-                    cbe = parseInt(containerStyles["border-right-width"]);
-                    cbs = parseInt(containerStyles["border-bottom-width"]);
-                    cbw = parseInt(containerStyles["border-left-width"]);
+                    self.cbn = parseInt(containerStyles["border-top-width"]);
+                    self.cbe = parseInt(containerStyles["border-right-width"]);
+                    self.cbs = parseInt(containerStyles["border-bottom-width"]);
+                    self.cbw = parseInt(containerStyles["border-left-width"]);
 
                     const hb = containment.getBoundingClientRect();
-                    cScrN = hb.top;
-                    cScrE = hb.right;
-                    cScrS = hb.bottom;
-                    cScrW = hb.left;
+                    self.cScrN = hb.top;
+                    self.cScrE = hb.right;
+                    self.cScrS = hb.bottom;
+                    self.cScrW = hb.left;
 
-                    cpn = parseInt(containerStyles["padding-top"]);
-                    cpe = parseInt(containerStyles["padding-right"]);
-                    cps = parseInt(containerStyles["padding-bottom"]);
-                    cpw = parseInt(containerStyles["padding-left"]);
-                    // console.log(cpn, cpe, cps, cpw);
+                    self.cpn = parseInt(containerStyles["padding-top"]);
+                    self.cpe = parseInt(containerStyles["padding-right"]);
+                    self.cps = parseInt(containerStyles["padding-bottom"]);
+                    self.cpw = parseInt(containerStyles["padding-left"]);
+                    // console.log(self.cpn, self.cpe, self.cps, self.cpw);
                 }
-                sbn = parseInt(nodeStyles["border-top-width"]);
-                sbe = parseInt(nodeStyles["border-right-width"]);
-                sbs = parseInt(nodeStyles["border-bottom-width"]);
-                sbw = parseInt(nodeStyles["border-left-width"]);
-
-                spn = parseInt(nodeStyles["padding-top"]);
-                spe = parseInt(nodeStyles["padding-right"]);
-                sps = parseInt(nodeStyles["padding-bottom"]);
-                spw = parseInt(nodeStyles["padding-left"]);
-                // console.log(spn, spe, sps, spw);
             }
 
             const parent = node.offsetParent || document.body;
@@ -430,62 +294,62 @@ class Draggable extends Base {
 
             // console.log(parent, self.offsetParent);
             const pb = parent.getBoundingClientRect();
-            pScrN = pb.top;
-            pScrE = pb.right;
-            pScrS = pb.bottom;
-            pScrW = pb.left;
-            // console.log(pScrN, pScrE, pScrS, pScrW);
+            self.pScrN = pb.top;
+            self.pScrE = pb.right;
+            self.pScrS = pb.bottom;
+            self.pScrW = pb.left;
+            // console.log(self.pScrN, self.pScrE, self.pScrS, self.pScrW);
 
-            pbn = parseInt(parentStyles["border-top-width"]);
-            pbe = parseInt(parentStyles["border-right-width"]);
-            pbs = parseInt(parentStyles["border-bottom-width"]);
-            pbw = parseInt(parentStyles["border-left-width"]);
-            // console.log(pbn, pbe, pbs, pbw);
+            self.pbn = parseInt(parentStyles["border-top-width"]);
+            self.pbe = parseInt(parentStyles["border-right-width"]);
+            self.pbs = parseInt(parentStyles["border-bottom-width"]);
+            self.pbw = parseInt(parentStyles["border-left-width"]);
+            // console.log(self.pbn, self.pbe, self.pbs, self.pbw);
 
-            ppn = parseInt(parentStyles["padding-top"]);
-            ppe = parseInt(parentStyles["padding-right"]);
-            pps = parseInt(parentStyles["padding-bottom"]);
-            ppw = parseInt(parentStyles["padding-left"]);
-            // console.log(ppn, ppe, pps, ppw);
+            self.ppn = parseInt(parentStyles["padding-top"]);
+            self.ppe = parseInt(parentStyles["padding-right"]);
+            self.pps = parseInt(parentStyles["padding-bottom"]);
+            self.ppw = parseInt(parentStyles["padding-left"]);
+            // console.log(self.ppn, self.ppe, self.pps, self.ppw);
 
-            smn = parseInt(nodeStyles["margin-top"]);
-            sme = parseInt(nodeStyles["margin-right"]);
-            sms = parseInt(nodeStyles["margin-bottom"]);
-            smw = parseInt(nodeStyles["margin-left"]);
-            // console.log(smn, sme, sms, smw);
+            self.smn = parseInt(nodeStyles["margin-top"]);
+            self.sme = parseInt(nodeStyles["margin-right"]);
+            self.sms = parseInt(nodeStyles["margin-bottom"]);
+            self.smw = parseInt(nodeStyles["margin-left"]);
+            // console.log(self.smn, self.sme, self.sms, self.smw);
 
-            const selfbcr = selected.getBoundingClientRect();
-            scrN = selfbcr.top;
-            scrE = selfbcr.right;
-            scrS = selfbcr.bottom;
-            scrW = selfbcr.left;
-            // console.log(scrN, scrE, scrS, scrW);
+            const selfbcr = self.selected.getBoundingClientRect();
+            self.scrN = selfbcr.top;
+            self.scrE = selfbcr.right;
+            self.scrS = selfbcr.bottom;
+            self.scrW = selfbcr.left;
+            // console.log(self.scrN, self.scrE, self.scrS, self.scrW);
 
-            // selfW = parseInt(getComputedStyle(self)['left'));
-            // selfE = parseInt(getComputedStyle(self)['right'));
-            // selfN = parseInt(getComputedStyle(self)['top'));
-            // selfS = parseInt(getComputedStyle(self)['bottom'));
-            // console.log(selfN, selfE, selfS, selfW);
+            // self.selfW = parseInt(getComputedStyle(self)['left'));
+            // self.selfE = parseInt(getComputedStyle(self)['right'));
+            // self.selfN = parseInt(getComputedStyle(self)['top'));
+            // self.selfS = parseInt(getComputedStyle(self)['bottom'));
+            // console.log(self.selfN, self.selfE, self.selfS, self.selfW);
 
             if (nodeStyles['position'] === 'relative') {
-                selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
-                selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
-                selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
-                selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
-                // console.log(selfN, selfE, selfS, selfW, self.style['position'));
+                self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
+                self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
+                self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
+                self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
+                // console.log(self.selfN, self.selfE, self.selfS, self.selfW, self.style['position'));
             } else if (nodeStyles['position'] === 'absolute') {
-                selfW = scrW - pScrW - smw - pbw;
-                selfN = scrN - pScrN - smn - pbn;
-                selfE = -scrE + pScrE - sme - pbe;
-                selfS = -scrS + pScrS - sms - pbs;
+                self.selfW = self.scrW - self.pScrW - self.smw - self.pbw;
+                self.selfN = self.scrN - self.pScrN - self.smn - self.pbn;
+                self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe;
+                self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs;
             } else if (nodeStyles['position'] === 'fixed') {
-                selfW = scrW - smw;
-                selfN = scrN - smn;
+                self.selfW = self.scrW - self.smw;
+                self.selfN = self.scrN - self.smn;
             }
 
-            selfWidth = selfbcr.width;
-            selfHeight = selfbcr.height;
-            // console.log(selfWidth + ', ' + selfHeight);
+            self.selfWidth = selfbcr.width;
+            self.selfHeight = selfbcr.height;
+            // console.log(self.selfWidth + ', ' + self.selfHeight);
 
             // self.style['cursor', 'pointer');
             if (settings.opacity) {
@@ -508,7 +372,7 @@ class Draggable extends Base {
             // the reason not to use stopPropation is to allow other events to bubble through, like click to increase z-index.
             // e.stopPropagation(); // no no
 
-            // only move the selected one, not any of it's ancestors.
+            // only move the self.selected one, not any of it's ancestors.
             if (e.target.closest('.azDraggable') !== node) {
                 return;
             }
@@ -516,7 +380,7 @@ class Draggable extends Base {
             if (settings.create(e, node) === false) {
                 return;
             }
-            selected = node;
+            self.selected = node;
 
             mouseX = e.clientX || e.touches[0].clientX;
             mouseY = e.clientY || e.touches[0].clientY;
@@ -552,4 +416,144 @@ class Draggable extends Base {
         }
         node.addEventListener('mousedown', onmousedown);
     }
-};
+
+    moveX(by) {
+        const self = this;
+        if (self.position === 'absolute') {
+            self.moveAbsoluteX(by);
+        } else if (self.position === 'relative') {
+            self.moveRelativeX(by);
+        } else if (self.position === 'fixed') {
+            self.moveFixedX(by);
+        }
+    }
+
+    moveY(by) {
+        const self = this;
+        if (self.position === 'absolute') {
+            self.moveAbsoluteY(by);
+        } else if (self.position === 'relative') {
+            self.moveRelativeY(by);
+        } else if (self.position === 'fixed') {
+            self.moveFixedY(by);
+        }
+    }
+
+    moveAbsoluteX(dx) {
+        const self = this;
+        if (self.cScrW === undefined) {
+            self.selected.style.right = 'auto';
+            self.selected.style.left = (self.selfW + dx) + 'px';
+        } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+            // console.log('hit left wall');
+            const di = self.cScrW + self.cbw + self.cpw - (self.pScrW + self.pbw + self.ppw);
+            self.selected.style.right = 'auto';
+            self.selected.style.left = self.ppw + di + 'px';
+        } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+            // console.log('hit right wall');
+            const di = self.cScrE - self.cbe - self.cpe - (self.pScrE - self.pbe - self.ppe);
+            self.selected.style.left = 'auto';
+            self.selected.style.right = self.ppe - di + 'px';
+        } else {
+            self.selected.style.right = 'auto';
+            self.selected.style.left = (self.selfW + dx) + 'px';
+        }
+    }
+
+    moveAbsoluteY(dy) {
+        const self = this;
+        if (self.cScrW === undefined) {
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = (self.selfN + dy) + 'px';
+        } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+            // console.log('hit ceiling');
+            const di = self.cScrN + self.cbn + self.cpn - (self.pScrN + self.pbn + self.ppn);
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = self.ppn + di + 'px';
+        } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+            // console.log('hit floor');
+            const di = self.cScrS - self.cbs - self.cps - (self.pScrS - self.pbs - self.pps);
+            self.selected.style.top = 'auto';
+            self.selected.style.bottom = self.pps - di + 'px';
+        } else {
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = (self.selfN + dy) + 'px';
+        }
+    }
+
+    moveFixedX(dx) {
+        const self = this;
+        if (self.cScrW === undefined) {
+            self.selected.style.right = 'auto';
+            self.selected.style.left = (self.selfW + dx) + 'px';
+        } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+            // console.log('hit left wall');
+            self.selected.style.right = 'auto';
+            self.selected.style.left = self.cScrW + self.cbw + self.cpw + 'px';
+        } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+            // console.log('hit right wall');
+            self.selected.style.right = 'auto';
+            self.selected.style.left = self.cScrE - self.cbe - self.cpe - self.selfWidth - self.smw - self.sme + 'px';
+        } else {
+            self.selected.style.right = 'auto';
+            self.selected.style.left = (self.selfW + dx) + 'px';
+        }
+    }
+
+    moveFixedY(dy) {
+        const self = this;
+        if (self.cScrW === undefined) {
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = (self.selfN + dy) + 'px';
+        } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+            // console.log('hit ceiling');
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = self.cScrN + self.cbn + self.cpn + 'px';
+        } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+            // console.log('hit floor');
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = self.cScrS - self.cbs - self.cps - self.selfHeight - self.smn - self.sms + 'px';
+        } else {
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = (self.selfN + dy) + 'px';
+        }
+    }
+
+    moveRelativeX(dx) {
+        const self = this;
+        if (self.cScrW === undefined) {
+            self.selected.style.right = 'auto';
+            self.selected.style.left = (self.selfW + dx) + 'px';
+        } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+            // console.log('hit left wall');
+            self.selected.style.right = 'auto';
+            self.selected.style.left = -(self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) + self.selfW + 'px';
+        } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+            // console.log('hit right wall');
+            self.selected.style.left = 'auto';
+            self.selected.style.right = -(self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) + self.selfE + 'px';
+        } else {
+            self.selected.style.right = 'auto';
+            self.selected.style.left = (self.selfW + dx) + 'px';
+        }
+    };
+    moveRelativeY(dy) {
+        const self = this;
+        if (self.cScrW === undefined) {
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = (self.selfN + dy) + 'px';
+        } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+            // console.log('hit ceiling');
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = -(self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) + self.selfN + 'px';
+        } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+            // console.log('hit floor');
+            self.selected.style.top = 'auto';
+            self.selected.style.bottom = -(self.cScrS - self.scrS - self.cbs - self.cps - self.sms) + self.selfS + 'px';
+            // console.log(self.cScrS, self.scrS, self.cbs, self.cps, self.sms, self.selfS);
+        } else {
+            self.selected.style.bottom = 'auto';
+            self.selected.style.top = (self.selfN + dy) + 'px';
+        }
+    }
+}

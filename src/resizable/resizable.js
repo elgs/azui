@@ -451,4 +451,9 @@ class Resizable extends Base {
 
         createDraggingHandles();
     }
+
+    moveN(by) {}
+    moveE(by) {}
+    moveS(by) {}
+    moveW(by) {}
 };
