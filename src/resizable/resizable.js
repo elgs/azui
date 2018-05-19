@@ -20,9 +20,9 @@ class Resizable extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
-            minWidth: 10,
+            minWidth: 50,
             maxWidth: Number.MAX_SAFE_INTEGER,
-            minHeight: 10,
+            minHeight: 50,
             maxHeight: Number.MAX_SAFE_INTEGER,
             aspectRatio: false,
             handleSize: 10,
@@ -47,6 +47,8 @@ class Resizable extends Base {
         const self = this;
         const node = this.node;
         node.classList.add('azResizable');
+
+        self.settings = settings;
 
         let position = getComputedStyle(node)['position'];
         if (position !== 'absolute' && position !== 'fixed') {
@@ -246,26 +248,26 @@ class Resizable extends Base {
             }
 
             const checkMinWidth = function () {
-                if (node.offsetWidth < settings.minWidth) {
-                    node.style.left = self.prevLeft;
+                if (node.offsetWidth <= settings.minWidth) {
+                    node.style.left = self.prevLeft + 'px';
                     setOuterWidth(node, settings.minWidth);
                 }
             };
             const checkMaxWidth = function () {
-                if (node.offsetWidth > settings.maxWidth) {
-                    node.style.left = self.prevLeft;
+                if (node.offsetWidth >= settings.maxWidth) {
+                    node.style.left = self.prevLeft + 'px';
                     setOuterWidth(node, settings.maxWidth);
                 }
             };
             const checkMinHeight = function () {
-                if (node.offsetHeight < settings.minHeight) {
-                    node.style.top = self.prevTop;
+                if (node.offsetHeight <= settings.minHeight) {
+                    node.style.top = self.prevTop + 'px';
                     setOuterHeight(node, settings.minHeight);
                 }
             };
             const checkMaxHeight = function () {
-                if (node.offsetHeight > settings.maxHeight) {
-                    node.style.top = self.prevTop;
+                if (node.offsetHeight >= settings.maxHeight) {
+                    node.style.top = self.prevTop + 'px';
                     setOuterHeight(node, settings.maxHeight);
                 }
             };
@@ -308,7 +310,7 @@ class Resizable extends Base {
 
                     const dy = nmy - my;
 
-                    self.prevTop = node.style.top;
+                    self.prevTop = parseInt(node.style.top) || 0;
                     node.style.top = (self.thisTop + dy) + 'px';
                     setHeight(node, self.thisHeight - dy);
                     checkAll();
@@ -367,7 +369,7 @@ class Resizable extends Base {
 
                     const dx = nmx - mx;
 
-                    self.prevLeft = node.style.left;
+                    self.prevLeft = parseInt(node.style.left) || 0;
                     node.style.left = (self.thisLeft + dx) + 'px';
                     setWidth(node, self.thisWidth - dx);
                     checkAll();
@@ -389,7 +391,7 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.prevTop = node.style.top;
+                    self.prevTop = parseInt(node.style.top) || 0;
                     node.style.top = (self.thisTop + dy) + 'px';
                     setHeight(node, self.thisHeight - dy);
                     setWidth(node, self.thisWidth + dx);
@@ -432,7 +434,7 @@ class Resizable extends Base {
                     const dy = nmy - my;
 
                     setHeight(node, self.thisHeight + dy);
-                    self.prevLeft = node.style.left;
+                    self.prevLeft = parseInt(node.style.left) || 0;
                     node.style.left = (self.thisLeft + dx) + 'px';
                     setWidth(node, self.thisWidth - dx);
                     checkAll();
@@ -453,10 +455,10 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.prevLeft = node.style.left;
+                    self.prevLeft = parseInt(node.style.left) || 0;
                     node.style.left = (self.thisLeft + dx) + 'px';
                     setWidth(node, self.thisWidth - dx);
-                    self.prevTop = node.style.top;
+                    self.prevTop = parseInt(node.style.top) || 0;
                     node.style.top = (self.thisTop + dy) + 'px';
                     setHeight(node, self.thisHeight - dy);
                     checkAll();

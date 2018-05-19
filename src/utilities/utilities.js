@@ -293,7 +293,7 @@ export const setOuterWidth = function (el, w) {
     }
 };
 
-export const setOuterHeight = function (el, w) {
+export const setOuterHeight = function (el, h) {
     if (getComputedStyle(el)['box-sizing'] === 'border-box') {
         el.style.height = h + 'px';
     } else {
