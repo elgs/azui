@@ -291,6 +291,10 @@ class Draggable extends Base {
 
             const parent = node.offsetParent || document.body;
             const parentStyles = getComputedStyle(parent);
+            const pp = parentStyles['position'];
+            if (pp !== 'relative' && pp !== 'absolute' && pp !== 'fixed') {
+                parent.style['position'] = 'relative';
+            }
 
             // console.log(parent, self.offsetParent);
             const pb = parent.getBoundingClientRect();

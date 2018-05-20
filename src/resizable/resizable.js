@@ -227,7 +227,6 @@ class Resizable extends Base {
                     self.prevLeft = node.offsetLeft;
                 }
 
-
                 self.thisWidth = getWidth(node);
                 self.thisHeight = getHeight(node);
                 thisAspectRatio = (self.thisHeight * 1.0) / (self.thisWidth * 1.0);
