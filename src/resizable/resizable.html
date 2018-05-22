@@ -48,7 +48,11 @@
         const elems = document.querySelectorAll('#div0, #div1');
         elems.forEach(el => {
             const resizable = azui.Resizable(el, {
-                handles: 'all'
+                handles: 'all',
+                minWidth: 100,
+                maxWidth: 300,
+                minHeight: 100,
+                maxHeight: 300,
             });
             azui.Draggable(el);
         });

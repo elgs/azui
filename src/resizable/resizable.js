@@ -4,10 +4,6 @@ import {
 
 import {
     isTouchDevice,
-    getHeight,
-    setHeight,
-    getWidth,
-    setWidth,
     setOuterWidth,
     setOuterHeight,
 } from '../utilities/utilities.js';
@@ -20,9 +16,9 @@ class Resizable extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
-            minWidth: 50,
+            minWidth: 10,
             maxWidth: Number.MAX_SAFE_INTEGER,
-            minHeight: 50,
+            minHeight: 10,
             maxHeight: Number.MAX_SAFE_INTEGER,
             aspectRatio: false,
             handleSize: 10,
@@ -223,18 +219,13 @@ class Resizable extends Base {
                 }
 
                 // outer border to outer border
-                self.thisWidth = node.offsetWidth; //getWidth(node);
-                self.thisHeight = node.offsetHeight; //getHeight(node);
+                self.thisWidth = node.offsetWidth;
+                self.thisHeight = node.offsetHeight;
 
-                // top - min = maxh - h
-                self.nMin = self.thisTop - self.thisHeight - settings.maxHeight;
-                self.nMax;
-                self.eMin;
-                self.eMax;
-                self.sMin;
-                self.sMax;
-                self.wMin;
-                self.wMax;
+                self.yToMax = settings.maxHeight - self.thisHeight;
+                self.yToMin = self.thisHeight - settings.minHeight;
+                self.xToMax = settings.maxWidth - self.thisWidth;
+                self.xToMin = self.thisWidth - settings.minWidth;
 
                 thisAspectRatio = (self.thisHeight * 1.0) / (self.thisWidth * 1.0);
                 event.preventDefault(); // prevent text from selecting and mobile screen view port from moving around.
@@ -253,32 +244,6 @@ class Resizable extends Base {
                 resetHandles();
             }
 
-            const checkMinWidth = function () {
-                // outer border to outer border
-                if (node.offsetWidth < settings.minWidth) {
-                    node.style.left = self.prevLeft + 'px';
-                    // outer border to ourter border
-                    setOuterWidth(node, settings.minWidth);
-                }
-            };
-            const checkMaxWidth = function () {
-                if (node.offsetWidth > settings.maxWidth) {
-                    node.style.left = self.prevLeft + 'px';
-                    setOuterWidth(node, settings.maxWidth);
-                }
-            };
-            const checkMinHeight = function () {
-                if (node.offsetHeight < settings.minHeight) {
-                    node.style.top = self.prevTop + 'px';
-                    setOuterHeight(node, settings.minHeight);
-                }
-            };
-            const checkMaxHeight = function () {
-                if (node.offsetHeight > settings.maxHeight) {
-                    node.style.top = self.prevTop + 'px';
-                    setOuterHeight(node, settings.maxHeight);
-                }
-            };
             const checkAspectRatio = function () {
                 if (!settings.aspectRatio) {
                     return;
@@ -298,10 +263,6 @@ class Resizable extends Base {
                 }
             };
             const checkAll = function () {
-                checkMinWidth();
-                checkMaxWidth();
-                checkMinHeight();
-                checkMaxHeight();
                 checkAspectRatio();
             };
 
@@ -317,11 +278,9 @@ class Resizable extends Base {
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dy = nmy - my;
-
-                    self.prevTop = parseInt(node.style.top) || 0;
-                    node.style.top = (self.thisTop + dy) + 'px';
-                    setOuterHeight(node, self.thisHeight - dy);
+                    self.moveN(dy);
                     checkAll();
+
                     return false;
                 },
                 stop: onStop,
@@ -338,8 +297,7 @@ class Resizable extends Base {
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dx = nmx - mx;
-
-                    setOuterWidth(node, self.thisWidth + dx);
+                    self.moveE(dx);
                     checkAll();
                     return false;
                 },
@@ -357,8 +315,7 @@ class Resizable extends Base {
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dy = nmy - my;
-
-                    setOuterHeight(node, self.thisHeight + dy);
+                    self.moveS(dy);
                     checkAll();
                     return false;
                 },
@@ -376,10 +333,7 @@ class Resizable extends Base {
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dx = nmx - mx;
-
-                    self.prevLeft = parseInt(node.style.left) || 0;
-                    node.style.left = (self.thisLeft + dx) + 'px';
-                    setOuterWidth(node, self.thisWidth - dx);
+                    self.moveW(dx);
                     checkAll();
                     return false;
                 },
@@ -399,10 +353,8 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.prevTop = parseInt(node.style.top) || 0;
-                    node.style.top = (self.thisTop + dy) + 'px';
-                    setOuterHeight(node, self.thisHeight - dy);
-                    setOuterWidth(node, self.thisWidth + dx);
+                    self.moveN(dy);
+                    self.moveE(dx);
                     checkAll();
                     return false;
                 },
@@ -421,8 +373,8 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    setOuterHeight(node, self.thisHeight + dy);
-                    setOuterWidth(node, self.thisWidth + dx);
+                    self.moveS(dy);
+                    self.moveE(dx);
                     checkAll();
                     return false;
                 },
@@ -441,10 +393,8 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    setOuterHeight(node, self.thisHeight + dy);
-                    self.prevLeft = parseInt(node.style.left) || 0;
-                    node.style.left = (self.thisLeft + dx) + 'px';
-                    setOuterWidth(node, self.thisWidth - dx);
+                    self.moveS(dy);
+                    self.moveW(dx);
                     checkAll();
                     return false;
                 },
@@ -463,12 +413,8 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.prevLeft = parseInt(node.style.left) || 0;
-                    node.style.left = (self.thisLeft + dx) + 'px';
-                    setOuterWidth(node, self.thisWidth - dx);
-                    self.prevTop = parseInt(node.style.top) || 0;
-                    node.style.top = (self.thisTop + dy) + 'px';
-                    setOuterHeight(node, self.thisHeight - dy);
+                    self.moveN(dy);
+                    self.moveW(dx);
                     checkAll();
                     return false;
                 },
@@ -479,8 +425,42 @@ class Resizable extends Base {
         createDraggingHandles();
     }
 
-    moveN(by) {}
-    moveE(by) {}
-    moveS(by) {}
-    moveW(by) {}
+    moveN(by) {
+        const self = this;
+        if (by > self.yToMin) {
+            by = self.yToMin;
+        } else if (-by > self.yToMax) {
+            by = -self.yToMax;
+        }
+        self.node.style.top = (self.thisTop + by) + 'px';
+        setOuterHeight(self.node, self.thisHeight - by);
+    }
+    moveE(by) {
+        const self = this;
+        if (by > self.xToMax) {
+            by = self.xToMax;
+        } else if (-by > self.xToMin) {
+            by = -self.xToMin;
+        }
+        setOuterWidth(self.node, self.thisWidth + by);
+    }
+    moveS(by) {
+        const self = this;
+        if (by > self.yToMax) {
+            by = self.yToMax;
+        } else if (-by > self.yToMin) {
+            by = -self.yToMin;
+        }
+        setOuterHeight(self.node, self.thisHeight + by);
+    }
+    moveW(by) {
+        const self = this;
+        if (-by > self.xToMax) {
+            by = -self.xToMax;
+        } else if (by > self.xToMin) {
+            by = self.xToMin;
+        }
+        self.node.style.left = (self.thisLeft + by) + 'px';
+        setOuterWidth(self.node, self.thisWidth - by);
+    }
 };
