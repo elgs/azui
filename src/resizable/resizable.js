@@ -214,21 +214,28 @@ class Resizable extends Base {
                 my = event.clientY || event.touches[0].clientY;
 
                 if (position === 'relative') {
-                    const top = parseInt(node.style.top || 0);
-                    const left = parseInt(node.style.left || 0);
-                    self.thisTop = top;
-                    self.thisLeft = left;
-                    self.prevTop = top;
-                    self.prevLeft = left;
+                    self.thisTop = parseInt(node.style.top || 0);
+                    self.thisLeft = parseInt(node.style.left || 0);
                 } else {
+                    // child outer border to parent inner border
                     self.thisTop = node.offsetTop;
                     self.thisLeft = node.offsetLeft;
-                    self.prevTop = node.offsetTop;
-                    self.prevLeft = node.offsetLeft;
                 }
 
-                self.thisWidth = getWidth(node);
-                self.thisHeight = getHeight(node);
+                // outer border to outer border
+                self.thisWidth = node.offsetWidth; //getWidth(node);
+                self.thisHeight = node.offsetHeight; //getHeight(node);
+
+                // top - min = maxh - h
+                self.nMin = self.thisTop - self.thisHeight - settings.maxHeight;
+                self.nMax;
+                self.eMin;
+                self.eMax;
+                self.sMin;
+                self.sMax;
+                self.wMin;
+                self.wMax;
+
                 thisAspectRatio = (self.thisHeight * 1.0) / (self.thisWidth * 1.0);
                 event.preventDefault(); // prevent text from selecting and mobile screen view port from moving around.
             };
@@ -247,25 +254,27 @@ class Resizable extends Base {
             }
 
             const checkMinWidth = function () {
-                if (node.offsetWidth <= settings.minWidth) {
+                // outer border to outer border
+                if (node.offsetWidth < settings.minWidth) {
                     node.style.left = self.prevLeft + 'px';
+                    // outer border to ourter border
                     setOuterWidth(node, settings.minWidth);
                 }
             };
             const checkMaxWidth = function () {
-                if (node.offsetWidth >= settings.maxWidth) {
+                if (node.offsetWidth > settings.maxWidth) {
                     node.style.left = self.prevLeft + 'px';
                     setOuterWidth(node, settings.maxWidth);
                 }
             };
             const checkMinHeight = function () {
-                if (node.offsetHeight <= settings.minHeight) {
+                if (node.offsetHeight < settings.minHeight) {
                     node.style.top = self.prevTop + 'px';
                     setOuterHeight(node, settings.minHeight);
                 }
             };
             const checkMaxHeight = function () {
-                if (node.offsetHeight >= settings.maxHeight) {
+                if (node.offsetHeight > settings.maxHeight) {
                     node.style.top = self.prevTop + 'px';
                     setOuterHeight(node, settings.maxHeight);
                 }
@@ -282,10 +291,10 @@ class Resizable extends Base {
                 } else {
                     return;
                 }
-                if (getHeight(node) / getWidth(node) > ar) {
-                    setWidth(node, getHeight(node) / ar);
-                } else if (getHeight(node) / getWidth(node) < ar) {
-                    setHeight(node, getWidth(node) * ar);
+                if (getOuterHeight(node) / getOuterWidth(node) > ar) {
+                    setOuterWidth(node, getOuterHeight(node) / ar);
+                } else if (getOuterHeight(node) / getOuterWidth(node) < ar) {
+                    setOuterHeight(node, getOuterWidth(node) * ar);
                 }
             };
             const checkAll = function () {
@@ -311,7 +320,7 @@ class Resizable extends Base {
 
                     self.prevTop = parseInt(node.style.top) || 0;
                     node.style.top = (self.thisTop + dy) + 'px';
-                    setHeight(node, self.thisHeight - dy);
+                    setOuterHeight(node, self.thisHeight - dy);
                     checkAll();
                     return false;
                 },
@@ -330,7 +339,7 @@ class Resizable extends Base {
 
                     const dx = nmx - mx;
 
-                    setWidth(node, self.thisWidth + dx);
+                    setOuterWidth(node, self.thisWidth + dx);
                     checkAll();
                     return false;
                 },
@@ -349,7 +358,7 @@ class Resizable extends Base {
 
                     const dy = nmy - my;
 
-                    setHeight(node, self.thisHeight + dy);
+                    setOuterHeight(node, self.thisHeight + dy);
                     checkAll();
                     return false;
                 },
@@ -370,7 +379,7 @@ class Resizable extends Base {
 
                     self.prevLeft = parseInt(node.style.left) || 0;
                     node.style.left = (self.thisLeft + dx) + 'px';
-                    setWidth(node, self.thisWidth - dx);
+                    setOuterWidth(node, self.thisWidth - dx);
                     checkAll();
                     return false;
                 },
@@ -392,8 +401,8 @@ class Resizable extends Base {
 
                     self.prevTop = parseInt(node.style.top) || 0;
                     node.style.top = (self.thisTop + dy) + 'px';
-                    setHeight(node, self.thisHeight - dy);
-                    setWidth(node, self.thisWidth + dx);
+                    setOuterHeight(node, self.thisHeight - dy);
+                    setOuterWidth(node, self.thisWidth + dx);
                     checkAll();
                     return false;
                 },
@@ -412,8 +421,8 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    setHeight(node, self.thisHeight + dy);
-                    setWidth(node, self.thisWidth + dx);
+                    setOuterHeight(node, self.thisHeight + dy);
+                    setOuterWidth(node, self.thisWidth + dx);
                     checkAll();
                     return false;
                 },
@@ -432,10 +441,10 @@ class Resizable extends Base {
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    setHeight(node, self.thisHeight + dy);
+                    setOuterHeight(node, self.thisHeight + dy);
                     self.prevLeft = parseInt(node.style.left) || 0;
                     node.style.left = (self.thisLeft + dx) + 'px';
-                    setWidth(node, self.thisWidth - dx);
+                    setOuterWidth(node, self.thisWidth - dx);
                     checkAll();
                     return false;
                 },
@@ -456,10 +465,10 @@ class Resizable extends Base {
 
                     self.prevLeft = parseInt(node.style.left) || 0;
                     node.style.left = (self.thisLeft + dx) + 'px';
-                    setWidth(node, self.thisWidth - dx);
+                    setOuterWidth(node, self.thisWidth - dx);
                     self.prevTop = parseInt(node.style.top) || 0;
                     node.style.top = (self.thisTop + dy) + 'px';
-                    setHeight(node, self.thisHeight - dy);
+                    setOuterHeight(node, self.thisHeight - dy);
                     checkAll();
                     return false;
                 },

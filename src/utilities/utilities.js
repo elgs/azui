@@ -229,6 +229,7 @@ export const parseDOMElement = (domstring) => {
     return new DOMParser().parseFromString(domstring, 'text/html').body.childNodes;
 };
 
+// outer margin to outer margin
 export const outerWidthTrue = function (el) {
     let width = el.offsetWidth;
     const style = getComputedStyle(el);
@@ -243,6 +244,7 @@ export const outerHeightTrue = function (el) {
     return height;
 };
 
+// inner padding to inner padding
 export const getWidth = function (el) {
     let width = el.offsetWidth;
     const style = getComputedStyle(el);
@@ -257,12 +259,14 @@ export const getHeight = function (el) {
     return height;
 };
 
+// inner padding to inner padding
 export const setWidth = function (el, w) {
-    if (getComputedStyle(el)['box-sizing'] === 'border-box') {
-        const borderLeft = parseInt(getComputedStyle(el)["border-left-width"]);
-        const borderRight = parseInt(getComputedStyle(el)["border-right-width"]);
-        const paddingLeft = parseInt(getComputedStyle(el)["padding-left"]);
-        const paddingRight = parseInt(getComputedStyle(el)["padding-right"]);
+    const style = getComputedStyle(el);
+    if (style['box-sizing'] === 'border-box') {
+        const borderLeft = parseInt(style["border-left-width"]);
+        const borderRight = parseInt(style["border-right-width"]);
+        const paddingLeft = parseInt(style["padding-left"]);
+        const paddingRight = parseInt(style["padding-right"]);
         el.style.width = w + borderLeft + borderRight + paddingLeft + paddingRight + 'px';
     } else {
         el.style.width = w + 'px';
@@ -270,37 +274,42 @@ export const setWidth = function (el, w) {
 };
 
 export const setHeight = function (el, h) {
-    if (getComputedStyle(el)['box-sizing'] === 'border-box') {
-        const borderTop = parseInt(getComputedStyle(el)["border-top-width"]);
-        const borderBottom = parseInt(getComputedStyle(el)["border-bottom-width"]);
-        const paddingTop = parseInt(getComputedStyle(el)["padding-top"]);
-        const paddingBottom = parseInt(getComputedStyle(el)["padding-bottom"]);
+    const style = getComputedStyle(el);
+    if (style['box-sizing'] === 'border-box') {
+        const borderTop = parseInt(style["border-top-width"]);
+        const borderBottom = parseInt(style["border-bottom-width"]);
+        const paddingTop = parseInt(style["padding-top"]);
+        const paddingBottom = parseInt(style["padding-bottom"]);
+        // console.log(h, borderTop, borderBottom, paddingTop, paddingBottom);
         el.style.height = h + borderTop + borderBottom + paddingTop + paddingBottom + 'px';
     } else {
         el.style.height = h + 'px';
     }
 };
 
+// outer border to ourter border
 export const setOuterWidth = function (el, w) {
-    if (getComputedStyle(el)['box-sizing'] === 'border-box') {
+    const style = getComputedStyle(el);
+    if (style['box-sizing'] === 'border-box') {
         el.style.width = w + 'px';
     } else {
-        const borderLeft = parseInt(getComputedStyle(el)["border-left-width"]);
-        const borderRight = parseInt(getComputedStyle(el)["border-right-width"]);
-        const paddingLeft = parseInt(getComputedStyle(el)["padding-left"]);
-        const paddingRight = parseInt(getComputedStyle(el)["padding-right"]);
+        const borderLeft = parseInt(style["border-left-width"]);
+        const borderRight = parseInt(style["border-right-width"]);
+        const paddingLeft = parseInt(style["padding-left"]);
+        const paddingRight = parseInt(style["padding-right"]);
         el.style.width = w - borderLeft - borderRight - paddingLeft - paddingRight + 'px';
     }
 };
 
 export const setOuterHeight = function (el, h) {
-    if (getComputedStyle(el)['box-sizing'] === 'border-box') {
+    const style = getComputedStyle(el);
+    if (style['box-sizing'] === 'border-box') {
         el.style.height = h + 'px';
     } else {
-        const borderTop = parseInt(getComputedStyle(el)["border-top-width"]);
-        const borderBottom = parseInt(getComputedStyle(el)["border-bottom-width"]);
-        const paddingTop = parseInt(getComputedStyle(el)["padding-top"]);
-        const paddingBottom = parseInt(getComputedStyle(el)["padding-bottom"]);
+        const borderTop = parseInt(style["border-top-width"]);
+        const borderBottom = parseInt(style["border-bottom-width"]);
+        const paddingTop = parseInt(style["padding-top"]);
+        const paddingBottom = parseInt(style["padding-bottom"]);
         el.style.height = h - borderTop - borderBottom - paddingTop - paddingBottom + 'px';
     }
 };
