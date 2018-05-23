@@ -4,3 +4,4 @@ build/
 dev/
 test/
 .cache/
+package-lock.json

@@ -110,6 +110,17 @@ class Resizable extends Base {
         let mx, my = 0; // position of this element, and mouse x, y coordinate
 
         const eh = {};
+        const getCursor = d => {
+            if (d === 'e' || d === 'w') {
+                return 'ew-resize';
+            }else if (d === 'n' || d === 's') {
+                return 'ns-resize';
+            }else if (d === 'ne' || d === 'sw') {
+                return 'nesw-resize';
+            }else if (d === 'se' || d === 'nw') {
+                return 'nwse-resize';
+            }
+        };
         const createDraggingHandles = function () {
             Object.keys(h).map(d => {
                 if (h[d]) {
@@ -117,7 +128,8 @@ class Resizable extends Base {
                     eld.classList.add('handle');
                     eld.style['position'] = 'absolute';
                     eld.style['z-index'] = Number.MAX_SAFE_INTEGER;
-                    eld.style['cursor'] = `${d}-resize`;
+                    console.log(d);
+                    eld.style['cursor'] = getCursor(d);
                     node.appendChild(eld);
                     if (settings.onDoubleClick) {
                         azui.DoubleClick(eld, {
