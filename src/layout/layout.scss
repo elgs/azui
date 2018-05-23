@@ -1,9 +1,8 @@
 .azLayout {
     display: grid;
-    grid-template-areas: "n n n n n" "gn gn gn gn gn" "w gw c ge e" "gs gs gs gs gs" "s s s s s";
-    grid-template-columns: auto auto 1fr auto auto;
-    grid-template-rows: auto auto 1fr auto auto;
-
+    grid-template-areas: "n n n" "w c e" "s s s";
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto 1fr auto;
     & .azLayoutArea {
         overflow: auto;
         &.azLayoutAreaNorth {
@@ -21,21 +20,6 @@
         &.azLayoutAreaCenter {
             border: 1px solid gray;
             grid-area: c;
-        }
-    }
-    & .azLayoutGutter {
-        overflow: hidden;
-        &.azLayoutGuttenNorth {
-            grid-area: gn;
-        }
-        &.azLayoutGuttenEast {
-            grid-area: ge;
-        }
-        &.azLayoutGuttenSouth {
-            grid-area: gs;
-        }
-        &.azLayoutGuttenWest {
-            grid-area: gw;
         }
     }
 }

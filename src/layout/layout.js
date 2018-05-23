@@ -31,11 +31,21 @@ class Layout extends Base {
         self.west = resolveDOM(settings.west);
         self.center = resolveDOM(settings.center);
 
-        self.north && self.north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
-        self.east && self.east.classList.add('azLayoutArea', 'azLayoutAreaEast');
-        self.south && self.south.classList.add('azLayoutArea', 'azLayoutAreaSouth');
-        self.west && self.west.classList.add('azLayoutArea', 'azLayoutAreaWest');
-        self.center && self.center.classList.add('azLayoutArea', 'azLayoutAreaCenter');
+        if (self.north) {
+            self.north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
+        }
+        if (self.east) {
+            self.east.classList.add('azLayoutArea', 'azLayoutAreaEast');
+        }
+        if (self.south) {
+            self.south.classList.add('azLayoutArea', 'azLayoutAreaSouth');
+        }
+        if (self.west) {
+            self.west.classList.add('azLayoutArea', 'azLayoutAreaWest');
+        }
+        if (self.center) {
+            self.center.classList.add('azLayoutArea', 'azLayoutAreaCenter');
+        }
 
         // console.log(self.north, self.east, self.south, self.west, self.center);
     }
