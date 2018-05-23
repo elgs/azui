@@ -23,6 +23,7 @@ class Resizable extends Base {
             aspectRatio: false,
             handleSize: 10,
             handles: 'all', //n, e, s, w, ne, se, sw, nw, all
+            moveOnResize: true,
             // onDoubleClick: function (event) {
             //     // console.log(event.target);
             // },
@@ -113,11 +114,11 @@ class Resizable extends Base {
         const getCursor = d => {
             if (d === 'e' || d === 'w') {
                 return 'ew-resize';
-            }else if (d === 'n' || d === 's') {
+            } else if (d === 'n' || d === 's') {
                 return 'ns-resize';
-            }else if (d === 'ne' || d === 'sw') {
+            } else if (d === 'ne' || d === 'sw') {
                 return 'nesw-resize';
-            }else if (d === 'se' || d === 'nw') {
+            } else if (d === 'se' || d === 'nw') {
                 return 'nwse-resize';
             }
         };
@@ -443,7 +444,9 @@ class Resizable extends Base {
         } else if (-by > self.yToMax) {
             by = -self.yToMax;
         }
-        self.node.style.top = (self.thisTop + by) + 'px';
+        if (self.settings.moveOnResize) {
+            self.node.style.top = (self.thisTop + by) + 'px';
+        }
         setOuterHeight(self.node, self.thisHeight - by);
     }
     moveE(by) {
@@ -471,7 +474,9 @@ class Resizable extends Base {
         } else if (by > self.xToMin) {
             by = self.xToMin;
         }
-        self.node.style.left = (self.thisLeft + by) + 'px';
+        if (self.settings.moveOnResize) {
+            self.node.style.left = (self.thisLeft + by) + 'px';
+        }
         setOuterWidth(self.node, self.thisWidth - by);
     }
 };
