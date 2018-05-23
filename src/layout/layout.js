@@ -57,6 +57,9 @@ class Layout extends Base {
         }
         if (self.center) {
             self.center.classList.add('azLayoutArea', 'azLayoutAreaCenter');
+            // azui.Resizable(self.center, {
+            //     handles: 'e, s',
+            // });
         }
 
         // console.log(self.north, self.east, self.south, self.west, self.center);

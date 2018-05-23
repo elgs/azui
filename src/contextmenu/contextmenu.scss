@@ -13,7 +13,7 @@
         width: 100%; // text-align: left;
         padding: 5px 0; // border: none;
         // outline: none;
-        & div {
+        & span{
             display: inline-block;
             &.icon {
                 grid-column: 1/2;

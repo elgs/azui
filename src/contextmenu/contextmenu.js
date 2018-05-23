@@ -42,52 +42,50 @@ class ContextMenu extends Base {
             });
         };
 
-        const createMenuItem = function (item, menu) {
-            if (!item) {
-                const separator = parseDOMElement('<div>&nbsp;</div>')[0];
-                separator.classList.add('azMenuSeparator');
-                return separator;
-            }
-            let icon = item.icon;
-            let title = item.title;
-
-            icon = normalizeIcon(icon);
-            title = normalizeIcon(title);
-
-            const iconDiv = document.createElement('div');
-            iconDiv.classList.add('icon');
-            const titleDiv = document.createElement('div');
-            titleDiv.classList.add('title')
-
-            const menuItem = document.createElement('div');
-            menuItem.classList.add('azMenuItem');
-            if (item.disabled) {
-                menuItem.classList.add('disabled');
-            }
-
-            menuItem.appendChild(iconDiv);
-            menuItem.appendChild(titleDiv);
-            iconDiv.innerHTML = icon;
-            titleDiv.innerHTML = title;
-            if (!item.disabled) {
-                menuItem.addEventListener('click', function (e) {
-                    if (item.action.call(menuItem, e, node) === false) {
-                        document.removeEventListener('mousemove', mousePositionTracker);
-                        document.removeEventListener('touchstart', blurFocusDetector);
-                        menu.parentNode.removeChild(menu);
-                        self.on = false;
-                        // alert('off');
-                    } else {
-                        focusDetector.focus();
-                    }
-                    e.stopPropagation();
-                });
-            }
-            return menuItem;
-        };
-
         const onContextMenu = function (e) {
             // console.log(e.currentTarget);
+
+            const createMenuItem = function (item, menu) {
+                if (!item) {
+                    const separator = parseDOMElement('<div>&nbsp;</div>')[0];
+                    separator.classList.add('azMenuSeparator');
+                    return separator;
+                }
+                let icon = item.icon;
+                let title = item.title;
+
+                const iconDiv = normalizeIcon(icon);
+                const titleDiv = normalizeIcon(title);
+
+                iconDiv.classList.add('icon');
+                titleDiv.classList.add('title');
+
+                const menuItem = document.createElement('div');
+                menuItem.classList.add('azMenuItem');
+                if (item.disabled) {
+                    menuItem.classList.add('disabled');
+                }
+
+                menuItem.appendChild(iconDiv);
+                menuItem.appendChild(titleDiv);
+                // iconDiv.innerHTML = icon;
+                // titleDiv.innerHTML = title;
+                if (!item.disabled) {
+                    menuItem.addEventListener('click', function (e) {
+                        if (item.action.call(menuItem, e, node) === false) {
+                            document.removeEventListener('mousemove', mousePositionTracker);
+                            document.removeEventListener('touchstart', blurFocusDetector);
+                            menu.parentNode.removeChild(menu);
+                            self.on = false;
+                            // alert('off');
+                        } else {
+                            focusDetector.focus();
+                        }
+                        e.stopPropagation();
+                    });
+                }
+                return menuItem;
+            };
 
             const menu = document.createElement('div');
             menu.classList.add('azContextMenu');

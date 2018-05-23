@@ -128,7 +128,6 @@ class Resizable extends Base {
                     eld.classList.add('handle');
                     eld.style['position'] = 'absolute';
                     eld.style['z-index'] = Number.MAX_SAFE_INTEGER;
-                    console.log(d);
                     eld.style['cursor'] = getCursor(d);
                     node.appendChild(eld);
                     if (settings.onDoubleClick) {

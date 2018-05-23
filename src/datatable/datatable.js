@@ -192,7 +192,7 @@ class DataTable extends Base {
         });
 
         const sortCmItems = [{
-            icon: parseDOMElement(icons.svgTriangleUp)[0],
+            icon: icons.svgTriangleUp,
             title: 'Sort Ascending',
             action: function (e, target) {
                 settings.sortDirection = 'desc';
@@ -200,7 +200,7 @@ class DataTable extends Base {
                 return false;
             }
         }, {
-            icon: parseDOMElement(icons.svgTriangleDown)[0],
+            icon: icons.svgTriangleDown,
             title: 'Sort Descending',
             action: function (e, target) {
                 settings.sortDirection = 'asc';
@@ -222,7 +222,7 @@ class DataTable extends Base {
                         return col.text;
                     },
                     action: function (e, target) {
-                        const cb = e.currentTarget.querySelector('div.icon>input[type=checkbox]');
+                        const cb = e.currentTarget.querySelector('span.icon>input[type=checkbox]');
                         setTimeout(() => {
                             // neglect the effect of e.preventDefault in the icon function;
                             cb.checked = !cb.checked;

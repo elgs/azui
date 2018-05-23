@@ -377,10 +377,15 @@ export const remove = function (el) {
 };
 
 export const normalizeIcon = function (i) {
-    if (typeof i === 'function') {
-        i = i();
+    if (typeof i === 'string') {
+        return parseDOMElement(`<span>${i}</span>`)[0];
+    } else if (typeof i === 'object') {
+        const sp = document.createElement('span');
+        sp.appendChild(i);
+        return sp;
+    } else if (typeof i === 'function') {
+        return normalizeIcon(i());
     }
-    return i;
 };
 
 export const nextAll = (el, selector) => {
