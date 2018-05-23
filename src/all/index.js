@@ -5,7 +5,7 @@ import '../contextmenu/index.js';
 import '../dropdown/index.js';
 import '../draggable/index.js';
 import '../droppable/index.js';
-import '../splitter/index.js';
+import '../layout/index.js';
 import '../inlineedit/index.js';
 import '../resizable/index.js';
 import '../sortable/index.js';
