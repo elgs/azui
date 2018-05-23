@@ -105,7 +105,7 @@ class Resizable extends Base {
         const h = parseHandles();
         // console.log(h);
 
-        const handleSize = isTouchDevice() ? settings.handleSize + 10 : settings.handleSize;
+        const handleSize = isTouchDevice() ? settings.handleSize + 4 : settings.handleSize;
         let thisAspectRatio;
         let mx, my = 0; // position of this element, and mouse x, y coordinate
 

@@ -402,3 +402,13 @@ export const prevAll = (el, selector) => {
     }
     return siblings;
 };
+
+export const resolveDOM = dom => {
+    if (dom instanceof Node) {
+        return dom;
+    } else if (typeof dom === 'string') {
+        return document.querySelector(dom);
+    } else if (typeof dom === 'function') {
+        return resolveDOM(dom());
+    }
+};

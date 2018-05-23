@@ -117,7 +117,7 @@ class Window extends Base {
         header.appendChild(parseDOMElement('<div class="right"></div>')[0]);
         setHeaderIcon(settings.icon);
         setHeaderTitle(settings.title);
-        azui.InlineEdit(header.querySelector('.left span.title'));
+        // azui.InlineEdit(header.querySelector('.left span.title'));
         initHeader();
         // header.prependTo(node);
         node.insertBefore(header, node.firstChild);
