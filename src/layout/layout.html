@@ -6,11 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>azLayout</title>
     <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
         div#container {
-            width: 800px;
-            height: 600px;
+            /* width: 800px; */
+            /* height: 600px; */
+            width: 100%;
+            height: 100%;
             position: relative;
-            border: 1px solid gray;
+            /* border: 1px solid gray; */
+        }
+
+        .azResizable>.handle {
+            /* opacity: 1; */
+            /* border: 1px solid black; */
+            box-sizing: border-box;
         }
     </style>
     <script src="./index.js"></script>

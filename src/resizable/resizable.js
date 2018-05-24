@@ -21,9 +21,11 @@ class Resizable extends Base {
             minHeight: 10,
             maxHeight: Number.MAX_SAFE_INTEGER,
             aspectRatio: false,
-            handleSize: 10,
+            handleSize: 6,
             handles: 'all', //n, e, s, w, ne, se, sw, nw, all
             moveOnResize: true,
+            showGutter: false,
+            showCollapseButton: false,
             // onDoubleClick: function (event) {
             //     // console.log(event.target);
             // },
@@ -144,7 +146,7 @@ class Resizable extends Base {
 
             const resetHandles = function () {
                 if (h.n) {
-                    eh.n.style['top'] = -handleSize / 2 + 'px';
+                    eh.n.style['top'] = -handleSize + 'px';
                     eh.n.style['bottom'] = '';
                     eh.n.style['right'] = '';
                     eh.n.style['left'] = 0;
@@ -153,7 +155,7 @@ class Resizable extends Base {
                 }
 
                 if (h.e) {
-                    eh.e.style['right'] = -handleSize / 2 + 'px';
+                    eh.e.style['right'] = -handleSize + 'px';
                     eh.e.style['left'] = '';
                     eh.e.style['bottom'] = '';
                     eh.e.style['top'] = 0;
@@ -162,7 +164,7 @@ class Resizable extends Base {
                 }
 
                 if (h.s) {
-                    eh.s.style['bottom'] = -handleSize / 2 + 'px';
+                    eh.s.style['bottom'] = -handleSize + 'px';
                     eh.s.style['top'] = '';
                     eh.s.style['right'] = '';
                     eh.s.style['left'] = 0;
@@ -170,7 +172,7 @@ class Resizable extends Base {
                     eh.s.style['width'] = '100%';
                 }
                 if (h.w) {
-                    eh.w.style['left'] = -handleSize / 2 + 'px';
+                    eh.w.style['left'] = -handleSize + 'px';
                     eh.w.style['right'] = '';
                     eh.w.style['bottom'] = '';
                     eh.w.style['top'] = 0;
@@ -180,33 +182,33 @@ class Resizable extends Base {
 
                 if (h.ne) {
                     eh.ne.style['left'] = '';
-                    eh.ne.style['right'] = -handleSize / 2 + 'px';
+                    eh.ne.style['right'] = -handleSize + 'px';
                     eh.ne.style['bottom'] = '';
-                    eh.ne.style['top'] = -handleSize / 2 + 'px';
+                    eh.ne.style['top'] = -handleSize + 'px';
                     eh.ne.style['width'] = handleSize + 'px';
                     eh.ne.style['height'] = handleSize + 'px';
                 }
                 if (h.se) {
                     eh.se.style['left'] = '';
-                    eh.se.style['right'] = -handleSize / 2 + 'px';
-                    eh.se.style['bottom'] = -handleSize / 2 + 'px';
+                    eh.se.style['right'] = -handleSize + 'px';
+                    eh.se.style['bottom'] = -handleSize + 'px';
                     eh.se.style['top'] = '';
                     eh.se.style['width'] = handleSize + 'px';
                     eh.se.style['height'] = handleSize + 'px';
                 }
                 if (h.sw) {
-                    eh.sw.style['left'] = -handleSize / 2 + 'px';
+                    eh.sw.style['left'] = -handleSize + 'px';
                     eh.sw.style['right'] = '';
-                    eh.sw.style['bottom'] = -handleSize / 2 + 'px';
+                    eh.sw.style['bottom'] = -handleSize + 'px';
                     eh.sw.style['top'] = '';
                     eh.sw.style['width'] = handleSize + 'px';
                     eh.sw.style['height'] = handleSize + 'px';
                 }
                 if (h.nw) {
-                    eh.nw.style['left'] = -handleSize / 2 + 'px';
+                    eh.nw.style['left'] = -handleSize + 'px';
                     eh.nw.style['right'] = '';
                     eh.nw.style['bottom'] = '';
-                    eh.nw.style['top'] = -handleSize / 2 + 'px';
+                    eh.nw.style['top'] = -handleSize + 'px';
                     eh.nw.style['width'] = handleSize + 'px';
                     eh.nw.style['height'] = handleSize + 'px';
                 }

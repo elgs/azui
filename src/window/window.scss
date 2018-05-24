@@ -1,7 +1,6 @@
 @import "../utilities/utilities.scss";
 $bg-color:#1E1E1E;
 .azWindow {
-    overflow: hidden; // border: 1px solid darken($color: $main-color, $amount: 20%);
     box-sizing: border-box;
     background-color: white;
     display: grid;
