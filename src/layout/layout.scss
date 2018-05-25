@@ -1,4 +1,4 @@
-$areaBorder: 6px solid lightgray;
+$areaBorder: 6px solid transparent;
 .azLayout {
     display: grid;
     grid-template-areas: "n n n" "w c e" "s s s";
@@ -29,4 +29,9 @@ $areaBorder: 6px solid lightgray;
             grid-area: c;
         }
     }
+}
+
+.azResizable>.handle {
+    background-color: lightgray;
+    box-sizing: border-box;
 }
