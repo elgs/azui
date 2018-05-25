@@ -35,6 +35,7 @@ class Layout extends Base {
             self.north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
             azui.Resizable(self.north, {
                 handles: 's',
+                handleDirection: 'in',
             });
         }
         if (self.east) {
@@ -42,6 +43,7 @@ class Layout extends Base {
             azui.Resizable(self.east, {
                 handles: 'w',
                 moveOnResize: false,
+                handleDirection: 'in',
             });
         }
         if (self.south) {
@@ -49,12 +51,14 @@ class Layout extends Base {
             azui.Resizable(self.south, {
                 handles: 'n',
                 moveOnResize: false,
+                handleDirection: 'in',
             });
         }
         if (self.west) {
             self.west.classList.add('azLayoutArea', 'azLayoutAreaWest');
             azui.Resizable(self.west, {
                 handles: 'e',
+                handleDirection: 'in',
             });
         }
         if (self.center) {

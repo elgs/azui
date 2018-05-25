@@ -15,8 +15,9 @@
         #div0 {
             width: 200px;
             height: 200px;
-            border: 1px solid gray;
-            padding: 20px;
+            border: 10px solid transparent;
+            padding: 10px;
+            margin: 10px;
             box-sizing: border-box;
             position: relative;
         }
@@ -53,6 +54,7 @@
                 maxWidth: 300,
                 minHeight: 100,
                 maxHeight: 300,
+                handleDirection: 'in',
             });
             azui.Draggable(el);
         });

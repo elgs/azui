@@ -1,4 +1,3 @@
-$areaBorder: 6px solid transparent;
 .azLayout {
     display: grid;
     grid-template-areas: "n n n" "w c e" "s s s";
@@ -6,24 +5,26 @@ $areaBorder: 6px solid transparent;
     grid-template-rows: auto 1fr auto;
     position: relative;
     & .azLayoutArea {
-        // overflow: auto;
+        overflow: auto;
         position: relative;
         box-sizing: border-box;
         &.azLayoutAreaNorth {
-            border-bottom: $areaBorder;
             grid-area: n;
+            height: 50px;
+            background-color: red;
+            padding-bottom: 6px;
         }
         &.azLayoutAreaEast {
-            border-left: $areaBorder;
             grid-area: e;
+            padding-left: 6px;
         }
         &.azLayoutAreaSouth {
-            border-top: $areaBorder;
             grid-area: s;
+            padding-top: 6px;
         }
         &.azLayoutAreaWest {
-            border-right: $areaBorder;
             grid-area: w;
+            padding-right: 6px;
         }
         &.azLayoutAreaCenter {
             grid-area: c;
