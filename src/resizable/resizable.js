@@ -133,6 +133,7 @@ class Resizable extends Base {
                     eld.style['position'] = 'absolute';
                     eld.style['z-index'] = Number.MAX_SAFE_INTEGER;
                     eld.style['cursor'] = getCursor(d);
+                    eld.style['display'] = 'grid';
                     node.appendChild(eld);
                     if (settings.onDoubleClick) {
                         azui.DoubleClick(eld, {
@@ -250,6 +251,7 @@ class Resizable extends Base {
                 if (settings.start.call(node, event, node) === false) {
                     return false;
                 }
+                elem.classList.add('active');
             };
 
             const onStop = function (event, elem) {
@@ -257,6 +259,7 @@ class Resizable extends Base {
                     return false;
                 }
                 resetHandles();
+                elem.classList.remove('active');
             }
 
             const checkAspectRatio = function () {

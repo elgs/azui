@@ -15,14 +15,17 @@
         }
         &.azLayoutAreaEast {
             grid-area: e;
+            width: 50px;
             padding-left: 6px;
         }
         &.azLayoutAreaSouth {
             grid-area: s;
+            height: 50px;
             padding-top: 6px;
         }
         &.azLayoutAreaWest {
             grid-area: w;
+            width: 50px;
             padding-right: 6px;
         }
         &.azLayoutAreaCenter {
@@ -32,6 +35,12 @@
 }
 
 .azResizable>.handle {
-    background-color: lightgray;
+    background-color: rgb(236, 236, 236);
     box-sizing: border-box;
+    &.active {
+        background-color: #2CBFFC;
+    }
+    &:hover {
+        background-color: #2CBFFC;
+    }
 }
