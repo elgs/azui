@@ -1,0 +1,11 @@
+@import '../utilities/utilities.scss';
+.azResizable>.handle {
+    background-color: rgb(236, 236, 236);
+    box-sizing: border-box;
+    &.active {
+        background-color: $active0;
+    }
+    &:hover {
+        background-color: $active0;
+    }
+}

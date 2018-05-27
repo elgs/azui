@@ -33,14 +33,3 @@
         }
     }
 }
-
-.azResizable>.handle {
-    background-color: rgb(236, 236, 236);
-    box-sizing: border-box;
-    &.active {
-        background-color: #2CBFFC;
-    }
-    &:hover {
-        background-color: #2CBFFC;
-    }
-}

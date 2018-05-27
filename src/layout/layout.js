@@ -31,11 +31,18 @@ class Layout extends Base {
         self.west = resolveDOM(settings.west);
         self.center = resolveDOM(settings.center);
 
+        let centerWidth, centerHeight;
         if (self.north) {
             self.north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
             azui.Resizable(self.north, {
                 handles: 's',
                 handleDirection: 'in',
+                start: function (e, h) {
+                    centerHeight = parseInt(getComputedStyle(self.center).height);
+                },
+                resize: function (e, h, by) {
+                    by.dy = Math.min(by.dy, centerHeight);
+                },
             });
         }
         if (self.east) {
@@ -44,6 +51,12 @@ class Layout extends Base {
                 handles: 'w',
                 moveOnResize: false,
                 handleDirection: 'in',
+                start: function (e, h) {
+                    centerWidth = parseInt(getComputedStyle(self.center).width);
+                },
+                resize: function (e, h, by) {
+                    by.dx = Math.max(by.dx, -centerWidth);
+                },
             });
         }
         if (self.south) {
@@ -52,6 +65,12 @@ class Layout extends Base {
                 handles: 'n',
                 moveOnResize: false,
                 handleDirection: 'in',
+                start: function (e, h) {
+                    centerHeight = parseInt(getComputedStyle(self.center).height);
+                },
+                resize: function (e, h, by) {
+                    by.dy = Math.max(by.dy, -centerHeight);
+                },
             });
         }
         if (self.west) {
@@ -59,6 +78,12 @@ class Layout extends Base {
             azui.Resizable(self.west, {
                 handles: 'e',
                 handleDirection: 'in',
+                start: function (e, h) {
+                    centerWidth = parseInt(getComputedStyle(self.center).width);
+                },
+                resize: function (e, h, by) {
+                    by.dx = Math.min(by.dx, centerWidth);
+                },
             });
         }
         if (self.center) {

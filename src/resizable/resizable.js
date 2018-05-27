@@ -126,6 +126,14 @@ class Resizable extends Base {
             }
         };
         const createDraggingHandles = function () {
+
+            const createHandleButtonH = function () {
+                const b = document.createElement('div');
+                b.style['margin'] = 'auto';
+                b.style['height'] = '100%';
+                return b;
+            };
+
             Object.keys(h).map(d => {
                 if (h[d]) {
                     const eld = document.createElement('div');
@@ -219,7 +227,7 @@ class Resizable extends Base {
             resetHandles();
 
             const onCreate = function (event, elem) {
-                if (settings.create.call(node, event, node) === false) {
+                if (settings.create.call(node, event, elem) === false) {
                     return false;
                 }
                 mx = event.clientX || event.touches[0].clientX;
@@ -248,14 +256,14 @@ class Resizable extends Base {
             };
 
             const onStart = function (event, elem) {
-                if (settings.start.call(node, event, node) === false) {
+                if (settings.start.call(node, event, elem) === false) {
                     return false;
                 }
                 elem.classList.add('active');
             };
 
             const onStop = function (event, elem) {
-                if (settings.stop.call(node, event, node) === false) {
+                if (settings.stop.call(node, event, elem) === false) {
                     return false;
                 }
                 resetHandles();
@@ -289,14 +297,17 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
+                    const by = {
+                        dy: nmy - my
+                    };
 
-                    const dy = nmy - my;
-                    self.moveN(dy);
+                    if (settings.resize.call(node, event, eh.n, by) === false) {
+                        return false;
+                    }
+
+                    self.moveN(by.dy);
                     checkAll();
 
                     return false;
@@ -308,14 +319,18 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
 
-                    const dx = nmx - mx;
-                    self.moveE(dx);
+                    const by = {
+                        dx: nmx - mx
+                    };
+
+                    if (settings.resize.call(node, event, eh.e, by) === false) {
+                        return false;
+                    }
+
+                    self.moveE(by.dx);
                     checkAll();
                     return false;
                 },
@@ -326,14 +341,18 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
 
-                    const dy = nmy - my;
-                    self.moveS(dy);
+                    const by = {
+                        dy: nmy - my
+                    };
+
+                    if (settings.resize.call(node, event, eh.s, by) === false) {
+                        return false;
+                    }
+
+                    self.moveS(by.dy);
                     checkAll();
                     return false;
                 },
@@ -344,14 +363,18 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
 
-                    const dx = nmx - mx;
-                    self.moveW(dx);
+                    const by = {
+                        dx: nmx - mx
+                    };
+
+                    if (settings.resize.call(node, event, eh.w, by) === false) {
+                        return false;
+                    }
+
+                    self.moveW(by.dx);
                     checkAll();
                     return false;
                 },
@@ -362,17 +385,23 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.moveN(dy);
-                    self.moveE(dx);
+                    const by = {
+                        dx,
+                        dy
+                    };
+
+                    if (settings.resize.call(node, event, eh.ne, by) === false) {
+                        return false;
+                    }
+
+                    self.moveN(by.dy);
+                    self.moveE(by.dx);
                     checkAll();
                     return false;
                 },
@@ -382,17 +411,23 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.moveS(dy);
-                    self.moveE(dx);
+                    const by = {
+                        dx,
+                        dy
+                    };
+
+                    if (settings.resize.call(node, event, eh.se, by) === false) {
+                        return false;
+                    }
+
+                    self.moveS(by.dy);
+                    self.moveE(by.dx);
                     checkAll();
                     return false;
                 },
@@ -402,17 +437,23 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.moveS(dy);
-                    self.moveW(dx);
+                    const by = {
+                        dx,
+                        dy
+                    };
+
+                    if (settings.resize.call(node, event, eh.sw, by) === false) {
+                        return false;
+                    }
+
+                    self.moveS(by.dy);
+                    self.moveW(by.dx);
                     checkAll();
                     return false;
                 },
@@ -422,17 +463,23 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    if (settings.resize.call(node, event, node) === false) {
-                        return false;
-                    }
                     const nmx = event.clientX || event.touches[0].clientX;
                     const nmy = event.clientY || event.touches[0].clientY;
 
                     const dx = nmx - mx;
                     const dy = nmy - my;
 
-                    self.moveN(dy);
-                    self.moveW(dx);
+                    const by = {
+                        dx,
+                        dy
+                    };
+
+                    if (settings.resize.call(node, event, eh.nw, by) === false) {
+                        return false;
+                    }
+
+                    self.moveN(by.dy);
+                    self.moveW(by.dx);
                     checkAll();
                     return false;
                 },
