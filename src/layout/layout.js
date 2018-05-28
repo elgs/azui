@@ -41,10 +41,10 @@ class Layout extends Base {
                     centerHeight = parseInt(getComputedStyle(self.center).height);
                 },
                 resize: function (e, h, by) {
+                    by.dy = Math.min(by.dy, centerHeight);
                     self.center.style.height = centerHeight - by.dy + 'px';
                     self.west.style.height = centerHeight - by.dy + 'px';
                     self.east.style.height = centerHeight - by.dy + 'px';
-                    by.dy = Math.min(by.dy, centerHeight);
                 },
             });
         }
@@ -72,10 +72,10 @@ class Layout extends Base {
                     centerHeight = parseInt(getComputedStyle(self.center).height);
                 },
                 resize: function (e, h, by) {
+                    by.dy = Math.max(by.dy, -centerHeight);
                     self.center.style.height = centerHeight + by.dy + 'px';
                     self.west.style.height = centerHeight + by.dy + 'px';
                     self.east.style.height = centerHeight + by.dy + 'px';
-                    by.dy = Math.max(by.dy, -centerHeight);
                 },
             });
         }
