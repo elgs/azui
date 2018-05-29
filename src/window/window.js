@@ -133,6 +133,7 @@ class Window extends Base {
         azui.Resizable(node, {
             minHeight: settings.headerHeight * 2,
             minWidth: 240,
+            hideHandles: true,
             start: function (event, ui) {
                 pb = node.parentNode.getBoundingClientRect();
             },

@@ -25,8 +25,8 @@ class Resizable extends Base {
             handles: 'all', //n, e, s, w, ne, se, sw, nw, all
             handleDirection: 'out', // or in
             moveOnResize: true,
-            showGutter: false,
-            showCollapseButton: false,
+            hideHandles: false,
+            hideCollapseButton: false,
             // onDoubleClick: function (event) {
             //     // console.log(event.target);
             // },
@@ -142,6 +142,9 @@ class Resizable extends Base {
                     eld.style['z-index'] = Number.MAX_SAFE_INTEGER;
                     eld.style['cursor'] = getCursor(d);
                     eld.style['display'] = 'grid';
+                    if (settings.hideHandles) {
+                        eld.style['opacity'] = 0;
+                    }
                     node.appendChild(eld);
                     if (settings.onDoubleClick) {
                         azui.DoubleClick(eld, {
