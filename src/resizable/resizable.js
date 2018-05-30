@@ -132,17 +132,32 @@ class Resizable extends Base {
 
             const createHandleButtonH = function (direction) {
                 const collapseButton = document.createElement('div');
+                collapseButton.addEventListener('mouseenter', function (e) {
+                    e.currentTarget.querySelector('svg').classList.add('active');
+                });
+                collapseButton.addEventListener('mouseleave', function (e) {
+                    e.currentTarget.querySelector('svg').classList.remove('active');
+                });
+
                 collapseButton.classList.add('collapseButton');
 
-                if (direction === 'n' || direction === 's') {
+                if (direction === 'n') {
                     const collapseIcon = normalizeIcon(icons.svgTriangleDown);
                     collapseButton.classList.add('collapseButtonH');
-
                     collapseIcon.classList.add('collapseIcon');
-                    collapseIcon.classList.add('collapseIconDown');
                     collapseButton.appendChild(collapseIcon);
-                } else if (direction === 'w' || direction === 'e') {
+                } else if (direction === 's') {
+                    const collapseIcon = normalizeIcon(icons.svgTriangleUp);
+                    collapseButton.classList.add('collapseButtonH');
+                    collapseIcon.classList.add('collapseIcon');
+                    collapseButton.appendChild(collapseIcon);
+                } else if (direction === 'w') {
                     const collapseIcon = normalizeIcon(icons.svgTriangleRight);
+                    collapseButton.classList.add('collapseButtonV');
+                    collapseIcon.classList.add('collapseIcon');
+                    collapseButton.appendChild(collapseIcon);
+                } else if (direction === 'e') {
+                    const collapseIcon = normalizeIcon(icons.svgTriangleLeft);
                     collapseButton.classList.add('collapseButtonV');
                     collapseIcon.classList.add('collapseIcon');
                     collapseButton.appendChild(collapseIcon);
@@ -160,6 +175,12 @@ class Resizable extends Base {
                         eld.style['opacity'] = 0;
                     } else if (!settings.hideCollapseButton) {
                         eld.appendChild(createHandleButtonH(d));
+                        eld.addEventListener('mouseenter', function (e) {
+                            e.currentTarget.classList.add('active');
+                        });
+                        eld.addEventListener('mouseleave', function (e) {
+                            e.currentTarget.classList.remove('active');
+                        });
                     }
                     node.appendChild(eld);
                     if (settings.onDoubleClick) {

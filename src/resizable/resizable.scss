@@ -11,6 +11,7 @@
         background-color: lighten($color: $main-color, $amount: 10%);
         margin: auto;
         display: grid;
+        cursor: pointer;
         &.collapseButtonH {
             height: 100%;
             width: 40px;
@@ -19,6 +20,9 @@
                 &>svg {
                     height: 6px;
                     fill: $main-color;
+                    &.active {
+                        fill: $active0;
+                    }
                 }
             }
         }
@@ -30,6 +34,9 @@
                 &>svg {
                     width: 6px;
                     fill: $main-color;
+                    &.active {
+                        fill: $active0;
+                    }
                 }
             }
         }
