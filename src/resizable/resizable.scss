@@ -1,11 +1,37 @@
 @import '../utilities/utilities.scss';
 .azResizable>.handle {
-    background-color: rgb(236, 236, 236);
+    background-color: $main-color;
     box-sizing: border-box;
+    position: absolute;
+    display: grid;
     &.active {
         background-color: $active0;
     }
-    &:hover {
-        background-color: $active0;
+    &>div.collapseButton {
+        background-color: lighten($color: $main-color, $amount: 10%);
+        margin: auto;
+        display: grid;
+        &.collapseButtonH {
+            height: 100%;
+            width: 40px;
+            &>span.collapseIcon {
+                margin: auto;
+                &>svg {
+                    height: 6px;
+                    fill: $main-color;
+                }
+            }
+        }
+        &.collapseButtonV {
+            height: 40px;
+            width: 100%;
+            &>span.collapseIcon {
+                margin: auto;
+                &>svg {
+                    width: 6px;
+                    fill: $main-color;
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@ export const svgPreviousPage = `<svg xmlns="http://www.w3.org/2000/svg" viewBox=
 export const svgRefresh = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.979999542236328 32"><path d="M27.28 4.7C24.39 1.8 20.4 0 15.98 0 7.14 0 0 7.16 0 16s7.14 16 15.98 16c7.45 0 13.69-5.1 15.46-12h-4.16c-1.65 4.66-6.07 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45 3.55L17.98 14h14V0l-4.7 4.7z"/></svg>`;
 export const svgTriangleUp = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 10L10 0l10 10z"/></svg>`;
 export const svgTriangleDown = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 10"><path d="M0 0l10 10L20 0z"/></svg>`;
+export const svgTriangleLeft = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 20"><path d="M10 0L20 10H0L10 0Z" transform="translate(0 20) rotate(-90)"/></svg>`;
+export const svgTriangleRight = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 20"><path d="M10 0L20 10H0L10 0Z" transform="translate(10) rotate(90)"/></svg>`;
 export const svgDeny = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M20 0C9 0 0 9 0 20s9 20 20 20 20-9 20-20S31 0 20 0zM4 20c0-8.8 7.2-16 16-16 3.7 0 7.1 1.3 9.8 3.4L7.4 29.8C5.3 27.1 4 23.7 4 20zm16 16c-3.7 0-7.1-1.3-9.8-3.4l22.4-22.4c2.1 2.7 3.4 6.1 3.4 9.8 0 8.8-7.2 16-16 16z"/></svg>`;
 export const svgAllow = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M20 0C8.95 0 0 8.95 0 20c0 11.04 8.95 20 20 20 11.04 0 20-8.96 20-20C40 8.95 31.04 0 20 0zm-4 30L6 20l2.83-2.83L16 24.34 31.17 9.17 34 12 16 30z"/></svg>`;
 export const svgArrowUp = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 14.829999923706055"><path d="M12 0L0 12l2.83 2.83L12 5.66l9.17 9.17L24 12z"/></svg>`;

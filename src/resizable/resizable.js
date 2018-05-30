@@ -2,10 +2,13 @@ import {
     Base
 } from '../utilities/core.js';
 
+import * as icons from '../utilities/icons.js';
+
 import {
     isTouchDevice,
     setOuterWidth,
     setOuterHeight,
+    normalizeIcon,
 } from '../utilities/utilities.js';
 
 azui.Resizable = function (el, options) {
@@ -127,23 +130,36 @@ class Resizable extends Base {
         };
         const createDraggingHandles = function () {
 
-            const createHandleButtonH = function () {
-                const b = document.createElement('div');
-                b.style['margin'] = 'auto';
-                b.style['height'] = '100%';
-                return b;
+            const createHandleButtonH = function (direction) {
+                const collapseButton = document.createElement('div');
+                collapseButton.classList.add('collapseButton');
+
+                if (direction === 'n' || direction === 's') {
+                    const collapseIcon = normalizeIcon(icons.svgTriangleDown);
+                    collapseButton.classList.add('collapseButtonH');
+
+                    collapseIcon.classList.add('collapseIcon');
+                    collapseIcon.classList.add('collapseIconDown');
+                    collapseButton.appendChild(collapseIcon);
+                } else if (direction === 'w' || direction === 'e') {
+                    const collapseIcon = normalizeIcon(icons.svgTriangleRight);
+                    collapseButton.classList.add('collapseButtonV');
+                    collapseIcon.classList.add('collapseIcon');
+                    collapseButton.appendChild(collapseIcon);
+                }
+                return collapseButton;
             };
 
             Object.keys(h).map(d => {
                 if (h[d]) {
                     const eld = document.createElement('div');
                     eld.classList.add('handle');
-                    eld.style['position'] = 'absolute';
                     eld.style['z-index'] = Number.MAX_SAFE_INTEGER;
                     eld.style['cursor'] = getCursor(d);
-                    eld.style['display'] = 'grid';
                     if (settings.hideHandles) {
                         eld.style['opacity'] = 0;
+                    } else if (!settings.hideCollapseButton) {
+                        eld.appendChild(createHandleButtonH(d));
                     }
                     node.appendChild(eld);
                     if (settings.onDoubleClick) {

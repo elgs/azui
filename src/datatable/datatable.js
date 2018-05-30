@@ -2,7 +2,7 @@ import {
     Base
 } from '../utilities/core.js';
 
-import * as icons from '../utilities/icons';
+import * as icons from '../utilities/icons.js';
 import {
     isTouchDevice,
     textWidth,
@@ -152,11 +152,14 @@ class DataTable extends Base {
             azui.Resizable(el, {
                 handles: 'e',
                 minWidth: 100,
+                hideHandles: true,
                 // maxWidth: 400,
-                create: function (e, target) {
+                create: function (e) {
+                    const target = this;
                     target.setAttribute('widthOnCreate', getWidth(target));
                 },
-                stop: function (e, target) {
+                stop: function (e) {
+                    const target = this;
                     // console.log(index(target));
                     const woc = target.getAttribute('widthOnCreate') * 1;
                     target.removeAttribute('widthOnCreate');
