@@ -15,25 +15,27 @@
         #div0 {
             width: 200px;
             height: 200px;
-            border: 10px solid transparent;
+            /* border: 10px solid transparent; */
             padding: 10px;
             margin: 10px;
             box-sizing: border-box;
             position: relative;
+            overflow: auto;
         }
 
         #div1 {
             width: 200px;
             height: 200px;
-            border: 1px solid gray;
+            /* border: 1px solid gray; */
             /* padding: 20px; */
             box-sizing: border-box;
             position: relative;
+            overflow: auto;
         }
 
         .azResizable>.handle {
             /* opacity: 1; */
-            border: 1px solid black;
+            /* border: 1px solid black; */
             box-sizing: border-box;
         }
     </style>
@@ -42,18 +44,26 @@
 
 <body>
     <div style="border: 1px solid red; height: 500px;">
-        <div id="div0"></div>
-        <div id="div1"></div>
+        <div id="div0">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis repudiandae, voluptas sapiente pariatur
+                qui asperiores fugiat corporis reprehenderit delectus soluta officia nostrum eaque eius repellat perspiciatis
+                molestias accusamus ab maiores?</p>
+        </div>
+        <div id="div1">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis repudiandae, voluptas sapiente pariatur
+                qui asperiores fugiat corporis reprehenderit delectus soluta officia nostrum eaque eius repellat perspiciatis
+                molestias accusamus ab maiores?</p>
+        </div>
     </div>
     <script>
         const elems = document.querySelectorAll('#div0, #div1');
         elems.forEach(el => {
             const resizable = azui.Resizable(el, {
                 handles: 'all',
-                minWidth: 100,
-                maxWidth: 300,
-                minHeight: 100,
-                maxHeight: 300,
+                // minWidth: 100,
+                // maxWidth: 300,
+                // minHeight: 100,
+                // maxHeight: 300,
                 handleDirection: 'in',
             });
             azui.Draggable(el);

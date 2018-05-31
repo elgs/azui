@@ -117,6 +117,7 @@ class Resizable extends Base {
         let mx, my = 0; // position of this element, and mouse x, y coordinate
 
         const eh = {};
+
         const getCursor = d => {
             if (d === 'e' || d === 'w') {
                 return 'ew-resize';
@@ -130,14 +131,41 @@ class Resizable extends Base {
         };
         const createDraggingHandles = function () {
 
+            const collapseArea = function (direction) {
+                self.node.style.width = parseInt(getComputedStyle(self.node).width);
+                self.node.style.height = parseInt(getComputedStyle(self.node).height);
+                self.node.style.overflow = 'hidden';
+                if (direction === 'n') {
+                    self.node.style.height = 0;
+                } else if (direction === 's') {
+                    self.node.style.height = 0;
+                } else if (direction === 'w') {
+                    self.node.style.width = 0;
+                } else if (direction === 'e') {
+                    self.node.style.width = 0;
+                }
+            };
+
+            let inHandle = false;
+            let inButton = false;
+
             const createHandleButtonH = function (direction) {
                 const collapseButton = document.createElement('div');
                 collapseButton.addEventListener('mouseenter', function (e) {
+                    inButton = true;
+                    e.currentTarget.parentNode.classList.remove('active');
                     e.currentTarget.querySelector('svg').classList.add('active');
                 });
                 collapseButton.addEventListener('mouseleave', function (e) {
+                    inButton = false;
                     e.currentTarget.querySelector('svg').classList.remove('active');
+                    if (inHandle) {
+                        e.currentTarget.parentNode.classList.add('active');
+                    }
                 });
+                // collapseButton.addEventListener('click', function (e) {
+                //     collapseArea(direction);
+                // });
 
                 collapseButton.classList.add('collapseButton');
 
@@ -176,9 +204,16 @@ class Resizable extends Base {
                     } else if (!settings.hideCollapseButton) {
                         eld.appendChild(createHandleButtonH(d));
                         eld.addEventListener('mouseenter', function (e) {
-                            e.currentTarget.classList.add('active');
+                            inHandle = true;
+                            const ct = e.currentTarget;
+                            setTimeout(() => {
+                                if (!inButton) {
+                                    ct.classList.add('active');
+                                }
+                            });
                         });
                         eld.addEventListener('mouseleave', function (e) {
+                            inHandle = false;
                             e.currentTarget.classList.remove('active');
                         });
                     }
@@ -307,6 +342,10 @@ class Resizable extends Base {
                     return false;
                 }
                 resetHandles();
+
+                // self.node.style.width = parseInt(getComputedStyle(self.node).width);
+                // self.node.style.height = parseInt(getComputedStyle(self.node).height);
+
                 elem.classList.remove('active');
             }
 

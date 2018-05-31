@@ -56,6 +56,8 @@ class Layout extends Base {
                 handleDirection: 'in',
                 start: function (e, h) {
                     centerWidth = parseInt(getComputedStyle(self.center).width);
+                    centerHeight = parseInt(getComputedStyle(self.center).height);
+                    self.east.style.height = centerHeight + 'px';
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.max(by.dx, -centerWidth);
@@ -86,6 +88,8 @@ class Layout extends Base {
                 handleDirection: 'in',
                 start: function (e, h) {
                     centerWidth = parseInt(getComputedStyle(self.center).width);
+                    centerHeight = parseInt(getComputedStyle(self.center).height);
+                    self.west.style.height = centerHeight + 'px';
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.min(by.dx, centerWidth);
