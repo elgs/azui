@@ -5,6 +5,8 @@ import {
 import {
     resolveDOM,
     getHeight,
+    getWidth,
+    setHeight,
 } from '../utilities/utilities.js';
 
 azui.Layout = function (el, options) {
@@ -39,16 +41,16 @@ class Layout extends Base {
                 handles: 's',
                 handleDirection: 'in',
                 start: function (e, h) {
-                    centerHeight = parseInt(getComputedStyle(self.center).height);
+                    centerHeight = getHeight(self.center);
                 },
                 resize: function (e, h, by) {
                     if (getHeight(self.north) <= 0) {
                         return;
                     }
                     by.dy = Math.min(by.dy, centerHeight);
-                    self.center.style.height = centerHeight - by.dy + 'px';
-                    self.west.style.height = centerHeight - by.dy + 'px';
-                    self.east.style.height = centerHeight - by.dy + 'px';
+                    setHeight(self.center, centerHeight - by.dy);
+                    setHeight(self.east, centerHeight - by.dy);
+                    setHeight(self.west, centerHeight - by.dy);
                 },
             });
         }
@@ -59,9 +61,9 @@ class Layout extends Base {
                 moveOnResize: false,
                 handleDirection: 'in',
                 start: function (e, h) {
-                    centerWidth = parseInt(getComputedStyle(self.center).width);
-                    centerHeight = parseInt(getComputedStyle(self.center).height);
-                    self.east.style.height = centerHeight + 'px';
+                    centerWidth = getWidth(self.center);
+                    centerHeight = getHeight(self.center);
+                    setHeight(self.east, centerHeight);
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.max(by.dx, -centerWidth);
@@ -75,16 +77,16 @@ class Layout extends Base {
                 moveOnResize: false,
                 handleDirection: 'in',
                 start: function (e, h) {
-                    centerHeight = parseInt(getComputedStyle(self.center).height);
+                    centerHeight = getHeight(self.center);
                 },
                 resize: function (e, h, by) {
                     if (getHeight(self.south) <= 0) {
                         return;
                     }
                     by.dy = Math.max(by.dy, -centerHeight);
-                    self.center.style.height = centerHeight + by.dy + 'px';
-                    self.west.style.height = centerHeight + by.dy + 'px';
-                    self.east.style.height = centerHeight + by.dy + 'px';
+                    setHeight(self.center, centerHeight + by.dy);
+                    setHeight(self.east, centerHeight + by.dy);
+                    setHeight(self.west, centerHeight + by.dy);
                 },
             });
         }
@@ -94,9 +96,9 @@ class Layout extends Base {
                 handles: 'e',
                 handleDirection: 'in',
                 start: function (e, h) {
-                    centerWidth = parseInt(getComputedStyle(self.center).width);
-                    centerHeight = parseInt(getComputedStyle(self.center).height);
-                    self.west.style.height = centerHeight + 'px';
+                    centerWidth = getWidth(self.center);
+                    centerHeight = getHeight(self.center);
+                    setHeight(self.west, centerHeight);
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.min(by.dx, centerWidth);

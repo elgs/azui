@@ -136,17 +136,17 @@ class Resizable extends Base {
         const createDraggingHandles = function () {
 
             const collapseArea = function (direction) {
-                self.node.style.width = parseInt(getComputedStyle(self.node).width);
-                self.node.style.height = parseInt(getComputedStyle(self.node).height);
+                setWidth(self.node, getWidth(self.node));
+                setHeight(self.node, getHeight(self.node));
                 self.node.style.overflow = 'hidden';
                 if (direction === 'n') {
-                    self.node.style.height = 0;
+                    setHeight(self.node, 0);
                 } else if (direction === 's') {
-                    self.node.style.height = 0;
+                    setHeight(self.node, 0);
                 } else if (direction === 'w') {
-                    self.node.style.width = 0;
+                    setWidth(self.node, 0);
                 } else if (direction === 'e') {
-                    self.node.style.width = 0;
+                    setWidth(self.node, 0);
                 }
             };
 
@@ -167,9 +167,9 @@ class Resizable extends Base {
                         e.currentTarget.parentNode.classList.add('active');
                     }
                 });
-                // collapseButton.addEventListener('click', function (e) {
-                //     collapseArea(direction);
-                // });
+                collapseButton.addEventListener('click', function (e) {
+                    collapseArea(direction);
+                });
 
                 collapseButton.classList.add('collapseButton');
 
