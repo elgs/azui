@@ -4,6 +4,7 @@ import {
 
 import {
     resolveDOM,
+    getHeight,
 } from '../utilities/utilities.js';
 
 azui.Layout = function (el, options) {
@@ -41,6 +42,9 @@ class Layout extends Base {
                     centerHeight = parseInt(getComputedStyle(self.center).height);
                 },
                 resize: function (e, h, by) {
+                    if (getHeight(self.north) <= 0) {
+                        return;
+                    }
                     by.dy = Math.min(by.dy, centerHeight);
                     self.center.style.height = centerHeight - by.dy + 'px';
                     self.west.style.height = centerHeight - by.dy + 'px';
@@ -74,6 +78,9 @@ class Layout extends Base {
                     centerHeight = parseInt(getComputedStyle(self.center).height);
                 },
                 resize: function (e, h, by) {
+                    if (getHeight(self.south) <= 0) {
+                        return;
+                    }
                     by.dy = Math.max(by.dy, -centerHeight);
                     self.center.style.height = centerHeight + by.dy + 'px';
                     self.west.style.height = centerHeight + by.dy + 'px';

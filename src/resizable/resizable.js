@@ -9,6 +9,10 @@ import {
     setOuterWidth,
     setOuterHeight,
     normalizeIcon,
+    getWidth,
+    getHeight,
+    setWidth,
+    setHeight,
 } from '../utilities/utilities.js';
 
 azui.Resizable = function (el, options) {
@@ -343,9 +347,6 @@ class Resizable extends Base {
                 }
                 resetHandles();
 
-                // self.node.style.width = parseInt(getComputedStyle(self.node).width);
-                // self.node.style.height = parseInt(getComputedStyle(self.node).height);
-
                 elem.classList.remove('active');
             }
 
@@ -369,6 +370,15 @@ class Resizable extends Base {
             };
             const checkAll = function () {
                 checkAspectRatio();
+
+                const w = getWidth(self.node);
+                const h = getHeight(self.node);
+                // console.log(w, h);
+                if (w <= 0 || h <= 0) {
+                    self.node.style.overflow = 'hidden';
+                } else {
+                    self.node.style.overflow = 'auto';
+                }
             };
 
             h.n && azui.Draggable(eh.n, {
