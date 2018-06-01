@@ -30,7 +30,6 @@ class Resizable extends Base {
             aspectRatio: false,
             handleSize: 6,
             handles: 'all', //n, e, s, w, ne, se, sw, nw, all
-            handleDirection: 'out', // or in
             moveOnResize: true,
             hideHandles: false,
             hideCollapseButton: false,
@@ -48,6 +47,9 @@ class Resizable extends Base {
             },
             stop: function (event, ui) {
                 // console.log('stop', ui);
+            },
+            collapse: function (event, ui, collapse) {
+                console.log('collapse', ui);
             },
         }, options);
 
@@ -116,11 +118,11 @@ class Resizable extends Base {
         const h = parseHandles();
         // console.log(h);
 
-        const handleSize = isTouchDevice() ? settings.handleSize + 4 : settings.handleSize;
         let thisAspectRatio;
         let mx, my = 0; // position of this element, and mouse x, y coordinate
 
         const eh = {};
+        self.handles = eh;
 
         const getCursor = d => {
             if (d === 'e' || d === 'w') {
@@ -135,64 +137,52 @@ class Resizable extends Base {
         };
         const createDraggingHandles = function () {
 
-            const collapseArea = function (direction) {
-                setWidth(self.node, getWidth(self.node));
-                setHeight(self.node, getHeight(self.node));
-                self.node.style.overflow = 'hidden';
-                if (direction === 'n') {
-                    setHeight(self.node, 0);
-                } else if (direction === 's') {
-                    setHeight(self.node, 0);
-                } else if (direction === 'w') {
-                    setWidth(self.node, 0);
-                } else if (direction === 'e') {
-                    setWidth(self.node, 0);
-                }
-            };
-
             let inHandle = false;
             let inButton = false;
 
-            const createHandleButtonH = function (direction) {
+            const createCollapseButton = function (direction) {
                 const collapseButton = document.createElement('div');
                 collapseButton.addEventListener('mouseenter', function (e) {
                     inButton = true;
                     e.currentTarget.parentNode.classList.remove('active');
-                    e.currentTarget.querySelector('svg').classList.add('active');
+                    e.currentTarget.classList.add('active');
                 });
                 collapseButton.addEventListener('mouseleave', function (e) {
                     inButton = false;
-                    e.currentTarget.querySelector('svg').classList.remove('active');
+                    e.currentTarget.classList.remove('active');
                     if (inHandle) {
                         e.currentTarget.parentNode.classList.add('active');
                     }
                 });
-                collapseButton.addEventListener('click', function (e) {
-                    collapseArea(direction);
-                });
 
                 collapseButton.classList.add('collapseButton');
 
-                if (direction === 'n') {
-                    const collapseIcon = normalizeIcon(icons.svgTriangleDown);
+                if (direction === 'n' || direction === 's') {
                     collapseButton.classList.add('collapseButtonH');
-                    collapseIcon.classList.add('collapseIcon');
-                    collapseButton.appendChild(collapseIcon);
-                } else if (direction === 's') {
-                    const collapseIcon = normalizeIcon(icons.svgTriangleUp);
-                    collapseButton.classList.add('collapseButtonH');
-                    collapseIcon.classList.add('collapseIcon');
-                    collapseButton.appendChild(collapseIcon);
-                } else if (direction === 'w') {
-                    const collapseIcon = normalizeIcon(icons.svgTriangleRight);
+                    collapseButton.addEventListener('click', function (e) {
+                        self.collapseY();
+                    });
+
+                    const collapseIconDown = normalizeIcon(icons.svgTriangleDown);
+                    collapseIconDown.classList.add('collapseIcon', 'collapseIconDown');
+                    collapseButton.appendChild(collapseIconDown);
+
+                    const collapseIconUp = normalizeIcon(icons.svgTriangleUp);
+                    collapseIconUp.classList.add('collapseIcon', 'collapseIconUp');
+                    collapseButton.appendChild(collapseIconUp);
+                } else if (direction === 'w' || direction === 'e') {
                     collapseButton.classList.add('collapseButtonV');
-                    collapseIcon.classList.add('collapseIcon');
-                    collapseButton.appendChild(collapseIcon);
-                } else if (direction === 'e') {
-                    const collapseIcon = normalizeIcon(icons.svgTriangleLeft);
-                    collapseButton.classList.add('collapseButtonV');
-                    collapseIcon.classList.add('collapseIcon');
-                    collapseButton.appendChild(collapseIcon);
+                    collapseButton.addEventListener('click', function (e) {
+                        self.collapseX();
+                    });
+
+                    const collapseIconRight = normalizeIcon(icons.svgTriangleRight);
+                    collapseIconRight.classList.add('collapseIcon', 'collapseIconRight');
+                    collapseButton.appendChild(collapseIconRight);
+
+                    const collapseIconLeft = normalizeIcon(icons.svgTriangleLeft);
+                    collapseIconLeft.classList.add('collapseIcon', 'collapseIconLeft');
+                    collapseButton.appendChild(collapseIconLeft);
                 }
                 return collapseButton;
             };
@@ -206,7 +196,11 @@ class Resizable extends Base {
                     if (settings.hideHandles) {
                         eld.style['opacity'] = 0;
                     } else if (!settings.hideCollapseButton) {
-                        eld.appendChild(createHandleButtonH(d));
+                        if (d.length === 1) {
+                            // exclude corner handles
+                            const collapseButton = createCollapseButton(d);
+                            eld.appendChild(collapseButton);
+                        }
                         eld.addEventListener('mouseenter', function (e) {
                             inHandle = true;
                             const ct = e.currentTarget;
@@ -233,77 +227,7 @@ class Resizable extends Base {
 
             // console.log(eh);
 
-            const resetHandles = function () {
-                if (h.n) {
-                    eh.n.style['top'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.n.style['bottom'] = '';
-                    eh.n.style['right'] = '';
-                    eh.n.style['left'] = 0;
-                    eh.n.style['height'] = handleSize + 'px';
-                    eh.n.style['width'] = '100%';
-                }
-
-                if (h.e) {
-                    eh.e.style['right'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.e.style['left'] = '';
-                    eh.e.style['bottom'] = '';
-                    eh.e.style['top'] = 0;
-                    eh.e.style['width'] = handleSize + 'px';
-                    eh.e.style['height'] = '100%';
-                }
-
-                if (h.s) {
-                    eh.s.style['bottom'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.s.style['top'] = '';
-                    eh.s.style['right'] = '';
-                    eh.s.style['left'] = 0;
-                    eh.s.style['height'] = handleSize + 'px';
-                    eh.s.style['width'] = '100%';
-                }
-                if (h.w) {
-                    eh.w.style['left'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.w.style['right'] = '';
-                    eh.w.style['bottom'] = '';
-                    eh.w.style['top'] = 0;
-                    eh.w.style['width'] = handleSize + 'px';
-                    eh.w.style['height'] = '100%';
-                }
-
-                if (h.ne) {
-                    eh.ne.style['left'] = '';
-                    eh.ne.style['right'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.ne.style['bottom'] = '';
-                    eh.ne.style['top'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.ne.style['width'] = handleSize + 'px';
-                    eh.ne.style['height'] = handleSize + 'px';
-                }
-                if (h.se) {
-                    eh.se.style['left'] = '';
-                    eh.se.style['right'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.se.style['bottom'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.se.style['top'] = '';
-                    eh.se.style['width'] = handleSize + 'px';
-                    eh.se.style['height'] = handleSize + 'px';
-                }
-                if (h.sw) {
-                    eh.sw.style['left'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.sw.style['right'] = '';
-                    eh.sw.style['bottom'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.sw.style['top'] = '';
-                    eh.sw.style['width'] = handleSize + 'px';
-                    eh.sw.style['height'] = handleSize + 'px';
-                }
-                if (h.nw) {
-                    eh.nw.style['left'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.nw.style['right'] = '';
-                    eh.nw.style['bottom'] = '';
-                    eh.nw.style['top'] = (settings.handleDirection === 'in' ? 0 : -handleSize) + 'px';
-                    eh.nw.style['width'] = handleSize + 'px';
-                    eh.nw.style['height'] = handleSize + 'px';
-                }
-            };
-
-            resetHandles();
+            self._resetHandles();
 
             const onCreate = function (event, elem) {
                 if (settings.create.call(node, event, elem) === false) {
@@ -338,6 +262,19 @@ class Resizable extends Base {
                 if (settings.start.call(node, event, elem) === false) {
                     return false;
                 }
+
+                const w = getWidth(self.node);
+                const h = getHeight(self.node);
+                // setWidth(self.node, w);
+                // setHeight(self.node, h);
+
+                if (h > 0) {
+                    self.node.setAttribute('azCollapseHeight', h);
+                }
+                if (w > 0) {
+                    self.node.setAttribute('azCollapseWidth', w);
+                }
+
                 elem.classList.add('active');
             };
 
@@ -345,9 +282,12 @@ class Resizable extends Base {
                 if (settings.stop.call(node, event, elem) === false) {
                     return false;
                 }
-                resetHandles();
-
                 elem.classList.remove('active');
+
+                setTimeout(() => {
+                    self._resetHandles();
+                    self._resetCollapseIconStyle();
+                });
             }
 
             const checkAspectRatio = function () {
@@ -374,10 +314,10 @@ class Resizable extends Base {
                 const w = getWidth(self.node);
                 const h = getHeight(self.node);
                 // console.log(w, h);
-                if (w <= 0 || h <= 0) {
+                if (w <= 10 || h <= 10) {
                     self.node.style.overflow = 'hidden';
                 } else {
-                    self.node.style.overflow = 'auto';
+                    self.node.style.overflow = '';
                 }
             };
 
@@ -577,6 +517,7 @@ class Resizable extends Base {
         };
 
         createDraggingHandles();
+        self._resetCollapseIconStyle();
     }
 
     moveN(by) {
@@ -620,5 +561,172 @@ class Resizable extends Base {
             self.node.style.left = (self.thisLeft + by) + 'px';
         }
         setOuterWidth(self.node, self.thisWidth - by);
+    }
+
+    collapseX() {
+        const self = this;
+        const w = getWidth(self.node);
+        const h = getHeight(self.node);
+        setWidth(self.node, w);
+        setHeight(self.node, h);
+
+        if (w > 0) {
+            self.node.setAttribute('azCollapseWidth', w);
+            self.node.style.overflow = 'hidden';
+            setWidth(self.node, 0);
+        } else {
+            const storedW = self.node.getAttribute('azCollapseWidth') * 1;
+            if (!isNaN(storedW)) {
+                self.node.style.overflow = '';
+                setWidth(self.node, storedW);
+            }
+        }
+    }
+
+    collapseY() {
+        const self = this;
+        const w = getWidth(self.node);
+        const h = getHeight(self.node);
+        setWidth(self.node, w);
+        setHeight(self.node, h);
+
+        if (h > 0) {
+            self.node.setAttribute('azCollapseHeight', h);
+            self.node.style.overflow = 'hidden';
+            setHeight(self.node, 0);
+        } else {
+            const storedH = self.node.getAttribute('azCollapseHeight') * 1;
+            if (!isNaN(storedH)) {
+                self.node.style.overflow = '';
+                setHeight(self.node, storedH);
+            }
+        }
+    }
+
+    _resetCollapseIconStyle() {
+        const self = this;
+        if (self.hideCollapseButton) {
+            return;
+        }
+
+        const w = getWidth(self.node);
+        const h = getHeight(self.node);
+
+        if (self.handles.n) {
+            const up = self.handles.n.querySelector('span.collapseIconUp');
+            const down = self.handles.n.querySelector('span.collapseIconDown');
+            if (h > 0) {
+                up.classList.add('azHide');
+                down.classList.remove('azHide');
+            } else {
+                up.classList.remove('azHide');
+                down.classList.add('azHide');
+            }
+        }
+        if (self.handles.e) {
+            const left = self.handles.e.querySelector('span.collapseIconLeft');
+            const right = self.handles.e.querySelector('span.collapseIconRight');
+            if (w > 0) {
+                left.classList.remove('azHide');
+                right.classList.add('azHide');
+            } else {
+                left.classList.add('azHide');
+                right.classList.remove('azHide');
+            }
+        }
+        if (self.handles.s) {
+            const up = self.handles.s.querySelector('span.collapseIconUp');
+            const down = self.handles.s.querySelector('span.collapseIconDown');
+            if (h > 0) {
+                up.classList.remove('azHide');
+                down.classList.add('azHide');
+            } else {
+                up.classList.add('azHide');
+                down.classList.remove('azHide');
+            }
+        }
+        if (self.handles.w) {
+            const left = self.handles.w.querySelector('span.collapseIconLeft');
+            const right = self.handles.w.querySelector('span.collapseIconRight');
+            if (w > 0) {
+                left.classList.add('azHide');
+                right.classList.remove('azHide');
+            } else {
+                left.classList.remove('azHide');
+                right.classList.add('azHide');
+            }
+        }
+    }
+
+    _resetHandles() {
+        const self = this;
+        const handleSize = isTouchDevice() ? self.settings.handleSize + 4 : self.settings.handleSize;
+        if (self.handles.n) {
+            self.handles.n.style['top'] = 0;
+            self.handles.n.style['bottom'] = '';
+            self.handles.n.style['right'] = '';
+            self.handles.n.style['left'] = 0;
+            self.handles.n.style['height'] = handleSize + 'px';
+            self.handles.n.style['width'] = '100%';
+        }
+
+        if (self.handles.e) {
+            self.handles.e.style['right'] = 0;
+            self.handles.e.style['left'] = '';
+            self.handles.e.style['bottom'] = '';
+            self.handles.e.style['top'] = 0;
+            self.handles.e.style['width'] = handleSize + 'px';
+            self.handles.e.style['height'] = '100%';
+        }
+
+        if (self.handles.s) {
+            self.handles.s.style['bottom'] = 0;
+            self.handles.s.style['top'] = '';
+            self.handles.s.style['right'] = '';
+            self.handles.s.style['left'] = 0;
+            self.handles.s.style['height'] = handleSize + 'px';
+            self.handles.s.style['width'] = '100%';
+        }
+        if (self.handles.w) {
+            self.handles.w.style['left'] = 0;
+            self.handles.w.style['right'] = '';
+            self.handles.w.style['bottom'] = '';
+            self.handles.w.style['top'] = 0;
+            self.handles.w.style['width'] = handleSize + 'px';
+            self.handles.w.style['height'] = '100%';
+        }
+
+        if (self.handles.ne) {
+            self.handles.ne.style['left'] = '';
+            self.handles.ne.style['right'] = 0;
+            self.handles.ne.style['bottom'] = '';
+            self.handles.ne.style['top'] = 0;
+            self.handles.ne.style['width'] = handleSize + 'px';
+            self.handles.ne.style['height'] = handleSize + 'px';
+        }
+        if (self.handles.se) {
+            self.handles.se.style['left'] = '';
+            self.handles.se.style['right'] = 0;
+            self.handles.se.style['bottom'] = 0;
+            self.handles.se.style['top'] = '';
+            self.handles.se.style['width'] = handleSize + 'px';
+            self.handles.se.style['height'] = handleSize + 'px';
+        }
+        if (self.handles.sw) {
+            self.handles.sw.style['left'] = 0;
+            self.handles.sw.style['right'] = '';
+            self.handles.sw.style['bottom'] = 0;
+            self.handles.sw.style['top'] = '';
+            self.handles.sw.style['width'] = handleSize + 'px';
+            self.handles.sw.style['height'] = handleSize + 'px';
+        }
+        if (self.handles.nw) {
+            self.handles.nw.style['left'] = 0;
+            self.handles.nw.style['right'] = '';
+            self.handles.nw.style['bottom'] = '';
+            self.handles.nw.style['top'] = 0;
+            self.handles.nw.style['width'] = handleSize + 'px';
+            self.handles.nw.style['height'] = handleSize + 'px';
+        }
     }
 };

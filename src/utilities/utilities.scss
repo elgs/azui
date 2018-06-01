@@ -8,6 +8,10 @@ body {
     box-sizing: border-box;
 }
 
+.azHide {
+    display: none;
+}
+
 $main-color:#E8E8E8;
 $active0 :#182848;
 $main-active:linear-gradient(to right, $active0, lighten($active0, 10%));
