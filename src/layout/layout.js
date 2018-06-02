@@ -47,16 +47,8 @@ class Layout extends Base {
                         return;
                     }
                     by.dy = Math.min(by.dy, centerHeight);
-                    setHeight(self.center, centerHeight - by.dy);
-                    setHeight(self.east, centerHeight - by.dy);
-                    setHeight(self.west, centerHeight - by.dy);
                 },
-                collapse: function (e, ui, wh) {
-                    setHeight(self.center, centerHeight + wh);
-                    setHeight(self.east, centerHeight + wh);
-                    setHeight(self.west, centerHeight + wh);
-                    // console.log(this, e, ui, wh);
-                },
+
             });
         }
         if (self.east) {
@@ -66,10 +58,6 @@ class Layout extends Base {
                 moveOnResize: false,
                 create: function (e, h) {
                     centerWidth = getWidth(self.center);
-                    centerHeight = getHeight(self.center);
-                    setHeight(self.center, centerHeight);
-                    setHeight(self.east, centerHeight);
-                    setHeight(self.west, centerHeight);
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.max(by.dx, -centerWidth);
@@ -89,15 +77,6 @@ class Layout extends Base {
                         return;
                     }
                     by.dy = Math.max(by.dy, -centerHeight);
-                    setHeight(self.center, centerHeight + by.dy);
-                    setHeight(self.east, centerHeight + by.dy);
-                    setHeight(self.west, centerHeight + by.dy);
-                },
-                collapse: function (e, ui, wh) {
-                    setHeight(self.center, centerHeight + wh);
-                    setHeight(self.east, centerHeight + wh);
-                    setHeight(self.west, centerHeight + wh);
-                    // console.log(this, e, ui, wh);
                 },
             });
         }
@@ -107,10 +86,6 @@ class Layout extends Base {
                 handles: 'e',
                 create: function (e, h) {
                     centerWidth = getWidth(self.center);
-                    centerHeight = getHeight(self.center);
-                    setHeight(self.center, centerHeight);
-                    setHeight(self.east, centerHeight);
-                    setHeight(self.west, centerHeight);
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.min(by.dx, centerWidth);
