@@ -601,7 +601,7 @@ class Resizable extends Base {
 
     _resetCollapseIconStyle() {
         const self = this;
-        if (self.hideCollapseButton) {
+        if (self.settings.hideHandles || self.settings.hideCollapseButton) {
             return;
         }
 
