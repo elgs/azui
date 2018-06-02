@@ -5,7 +5,7 @@
     grid-template-rows: auto 1fr auto;
     position: relative;
     & .azLayoutArea {
-        overflow: auto;
+        overflow: hidden;
         position: relative;
         box-sizing: border-box;
         &.azLayoutAreaNorth {

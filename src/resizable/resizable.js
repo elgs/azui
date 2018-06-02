@@ -256,7 +256,7 @@ class Resizable extends Base {
 
                 thisAspectRatio = (self.thisHeight * 1.0) / (self.thisWidth * 1.0);
                 event.preventDefault(); // prevent text from selecting and mobile screen view port from moving around.
-                console.log('create');
+                // console.log('create');
             };
 
             const onStart = function (event, elem) {
@@ -289,7 +289,7 @@ class Resizable extends Base {
                     self._resetHandles();
                     self._resetCollapseIconStyle();
                 });
-                console.log('stop');
+                // console.log('stop');
             }
 
             const checkAspectRatio = function () {
@@ -312,15 +312,6 @@ class Resizable extends Base {
             };
             const checkAll = function () {
                 checkAspectRatio();
-
-                const w = getWidth(self.node);
-                const h = getHeight(self.node);
-                // console.log(w, h);
-                if (w <= 10 || h <= 10) {
-                    self.node.style.overflow = 'hidden';
-                } else {
-                    self.node.style.overflow = '';
-                }
             };
 
             h.n && azui.Draggable(eh.n, {
@@ -572,12 +563,10 @@ class Resizable extends Base {
 
         if (w > 0) {
             self.node.setAttribute('azCollapseWidth', w);
-            self.node.style.overflow = 'hidden';
             setWidth(self.node, 0);
             self.settings.collapse.call(self.node, event, ui, w);
         } else {
             const storedW = self.node.getAttribute('azCollapseWidth') * 1;
-            self.node.style.overflow = '';
             setWidth(self.node, storedW);
             self.settings.collapse.call(self.node, event, ui, -storedW);
         }
@@ -590,12 +579,10 @@ class Resizable extends Base {
 
         if (h > 0) {
             self.node.setAttribute('azCollapseHeight', h);
-            self.node.style.overflow = 'hidden';
             setHeight(self.node, 0);
             self.settings.collapse.call(self.node, event, ui, h);
         } else {
             const storedH = self.node.getAttribute('azCollapseHeight') * 1;
-            self.node.style.overflow = '';
             setHeight(self.node, storedH);
             self.settings.collapse.call(self.node, event, ui, -storedH);
         }
