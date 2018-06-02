@@ -51,6 +51,14 @@ class Layout extends Base {
                     setHeight(self.east, centerHeight - by.dy);
                     setHeight(self.west, centerHeight - by.dy);
                 },
+                collapse: function (e, ui, wh) {
+                    centerHeight = getHeight(self.center);
+
+                    setHeight(self.center, centerHeight + wh);
+                    setHeight(self.east, centerHeight + wh);
+                    setHeight(self.west, centerHeight + wh);
+                    // console.log(this, e, ui, wh);
+                },
             });
         }
         if (self.east) {
@@ -86,6 +94,14 @@ class Layout extends Base {
                     setHeight(self.center, centerHeight + by.dy);
                     setHeight(self.east, centerHeight + by.dy);
                     setHeight(self.west, centerHeight + by.dy);
+                },
+                collapse: function (e, ui, wh) {
+                    centerHeight = getHeight(self.center);
+
+                    setHeight(self.center, centerHeight + wh);
+                    setHeight(self.east, centerHeight + wh);
+                    setHeight(self.west, centerHeight + wh);
+                    // console.log(this, e, ui, wh);
                 },
             });
         }

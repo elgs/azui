@@ -48,8 +48,8 @@ class Resizable extends Base {
             stop: function (event, ui) {
                 // console.log('stop', ui);
             },
-            collapse: function (event, ui, collapse) {
-                console.log('collapse', ui);
+            collapse: function (event, ui, wh) {
+                // console.log(this, event, ui, wh);
             },
         }, options);
 
@@ -160,7 +160,7 @@ class Resizable extends Base {
                 if (direction === 'n' || direction === 's') {
                     collapseButton.classList.add('collapseButtonH');
                     collapseButton.addEventListener('click', function (e) {
-                        self.collapseY();
+                        self.collapseY(e, collapseButton);
                     });
 
                     const collapseIconDown = normalizeIcon(icons.svgTriangleDown);
@@ -173,7 +173,7 @@ class Resizable extends Base {
                 } else if (direction === 'w' || direction === 'e') {
                     collapseButton.classList.add('collapseButtonV');
                     collapseButton.addEventListener('click', function (e) {
-                        self.collapseX();
+                        self.collapseX(e, collapseButton);
                     });
 
                     const collapseIconRight = normalizeIcon(icons.svgTriangleRight);
@@ -563,43 +563,39 @@ class Resizable extends Base {
         setOuterWidth(self.node, self.thisWidth - by);
     }
 
-    collapseX() {
+    collapseX(event, ui) {
         const self = this;
         const w = getWidth(self.node);
-        const h = getHeight(self.node);
         setWidth(self.node, w);
-        setHeight(self.node, h);
 
         if (w > 0) {
             self.node.setAttribute('azCollapseWidth', w);
             self.node.style.overflow = 'hidden';
             setWidth(self.node, 0);
+            self.settings.collapse.call(self.node, event, ui, w);
         } else {
             const storedW = self.node.getAttribute('azCollapseWidth') * 1;
-            if (!isNaN(storedW)) {
-                self.node.style.overflow = '';
-                setWidth(self.node, storedW);
-            }
+            self.node.style.overflow = '';
+            setWidth(self.node, storedW);
+            self.settings.collapse.call(self.node, event, ui, -storedW);
         }
     }
 
-    collapseY() {
+    collapseY(event, ui) {
         const self = this;
-        const w = getWidth(self.node);
         const h = getHeight(self.node);
-        setWidth(self.node, w);
         setHeight(self.node, h);
 
         if (h > 0) {
             self.node.setAttribute('azCollapseHeight', h);
             self.node.style.overflow = 'hidden';
             setHeight(self.node, 0);
+            self.settings.collapse.call(self.node, event, ui, h);
         } else {
             const storedH = self.node.getAttribute('azCollapseHeight') * 1;
-            if (!isNaN(storedH)) {
-                self.node.style.overflow = '';
-                setHeight(self.node, storedH);
-            }
+            self.node.style.overflow = '';
+            setHeight(self.node, storedH);
+            self.settings.collapse.call(self.node, event, ui, -storedH);
         }
     }
 
