@@ -256,6 +256,7 @@ class Resizable extends Base {
 
                 thisAspectRatio = (self.thisHeight * 1.0) / (self.thisWidth * 1.0);
                 event.preventDefault(); // prevent text from selecting and mobile screen view port from moving around.
+                console.log('create');
             };
 
             const onStart = function (event, elem) {
@@ -288,6 +289,7 @@ class Resizable extends Base {
                     self._resetHandles();
                     self._resetCollapseIconStyle();
                 });
+                console.log('stop');
             }
 
             const checkAspectRatio = function () {

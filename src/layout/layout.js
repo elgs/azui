@@ -39,7 +39,7 @@ class Layout extends Base {
             self.north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
             azui.Resizable(self.north, {
                 handles: 's',
-                start: function (e, h) {
+                create: function (e, h) {
                     centerHeight = getHeight(self.center);
                 },
                 resize: function (e, h, by) {
@@ -52,8 +52,6 @@ class Layout extends Base {
                     setHeight(self.west, centerHeight - by.dy);
                 },
                 collapse: function (e, ui, wh) {
-                    centerHeight = getHeight(self.center);
-
                     setHeight(self.center, centerHeight + wh);
                     setHeight(self.east, centerHeight + wh);
                     setHeight(self.west, centerHeight + wh);
@@ -66,7 +64,7 @@ class Layout extends Base {
             azui.Resizable(self.east, {
                 handles: 'w',
                 moveOnResize: false,
-                start: function (e, h) {
+                create: function (e, h) {
                     centerWidth = getWidth(self.center);
                     centerHeight = getHeight(self.center);
                     setHeight(self.center, centerHeight);
@@ -83,7 +81,7 @@ class Layout extends Base {
             azui.Resizable(self.south, {
                 handles: 'n',
                 moveOnResize: false,
-                start: function (e, h) {
+                create: function (e, h) {
                     centerHeight = getHeight(self.center);
                 },
                 resize: function (e, h, by) {
@@ -96,8 +94,6 @@ class Layout extends Base {
                     setHeight(self.west, centerHeight + by.dy);
                 },
                 collapse: function (e, ui, wh) {
-                    centerHeight = getHeight(self.center);
-
                     setHeight(self.center, centerHeight + wh);
                     setHeight(self.east, centerHeight + wh);
                     setHeight(self.west, centerHeight + wh);
@@ -109,7 +105,7 @@ class Layout extends Base {
             self.west.classList.add('azLayoutArea', 'azLayoutAreaWest');
             azui.Resizable(self.west, {
                 handles: 'e',
-                start: function (e, h) {
+                create: function (e, h) {
                     centerWidth = getWidth(self.center);
                     centerHeight = getHeight(self.center);
                     setHeight(self.center, centerHeight);
