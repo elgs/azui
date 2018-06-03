@@ -18,14 +18,8 @@
             width: 100%;
             height: 100%;
             /* margin: auto; */
-            position: relative;
+            /* position: relative; */
             /* border: 1px solid gray; */
-        }
-
-        div.content {
-            overflow: auto;
-            width: 100%;
-            height: 100%;
         }
     </style>
     <script src="./index.js"></script>
@@ -33,59 +27,43 @@
 
 <body>
     <div id='container'>
-        <div id="north">
-            <div class="content">
-                North
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
-                    iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus
-                    provident possimus distinctio?</p>
-            </div>
+        <div class='azLayoutNorth'>
+            North
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
+                iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus provident
+                possimus distinctio?</p>
         </div>
-        <div id="south">
-            <div class="content">
-                South
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
-                    iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus
-                    provident possimus distinctio?</p>
-            </div>
+        <div class='azLayoutSouth'>
+            South
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
+                iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus provident
+                possimus distinctio?</p>
         </div>
-        <div id="west">
-            <div class="content">
-                West
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
-                    iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus
-                    provident possimus distinctio?</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
-                    iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus
-                    provident possimus distinctio?</p>
-            </div>
+        <div class='azLayoutWest'>
+            West
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
+                iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus provident
+                possimus distinctio?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
+                iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus provident
+                possimus distinctio?</p>
         </div>
-        <div id="east">
-            <div class="content">
-                East
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
-                    iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus
-                    provident possimus distinctio?</p>
-            </div>
+        <div class='azLayoutEast'>
+            East
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
+                iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus provident
+                possimus distinctio?</p>
         </div>
-        <div id="center">
-            <div class="content">
-                Center
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
-                    iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus
-                    provident possimus distinctio?</p>
-            </div>
+        <div class='azLayoutCenter'>
+            Center
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur deserunt repudiandae asperiores consequuntur
+                iure fugiat est quidem, nam perferendis assumenda iste qui repellat cumque excepturi quae! Voluptatibus provident
+                possimus distinctio?</p>
         </div>
     </div>
     <script>
         const container = document.querySelector('#container');
-        azui.Layout(container, {
-            north: '#north',
-            east: '#east',
-            south: '#south',
-            west: '#west',
-            center: '#center',
-        });
+        azui.Layout(container);
     </script>
 </body>
 

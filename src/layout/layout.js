@@ -17,26 +17,29 @@ class Layout extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
-            north: undefined,
-            east: undefined,
-            south: undefined,
-            west: undefined,
-            center: undefined, // must
+            north: '.azLayoutNorth',
+            east: '.azLayoutEast',
+            south: '.azLayoutSouth',
+            west: '.azLayoutWest',
+            center: '.azLayoutCenter',
         }, options);
 
         const node = this.node;
         const self = this;
         node.classList.add('azLayout');
 
-        self.north = resolveDOM(settings.north);
-        self.east = resolveDOM(settings.east);
-        self.south = resolveDOM(settings.south);
-        self.west = resolveDOM(settings.west);
-        self.center = resolveDOM(settings.center);
+        const northContent = resolveDOM(settings.north);
+        const eastContent = resolveDOM(settings.east);
+        const southContent = resolveDOM(settings.south);
+        const westContent = resolveDOM(settings.west);
+        const centerContent = resolveDOM(settings.center);
 
         let centerWidth, centerHeight;
-        if (self.north) {
-            self.north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
+        if (northContent) {
+            const north = document.createElement('div');
+            north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
+            self.node.appendChild(north);
+            self.north = north;
             azui.Resizable(self.north, {
                 handles: 's',
                 create: function (e, h) {
@@ -48,11 +51,14 @@ class Layout extends Base {
                     }
                     by.dy = Math.min(by.dy, centerHeight);
                 },
-
             });
+            north.appendChild(northContent);
         }
-        if (self.east) {
-            self.east.classList.add('azLayoutArea', 'azLayoutAreaEast');
+        if (eastContent) {
+            const east = document.createElement('div');
+            east.classList.add('azLayoutArea', 'azLayoutAreaEast');
+            self.node.appendChild(east);
+            self.east = east;
             azui.Resizable(self.east, {
                 handles: 'w',
                 moveOnResize: false,
@@ -63,9 +69,13 @@ class Layout extends Base {
                     by.dx = Math.max(by.dx, -centerWidth);
                 },
             });
+            east.appendChild(eastContent);
         }
-        if (self.south) {
-            self.south.classList.add('azLayoutArea', 'azLayoutAreaSouth');
+        if (southContent) {
+            const south = document.createElement('div');
+            south.classList.add('azLayoutArea', 'azLayoutAreaSouth');
+            self.node.appendChild(south);
+            self.south = south;
             azui.Resizable(self.south, {
                 handles: 'n',
                 moveOnResize: false,
@@ -79,9 +89,13 @@ class Layout extends Base {
                     by.dy = Math.max(by.dy, -centerHeight);
                 },
             });
+            south.appendChild(southContent);
         }
-        if (self.west) {
-            self.west.classList.add('azLayoutArea', 'azLayoutAreaWest');
+        if (westContent) {
+            const west = document.createElement('div');
+            west.classList.add('azLayoutArea', 'azLayoutAreaWest');
+            self.node.appendChild(west);
+            self.west = west;
             azui.Resizable(self.west, {
                 handles: 'e',
                 create: function (e, h) {
@@ -91,9 +105,14 @@ class Layout extends Base {
                     by.dx = Math.min(by.dx, centerWidth);
                 },
             });
+            west.appendChild(westContent);
         }
-        if (self.center) {
-            self.center.classList.add('azLayoutArea', 'azLayoutAreaCenter');
+        if (centerContent) {
+            const center = document.createElement('div');
+            center.classList.add('azLayoutArea', 'azLayoutAreaCenter');
+            self.node.appendChild(center);
+            self.center = center;
+            center.appendChild(centerContent);
         }
 
         // console.log(self.north, self.east, self.south, self.west, self.center);
