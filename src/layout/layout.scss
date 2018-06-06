@@ -1,8 +1,8 @@
 .azLayout {
     display: grid;
-    grid-template-areas: "n n n" "w c e" "s s s";
-    // grid-template-columns: auto auto auto;
-    // grid-template-rows: auto auto auto;
+    grid-template-areas: "n n n" "w c e" "s s s"; 
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto 1fr auto;
     position: relative;
     &>.azLayoutArea {
         overflow: hidden;
@@ -10,7 +10,8 @@
         &>div {
             overflow: auto;
             width: 100%;
-            height: 100%;
+            height: 100%; 
+            position: absolute;
         }
         &.azLayoutAreaNorth {
             grid-area: n;
@@ -33,6 +34,7 @@
             padding-right: 6px;
         }
         &.azLayoutAreaCenter {
+            position: relative;
             grid-area: c;
         }
     }

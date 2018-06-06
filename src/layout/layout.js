@@ -113,6 +113,7 @@ class Layout extends Base {
             self.node.appendChild(center);
             self.center = center;
             center.appendChild(centerContent);
+
         }
 
         // console.log(self.north, self.east, self.south, self.west, self.center);
