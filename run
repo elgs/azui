@@ -72,7 +72,7 @@
         if (args.length === 0) {
             run('rm', ['-rf', `./dist/${ver}/`, `.cache/`]);
         } else if (args[0] === 'all') {
-            run('rm', ['-rf', `./dist/`, `.cache/`, `./build/`, `./dev/`]);
+            run('rm', ['-rf', `./dist/`, `./.cache/`, `./build/`, `./dev/`]);
         }
     }
 })();
