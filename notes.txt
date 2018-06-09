@@ -3,14 +3,14 @@ sysctl fs.inotify.max_user_watches=524288
 window:
 DONE: resizable
 DONE: plain jquery plugin
-TODO: active window
-TOOD: minimize bar
-TODO: window manager/window ID
+DONE: active window
+DONE: minimize bar
+DONE: window manager/window ID
 
 datatable:
 DONE: header right click menu
-TODO: row right click menu
-TODO: cell types
+DONE: row right click menu
+DONE: cell types
 DONE: sort
 TODO: row/cell selection
 DONE: number cell up/down button

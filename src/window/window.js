@@ -7,7 +7,6 @@ import {
     remove,
     parseDOMElement,
     matches,
-    position,
     registerObject,
     removeObject,
     getObject,
@@ -27,7 +26,7 @@ class Window extends Base {
         const settings = Object.assign({
             width: 400,
             height: 300,
-            headerHeight: 30,
+            headerHeight: 36,
             icon: icons.svgApps,
             title: 'Arizona',
         }, options);

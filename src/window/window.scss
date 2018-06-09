@@ -44,6 +44,7 @@ $bg-color:#1E1E1E;
         width: 100%; // display: inline-block;
         align-items: center;
         grid-row: 1/2;
+        padding: 6px;
         & div * {
             // border: 1px solid black;
             user-select: none;
@@ -120,9 +121,7 @@ $bg-color:#1E1E1E;
 
 // .azResizable {
 //     &>.handle {
-//         opacity: 1;
-//         position: absolute;
+//         opacity: 1 !important;
 //         border: 1px solid black;
-//         box-sizing: border-box;
 //     }
 // }
