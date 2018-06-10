@@ -1,13 +1,10 @@
 import {
     Base
 } from '../utilities/core.js';
-
-import {
-    isOutside,
-    matches,
-} from '../utilities/utilities.js';
-
 import * as icons from '../utilities/icons.js';
+import {
+    matches
+} from '../utilities/utilities.js';
 
 azui.Select = function (el, options) {
     return new Select(el, options);

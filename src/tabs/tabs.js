@@ -1,16 +1,16 @@
 import {
     Base
 } from '../utilities/core.js';
-
 import {
-    randGen,
-    normalizeIcon,
-    matches,
-    remove,
-    siblings,
-    nextAll,
     insertAfter,
+    matches,
+    nextAll,
+    normalizeIcon,
+    randGen,
+    remove,
+    siblings
 } from '../utilities/utilities.js';
+
 
 azui.Tabs = function (el, options) {
     return new Tabs(el, options);
