@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "",
   "author": "Qian Chen",
-  "license": "MIT",
+  "license": "",
   "devDependencies": {
     "node-sass": "^4.9.0"
   },

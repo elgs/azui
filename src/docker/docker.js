@@ -147,31 +147,23 @@ class Docker extends Base {
         this.sortable.add(docked);
 
         const clicked = e => {
-            if (!self.dragging) {
-                const docked = self.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
-                // console.log(docked.getAttribute('state'));
-                if (docked.getAttribute('state') === 'normal') {
-                    if (self.isActive(id)) {
-                        self.minimize(id, true);
-                    }
-                } else if (docked.getAttribute('state') === 'minimized') {
-                    self.normalize(id, true);
-                }
-                self.activate(id, true);
-            }
-        };
-
-        docked.addEventListener('mouseup', e => {
-            if (e.button === 2) {
+            if (e.button === 2 || cm.on || self.dragging) {
                 return;
             }
-            clicked(e);
-        });
-        docked.addEventListener('touchend', e => {
-            if (!cm.on) {
-                clicked(e);
+            const docked = self.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
+            // console.log(docked.getAttribute('state'));
+            if (docked.getAttribute('state') === 'normal') {
+                if (self.isActive(id)) {
+                    self.minimize(id, true);
+                }
+            } else if (docked.getAttribute('state') === 'minimized') {
+                self.normalize(id, true);
             }
-        });
+            self.activate(id, true);
+        };
+
+        docked.addEventListener('mouseup', clicked);
+        docked.addEventListener('touchend', clicked);
         el.setAttribute('az-dock-ref', id);
         if (notify) {
             el.dispatchEvent(new CustomEvent('docked'));

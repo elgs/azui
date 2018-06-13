@@ -14,11 +14,13 @@ DONE: cell types
 DONE: sort
 TODO: row/cell selection
 DONE: number cell up/down button
+TODO: mobile select incorrect dropdown position
 
 tabs:
 TODO: drag out to create new tabset
 TODO: drag tab between tabsets
 TODO: scroll to switch tab
+TODO: svg icons
 
 contextmenu:
 DONE: function to return content
@@ -30,7 +32,7 @@ DONE: touch and pointer devices work together
 DONE: auto is returned for css left on Edge
 
 inlineedit:
-TODO: dropdown
+DONE: dropdown
 
 select:
 DONE: click dropdown button to toggle dropdown list
@@ -38,20 +40,5 @@ DONE: keyboard navigate
 DONE: keyboard to filter dropdown list
 DONE: click input not to dismiss the dropdown
 
-
-
-<style>
-.grid-container {
-  display: grid;
-  grid-auto-flow: row;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-gap: 10px;
-  background-color: #2196F3;
-  padding: 10px;
-}
-.grid-container>div {
-  background-color: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  padding:10px 0;
-}
-</style>
+sortable:
+TODO: jump out
