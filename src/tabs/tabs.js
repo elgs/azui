@@ -11,9 +11,12 @@ import {
     siblings
 } from '../utilities/utilities.js';
 
-
 azui.Tabs = function (el, options) {
     return new Tabs(el, options);
+};
+
+const _getTabId = (elemId) => {
+    return elemId.split('-').splice(1, Number.MAX_SAFE_INTEGER).join('-');
 };
 
 class Tabs extends Base {
@@ -27,39 +30,30 @@ class Tabs extends Base {
         const node = this.node;
         node.classList.add('azTabs');
 
-        const tabContextMenu = [{
+        self.tabContextMenu = [{
                 icon: '',
                 title: 'Close tab',
                 action: function (e, target) {
-                    node.dispatchEvent(new CustomEvent('closeTab', {
-                        detail: {
-                            id: self._getTabId(target.id)
-                        }
-                    }));
+                    self.removeTab(_getTabId(target.id));
+                    return false;
                 }
             }, {
                 icon: '',
                 title: 'Close other tabs',
                 action: function (e, target) {
                     siblings(target, '.azTabHeader').forEach(function (element) {
-                        node.dispatchEvent(new CustomEvent('closeTab', {
-                            detail: {
-                                id: self._getTabId(element.id)
-                            }
-                        }));
+                        self.removeTab(_getTabId(element.id));
                     });
+                    return false;
                 }
             }, {
                 icon: '',
                 title: 'Close tabs to the right',
                 action: function (e, target) {
                     nextAll(target, '.azTabHeader').forEach(function (element) {
-                        node.dispatchEvent(new CustomEvent('closeTab', {
-                            detail: {
-                                id: self._getTabId(element.id)
-                            }
-                        }));
+                        self.removeTab(_getTabId(element.id));
                     });
+                    return false;
                 }
             },
             null,
@@ -68,144 +62,147 @@ class Tabs extends Base {
                 title: 'Close All',
                 callback: function (e, target) {
                     siblings(target, '.azTabHeader').forEach(function (element) {
-                        const tabId = self._getTabId(element.id);
-                        node.dispatchEvent(new CustomEvent('closeTab', {
-                            detail: {
-                                id: tabId
-                            }
-                        }));
+                        const tabId = _getTabId(element.id);
+                        self.removeTab(_getTabId(tabId));
                     });
-                    const tabId = self._getTabId(target.id);
-                    node.dispatchEvent(new CustomEvent('closeTab', {
-                        detail: {
-                            id: tabId
-                        }
-                    }));
+                    const tabId = _getTabId(target.id);
+                    self.removeTab(_getTabId(tabId));
+                    return false;
                 }
             }
         ];
 
-        const headerClicked = function (event) {
-            const tabId = self._getTabId(event.currentTarget.id);
-            const tabContent = node.querySelectorAll('div.azTabContent').forEach(el => {
-                el.style['display'] = "none";
-            });
-            const tabHeaders = node.querySelectorAll('div.azTabHeader').forEach(el => {
-                el.classList.remove("active");
-            });
+        self.headerClicked = function (event) {
+            if (self.cm === 'on') {
+                return;
+            }
+            if (event.button === 2) {
+                return;
+            }
+            if (!self.dragging) {
+                const tabId = _getTabId(event.currentTarget.id);
+                const tabContent = node.querySelectorAll('div.azTabContent').forEach(el => {
+                    el.style['display'] = "none";
+                });
+                const tabHeaders = node.querySelectorAll('div.azTabHeader').forEach(el => {
+                    el.classList.remove("active");
+                });
 
-            node.querySelector('#azTabContent-' + tabId).style['display'] = "block";
-            event.currentTarget.classList.add("active");
+                node.querySelector('#azTabContent-' + tabId).style['display'] = "block";
+                event.currentTarget.classList.add("active");
+            }
         };
 
-        const closeClicked = function (event) {
-            const tabId = self._getTabId(event.currentTarget.parentNode.id);
-            node.dispatchEvent(new CustomEvent('closeTab', {
-                detail: {
-                    id: tabId
-                }
-            }));
+        self.closeClicked = function (event) {
+            const tabId = _getTabId(event.currentTarget.parentNode.id);
+            self.removeTab(tabId);
+            event.stopPropagation();
         };
 
         const newTabClicked = function (e) {
-            node.dispatchEvent(new CustomEvent('newTab', {
-                detail: {
-                    id: randGen(8),
-                    icon: '☺',
-                    title: 'New Tab',
-                    closable: true,
-                    // content: 'SH',
-                }
-            }));
+            self.addTab('x', 'New Tab', true);
         };
 
         const tabHeaderContainer = node.querySelector('div.azTabHeaders');
         const tabHeaderList = node.querySelectorAll('div.azTabHeader'); // a list
-        const tabContentList = node.querySelectorAll('div.azTabContent'); // a list
+        // const tabContentList = node.querySelectorAll('div.azTabContent'); // a list
 
         tabHeaderList.forEach(el => {
-            el.addEventListener('mousedown', headerClicked);
+            el.addEventListener('mouseup', self.headerClicked);
         });
         tabHeaderList.forEach(el => {
-            el.addEventListener('touchstart', headerClicked);
+            el.addEventListener('touchend', self.headerClicked);
         });
         node.querySelectorAll('div.azTabHeader .close').forEach(el => {
-            el.addEventListener('click', closeClicked);
+            el.addEventListener('click', self.closeClicked);
         });
         tabHeaderList[0].click();
         node.querySelector('.newTab').addEventListener('click', newTabClicked);
 
-        azui.Sortable(tabHeaderContainer);
-
-        azui.ContextMenu(tabHeaderList, {
-            items: tabContextMenu
+        self.dragging = false;
+        self.sortable = azui.Sortable(tabHeaderContainer, {
+            create: (e, target) => {
+                if (e.type === 'touchstart') {
+                    e.preventDefault();
+                }
+            },
+            start: (e, data) => {
+                self.dragging = true;
+            },
+            stop: (e, data) => {
+                self.dragging = false;
+            }
         });
 
-        // methods
+        self.cm = azui.ContextMenu(tabHeaderList, {
+            items: self.tabContextMenu
+        });
+    }
 
-        node.addEventListener('newTab', function (e) {
-            const data = e.detail;
-            const icon = document.createElement('div');
-            icon.classList.add('icon');
-            icon.appendChild(normalizeIcon(data.icon));
-            const title = document.createElement('div');
-            title.classList.add('title');
-            title.appendChild(normalizeIcon(data.title));
-            const header = document.createElement('div');
-            header.classList.add('azTabHeader');
-            header.setAttribute('id', 'azTabHeader-' + data.id)
-            header.appendChild(icon)
-            header.appendChild(title);
-            if (data.closable) {
-                const close = document.createElement('div');
-                close.classList.add('close');
-                close.textContent = '×';
-                header.appendChild(close);
-            }
+    addTab(icon, title, closable) {
+        const self = this;
+        const node = self.node;
+        const tabId = randGen(8);
+        const iconDiv = document.createElement('div');
+        iconDiv.classList.add('icon');
+        iconDiv.appendChild(normalizeIcon(icon));
+        const titleDiv = document.createElement('div');
+        titleDiv.classList.add('title');
+        titleDiv.appendChild(normalizeIcon(title));
+        const header = document.createElement('div');
+        header.classList.add('azTabHeader');
+        header.setAttribute('id', 'azTabHeader-' + tabId)
+        header.appendChild(iconDiv)
+        header.appendChild(titleDiv);
+        if (closable) {
+            const close = document.createElement('div');
+            close.classList.add('close');
+            close.textContent = '×';
+            header.appendChild(close);
+        }
 
-            const headers = node.querySelectorAll('.azTabHeader');
-            if (headers.length) {
-                insertAfter(header, headers[headers.length - 1]);
-            } else {
-                tabHeaderContainer.appendChild(header);
-            }
+        self.sortable.add(header);
 
-            const content = document.createElement('div');
-            content.innerHTML = data.content;
-            content.setAttribute('id', 'azTabContent-' + data.id);
-            content.classList.add('azTabContent');
-            content.style['display'] = 'none';
+        const content = document.createElement('div');
+        // content.innerHTML = data.content;
+        content.setAttribute('id', 'azTabContent-' + tabId);
+        content.classList.add('azTabContent');
+        content.style['display'] = 'none';
 
-            const contents = node.querySelectorAll('.azTabContent');
-            if (contents.length) {
-                insertAfter(content, contents[contents.length - 1]);
-            } else {
-                tabHeaderContainer.appendChild(content);
-            }
+        const contents = node.querySelectorAll('.azTabContent');
+        if (contents.length) {
+            insertAfter(content, contents[contents.length - 1]);
+        } else {
+            tabHeaderContainer.appendChild(content);
+        }
 
-            header.addEventListener('click', headerClicked);
-            header.querySelectorAll('.close').forEach(el => {
-                el.addEventListener('click', closeClicked);
-            });
-
-            azui.ContextMenu(header, {
-                items: tabContextMenu
-            });
+        header.addEventListener('mouseup', self.headerClicked);
+        header.addEventListener('touchend', self.headerClicked);
+        header.querySelectorAll('.close').forEach(el => {
+            el.addEventListener('click', self.closeClicked);
         });
 
-        node.addEventListener('closeTab', function (e) {
-            const data = e.detail;
-            const tabId = data.id;
-            const isActive = matches(node.querySelector(".azTabHeader#azTabHeader-" + tabId), '.active');
-            remove(node.querySelector(".azTabHeader#azTabHeader-" + tabId));
-            remove(node.querySelector("#azTabContent-" + tabId));
+        azui.ContextMenu(header, {
+            items: self.tabContextMenu
+        });
+    }
+    removeTab(tabId) {
+        const self = this;
+        const node = self.node;
+        const isActive = matches(node.querySelector(".azTabHeader#azTabHeader-" + tabId), '.active');
+        remove(node.querySelector(".azTabHeader#azTabHeader-" + tabId));
+        remove(node.querySelector("#azTabContent-" + tabId));
+        const headers = node.querySelectorAll('.azTabHeader');
+        if (headers.length) {
             if (isActive) {
                 node.querySelectorAll('.azTabHeader')[0].click();
             }
-        });
-    }
+        } else {
+            remove(node);
+        }
 
-    _getTabId(elemId) {
-        return elemId.split('-').splice(1, Number.MAX_SAFE_INTEGER).join('-');
     }
+    attachTab() {}
+    detachTab(tabId) {}
+
 };

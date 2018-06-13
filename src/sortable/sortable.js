@@ -2,22 +2,21 @@ import {
     Base
 } from '../utilities/core.js';
 import {
-    swapElement,
-    getPositionState,
-    getDropTargets,
-    dropTargetStates,
     dndStateConsts,
-    randGen,
-    getWidth,
+    getDropTargets,
     getHeight,
-    setWidth,
-    setHeight,
+    getPositionState,
+    getWidth,
+    index,
     insertAfter,
     insertBefore,
-    siblings,
-    index,
     matches,
     position,
+    randGen,
+    setHeight,
+    setWidth,
+    siblings,
+    swapElement
 } from '../utilities/utilities.js';
 
 azui.Sortable = function (el, options) {

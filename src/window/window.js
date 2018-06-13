@@ -91,9 +91,9 @@ class Window extends Base {
             self.headerIcons[key] = iconSpan;
             header.querySelector('.' + position).appendChild(iconSpan);
         };
-        const removeHeaderIcon = function (key) {
-            remove(self.headerIcons[key]);
-        };
+        // const removeHeaderIcon = function (key) {
+        //     remove(self.headerIcons[key]);
+        // };
         // const showHeaderIcon = function (key) {
         //     self.headerIcons[key].style.display = 'inline-block';
         // };

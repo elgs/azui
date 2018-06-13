@@ -1,16 +1,16 @@
 import {
     Base
 } from '../utilities/core.js';
-
+import * as icons from '../utilities/icons.js';
 import {
-    randGen,
-    remove,
-    matches,
     diffPosition,
+    matches,
+    randGen,
     registerObject,
+    remove
 } from '../utilities/utilities.js';
 
-import * as icons from '../utilities/icons.js';
+
 
 azui.Docker = function (el, options) {
     return new Docker(el, options);
@@ -40,7 +40,7 @@ class Docker extends Base {
         this.z = 0;
         this.dragging = false;
         this.sortable = azui.Sortable(this.node, {
-            placeholder: true,
+            // placeholder: true,
             create: (e, target) => {
                 if (e.type === 'touchstart') {
                     e.preventDefault();
