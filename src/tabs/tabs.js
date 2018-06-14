@@ -75,15 +75,7 @@ class Tabs extends Base {
                 return;
             }
             const tabId = _getTabId(event.currentTarget.id);
-            const tabContent = node.querySelectorAll('div.azTabContent').forEach(el => {
-                el.style['display'] = "none";
-            });
-            const tabHeaders = node.querySelectorAll('div.azTabHeader').forEach(el => {
-                el.classList.remove("active");
-            });
-
-            node.querySelector('#azTabContent-' + tabId).style['display'] = "block";
-            event.currentTarget.classList.add("active");
+            self.activateTab(tabId);
         };
 
         self.closeClicked = function (event) {
@@ -192,8 +184,47 @@ class Tabs extends Base {
         }
 
     }
-    activateTab(tabId) {}
-    activateTabByIndex(tabIndex) {}
+    activateTab(tabId) {
+        const self = this;
+        const node = self.node;
+        const tabContent = node.querySelectorAll('div.azTabContent').forEach(el => {
+            const elId = _getTabId(el.id);
+            if (elId === tabId) {
+                el.style['display'] = "block";
+            } else {
+                el.style['display'] = "none";
+            }
+        });
+        const tabHeaders = node.querySelectorAll('div.azTabHeader').forEach(el => {
+            const elId = _getTabId(el.id);
+            if (elId === tabId) {
+                el.classList.add("active");
+            } else {
+                el.classList.remove("active");
+            }
+        });
+    }
+    activateTabByIndex(tabIndex) {
+        const self = this;
+        const node = self.node;
+
+        const tabContent = node.querySelectorAll('div.azTabContent').forEach((el, index) => {
+            if (index === tabIndex) {
+                el.style['display'] = "block";
+            } else {
+                el.style['display'] = "none";
+            }
+
+        });
+        const tabHeaders = node.querySelectorAll('div.azTabHeader').forEach((el, index) => {
+            if (index === tabIndex) {
+                el.classList.add("active");
+            } else {
+                el.classList.remove("active");
+            }
+        });
+
+    }
     attachTab() {}
     detachTab(tabId) {}
 

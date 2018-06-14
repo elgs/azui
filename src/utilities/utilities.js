@@ -335,7 +335,7 @@ export const siblings = function (el, selector) {
 };
 
 export const index = function (node) {
-    return Array.prototype.indexOf.call(node.parentNode.childNodes, node);
+    return Array.prototype.indexOf.call(node.parentNode.children, node);
 };
 
 export const matches = function (el, selector) {
