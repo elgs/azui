@@ -23,6 +23,7 @@
 <body>
     <p>
         <button id='newTabButton'>New Tab</button>
+        <button id='scrollButton'>Scroll</button>
     </p>
     <div id="tab0">
         <div class="azTabHeaders">
@@ -53,6 +54,12 @@
         const newTabButton = document.querySelector('#newTabButton');
         newTabButton.addEventListener('click', e => {
             tabs.addTab('o', 'New Tab', true);
+        });
+
+        const scrollButton = document.querySelector('#scrollButton');
+        scrollButton.addEventListener('click', e => {
+            const headers = elem.querySelector('.azTabHeaders');
+            headers.scrollLeft += 25;
         });
     </script>
 </body>

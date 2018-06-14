@@ -102,8 +102,6 @@ class Tabs extends Base {
 
         tabHeaderList.forEach(el => {
             el.addEventListener('mouseup', self.headerClicked);
-        });
-        tabHeaderList.forEach(el => {
             el.addEventListener('touchend', self.headerClicked);
         });
         node.querySelectorAll('div.azTabHeader .close').forEach(el => {
@@ -194,6 +192,8 @@ class Tabs extends Base {
         }
 
     }
+    activateTab(tabId) {}
+    activateTabByIndex(tabIndex) {}
     attachTab() {}
     detachTab(tabId) {}
 
