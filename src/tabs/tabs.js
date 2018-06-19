@@ -1,15 +1,18 @@
 import {
     Base
 } from '../utilities/core.js';
+import * as icons from '../utilities/icons.js';
 import {
     insertAfter,
     matches,
     nextAll,
     normalizeIcon,
+    parseDOMElement,
     randGen,
     remove,
     siblings
 } from '../utilities/utilities.js';
+
 
 azui.Tabs = function (el, options) {
     return new Tabs(el, options);
@@ -95,9 +98,13 @@ class Tabs extends Base {
         tabHeaderList.forEach(el => {
             el.addEventListener('mouseup', self.headerClicked);
             el.addEventListener('touchend', self.headerClicked);
-        });
-        node.querySelectorAll('div.azTabHeader .close').forEach(el => {
-            el.addEventListener('click', self.closeClicked);
+            if (matches(el, '.azClosable')) {
+                const iconDiv = document.createElement('div');
+                iconDiv.classList.add('close');
+                iconDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
+                iconDiv.addEventListener('click', self.closeClicked);
+                el.appendChild(iconDiv);
+            }
         });
         tabHeaderList[0].click();
 
@@ -137,10 +144,11 @@ class Tabs extends Base {
         header.appendChild(iconDiv)
         header.appendChild(titleDiv);
         if (closable) {
-            const close = document.createElement('div');
-            close.classList.add('close');
-            close.textContent = '×';
-            header.appendChild(close);
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('close');
+            iconDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
+            iconDiv.addEventListener('click', self.closeClicked);
+            header.appendChild(iconDiv);
         }
 
         self.sortable.add(header);
@@ -160,9 +168,9 @@ class Tabs extends Base {
 
         header.addEventListener('mouseup', self.headerClicked);
         header.addEventListener('touchend', self.headerClicked);
-        header.querySelectorAll('.close').forEach(el => {
-            el.addEventListener('click', self.closeClicked);
-        });
+        // header.querySelectorAll('.close').forEach(el => {
+        //     el.addEventListener('click', self.closeClicked);
+        // });
 
         azui.ContextMenu(header, {
             items: self.tabContextMenu

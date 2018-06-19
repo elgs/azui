@@ -35,22 +35,31 @@
             @extend %hoveractive;
             & div {
                 height: 100%;
-                display: flex;
+                display: grid;
                 align-items: center; // border: 1px solid black;
             }
             & div.icon {
                 grid-column: 1/2;
-                justify-content: center
+                justify-content: center;
+                & svg {
+                    height: 12px;
+                    width: 12px;
+                    display: inline-block;
+                }
             }
             & div.title {
                 grid-column: 2/3; // padding-left: 10px;
-                justify-content: flex-start;
             }
             & div.close {
                 grid-column: 3/4;
                 justify-content: center;
+                & svg {
+                    height: 8px;
+                    width: 8px;
+                    display: inline-block;
+                }
                 &:hover {
-                    color: tomato;
+                    fill: $deny;
                 }
             }
         }

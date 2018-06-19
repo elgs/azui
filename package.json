@@ -5,7 +5,7 @@
   "author": "Qian Chen",
   "license": "",
   "devDependencies": {
-    "node-sass": "^4.9.0"
+    "node-sass": "*"
   },
   "dependencies": {}
 }

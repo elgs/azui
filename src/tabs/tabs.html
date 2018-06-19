@@ -28,9 +28,17 @@
     <div id="tab0">
         <div class="azTabHeaders">
             <div class="azTabHeader azSortableItem" id="azTabHeader-Paris">
-                <div class="icon">☺</div>
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"
+                        />
+                    </svg>
+                </div>
                 <div class="title">Paris</div>
-                <div class="close">×</div>
+            </div>
+            <div class="azTabHeader azSortableItem azClosable" id="azTabHeader-Tempe">
+                <div class="icon">☺</div>
+                <div class="title">Tempe</div>
             </div>
         </div>
 
@@ -38,8 +46,14 @@
             <h3>Paris</h3>
             <p>Paris is the capital of France.</p>
         </div>
+        <div id="azTabContent-Tempe" class="azTabContent">
+            <h3>Tempe</h3>
+            <p>Tempe is the home of ASU.</p>
+        </div>
     </div>
     <script>
+        const svgApps =
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;
         const elem = document.querySelector('#tab0');
         const tabs = azui.Tabs(elem, {
             foo: 'bar'
@@ -53,7 +67,7 @@
 
         const newTabButton = document.querySelector('#newTabButton');
         newTabButton.addEventListener('click', e => {
-            tabs.addTab('o', 'New Tab', true);
+            tabs.addTab(svgApps, 'New Tab', true);
         });
 
         const scrollButton = document.querySelector('#scrollButton');
