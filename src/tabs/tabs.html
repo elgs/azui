@@ -23,11 +23,10 @@
 <body>
     <p>
         <button id='newTabButton'>New Tab</button>
-        <button id='scrollButton'>Scroll</button>
     </p>
     <div id="tab0">
-        <div class="azTabHeaders">
-            <div class="azTabHeader azSortableItem" id="azTabHeader-Paris">
+        <div class="azTabHeader">
+            <div class="azTabLabel azSortableItem" id="azTabHeader-Paris">
                 <div class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                         <path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"
@@ -38,7 +37,7 @@
                     <span>Paris</span>
                 </div>
             </div>
-            <div class="azTabHeader azSortableItem azClosable" id="azTabHeader-Tempe">
+            <div class="azTabLabel azSortableItem azClosable" id="azTabHeader-Tempe">
                 <div class="icon">☺</div>
                 <div class="title">
                     <span>Tempe Market Place Arizona</span>
@@ -59,25 +58,27 @@
         const svgApps =
             `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;
         const elem = document.querySelector('#tab0');
-        const tabs = azui.Tabs(elem, {
-            // draghandleHeight: 10,
-        });
+        const tabs = azui.Tabs(elem, {});
         azui.Draggable(elem, {
-            handle: '.azTabHeaders',
+            handle: '.azTabHeader',
+            create: function (event, ui) {
+                console.log(event.target.classList.contains('azTabHeader'));
+                if (event.type === 'touchstart' && event.target.classList.contains('azTabHeader')) {
+                    event.preventDefault();
+                }
+            },
         });
         azui.Resizable(elem, {
             hideHandles: true,
+            resize: e => {
+                tabs.showHideScrollers();
+            },
         });
 
+        let count = 0;
         const newTabButton = document.querySelector('#newTabButton');
         newTabButton.addEventListener('click', e => {
-            tabs.addTab(svgApps, 'New Tab', true);
-        });
-
-        const scrollButton = document.querySelector('#scrollButton');
-        scrollButton.addEventListener('click', e => {
-            const headers = elem.querySelector('.azTabHeaders');
-            headers.scrollLeft += 25;
+            tabs.addTab(svgApps, `${count++} New Tab`, true);
         });
     </script>
 </body>

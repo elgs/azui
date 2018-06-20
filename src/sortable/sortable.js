@@ -78,9 +78,9 @@ class Sortable extends Base {
 
                 const w = getWidth(selected);
                 const h = getHeight(selected);
-                const offsetTop = position(selected).top;
-                const offsetLeft = position(selected).left;
-                // console.log(offsetTop, offsetLeft);
+                const offsetTop = position(selected).top + node.scrollTop;
+                const offsetLeft = position(selected).left + node.scrollLeft;
+                // console.log(offsetLeft);
                 // ph.css('background-color', 'red');
 
                 target.style.position = 'absolute';

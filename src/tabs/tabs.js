@@ -26,8 +26,7 @@ class Tabs extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
-            headerHeight: 30,
-            draghandleHeight: 0,
+            headerHeight: 40,
         }, options);
 
         const self = this;
@@ -35,26 +34,26 @@ class Tabs extends Base {
         node.classList.add('azTabs');
 
         self.tabContextMenu = [{
-                icon: '',
+                icon: icons.svgClose,
                 title: 'Close tab',
                 action: function (e, target) {
                     self.removeTab(_getTabId(target.id));
                     return false;
                 }
             }, {
-                icon: '',
+                icon: icons.svgClose,
                 title: 'Close other tabs',
                 action: function (e, target) {
-                    siblings(target, '.azTabHeader').forEach(function (element) {
+                    siblings(target, '.azTabLabel').forEach(function (element) {
                         self.removeTab(_getTabId(element.id));
                     });
                     return false;
                 }
             }, {
-                icon: '',
+                icon: icons.svgClose,
                 title: 'Close tabs to the right',
                 action: function (e, target) {
-                    nextAll(target, '.azTabHeader').forEach(function (element) {
+                    nextAll(target, '.azTabLabel').forEach(function (element) {
                         self.removeTab(_getTabId(element.id));
                     });
                     return false;
@@ -62,10 +61,10 @@ class Tabs extends Base {
             },
             null,
             {
-                icon: '',
+                icon: icons.svgClose,
                 title: 'Close All',
                 action: function (e, target) {
-                    siblings(target, '.azTabHeader').forEach(function (element) {
+                    siblings(target, '.azTabLabel').forEach(function (element) {
                         self.removeTab(_getTabId(element.id));
                     });
                     self.removeTab(_getTabId(target.id));
@@ -74,12 +73,14 @@ class Tabs extends Base {
             }
         ];
 
-        self.headerClicked = function (event) {
-            if (event.button === 2 || self.cm.on || self.dragging) {
-                return;
+        self.headerClicked = function (cm) {
+            return function (event) {
+                if (event.button === 2 || cm.on || self.dragging) {
+                    return;
+                }
+                const tabId = _getTabId(event.currentTarget.id);
+                self.activateTab(tabId);
             }
-            const tabId = _getTabId(event.currentTarget.id);
-            self.activateTab(tabId);
         };
 
         self.closeClicked = function (event) {
@@ -88,17 +89,20 @@ class Tabs extends Base {
             event.stopPropagation();
         };
 
-        // const newTabClicked = function (e) {
-        //     self.addTab('x', 'New Tab', true);
-        // };
+        const tabHeaderContainer = node.querySelector('div.azTabHeader');
+        const tabLabelList = node.querySelectorAll('div.azTabLabel'); // a list
+        const tabLabels = document.createElement('div');
+        tabLabels.classList.add('azTabLabels');
+        tabHeaderContainer.appendChild(tabLabels);
 
-        const tabHeaderContainer = node.querySelector('div.azTabHeaders');
-        const tabHeaderList = node.querySelectorAll('div.azTabHeader'); // a list
-        // const tabContentList = node.querySelectorAll('div.azTabContent'); // a list
+        tabLabelList.forEach(el => {
+            const cm = azui.ContextMenu(el, {
+                items: self.tabContextMenu
+            });
+            const headerClicked = self.headerClicked(cm);
 
-        tabHeaderList.forEach(el => {
-            el.addEventListener('mouseup', self.headerClicked);
-            el.addEventListener('touchend', self.headerClicked);
+            el.addEventListener('mouseup', headerClicked);
+            el.addEventListener('touchend', headerClicked);
             if (matches(el, '.azClosable')) {
                 const iconDiv = document.createElement('div');
                 iconDiv.classList.add('close');
@@ -106,11 +110,12 @@ class Tabs extends Base {
                 iconDiv.addEventListener('click', self.closeClicked);
                 el.appendChild(iconDiv);
             }
+            tabLabels.appendChild(el);
         });
-        tabHeaderList[0].click();
+        self.activateTabByIndex(0);
 
         self.dragging = false;
-        self.sortable = azui.Sortable(tabHeaderContainer, {
+        self.sortable = azui.Sortable(tabLabels, {
             create: (e, target) => {
                 if (e.type === 'touchstart') {
                     e.preventDefault();
@@ -124,17 +129,33 @@ class Tabs extends Base {
             }
         });
 
-        self.cm = azui.ContextMenu(tabHeaderList, {
-            items: self.tabContextMenu
+        tabHeaderContainer.style['height'] = settings.headerHeight + 'px';
+
+        const leftScroller = parseDOMElement(`<div class='azTabScroller left'>${icons.svgPreviousPage}</div>`)[0];
+        const rightScroller = parseDOMElement(`<div class='azTabScroller right'>${icons.svgNextPage}</div>`)[0];
+
+        self.showHideScrollers = () => {
+            leftScroller.style.display = tabLabels.scrollLeft <= 0 ? 'none' : 'grid';
+            const style = getComputedStyle(tabLabels);
+            const width = parseInt(style.width);
+            const scrollWidth = tabLabels.scrollWidth;
+            // console.log(width, scrollWidth, tabLabels.scrollLeft);
+            rightScroller.style.visibility = scrollWidth > width + tabLabels.scrollLeft ? 'visible' : 'hidden';
+        };
+
+        leftScroller.addEventListener('click', e => {
+            tabLabels.scrollLeft -= 100;
+            self.showHideScrollers();
+            // console.log(tabLabels.scrollLeft);
         });
-
-        tabHeaderContainer.style['height'] = settings.headerHeight + settings.draghandleHeight + 'px';
-        tabHeaderContainer.style['padding-top'] = settings.draghandleHeight + 'px';
-
-        const leftScrollerMarkup = `<div class='azTabScroller left'><</div>`;
-        const rightScrollerMarkup = `<div class='azTabScroller right'>></div>`;
-        self.node.appendChild(parseDOMElement(leftScrollerMarkup)[0]);
-        self.node.appendChild(parseDOMElement(rightScrollerMarkup)[0]);
+        rightScroller.addEventListener('click', e => {
+            tabLabels.scrollLeft += 100;
+            self.showHideScrollers();
+            // console.log(tabLabels.scrollLeft);
+        });
+        tabHeaderContainer.appendChild(leftScroller);
+        tabHeaderContainer.appendChild(rightScroller);
+        self.showHideScrollers();
     }
 
     addTab(icon, title, closable) {
@@ -148,7 +169,7 @@ class Tabs extends Base {
         titleDiv.classList.add('title');
         titleDiv.appendChild(normalizeIcon(title));
         const header = document.createElement('div');
-        header.classList.add('azTabHeader');
+        header.classList.add('azTabLabel');
         header.setAttribute('id', 'azTabHeader-' + tabId)
         header.appendChild(iconDiv)
         header.appendChild(titleDiv);
@@ -175,31 +196,30 @@ class Tabs extends Base {
             tabHeaderContainer.appendChild(content);
         }
 
-        header.addEventListener('mouseup', self.headerClicked);
-        header.addEventListener('touchend', self.headerClicked);
-        // header.querySelectorAll('.close').forEach(el => {
-        //     el.addEventListener('click', self.closeClicked);
-        // });
-
-        azui.ContextMenu(header, {
+        const cm = azui.ContextMenu(header, {
             items: self.tabContextMenu
         });
+
+        const headerClicked = self.headerClicked(cm);
+        header.addEventListener('mouseup', headerClicked);
+        header.addEventListener('touchend', headerClicked);
+        self.showHideScrollers();
     }
     removeTab(tabId) {
         const self = this;
         const node = self.node;
-        const isActive = matches(node.querySelector(".azTabHeader#azTabHeader-" + tabId), '.active');
-        remove(node.querySelector(".azTabHeader#azTabHeader-" + tabId));
+        const isActive = matches(node.querySelector(".azTabLabel#azTabHeader-" + tabId), '.active');
+        remove(node.querySelector(".azTabLabel#azTabHeader-" + tabId));
         remove(node.querySelector("#azTabContent-" + tabId));
-        const headers = node.querySelectorAll('.azTabHeader');
+        const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
             if (isActive) {
-                node.querySelectorAll('.azTabHeader')[0].click();
+                self.activateTabByIndex(0);
             }
         } else {
             remove(node);
         }
-
+        self.showHideScrollers();
     }
     activateTab(tabId) {
         const self = this;
@@ -212,7 +232,7 @@ class Tabs extends Base {
                 el.style['display'] = "none";
             }
         });
-        const tabHeaders = node.querySelectorAll('div.azTabHeader').forEach(el => {
+        const tabHeaders = node.querySelectorAll('div.azTabLabel').forEach(el => {
             const elId = _getTabId(el.id);
             if (elId === tabId) {
                 el.classList.add("active");
@@ -233,7 +253,7 @@ class Tabs extends Base {
             }
 
         });
-        const tabHeaders = node.querySelectorAll('div.azTabHeader').forEach((el, index) => {
+        const tabHeaders = node.querySelectorAll('div.azTabLabel').forEach((el, index) => {
             if (index === tabIndex) {
                 el.classList.add("active");
             } else {
@@ -244,5 +264,4 @@ class Tabs extends Base {
     }
     attachTab() {}
     detachTab(tabId) {}
-
 };

@@ -118,7 +118,7 @@ class Draggable extends Base {
                     const dts = getDropTargets(settings.dropKey);
                     dts.filter(dt => dt !== node).map(dt => {
                         // console.log(self, elem);
-                        const dropId = dt.getAttribute('drop-id');
+                        // const dropId = dt.getAttribute('drop-id');
                         const ps = getPositionState(node, dt);
                         // console.log(ps);
 
@@ -335,20 +335,23 @@ class Draggable extends Base {
             // self.selfS = parseInt(getComputedStyle(self)['bottom'));
             // console.log(self.selfN, self.selfE, self.selfS, self.selfW);
 
+            const pScrollLeft = parent.scrollLeft;
+            const pScrollTop = parent.scrollTop;
+
             if (nodeStyles['position'] === 'relative') {
-                self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
-                self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
-                self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
-                self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
+                self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']) + pScrollLeft;
+                self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']) - pScrollLeft;
+                self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']) + pScrollTop;
+                self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']) - pScrollTop;
                 // console.log(self.selfN, self.selfE, self.selfS, self.selfW, self.style['position'));
             } else if (nodeStyles['position'] === 'absolute') {
-                self.selfW = self.scrW - self.pScrW - self.smw - self.pbw;
-                self.selfN = self.scrN - self.pScrN - self.smn - self.pbn;
-                self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe;
-                self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs;
+                self.selfW = self.scrW - self.pScrW - self.smw - self.pbw + pScrollLeft;
+                self.selfN = self.scrN - self.pScrN - self.smn - self.pbn + pScrollTop;
+                self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe - pScrollLeft;
+                self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs - pScrollTop;
             } else if (nodeStyles['position'] === 'fixed') {
-                self.selfW = self.scrW - self.smw;
-                self.selfN = self.scrN - self.smn;
+                self.selfW = self.scrW - self.smw + pScrollLeft;
+                self.selfN = self.scrN - self.smn + pScrollTop;
             }
 
             self.selfWidth = selfbcr.width;
