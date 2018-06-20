@@ -34,11 +34,15 @@
                         />
                     </svg>
                 </div>
-                <div class="title">Paris</div>
+                <div class="title">
+                    <span>Paris</span>
+                </div>
             </div>
             <div class="azTabHeader azSortableItem azClosable" id="azTabHeader-Tempe">
                 <div class="icon">☺</div>
-                <div class="title">Tempe</div>
+                <div class="title">
+                    <span>Tempe Market Place Arizona</span>
+                </div>
             </div>
         </div>
 
@@ -56,7 +60,7 @@
             `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;
         const elem = document.querySelector('#tab0');
         const tabs = azui.Tabs(elem, {
-            foo: 'bar'
+            // draghandleHeight: 10,
         });
         azui.Draggable(elem, {
             handle: '.azTabHeaders',

@@ -26,7 +26,8 @@ class Tabs extends Base {
     constructor(el, options) {
         super(el);
         const settings = Object.assign({
-
+            headerHeight: 30,
+            draghandleHeight: 0,
         }, options);
 
         const self = this;
@@ -126,6 +127,9 @@ class Tabs extends Base {
         self.cm = azui.ContextMenu(tabHeaderList, {
             items: self.tabContextMenu
         });
+
+        tabHeaderContainer.style['height'] = settings.headerHeight + settings.draghandleHeight + 'px';
+        tabHeaderContainer.style['padding-top'] = settings.draghandleHeight + 'px';
     }
 
     addTab(icon, title, closable) {

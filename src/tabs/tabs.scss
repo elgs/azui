@@ -1,10 +1,10 @@
 @import "../utilities/utilities.scss";
 %hoveractive {
     &:hover {
-        background-color: darken($color: $main-color, $amount: 15%);
+        background-color: darken($color: $main-color, $amount: 5%);
     }
     &.active {
-        background-color: darken($color: $main-color, $amount: 20%);
+        background-color: darken($color: $main-color, $amount: 10%);
     }
     & * {
         // border: 1px solid black;
@@ -16,20 +16,21 @@
     box-shadow: $shadow;
     display: grid;
     grid-template-areas: "headers" "contents";
-    grid-template-rows: 30px 1fr;
+    grid-template-rows: auto 1fr;
     & .azTabHeaders {
         grid-area: headers;
         border-bottom: 1px solid darken($color: $main-color, $amount: 10%);
         box-sizing: border-box;
-        background-color: $main-color;
-        height: 30px;
+        background-color: lighten($color: $main-color, $amount: 5%);
         position: relative;
         display: flex;
         overflow: hidden;
         & div.azTabHeader {
             height: 100%;
             width: 150px;
-            background-color: darken($color: $main-color, $amount: 5%);
+            border-right: solid 1px darken($color: $main-color, $amount: 7%);
+            border-left: solid 1px white;
+            background-color: $main-color;
             display: grid;
             grid-template-columns: 30px 1fr 30px;
             @extend %hoveractive;
@@ -49,6 +50,11 @@
             }
             & div.title {
                 grid-column: 2/3; // padding-left: 10px;
+                & span {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
             }
             & div.close {
                 grid-column: 3/4;
