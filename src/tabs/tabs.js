@@ -130,6 +130,11 @@ class Tabs extends Base {
 
         tabHeaderContainer.style['height'] = settings.headerHeight + settings.draghandleHeight + 'px';
         tabHeaderContainer.style['padding-top'] = settings.draghandleHeight + 'px';
+
+        const leftScrollerMarkup = `<div class='azTabScroller left'><</div>`;
+        const rightScrollerMarkup = `<div class='azTabScroller right'>></div>`;
+        self.node.appendChild(parseDOMElement(leftScrollerMarkup)[0]);
+        self.node.appendChild(parseDOMElement(rightScrollerMarkup)[0]);
     }
 
     addTab(icon, title, closable) {

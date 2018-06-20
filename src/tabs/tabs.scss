@@ -15,8 +15,19 @@
 .azTabs {
     box-shadow: $shadow;
     display: grid;
-    grid-template-areas: "headers" "contents";
+    grid-template-areas: "left-scroller headers right-scroller" "contents contents contents";
     grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr auto;
+    & .azTabScroller {
+        // display: none;
+        width: 20px;
+        &.left {
+            grid-area: left-scroller;
+        }
+        &.right {
+            grid-area: right-scroller;
+        }
+    }
     & .azTabHeaders {
         grid-area: headers;
         border-bottom: 1px solid darken($color: $main-color, $amount: 10%);
@@ -30,6 +41,12 @@
             width: 150px;
             border-right: solid 1px darken($color: $main-color, $amount: 7%);
             border-left: solid 1px white;
+            &:first-of-type {
+                border-left: none;
+            }
+            &:last-of-type {
+                border-right: none;
+            }
             background-color: $main-color;
             display: grid;
             grid-template-columns: 30px 1fr 30px;
