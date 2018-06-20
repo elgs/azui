@@ -20,7 +20,7 @@ tabs:
 TODO: drag out to create new tabset
 TODO: drag tab between tabsets
 TODO: scroll to switch tab
-TODO: scroll buttons
+DONE: scroll buttons
 DONE: svg icons
 
 contextmenu:

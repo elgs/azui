@@ -126,6 +126,7 @@ class Tabs extends Base {
             },
             stop: (e, data) => {
                 self.dragging = false;
+                self.activateTab(_getTabId(data.source.id));
             }
         });
 
