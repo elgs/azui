@@ -11,7 +11,6 @@ import {
     isTouchDevice
 } from '../utilities/utilities.js';
 
-
 azui.Draggable = function (el, options) {
     return new Draggable(el, options);
 };
@@ -187,7 +186,7 @@ class Draggable extends Base {
 
         const onmouseup = function (e) {
             // console.log(e.type, e.target, self, self.selected);
-            if (settings.stop(e, self.selected) === false) {
+            if (started && settings.stop(e, self.selected) === false) {
                 return false;
             }
             started = false;
