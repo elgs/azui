@@ -1,16 +1,16 @@
 import {
     Base
 } from '../utilities/core.js';
-
 import {
-    isOutside,
-    isTouchDevice,
-    getDocWidth,
+    dndStateConsts,
     getDocHeight,
+    getDocWidth,
     getDropTargets,
     getPositionState,
-    dndStateConsts,
+    isOutside,
+    isTouchDevice
 } from '../utilities/utilities.js';
+
 
 azui.Draggable = function (el, options) {
     return new Draggable(el, options);
