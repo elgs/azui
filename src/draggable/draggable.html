@@ -24,7 +24,7 @@
             border: 2px solid blue;
             width: 400px;
             height: 400px;
-            padding: 15px 20px 30px 45px;
+            /* padding: 15px 20px 30px 45px; */
             margin: 43px;
             position: fixed;
         }
@@ -32,7 +32,7 @@
         #c {
             /* background-color: yellow; */
             width: 100px;
-            margin: 10px 30px 20px 10px;
+            /* margin: 10px 30px 20px 10px; */
             /* top: 12px;
             left: 24px; */
             height: 100px;
@@ -64,6 +64,7 @@
         // $.azDebugDiv();
         azui.Draggable('#c', {
             containment: '#p',
+            escape: true,
         });
         azui.Draggable('#f', {
             create: function (e) {

@@ -31,6 +31,7 @@ TODO: multi level menus
 draggable:
 DONE: touch and pointer devices work together
 DONE: auto is returned for css left on Edge
+DONE: escape
 
 inlineedit:
 DONE: dropdown

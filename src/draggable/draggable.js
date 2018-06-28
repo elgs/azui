@@ -8,6 +8,8 @@ import {
     getDropTargets,
     getPositionState,
     isOutside,
+    isOutsideX,
+    isOutsideY,
     isTouchDevice
 } from '../utilities/utilities.js';
 
@@ -22,6 +24,7 @@ class Draggable extends Base {
             handle: false,
             axis: false,
             containment: false,
+            escape: false,
             resist: false,
             opacity: false,
             dropKey: false,
@@ -54,9 +57,25 @@ class Draggable extends Base {
         // console.log(self.style['position'));
         let savedZIndex;
 
+        self.escapeX = false;
+        self.escapeY = false;
+        if (settings.escape === 'x') {
+            self.escapeX = true;
+        }
+        if (settings.escape === 'y') {
+            self.escapeY = true;
+        }
+        if (settings.escape === true) {
+            self.escapeX = true;
+            self.escapeY = true;
+        }
+
         self.selected = null;
-        let mouseX = 0;
-        let mouseY = 0;
+        let mouseX0 = 0;
+        let mouseY0 = 0;
+        self.containerBoundaries = null;
+        self.mouseX = 0;
+        self.mouseY = 0;
         self.selfN = 0;
         self.selfE = 0;
         self.selfS = 0;
@@ -135,10 +154,10 @@ class Draggable extends Base {
             if (settings.drag(e, self.selected) === false) {
                 return false;
             }
-            const nmx = e.clientX || e.touches[0].clientX;
-            const nmy = e.clientY || e.touches[0].clientY;
-            const dx = nmx - mouseX;
-            const dy = nmy - mouseY;
+            self.mouseX = e.clientX || e.touches[0].clientX;
+            self.mouseY = e.clientY || e.touches[0].clientY;
+            const dx = self.mouseX - mouseX0;
+            const dy = self.mouseY - mouseY0;
             // console.log(dx, dy);
             if (!resisted && Math.abs(dx) < settings.resist && Math.abs(dy) < settings.resist) {
                 return;
@@ -274,11 +293,12 @@ class Draggable extends Base {
                     self.cbs = parseInt(containerStyles["border-bottom-width"]);
                     self.cbw = parseInt(containerStyles["border-left-width"]);
 
-                    const hb = containment.getBoundingClientRect();
-                    self.cScrN = hb.top;
-                    self.cScrE = hb.right;
-                    self.cScrS = hb.bottom;
-                    self.cScrW = hb.left;
+                    const containerBoundaries = containment.getBoundingClientRect();
+                    self.containerBoundaries = containerBoundaries;
+                    self.cScrN = containerBoundaries.top;
+                    self.cScrE = containerBoundaries.right;
+                    self.cScrS = containerBoundaries.bottom;
+                    self.cScrW = containerBoundaries.left;
 
                     self.cpn = parseInt(containerStyles["padding-top"]);
                     self.cpe = parseInt(containerStyles["padding-right"]);
@@ -388,8 +408,8 @@ class Draggable extends Base {
             }
             self.selected = node;
 
-            mouseX = e.clientX || e.touches[0].clientX;
-            mouseY = e.clientY || e.touches[0].clientY;
+            self.mouseX = mouseX0 = e.clientX || e.touches[0].clientX;
+            self.mouseY = mouseY0 = e.clientY || e.touches[0].clientY;
             if (settings.handle) {
                 let handle = settings.handle;
                 if (typeof settings.handle === 'string') {
@@ -397,7 +417,7 @@ class Draggable extends Base {
                 }
                 if (handle) {
                     const hb = handle.getBoundingClientRect();
-                    if (isOutside(mouseX, mouseY, hb)) {
+                    if (isOutside(mouseX0, mouseY0, hb)) {
                         return;
                     }
                 }
@@ -450,19 +470,24 @@ class Draggable extends Base {
         if (self.cScrW === undefined) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
-        } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
-            // console.log('hit left wall');
-            const di = self.cScrW + self.cbw + self.cpw - (self.pScrW + self.pbw + self.ppw);
-            self.selected.style.right = 'auto';
-            self.selected.style.left = self.ppw + di + 'px';
-        } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
-            // console.log('hit right wall');
-            const di = self.cScrE - self.cbe - self.cpe - (self.pScrE - self.pbe - self.ppe);
-            self.selected.style.left = 'auto';
-            self.selected.style.right = self.ppe - di + 'px';
         } else {
-            self.selected.style.right = 'auto';
-            self.selected.style.left = (self.selfW + dx) + 'px';
+            if (self.escapeX && isOutsideX(self.mouseX, self.containerBoundaries)) {
+                self.selected.style.right = 'auto';
+                self.selected.style.left = (self.selfW + dx) + 'px';
+            } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+                // console.log('hit left wall');
+                const di = self.cScrW + self.cbw + self.cpw - (self.pScrW + self.pbw + self.ppw);
+                self.selected.style.right = 'auto';
+                self.selected.style.left = self.ppw + di + 'px';
+            } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+                // console.log('hit right wall');
+                const di = self.cScrE - self.cbe - self.cpe - (self.pScrE - self.pbe - self.ppe);
+                self.selected.style.left = 'auto';
+                self.selected.style.right = self.ppe - di + 'px';
+            } else {
+                self.selected.style.right = 'auto';
+                self.selected.style.left = (self.selfW + dx) + 'px';
+            }
         }
     }
 
@@ -471,19 +496,24 @@ class Draggable extends Base {
         if (self.cScrW === undefined) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
-        } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
-            // console.log('hit ceiling');
-            const di = self.cScrN + self.cbn + self.cpn - (self.pScrN + self.pbn + self.ppn);
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = self.ppn + di + 'px';
-        } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
-            // console.log('hit floor');
-            const di = self.cScrS - self.cbs - self.cps - (self.pScrS - self.pbs - self.pps);
-            self.selected.style.top = 'auto';
-            self.selected.style.bottom = self.pps - di + 'px';
         } else {
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = (self.selfN + dy) + 'px';
+            if (self.escapeY && isOutsideY(self.mouseY, self.containerBoundaries)) {
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = (self.selfN + dy) + 'px';
+            } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+                // console.log('hit ceiling');
+                const di = self.cScrN + self.cbn + self.cpn - (self.pScrN + self.pbn + self.ppn);
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = self.ppn + di + 'px';
+            } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+                // console.log('hit floor');
+                const di = self.cScrS - self.cbs - self.cps - (self.pScrS - self.pbs - self.pps);
+                self.selected.style.top = 'auto';
+                self.selected.style.bottom = self.pps - di + 'px';
+            } else {
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = (self.selfN + dy) + 'px';
+            }
         }
     }
 
@@ -492,17 +522,22 @@ class Draggable extends Base {
         if (self.cScrW === undefined) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
-        } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
-            // console.log('hit left wall');
-            self.selected.style.right = 'auto';
-            self.selected.style.left = self.cScrW + self.cbw + self.cpw + 'px';
-        } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
-            // console.log('hit right wall');
-            self.selected.style.right = 'auto';
-            self.selected.style.left = self.cScrE - self.cbe - self.cpe - self.selfWidth - self.smw - self.sme + 'px';
         } else {
-            self.selected.style.right = 'auto';
-            self.selected.style.left = (self.selfW + dx) + 'px';
+            if (self.escapeX && isOutsideX(self.mouseX, self.containerBoundaries)) {
+                self.selected.style.right = 'auto';
+                self.selected.style.left = (self.selfW + dx) + 'px';
+            } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+                // console.log('hit left wall');
+                self.selected.style.right = 'auto';
+                self.selected.style.left = self.cScrW + self.cbw + self.cpw + 'px';
+            } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+                // console.log('hit right wall');
+                self.selected.style.right = 'auto';
+                self.selected.style.left = self.cScrE - self.cbe - self.cpe - self.selfWidth - self.smw - self.sme + 'px';
+            } else {
+                self.selected.style.right = 'auto';
+                self.selected.style.left = (self.selfW + dx) + 'px';
+            }
         }
     }
 
@@ -511,17 +546,22 @@ class Draggable extends Base {
         if (self.cScrW === undefined) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
-        } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
-            // console.log('hit ceiling');
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = self.cScrN + self.cbn + self.cpn + 'px';
-        } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
-            // console.log('hit floor');
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = self.cScrS - self.cbs - self.cps - self.selfHeight - self.smn - self.sms + 'px';
         } else {
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = (self.selfN + dy) + 'px';
+            if (self.escapeY && isOutsideY(self.mouseY, self.containerBoundaries)) {
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = (self.selfN + dy) + 'px';
+            } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+                // console.log('hit ceiling');
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = self.cScrN + self.cbn + self.cpn + 'px';
+            } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+                // console.log('hit floor');
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = self.cScrS - self.cbs - self.cps - self.selfHeight - self.smn - self.sms + 'px';
+            } else {
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = (self.selfN + dy) + 'px';
+            }
         }
     }
 
@@ -530,17 +570,22 @@ class Draggable extends Base {
         if (self.cScrW === undefined) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
-        } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
-            // console.log('hit left wall');
-            self.selected.style.right = 'auto';
-            self.selected.style.left = -(self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) + self.selfW + 'px';
-        } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
-            // console.log('hit right wall');
-            self.selected.style.left = 'auto';
-            self.selected.style.right = -(self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) + self.selfE + 'px';
         } else {
-            self.selected.style.right = 'auto';
-            self.selected.style.left = (self.selfW + dx) + 'px';
+            if (self.escapeX && isOutsideX(self.mouseX, self.containerBoundaries)) {
+                self.selected.style.right = 'auto';
+                self.selected.style.left = (self.selfW + dx) + 'px';
+            } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+                // console.log('hit left wall');
+                self.selected.style.right = 'auto';
+                self.selected.style.left = -(self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) + self.selfW + 'px';
+            } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+                // console.log('hit right wall');
+                self.selected.style.left = 'auto';
+                self.selected.style.right = -(self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) + self.selfE + 'px';
+            } else {
+                self.selected.style.right = 'auto';
+                self.selected.style.left = (self.selfW + dx) + 'px';
+            }
         }
     };
     moveRelativeY(dy) {
@@ -548,18 +593,23 @@ class Draggable extends Base {
         if (self.cScrW === undefined) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
-        } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
-            // console.log('hit ceiling');
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = -(self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) + self.selfN + 'px';
-        } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
-            // console.log('hit floor');
-            self.selected.style.top = 'auto';
-            self.selected.style.bottom = -(self.cScrS - self.scrS - self.cbs - self.cps - self.sms) + self.selfS + 'px';
-            // console.log(self.cScrS, self.scrS, self.cbs, self.cps, self.sms, self.selfS);
         } else {
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = (self.selfN + dy) + 'px';
+            if (self.escapeY && isOutsideY(self.mouseY, self.containerBoundaries)) {
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = (self.selfN + dy) + 'px';
+            } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+                // console.log('hit ceiling');
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = -(self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) + self.selfN + 'px';
+            } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+                // console.log('hit floor');
+                self.selected.style.top = 'auto';
+                self.selected.style.bottom = -(self.cScrS - self.scrS - self.cbs - self.cps - self.sms) + self.selfS + 'px';
+                // console.log(self.cScrS, self.scrS, self.cbs, self.cps, self.sms, self.selfS);
+            } else {
+                self.selected.style.bottom = 'auto';
+                self.selected.style.top = (self.selfN + dy) + 'px';
+            }
         }
     }
 }

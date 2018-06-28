@@ -59,6 +59,14 @@ export const isOutside = function (x, y, bcr) {
     return x <= bcr.left || x >= bcr.right || y <= bcr.top || y >= bcr.bottom;
 };
 
+export const isOutsideX = function (x, bcr) {
+    return x <= bcr.left || x >= bcr.right;
+};
+
+export const isOutsideY = function (y, bcr) {
+    return y <= bcr.top || y >= bcr.bottom;
+};
+
 
 export const dndStateConsts = {
     touch: 1 << 0,
