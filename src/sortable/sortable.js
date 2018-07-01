@@ -29,6 +29,7 @@ class Sortable extends Base {
         const settings = Object.assign({
             className: 'azSortableItem',
             placeholder: true,
+            escape: false,
             create: function (event, ui) {
                 // console.log('create', ui);
             },
@@ -212,7 +213,7 @@ class Sortable extends Base {
         this.dragConfig = {
             containment: node,
             resist: 10,
-            escape: true,
+            escape: settings.escape,
             create: onDragCreate,
             start: onDragStart,
             drag: onDrag,

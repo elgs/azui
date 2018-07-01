@@ -8,8 +8,6 @@ import {
     getDropTargets,
     getPositionState,
     isOutside,
-    isOutsideX,
-    isOutsideY,
     isTouchDevice
 } from '../utilities/utilities.js';
 

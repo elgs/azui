@@ -99,6 +99,7 @@
         const elem1 = document.querySelector('#azSortable1');
         azui.Sortable(elem1, {
             placeholder: false,
+            escape: true,
             create: function (e, target) {
                 e.preventDefault();
             }
