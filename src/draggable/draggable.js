@@ -471,7 +471,7 @@ class Draggable extends Base {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
-            if (self.escapeX && isOutsideX(self.mouseX, self.containerBoundaries)) {
+            if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
                 self.selected.style.right = 'auto';
                 self.selected.style.left = (self.selfW + dx) + 'px';
             } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
@@ -497,7 +497,7 @@ class Draggable extends Base {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
-            if (self.escapeY && isOutsideY(self.mouseY, self.containerBoundaries)) {
+            if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
                 self.selected.style.bottom = 'auto';
                 self.selected.style.top = (self.selfN + dy) + 'px';
             } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
@@ -523,7 +523,7 @@ class Draggable extends Base {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
-            if (self.escapeX && isOutsideX(self.mouseX, self.containerBoundaries)) {
+            if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
                 self.selected.style.right = 'auto';
                 self.selected.style.left = (self.selfW + dx) + 'px';
             } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
@@ -547,7 +547,7 @@ class Draggable extends Base {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
-            if (self.escapeY && isOutsideY(self.mouseY, self.containerBoundaries)) {
+            if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
                 self.selected.style.bottom = 'auto';
                 self.selected.style.top = (self.selfN + dy) + 'px';
             } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
@@ -571,7 +571,7 @@ class Draggable extends Base {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
-            if (self.escapeX && isOutsideX(self.mouseX, self.containerBoundaries)) {
+            if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
                 self.selected.style.right = 'auto';
                 self.selected.style.left = (self.selfW + dx) + 'px';
             } else if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
@@ -594,7 +594,7 @@ class Draggable extends Base {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
-            if (self.escapeY && isOutsideY(self.mouseY, self.containerBoundaries)) {
+            if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
                 self.selected.style.bottom = 'auto';
                 self.selected.style.top = (self.selfN + dy) + 'px';
             } else if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {

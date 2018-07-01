@@ -212,6 +212,7 @@ class Sortable extends Base {
         this.dragConfig = {
             containment: node,
             resist: 10,
+            escape: true,
             create: onDragCreate,
             start: onDragStart,
             drag: onDrag,
