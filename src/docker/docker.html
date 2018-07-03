@@ -79,9 +79,9 @@
         w2.addEventListener('activated', activated);
         w2.addEventListener('inactivated', inactivated);
 
-        const d0 = docker.dock(w0);
-        const d1 = docker.dock(w1);
-        const d2 = docker.dock(w2);
+        const d0 = docker.dock(w0, 'O', 'Arizona', true);
+        const d1 = docker.dock(w1, 'O', 'California', true);
+        const d2 = docker.dock(w2, 'O', 'New Mexico', true);
         // console.log(d0);
         // docker.undock(d1);
     </script>
