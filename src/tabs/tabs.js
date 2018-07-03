@@ -116,6 +116,7 @@ class Tabs extends Base {
 
         self.dragging = false;
         self.sortable = azui.Sortable(tabLabels, {
+            escapable: true,
             create: (e, target) => {
                 if (e.type === 'touchstart') {
                     e.preventDefault();
