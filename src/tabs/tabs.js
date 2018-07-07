@@ -118,6 +118,9 @@ class Tabs extends Base {
         self.sortable = azui.Sortable(tabLabels, {
             escapable: true,
             create: (e, target) => {
+                if (matches(e.target, '.close,.close *')) {
+                    return false; // don't drag when clicking on icons
+                }
                 if (e.type === 'touchstart') {
                     e.preventDefault();
                 }
@@ -158,6 +161,25 @@ class Tabs extends Base {
         // tabHeaderContainer.appendChild(leftScroller);
         // tabHeaderContainer.appendChild(rightScroller);
         // self.showHideScrollers();
+    }
+
+    fitTabWidth() {
+        const self = this;
+        const node = self.node;
+        const nodeWidth = parseInt(getComputedStyle(node)['width']);
+        const tabLabels = node.querySelectorAll('.azTabLabel:not(.az-placeholder)');
+        const newWidth = Math.min(nodeWidth / tabLabels.length, 150);
+        tabLabels.forEach(tabLabel => {
+            // console.log(tabLabel);
+            if (newWidth < 60) {
+                tabLabel.querySelector('.icon').style['display'] = 'none';
+                tabLabel.style['grid-template-columns'] = '0 1fr 30px';
+            } else {
+                tabLabel.querySelector('.icon').style['display'] = '';
+                tabLabel.style['grid-template-columns'] = '30px 1fr 30px';
+            }
+            tabLabel.style['width'] = newWidth + 'px';
+        });
     }
 
     addTab(icon, title, closable) {
@@ -206,12 +228,14 @@ class Tabs extends Base {
         header.addEventListener('mouseup', headerClicked);
         header.addEventListener('touchend', headerClicked);
         // self.showHideScrollers();
+        self.fitTabWidth();
     }
     removeTab(tabId) {
         const self = this;
         const node = self.node;
-        const isActive = matches(node.querySelector(".azTabLabel#azTabHeader-" + tabId), '.active');
-        remove(node.querySelector(".azTabLabel#azTabHeader-" + tabId));
+        const tab = node.querySelector(".azTabLabel#azTabHeader-" + tabId);
+        const isActive = matches(tab, '.active');
+        remove(tab);
         remove(node.querySelector("#azTabContent-" + tabId));
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
@@ -222,6 +246,7 @@ class Tabs extends Base {
             remove(node);
         }
         // self.showHideScrollers();
+        self.fitTabWidth();
     }
     activateTab(tabId) {
         const self = this;
