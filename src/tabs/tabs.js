@@ -34,14 +34,14 @@ class Tabs extends Base {
         node.classList.add('azTabs');
 
         self.tabContextMenu = [{
-                icon: icons.svgClose,
+                // icon: icons.svgClose,
                 title: 'Close tab',
                 action: function (e, target) {
                     self.removeTab(_getTabId(target.id));
                     return false;
                 }
             }, {
-                icon: icons.svgClose,
+                // icon: icons.svgClose,
                 title: 'Close other tabs',
                 action: function (e, target) {
                     siblings(target, '.azTabLabel').forEach(function (element) {
@@ -50,7 +50,7 @@ class Tabs extends Base {
                     return false;
                 }
             }, {
-                icon: icons.svgClose,
+                // icon: icons.svgClose,
                 title: 'Close tabs to the right',
                 action: function (e, target) {
                     nextAll(target, '.azTabLabel').forEach(function (element) {
@@ -61,7 +61,7 @@ class Tabs extends Base {
             },
             null,
             {
-                icon: icons.svgClose,
+                // icon: icons.svgClose,
                 title: 'Close All',
                 action: function (e, target) {
                     siblings(target, '.azTabLabel').forEach(function (element) {
@@ -133,31 +133,31 @@ class Tabs extends Base {
 
         tabHeaderContainer.style['height'] = settings.headerHeight + 'px';
 
-        const leftScroller = parseDOMElement(`<div class='azTabScroller left'>${icons.svgPreviousPage}</div>`)[0];
-        const rightScroller = parseDOMElement(`<div class='azTabScroller right'>${icons.svgNextPage}</div>`)[0];
+        // const leftScroller = parseDOMElement(`<div class='azTabScroller left'>${icons.svgPreviousPage}</div>`)[0];
+        // const rightScroller = parseDOMElement(`<div class='azTabScroller right'>${icons.svgNextPage}</div>`)[0];
 
-        self.showHideScrollers = () => {
-            leftScroller.style.display = tabLabels.scrollLeft <= 0 ? 'none' : 'grid';
-            const style = getComputedStyle(tabLabels);
-            const width = parseInt(style.width);
-            const scrollWidth = tabLabels.scrollWidth;
-            // console.log(width, scrollWidth, tabLabels.scrollLeft);
-            rightScroller.style.visibility = scrollWidth > width + tabLabels.scrollLeft ? 'visible' : 'hidden';
-        };
+        // self.showHideScrollers = () => {
+        //     leftScroller.style.display = tabLabels.scrollLeft <= 0 ? 'none' : 'grid';
+        //     const style = getComputedStyle(tabLabels);
+        //     const width = parseInt(style.width);
+        //     const scrollWidth = tabLabels.scrollWidth;
+        //     // console.log(width, scrollWidth, tabLabels.scrollLeft);
+        //     rightScroller.style.visibility = scrollWidth > width + tabLabels.scrollLeft ? 'visible' : 'hidden';
+        // };
 
-        leftScroller.addEventListener('click', e => {
-            tabLabels.scrollLeft -= 100;
-            self.showHideScrollers();
-            // console.log(tabLabels.scrollLeft);
-        });
-        rightScroller.addEventListener('click', e => {
-            tabLabels.scrollLeft += 100;
-            self.showHideScrollers();
-            // console.log(tabLabels.scrollLeft);
-        });
-        tabHeaderContainer.appendChild(leftScroller);
-        tabHeaderContainer.appendChild(rightScroller);
-        self.showHideScrollers();
+        // leftScroller.addEventListener('click', e => {
+        //     tabLabels.scrollLeft -= 100;
+        //     self.showHideScrollers();
+        //     // console.log(tabLabels.scrollLeft);
+        // });
+        // rightScroller.addEventListener('click', e => {
+        //     tabLabels.scrollLeft += 100;
+        //     self.showHideScrollers();
+        //     // console.log(tabLabels.scrollLeft);
+        // });
+        // tabHeaderContainer.appendChild(leftScroller);
+        // tabHeaderContainer.appendChild(rightScroller);
+        // self.showHideScrollers();
     }
 
     addTab(icon, title, closable) {
@@ -205,7 +205,7 @@ class Tabs extends Base {
         const headerClicked = self.headerClicked(cm);
         header.addEventListener('mouseup', headerClicked);
         header.addEventListener('touchend', headerClicked);
-        self.showHideScrollers();
+        // self.showHideScrollers();
     }
     removeTab(tabId) {
         const self = this;
@@ -221,7 +221,7 @@ class Tabs extends Base {
         } else {
             remove(node);
         }
-        self.showHideScrollers();
+        // self.showHideScrollers();
     }
     activateTab(tabId) {
         const self = this;

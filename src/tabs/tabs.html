@@ -62,7 +62,7 @@
         azui.Draggable(elem, {
             handle: '.azTabHeader',
             create: function (event, ui) {
-                console.log(event.target.classList.contains('azTabHeader'));
+                // console.log(event.target.classList.contains('azTabHeader'));
                 if (event.type === 'touchstart' && event.target.classList.contains('azTabHeader')) {
                     event.preventDefault();
                 }
@@ -71,7 +71,7 @@
         azui.Resizable(elem, {
             hideHandles: true,
             resize: e => {
-                tabs.showHideScrollers();
+                // tabs.showHideScrollers();
             },
         });
 

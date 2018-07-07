@@ -51,14 +51,6 @@ class ContextMenu extends Base {
                     separator.classList.add('azMenuSeparator');
                     return separator;
                 }
-                let icon = item.icon;
-                let title = item.title;
-
-                const iconDiv = normalizeIcon(icon);
-                const titleDiv = normalizeIcon(title);
-
-                iconDiv.classList.add('icon');
-                titleDiv.classList.add('title');
 
                 const menuItem = document.createElement('div');
                 menuItem.classList.add('azMenuItem');
@@ -66,7 +58,14 @@ class ContextMenu extends Base {
                     menuItem.classList.add('disabled');
                 }
 
+                const icon = item.icon || '';
+                const iconDiv = normalizeIcon(icon);
+                iconDiv.classList.add('icon');
                 menuItem.appendChild(iconDiv);
+
+                const title = item.title || '';
+                const titleDiv = normalizeIcon(title);
+                titleDiv.classList.add('title');
                 menuItem.appendChild(titleDiv);
                 // iconDiv.innerHTML = icon;
                 // titleDiv.innerHTML = title;

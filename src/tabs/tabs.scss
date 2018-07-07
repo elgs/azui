@@ -21,18 +21,18 @@
         grid-area: headers;
         border-bottom: 1px solid darken($color: $main-color, $amount: 10%);
         background-color: lighten($color: $main-color, $amount: 5%);
-        display: grid;
-        grid-template-areas: "scroller-left labels scroller-right";
-        grid-template-columns: auto 1fr auto;
+        // display: grid;
+        // grid-template-areas: "scroller-left labels scroller-right";
+        // grid-template-columns: auto 1fr auto;
         & div.azTabLabels {
-            grid-area: labels;
+            // grid-area: labels;
             position: relative;
             display: flex;
-            overflow: hidden;
+            // overflow: hidden;
             & div.azTabLabel {
                 height: 100%;
-                width: 150px;
-                min-width: 100px;
+                max-width: 150px;
+                width: 100px;
                 border-right: solid 1px darken($color: $main-color, $amount: 7%);
                 border-left: solid 1px white;
                 &:first-of-type {
@@ -81,27 +81,27 @@
                 }
             }
         }
-        & .azTabScroller {
-            width: 30px;
-            height: 100%;
-            display: grid;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            &.left {
-                grid-area: scroller-left;
-                display: none;
-            }
-            &.right {
-                grid-area: scroller-right;
-                visibility: hidden;
-            }
-            @extend %hoveractive;
-            & svg {
-                width: 10px;
-                height: 10px;
-            }
-        }
+        // & .azTabScroller {
+        //     width: 30px;
+        //     height: 100%;
+        //     display: grid;
+        //     align-items: center;
+        //     justify-content: center;
+        //     cursor: pointer;
+        //     &.left {
+        //         grid-area: scroller-left;
+        //         display: none;
+        //     }
+        //     &.right {
+        //         grid-area: scroller-right;
+        //         visibility: hidden;
+        //     }
+        //     @extend %hoveractive;
+        //     & svg {
+        //         width: 10px;
+        //         height: 10px;
+        //     }
+        // }
     }
     & .azTabContent {
         grid-area: contents;
