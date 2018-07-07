@@ -63,7 +63,8 @@
             handle: '.azTabHeader',
             create: function (event, ui) {
                 // console.log(event.target.classList.contains('azTabHeader'));
-                if (event.type === 'touchstart' && event.target.classList.contains('azTabHeader')) {
+                // console.log(event.target.classList);
+                if (event.type === 'touchstart' && event.target.classList.contains('azTabLabels')) {
                     event.preventDefault();
                 }
             },
