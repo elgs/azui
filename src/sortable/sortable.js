@@ -26,27 +26,28 @@ azui.Sortable = function (el, options) {
 class Sortable extends Base {
     constructor(el, options) {
         super(el);
+        const self = this;
         const settings = Object.assign({
             className: 'azSortableItem',
             placeholder: true,
             escapable: false,
-            create: function (event, ui) {
+            create: function (event, ui, self) {
                 // console.log('create', ui);
             },
-            start: function (event, ui) {
+            start: function (event, ui, self) {
                 // console.log('start', ui);
             },
-            sort: function (event, ui) {
-                // console.log('sort', ui);
+            sort: function (event, data, self) {
+                // console.log('sort', data);
             },
-            escape: function (event, ui) {
-                console.log('escape', ui);
+            escape: function (event, ui, self) {
+                // console.log('escape', ui);
             },
-            capture: function (event, ui) {
-                console.log('capture', ui);
+            capture: function (event, ui, self) {
+                // console.log('capture', ui);
             },
-            stop: function (event, ui) {
-                // console.log('stop', ui);
+            stop: function (event, data, self) {
+                // console.log('stop', data);
             },
         }, options);
 
@@ -62,14 +63,14 @@ class Sortable extends Base {
         let z = 0;
 
         const onDragCreate = function (e, target) {
-            if (settings.create(e, target) === false) {
+            if (settings.create(e, target, self) === false) {
                 return false;
             }
         };
 
         const onDragStart = function (e, target) {
             selected = target;
-            if (settings.start(e, selected) === false) {
+            if (settings.start(e, selected, self) === false) {
                 return false;
             }
             dropTargetCenterStates = {};
@@ -145,7 +146,7 @@ class Sortable extends Base {
         };
 
         const onOverTargetCenter = function (e, data) {
-            if (settings.sort(e, data) === false) {
+            if (settings.sort(e, data, self) === false) {
                 return false;
             }
             if (settings.placeholder) {
@@ -161,7 +162,7 @@ class Sortable extends Base {
         };
 
         const onLeaveTargetCenter = function (e, data) {
-            if (settings.sort(e, data) === false) {
+            if (settings.sort(e, data, self) === false) {
                 return false;
             }
             if (!settings.placeholder) {
@@ -173,12 +174,13 @@ class Sortable extends Base {
             }
         };
 
-        const onDragStop = function (e, target) {
+        const onDragStop = function (e, target, escaped) {
             // console.log(selected, ph);
             if (settings.stop(e, {
                     source: selected,
-                    target: ph
-                }) === false) {
+                    target: ph,
+                    escaped: escaped,
+                }, self) === false) {
                 return false;
             }
             setTimeout(() => {
@@ -188,7 +190,6 @@ class Sortable extends Base {
                     selected.classList.remove('azSortableDeny');
                     if (ph) {
                         if (settings.placeholder) {
-                            // ph.after(selected);
                             insertAfter(selected, ph);
                             ph.parentNode.removeChild(ph);
                             target.style.position = 'relative';
@@ -197,10 +198,8 @@ class Sortable extends Base {
                             ph.classList.remove('azSortableDropAfter');
                             if (index(selected) < index(ph)) {
                                 insertAfter(selected, ph);
-                                // ph.after(selected);
                             } else {
                                 insertBefore(selected, ph);
-                                // ph.before(selected);
                             }
                         }
                         ph = null;
@@ -220,10 +219,14 @@ class Sortable extends Base {
             containment: node,
             resist: 10,
             escapable: settings.escapable,
+            escape: settings.escape,
+            capture: settings.capture,
             create: onDragCreate,
             start: onDragStart,
             drag: onDrag,
-            stop: onDragStop,
+            stop: (event, ui, draggable) => {
+                onDragStop(event, ui, draggable.escaped);
+            },
             dropKey: dropKey
         };
 

@@ -18,6 +18,8 @@ azui.Draggable = function (el, options) {
 class Draggable extends Base {
     constructor(el, options) {
         super(el);
+
+        const self = this;
         const settings = Object.assign({
             handle: false,
             axis: false,
@@ -27,27 +29,26 @@ class Draggable extends Base {
             opacity: false,
             dropKey: false,
             triggerDropEvents: false,
-            create: function (event, ui) {
+            create: function (event, ui, self) {
                 // console.log('create', ui);
             },
-            start: function (event, ui) {
+            start: function (event, ui, self) {
                 // console.log('start', ui);
             },
-            drag: function (event, ui) {
+            drag: function (event, ui, self) {
                 // console.log('drag', ui);
             },
-            escape: function (event, ui) {
-                console.log('escape', ui);
+            escape: function (event, ui, self) {
+                // console.log('escape', ui);
             },
-            capture: function (event, ui) {
-                console.log('capture', ui);
+            capture: function (event, ui, self) {
+                // console.log('capture', ui);
             },
-            stop: function (event, ui) {
+            stop: function (event, ui, self) {
                 // console.log('stop', ui);
             },
         }, options);
 
-        const self = this;
         const node = this.node;
         self.settings = settings;
         node.classList.add('azDraggable');
@@ -133,7 +134,7 @@ class Draggable extends Base {
                 return;
             }
             if (!started) {
-                if (settings.start(e, self.selected) === false) {
+                if (settings.start(e, self.selected, self) === false) {
                     return false;
                 }
                 initDrag(e);
@@ -158,7 +159,7 @@ class Draggable extends Base {
                 }
             }
 
-            if (settings.drag(e, self.selected) === false) {
+            if (settings.drag(e, self.selected, self) === false) {
                 return false;
             }
             self.mouseX = e.clientX || e.touches[0].clientX;
@@ -212,7 +213,7 @@ class Draggable extends Base {
 
         const onmouseup = function (e) {
             // console.log(e.type, e.target, self, self.selected);
-            if (started && settings.stop(e, self.selected) === false) {
+            if (started && settings.stop(e, self.selected, self) === false) {
                 return false;
             }
             started = false;
@@ -243,7 +244,7 @@ class Draggable extends Base {
                 const dts = getDropTargets(settings.dropKey);
                 dts.filter(dt => dt !== node).map(dt => {
                     // console.log(self, elem);
-                    const dropId = dt.getAttribute('drop-id');
+                    // const dropId = dt.getAttribute('drop-id');
                     const ps = getPositionState(node, dt);
                     // console.log(ps);
                     dt.dispatchEvent(new CustomEvent('dropped', {
@@ -410,7 +411,7 @@ class Draggable extends Base {
                 return;
             }
 
-            if (settings.create(e, node) === false) {
+            if (settings.create(e, node, self) === false) {
                 return;
             }
             self.selected = node;
@@ -479,7 +480,7 @@ class Draggable extends Base {
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
             if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected) === false) {
+                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
                     return false;
                 }
                 self.escaped = true;
@@ -488,7 +489,7 @@ class Draggable extends Base {
                 return;
             }
 
-            if (self.escaped && self.settings.capture(event, self.selected) === false) {
+            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
                 return false;
             }
             self.escaped = false;
@@ -517,7 +518,7 @@ class Draggable extends Base {
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
             if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected) === false) {
+                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
                     return false;
                 }
                 self.escaped = true;
@@ -526,7 +527,7 @@ class Draggable extends Base {
                 return;
             }
 
-            if (self.escaped && self.settings.capture(event, self.selected) === false) {
+            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
                 return false;
             }
             self.escaped = false;
@@ -555,7 +556,7 @@ class Draggable extends Base {
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
             if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected) === false) {
+                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
                     return false;
                 }
                 self.escaped = true;
@@ -564,7 +565,7 @@ class Draggable extends Base {
                 return;
             }
 
-            if (self.escaped && self.settings.capture(event, self.selected) === false) {
+            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
                 return false;
             }
             self.escaped = false;
@@ -591,7 +592,7 @@ class Draggable extends Base {
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
             if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected) === false) {
+                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
                     return false;
                 }
                 self.escaped = true;
@@ -600,7 +601,7 @@ class Draggable extends Base {
                 return;
             }
 
-            if (self.escaped && self.settings.capture(event, self.selected) === false) {
+            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
                 return false;
             }
             self.escaped = false;
@@ -627,7 +628,7 @@ class Draggable extends Base {
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
             if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected) === false) {
+                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
                     return false;
                 }
                 self.escaped = true;
@@ -636,7 +637,7 @@ class Draggable extends Base {
                 return;
             }
 
-            if (self.escaped && self.settings.capture(event, self.selected) === false) {
+            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
                 return false;
             }
             self.escaped = false;
@@ -662,7 +663,7 @@ class Draggable extends Base {
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
             if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected) === false) {
+                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
                     return false;
                 }
                 self.escaped = true;
@@ -671,7 +672,7 @@ class Draggable extends Base {
                 return;
             }
 
-            if (self.escaped && self.settings.capture(event, self.selected) === false) {
+            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
                 return false;
             }
             self.escaped = false;

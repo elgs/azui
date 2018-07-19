@@ -67,7 +67,7 @@
         }
     } else if (command === 'start') {
         const mod = args[0];
-        run('rm', ['-rf', `./dist/${ver}/`, `.cache/`]);
+        // run('rm', ['-rf', `./dist/${ver}/`, `.cache/`]);
         run('parcel', ['serve', '-d', 'dev', `./src/${mod}/${mod}.html`]);
     } else if (command === 'clean') {
         if (args.length === 0) {
