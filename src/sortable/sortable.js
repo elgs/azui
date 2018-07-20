@@ -176,41 +176,41 @@ class Sortable extends Base {
 
         const onDragStop = function (e, target, escaped) {
             // console.log(selected, ph);
-            if (settings.stop(e, {
-                    source: selected,
-                    target: ph,
-                    escaped: escaped,
-                }, self) === false) {
+            const data = {
+                source: selected,
+                target: ph,
+                escaped: escaped,
+            };
+            if (selected) {
+                selected.classList.remove('azSortableSelected');
+                selected.classList.remove('azSortableAllow');
+                selected.classList.remove('azSortableDeny');
+                if (ph) {
+                    if (settings.placeholder) {
+                        insertAfter(selected, ph);
+                        ph.parentNode.removeChild(ph);
+                        target.style.position = 'relative';
+                    } else {
+                        ph.classList.remove('azSortableDropBefore');
+                        ph.classList.remove('azSortableDropAfter');
+                        if (index(selected) < index(ph)) {
+                            insertAfter(selected, ph);
+                        } else {
+                            insertBefore(selected, ph);
+                        }
+                    }
+                    ph = null;
+                }
+                selected = null;
+            }
+            target.style.top = 0;
+            target.style.left = 0;
+            target.style.right = 0;
+            target.style.bottom = 0;
+
+            if (settings.stop(e, data, self) === false) {
                 return false;
             }
-            setTimeout(() => {
-                if (selected) {
-                    selected.classList.remove('azSortableSelected');
-                    selected.classList.remove('azSortableAllow');
-                    selected.classList.remove('azSortableDeny');
-                    if (ph) {
-                        if (settings.placeholder) {
-                            insertAfter(selected, ph);
-                            ph.parentNode.removeChild(ph);
-                            target.style.position = 'relative';
-                        } else {
-                            ph.classList.remove('azSortableDropBefore');
-                            ph.classList.remove('azSortableDropAfter');
-                            if (index(selected) < index(ph)) {
-                                insertAfter(selected, ph);
-                            } else {
-                                insertBefore(selected, ph);
-                            }
-                        }
-                        ph = null;
-                    }
-                    selected = null;
-                }
-                target.style.top = 0;
-                target.style.left = 0;
-                target.style.right = 0;
-                target.style.bottom = 0;
-            });
         };
 
         const dropKey = randGen(8);

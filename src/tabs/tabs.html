@@ -15,6 +15,7 @@
         #tab0 {
             height: 400px;
             width: 600px;
+            position: absolute;
         }
     </style>
     <script src="./index.js"></script>
@@ -58,23 +59,7 @@
         const svgApps =
             `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;
         const elem = document.querySelector('#tab0');
-        const tabs = azui.Tabs(elem, {});
-        azui.Draggable(elem, {
-            handle: '.azTabHeader',
-            create: function (event, ui) {
-                // console.log(event.target.classList.contains('azTabHeader'));
-                // console.log(event.target.classList);
-                if (event.type === 'touchstart' && event.target.classList.contains('azTabLabels')) {
-                    event.preventDefault();
-                }
-            },
-        });
-        azui.Resizable(elem, {
-            hideHandles: true,
-            resize: e => {
-                // tabs.showHideScrollers();
-                tabs.fitTabWidth();
-            },
+        const tabs = azui.Tabs(elem, {
         });
 
         let count = 0;

@@ -27,10 +27,13 @@ class Tabs extends Base {
         super(el);
         const settings = Object.assign({
             headerHeight: 40,
+            draggable: true,
+            resizable: true,
         }, options);
 
         const self = this;
         const node = this.node;
+        self.settings = settings;
         node.classList.add('azTabs');
 
         self.tabContextMenu = [{
@@ -89,7 +92,12 @@ class Tabs extends Base {
             event.stopPropagation();
         };
 
-        const tabHeaderContainer = node.querySelector('div.azTabHeader');
+        let tabHeaderContainer = node.querySelector('div.azTabHeader');
+        if (!tabHeaderContainer) {
+            tabHeaderContainer = document.createElement('div');
+            tabHeaderContainer.classList.add('azTabHeader');
+            node.appendChild(tabHeaderContainer);
+        }
         const tabLabelList = node.querySelectorAll('div.azTabLabel'); // a list
         const tabLabels = document.createElement('div');
         tabLabels.classList.add('azTabLabels');
@@ -130,8 +138,12 @@ class Tabs extends Base {
             },
             stop: (e, data) => {
                 self.dragging = false;
-                self.activateTab(_getTabId(data.source.id));
-                // console.log('stop', data);
+                const tabId = _getTabId(data.source.id);
+                if (data.escaped) {
+                    self.spawn(tabId);
+                } else {
+                    self.activateTab(tabId);
+                }
             }
         });
 
@@ -162,6 +174,28 @@ class Tabs extends Base {
         // tabHeaderContainer.appendChild(leftScroller);
         // tabHeaderContainer.appendChild(rightScroller);
         // self.showHideScrollers();
+
+        if (settings.draggable) {
+            azui.Draggable(node, {
+                handle: '.azTabHeader',
+                create: function (event, ui) {
+                    // console.log(event.target.classList.contains('azTabHeader'));
+                    // console.log(event.target.classList);
+                    if (event.type === 'touchstart' && event.target.classList.contains('azTabLabels')) {
+                        event.preventDefault();
+                    }
+                },
+            });
+        }
+        if (settings.resizable) {
+            azui.Resizable(node, {
+                hideHandles: true,
+                resize: e => {
+                    // self.showHideScrollers();
+                    self.fitTabWidth();
+                },
+            });
+        }
     }
 
     fitTabWidth() {
@@ -169,7 +203,7 @@ class Tabs extends Base {
         const node = self.node;
         const nodeWidth = parseInt(getComputedStyle(node)['width']);
         const tabLabels = node.querySelectorAll('.azTabLabel:not(.az-placeholder)');
-        const newWidth = Math.min(nodeWidth / tabLabels.length, 150);
+        const newWidth = Math.min((nodeWidth - (self.settings.draggable ? 40 : 0)) / tabLabels.length, 150);
         tabLabels.forEach(tabLabel => {
             // console.log(tabLabel);
             if (newWidth < 60) {
@@ -181,6 +215,41 @@ class Tabs extends Base {
             }
             tabLabel.style['width'] = newWidth + 'px';
         });
+    }
+
+    spawn(tabId) {
+        const self = this;
+        const node = self.node;
+        const tabHeader = node.querySelector(".azTabLabel#azTabHeader-" + tabId);
+        const tabContent = node.querySelector("#azTabContent-" + tabId);
+        const isActive = matches(tabHeader, '.active');
+
+        const nodeStyle = getComputedStyle(node);
+        // console.log(nodeStyle.width, nodeStyle.height);
+        const newTabsElem = document.createElement('div');
+        newTabsElem.style.width = nodeStyle.width;
+        newTabsElem.style.height = nodeStyle.height;
+        newTabsElem.style.position = nodeStyle.position;
+        node.parentNode.appendChild(newTabsElem);
+        const newTabs = azui.Tabs(newTabsElem, {});
+        const newNode = newTabs.node;
+
+        const newLabels = newNode.querySelector('div.azTabHeader>.azTabLabels');
+        // console.log(tabHeader, newLabels);
+        newLabels.appendChild(tabHeader);
+        tabContent.style['display'] = "block";
+        newNode.appendChild(tabContent);
+
+        const headers = node.querySelectorAll('.azTabLabel');
+        if (headers.length) {
+            if (isActive) {
+                self.activateTabByIndex(0);
+            }
+            // self.showHideScrollers();
+            self.fitTabWidth();
+        } else {
+            remove(node);
+        }
     }
 
     addTab(icon, title, closable) {
@@ -243,11 +312,11 @@ class Tabs extends Base {
             if (isActive) {
                 self.activateTabByIndex(0);
             }
+            // self.showHideScrollers();
+            self.fitTabWidth();
         } else {
             remove(node);
         }
-        // self.showHideScrollers();
-        self.fitTabWidth();
     }
     activateTab(tabId) {
         const self = this;
