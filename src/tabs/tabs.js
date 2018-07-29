@@ -140,7 +140,9 @@ class Tabs extends Base {
                 self.dragging = false;
                 const tabId = _getTabId(data.source.id);
                 if (data.escaped) {
-                    self.spawn(tabId);
+                    const x = data.boundingClientRect.x;
+                    const y = data.boundingClientRect.y;
+                    self.spawn(tabId, x, y);
                 } else {
                     self.activateTab(tabId);
                 }
@@ -217,7 +219,7 @@ class Tabs extends Base {
         });
     }
 
-    spawn(tabId) {
+    spawn(tabId, x = 10, y = 10) {
         const self = this;
         const node = self.node;
         const tabHeader = node.querySelector(".azTabLabel#azTabHeader-" + tabId);
@@ -230,6 +232,8 @@ class Tabs extends Base {
         newTabsElem.style.width = nodeStyle.width;
         newTabsElem.style.height = nodeStyle.height;
         newTabsElem.style.position = nodeStyle.position;
+        newTabsElem.style.top = y + 'px';
+        newTabsElem.style.left = x + 'px';
         node.parentNode.appendChild(newTabsElem);
         const newTabs = azui.Tabs(newTabsElem, {});
         const newNode = newTabs.node;

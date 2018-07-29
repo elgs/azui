@@ -179,6 +179,7 @@ class Sortable extends Base {
             const data = {
                 source: selected,
                 target: ph,
+                boundingClientRect: target.getBoundingClientRect(),
                 escaped: escaped,
             };
             if (selected) {

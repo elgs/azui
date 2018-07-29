@@ -17,6 +17,7 @@
     display: grid;
     grid-template-areas: "headers" "contents";
     grid-template-rows: auto 1fr;
+    background-color: white;
     & .azTabHeader {
         grid-area: headers;
         border-bottom: 1px solid darken($color: $main-color, $amount: 10%);
