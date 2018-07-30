@@ -162,8 +162,8 @@ class Draggable extends Base {
             if (settings.drag(e, self.selected, self) === false) {
                 return false;
             }
-            self.mouseX = e.clientX || e.touches[0].clientX;
-            self.mouseY = e.clientY || e.touches[0].clientY;
+            self.mouseX = e.pageX || e.touches[0].pageX;
+            self.mouseY = e.pageY || e.touches[0].pageY;
             const dx = self.mouseX - mouseX0;
             const dy = self.mouseY - mouseY0;
             // console.log(dx, dy);
@@ -267,8 +267,10 @@ class Draggable extends Base {
                     if (settings.containment === 'parent') {
                         containment = node.parentNode;
                     } else if (settings.containment === 'document') {
-                        self.cScrN = -document.documentElement.scrollLeft;
-                        self.cScrW = -document.documentElement.scrollTop;
+                        // self.cScrN = -document.documentElement.scrollLeft;
+                        // self.cScrW = -document.documentElement.scrollTop;
+                        self.cScrN = -document.body.scrollLeft;
+                        self.cScrW = -document.body.scrollTop;
                         self.cScrS = getDocHeight();
                         self.cScrE = getDocWidth();
                         // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
@@ -303,10 +305,10 @@ class Draggable extends Base {
 
                     const containerBoundaries = containment.getBoundingClientRect();
                     self.containerBoundaries = containerBoundaries;
-                    self.cScrN = containerBoundaries.top;
-                    self.cScrE = containerBoundaries.right;
-                    self.cScrS = containerBoundaries.bottom;
-                    self.cScrW = containerBoundaries.left;
+                    self.cScrN = containerBoundaries.top + document.body.scrollTop;
+                    self.cScrE = containerBoundaries.right + document.body.scrollLeft;
+                    self.cScrS = containerBoundaries.bottom + document.body.scrollTop;
+                    self.cScrW = containerBoundaries.left + document.body.scrollLeft;
 
                     self.cpn = parseInt(containerStyles["padding-top"]);
                     self.cpe = parseInt(containerStyles["padding-right"]);
@@ -325,10 +327,10 @@ class Draggable extends Base {
 
             // console.log(parent, self.offsetParent);
             const pb = parent.getBoundingClientRect();
-            self.pScrN = pb.top;
-            self.pScrE = pb.right;
-            self.pScrS = pb.bottom;
-            self.pScrW = pb.left;
+            self.pScrN = pb.top + document.body.scrollTop;
+            self.pScrE = pb.right + document.body.scrollLeft;
+            self.pScrS = pb.bottom + document.body.scrollTop;
+            self.pScrW = pb.left + document.body.scrollLeft;
             // console.log(self.pScrN, self.pScrE, self.pScrS, self.pScrW);
 
             self.pbn = parseInt(parentStyles["border-top-width"]);
@@ -350,10 +352,10 @@ class Draggable extends Base {
             // console.log(self.smn, self.sme, self.sms, self.smw);
 
             const selfbcr = self.selected.getBoundingClientRect();
-            self.scrN = selfbcr.top;
-            self.scrE = selfbcr.right;
-            self.scrS = selfbcr.bottom;
-            self.scrW = selfbcr.left;
+            self.scrN = selfbcr.top + document.body.scrollTop;
+            self.scrE = selfbcr.right + document.body.scrollLeft;
+            self.scrS = selfbcr.bottom + document.body.scrollTop;
+            self.scrW = selfbcr.left + document.body.scrollLeft;
             // console.log(self.scrN, self.scrE, self.scrS, self.scrW);
 
             // self.selfW = parseInt(getComputedStyle(self)['left'));
@@ -362,23 +364,20 @@ class Draggable extends Base {
             // self.selfS = parseInt(getComputedStyle(self)['bottom'));
             // console.log(self.selfN, self.selfE, self.selfS, self.selfW);
 
-            const pScrollLeft = parent.scrollLeft;
-            const pScrollTop = parent.scrollTop;
-
             if (nodeStyles['position'] === 'relative') {
-                self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']) + pScrollLeft;
-                self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']) - pScrollLeft;
-                self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']) + pScrollTop;
-                self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']) - pScrollTop;
+                self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
+                self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
+                self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
+                self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
                 // console.log(self.selfN, self.selfE, self.selfS, self.selfW, self.style['position'));
             } else if (nodeStyles['position'] === 'absolute') {
-                self.selfW = self.scrW - self.pScrW - self.smw - self.pbw + pScrollLeft;
-                self.selfN = self.scrN - self.pScrN - self.smn - self.pbn + pScrollTop;
-                self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe - pScrollLeft;
-                self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs - pScrollTop;
+                self.selfW = self.scrW - self.pScrW - self.smw - self.pbw;
+                self.selfN = self.scrN - self.pScrN - self.smn - self.pbn;
+                self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe;
+                self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs;
             } else if (nodeStyles['position'] === 'fixed') {
-                self.selfW = self.scrW - self.smw + pScrollLeft;
-                self.selfN = self.scrN - self.smn + pScrollTop;
+                self.selfW = self.scrW - self.smw - document.body.scrollLeft;
+                self.selfN = self.scrN - self.smn - document.body.scrollTop;
             }
 
             self.selfWidth = selfbcr.width;
@@ -416,8 +415,8 @@ class Draggable extends Base {
             }
             self.selected = node;
 
-            self.mouseX = mouseX0 = e.clientX || e.touches[0].clientX;
-            self.mouseY = mouseY0 = e.clientY || e.touches[0].clientY;
+            self.mouseX = mouseX0 = e.pageX || e.touches[0].pageX;
+            self.mouseY = mouseY0 = e.pageY || e.touches[0].pageY;
             if (settings.handle) {
                 let handle = settings.handle;
                 if (typeof settings.handle === 'string') {

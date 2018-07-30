@@ -56,15 +56,15 @@ export function randGen(size, set = randGenConsts.LowerUpperDigit, include = '',
 export const isOutside = function (x, y, bcr) {
     // console.log(x, y);
     // _show(bcr);
-    return x <= bcr.left + document.documentElement.scrollLeft || x >= bcr.right + document.documentElement.scrollLeft || y <= bcr.top + document.documentElement.scrollTop || y >= bcr.bottom + document.documentElement.scrollTop;
+    return x <= bcr.left + document.body.scrollLeft || x >= bcr.right + document.body.scrollLeft || y <= bcr.top + document.body.scrollTop || y >= bcr.bottom + document.body.scrollTop;
 };
 
 export const isOutsideX = function (x, bcr) {
-    return x <= bcr.left + document.documentElement.scrollLeft || x >= bcr.right + document.documentElement.scrollLeft;
+    return x <= bcr.left + document.body.scrollLeft || x >= bcr.right + document.body.scrollLeft;
 };
 
 export const isOutsideY = function (y, bcr) {
-    return y <= bcr.top + document.documentElement.scrollTop || y >= bcr.bottom + document.documentElement.scrollTop;
+    return y <= bcr.top + document.body.scrollTop || y >= bcr.bottom + document.body.scrollTop;
 };
 
 
@@ -93,14 +93,14 @@ export const getPositionState = function (source, target) {
         ret += dndStateConsts.target_all;
     }
 
-    const sx = +document.documentElement.scrollLeft + s.left + s.width / 2;
-    const sy = +document.documentElement.scrollTop + s.top + s.height / 2;
+    const sx = document.body.scrollLeft + s.left + s.width / 2;
+    const sy = document.body.scrollTop + s.top + s.height / 2;
     if (!isOutside(sx, sy, t)) {
         ret += dndStateConsts.source_center;
     }
 
-    const tx = +document.documentElement.scrollLeft + t.left + t.width / 2;
-    const ty = +document.documentElement.scrollTop + t.top + t.height / 2;
+    const tx = document.body.scrollLeft + t.left + t.width / 2;
+    const ty = document.body.scrollTop + t.top + t.height / 2;
     if (!isOutside(tx, ty, s)) {
         ret += dndStateConsts.target_center;
     }
@@ -217,19 +217,19 @@ export const calcMenuPosition = function (mx, my, mw, mh) {
     const bw = window.innerWidth;
     const bh = window.innerHeight;
 
-    console.log(mx, my, mw, mh, bw, bh, document.body.scrollTop, document.body.scrollLeft);
+    // console.log(mx, my, mw, mh, bw, bh, document.body.scrollTop, document.body.scrollLeft);
     if (mx + mw + buf < bw) {
-        console.log('enough on right');
+        // console.log('enough on right');
         x = mx + m2p + document.body.scrollLeft;
     } else if (mx > mw + buf) {
-        console.log('enough on left');
+        // console.log('enough on left');
         x = mx - mw - m2p + document.body.scrollLeft;
     }
     if (my + mh + buf < bh) {
-        console.log('enough on bottom');
+        // console.log('enough on bottom');
         y = my + m2p + document.body.scrollTop;
     } else if (my > mh + buf) {
-        console.log('enough on top');
+        // console.log('enough on top');
         y = my - mh - m2p + document.body.scrollTop;
     }
     return {
