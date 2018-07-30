@@ -56,15 +56,15 @@ export function randGen(size, set = randGenConsts.LowerUpperDigit, include = '',
 export const isOutside = function (x, y, bcr) {
     // console.log(x, y);
     // _show(bcr);
-    return x <= bcr.left || x >= bcr.right || y <= bcr.top || y >= bcr.bottom;
+    return x <= bcr.left + document.documentElement.scrollLeft || x >= bcr.right + document.documentElement.scrollLeft || y <= bcr.top + document.documentElement.scrollTop || y >= bcr.bottom + document.documentElement.scrollTop;
 };
 
 export const isOutsideX = function (x, bcr) {
-    return x <= bcr.left || x >= bcr.right;
+    return x <= bcr.left + document.documentElement.scrollLeft || x >= bcr.right + document.documentElement.scrollLeft;
 };
 
 export const isOutsideY = function (y, bcr) {
-    return y <= bcr.top || y >= bcr.bottom;
+    return y <= bcr.top + document.documentElement.scrollTop || y >= bcr.bottom + document.documentElement.scrollTop;
 };
 
 
@@ -93,14 +93,14 @@ export const getPositionState = function (source, target) {
         ret += dndStateConsts.target_all;
     }
 
-    const sx = s.left + s.width / 2;
-    const sy = s.top + s.height / 2;
+    const sx = +document.documentElement.scrollLeft + s.left + s.width / 2;
+    const sy = +document.documentElement.scrollTop + s.top + s.height / 2;
     if (!isOutside(sx, sy, t)) {
         ret += dndStateConsts.source_center;
     }
 
-    const tx = t.left + t.width / 2;
-    const ty = t.top + t.height / 2;
+    const tx = +document.documentElement.scrollLeft + t.left + t.width / 2;
+    const ty = +document.documentElement.scrollTop + t.top + t.height / 2;
     if (!isOutside(tx, ty, s)) {
         ret += dndStateConsts.target_center;
     }
@@ -205,27 +205,32 @@ export const elemSize = function (elem) {
 };
 
 export const calcMenuPosition = function (mx, my, mw, mh) {
-    // console.log(mx, my, mw, mh);
     // mouse x, y, menu width, height
     const buf = 20;
     const m2p = 5;
     let x = 0;
     let y = 0;
-    const bw = getWidth(document.documentElement);
-    const bh = getHeight(document.documentElement);
+
+    // const bw = getWidth(document.body);
+    // const bh = getHeight(document.body);
+
+    const bw = window.innerWidth;
+    const bh = window.innerHeight;
+
+    console.log(mx, my, mw, mh, bw, bh, document.body.scrollTop, document.body.scrollLeft);
     if (mx + mw + buf < bw) {
-        // enough on right
-        x = mx + m2p;
+        console.log('enough on right');
+        x = mx + m2p + document.body.scrollLeft;
     } else if (mx > mw + buf) {
-        // enough on left
-        x = mx - mw - m2p;
+        console.log('enough on left');
+        x = mx - mw - m2p + document.body.scrollLeft;
     }
     if (my + mh + buf < bh) {
-        // enough on bottom
-        y = my + m2p;
+        console.log('enough on bottom');
+        y = my + m2p + document.body.scrollTop;
     } else if (my > mh + buf) {
-        // enough on top
-        y = my - mh - m2p;
+        console.log('enough on top');
+        y = my - mh - m2p + document.body.scrollTop;
     }
     return {
         x,

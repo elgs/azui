@@ -31,8 +31,8 @@ class ContextMenu extends Base {
         this.on = false;
         let mx, my = 0;
         const mousePositionTracker = function (e) {
-            mx = e.clientX || e.touches[0].clientX;
-            my = e.clientY || e.touches[0].clientY;
+            mx = e.pageX || e.touches[0].pageX;
+            my = e.pageY || e.touches[0].pageY;
         };
 
         const blurFocusDetector = function (e) {
@@ -104,7 +104,7 @@ class ContextMenu extends Base {
             });
 
             // console.log(getWidth(menu), getHeight(menu));
-            const menuPosition = calcMenuPosition(e.clientX || e.touches[0].pageX, e.clientY || e.touches[0].pageY, getWidth(menu), getHeight(menu));
+            const menuPosition = calcMenuPosition(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, getWidth(menu), getHeight(menu));
             // console.log(menuPosition);
             menu.style['position'] = 'absolute';
             menu.style['left'] = menuPosition.x + 'px';

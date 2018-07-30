@@ -17,10 +17,11 @@ DONE: number cell up/down button
 TODO: mobile select incorrect dropdown position
 
 tabs:
-TODO: drag out to create new tabset
+DONE: drag out to create new tabset
 TODO: drag tab between tabsets
-TODO: scroll to switch tab
-DONE: scroll buttons
+TODO: tab window z-index
+CNCL: scroll to switch tab
+CNCL: scroll buttons
 DONE: svg icons
 
 contextmenu:
@@ -43,4 +44,4 @@ DONE: keyboard to filter dropdown list
 DONE: click input not to dismiss the dropdown
 
 sortable:
-TODO: jump out
+DONE: jump out
