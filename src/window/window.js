@@ -137,7 +137,7 @@ class Window extends Base {
                 pb = node.parentNode.getBoundingClientRect();
             },
             resize: function (event, ui) {
-                if (isOutside(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY, pb)) {
+                if (isOutside(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY, pb)) {
                     return false;
                 }
             },
@@ -157,7 +157,7 @@ class Window extends Base {
                 }
             },
             drag: function (event, ui) {
-                if (isOutside(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY, pb)) {
+                if (isOutside(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY, pb)) {
                     return false;
                 }
             },

@@ -54,17 +54,17 @@ export function randGen(size, set = randGenConsts.LowerUpperDigit, include = '',
 // };
 
 export const isOutside = function (x, y, bcr) {
-    // console.log(x, y);
+    // console.log(x, y, document.body.scrollLeft, document.body.scrollTop, document.documentElement.scrollLeft, document.documentElement.scrollTop);
     // _show(bcr);
-    return x <= bcr.left + document.body.scrollLeft || x >= bcr.right + document.body.scrollLeft || y <= bcr.top + document.body.scrollTop || y >= bcr.bottom + document.body.scrollTop;
+    return x <= bcr.left + getDocScrollLeft() || x >= bcr.right + getDocScrollLeft() || y <= bcr.top + getDocScrollTop() || y >= bcr.bottom + getDocScrollTop();
 };
 
 export const isOutsideX = function (x, bcr) {
-    return x <= bcr.left + document.body.scrollLeft || x >= bcr.right + document.body.scrollLeft;
+    return x <= bcr.left + getDocScrollLeft() || x >= bcr.right + getDocScrollLeft();
 };
 
 export const isOutsideY = function (y, bcr) {
-    return y <= bcr.top + document.body.scrollTop || y >= bcr.bottom + document.body.scrollTop;
+    return y <= bcr.top + getDocScrollTop() || y >= bcr.bottom + getDocScrollTop();
 };
 
 
@@ -93,14 +93,14 @@ export const getPositionState = function (source, target) {
         ret += dndStateConsts.target_all;
     }
 
-    const sx = document.body.scrollLeft + s.left + s.width / 2;
-    const sy = document.body.scrollTop + s.top + s.height / 2;
+    const sx = getDocScrollLeft() + s.left + s.width / 2;
+    const sy = getDocScrollTop() + s.top + s.height / 2;
     if (!isOutside(sx, sy, t)) {
         ret += dndStateConsts.source_center;
     }
 
-    const tx = document.body.scrollLeft + t.left + t.width / 2;
-    const ty = document.body.scrollTop + t.top + t.height / 2;
+    const tx = getDocScrollLeft() + t.left + t.width / 2;
+    const ty = getDocScrollTop() + t.top + t.height / 2;
     if (!isOutside(tx, ty, s)) {
         ret += dndStateConsts.target_center;
     }
@@ -138,6 +138,14 @@ export const getDocWidth = function () {
         Math.max(document.body.clientWidth, document.documentElement.clientWidth)
     );
 };
+
+export const getDocScrollLeft = function () {
+    return Math.max(window.pageXOffset, document.documentElement.scrollLeft, document.body.scrollLeft);
+}
+
+export const getDocScrollTop = function () {
+    return Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
+}
 
 export const registerDropTarget = function (key, elem) {
     azui.data['azDropTargets'] = azui.data['azDropTargets'] || {};
@@ -220,17 +228,17 @@ export const calcMenuPosition = function (mx, my, mw, mh) {
     // console.log(mx, my, mw, mh, bw, bh, document.body.scrollTop, document.body.scrollLeft);
     if (mx + mw + buf < bw) {
         // console.log('enough on right');
-        x = mx + m2p + document.body.scrollLeft;
+        x = mx + m2p + getDocScrollLeft();
     } else if (mx > mw + buf) {
         // console.log('enough on left');
-        x = mx - mw - m2p + document.body.scrollLeft;
+        x = mx - mw - m2p + getDocScrollLeft();
     }
     if (my + mh + buf < bh) {
         // console.log('enough on bottom');
-        y = my + m2p + document.body.scrollTop;
+        y = my + m2p + getDocScrollTop();
     } else if (my > mh + buf) {
         // console.log('enough on top');
-        y = my - mh - m2p + document.body.scrollTop;
+        y = my - mh - m2p + getDocScrollTop();
     }
     return {
         x,

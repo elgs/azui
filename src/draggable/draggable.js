@@ -8,7 +8,9 @@ import {
     getDropTargets,
     getPositionState,
     isOutside,
-    isTouchDevice
+    isTouchDevice,
+    getDocScrollLeft,
+    getDocScrollTop,
 } from '../utilities/utilities.js';
 
 azui.Draggable = function (el, options) {
@@ -269,8 +271,8 @@ class Draggable extends Base {
                     } else if (settings.containment === 'document') {
                         // self.cScrN = -document.documentElement.scrollLeft;
                         // self.cScrW = -document.documentElement.scrollTop;
-                        self.cScrN = -document.body.scrollLeft;
-                        self.cScrW = -document.body.scrollTop;
+                        self.cScrN = -getDocScrollLeft();
+                        self.cScrW = -getDocScrollTop();
                         self.cScrS = getDocHeight();
                         self.cScrE = getDocWidth();
                         // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
@@ -305,10 +307,10 @@ class Draggable extends Base {
 
                     const containerBoundaries = containment.getBoundingClientRect();
                     self.containerBoundaries = containerBoundaries;
-                    self.cScrN = containerBoundaries.top + document.body.scrollTop;
-                    self.cScrE = containerBoundaries.right + document.body.scrollLeft;
-                    self.cScrS = containerBoundaries.bottom + document.body.scrollTop;
-                    self.cScrW = containerBoundaries.left + document.body.scrollLeft;
+                    self.cScrN = containerBoundaries.top + getDocScrollTop();
+                    self.cScrE = containerBoundaries.right + getDocScrollLeft();
+                    self.cScrS = containerBoundaries.bottom + getDocScrollTop();
+                    self.cScrW = containerBoundaries.left + getDocScrollLeft();
 
                     self.cpn = parseInt(containerStyles["padding-top"]);
                     self.cpe = parseInt(containerStyles["padding-right"]);
@@ -327,10 +329,10 @@ class Draggable extends Base {
 
             // console.log(parent, self.offsetParent);
             const pb = parent.getBoundingClientRect();
-            self.pScrN = pb.top + document.body.scrollTop;
-            self.pScrE = pb.right + document.body.scrollLeft;
-            self.pScrS = pb.bottom + document.body.scrollTop;
-            self.pScrW = pb.left + document.body.scrollLeft;
+            self.pScrN = pb.top + getDocScrollTop();
+            self.pScrE = pb.right + getDocScrollLeft();
+            self.pScrS = pb.bottom + getDocScrollTop();
+            self.pScrW = pb.left + getDocScrollLeft();
             // console.log(self.pScrN, self.pScrE, self.pScrS, self.pScrW);
 
             self.pbn = parseInt(parentStyles["border-top-width"]);
@@ -352,10 +354,10 @@ class Draggable extends Base {
             // console.log(self.smn, self.sme, self.sms, self.smw);
 
             const selfbcr = self.selected.getBoundingClientRect();
-            self.scrN = selfbcr.top + document.body.scrollTop;
-            self.scrE = selfbcr.right + document.body.scrollLeft;
-            self.scrS = selfbcr.bottom + document.body.scrollTop;
-            self.scrW = selfbcr.left + document.body.scrollLeft;
+            self.scrN = selfbcr.top + getDocScrollTop();
+            self.scrE = selfbcr.right + getDocScrollLeft();
+            self.scrS = selfbcr.bottom + getDocScrollTop();
+            self.scrW = selfbcr.left + getDocScrollLeft();
             // console.log(self.scrN, self.scrE, self.scrS, self.scrW);
 
             // self.selfW = parseInt(getComputedStyle(self)['left'));
@@ -376,8 +378,8 @@ class Draggable extends Base {
                 self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe;
                 self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs;
             } else if (nodeStyles['position'] === 'fixed') {
-                self.selfW = self.scrW - self.smw - document.body.scrollLeft;
-                self.selfN = self.scrN - self.smn - document.body.scrollTop;
+                self.selfW = self.scrW - self.smw - getDocScrollLeft();
+                self.selfN = self.scrN - self.smn - getDocScrollTop();
             }
 
             self.selfWidth = selfbcr.width;
@@ -424,6 +426,7 @@ class Draggable extends Base {
                 }
                 if (handle) {
                     const hb = handle.getBoundingClientRect();
+                    console.log(isOutside(mouseX0, mouseY0, hb));
                     if (isOutside(mouseX0, mouseY0, hb)) {
                         return;
                     }
