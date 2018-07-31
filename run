@@ -35,12 +35,21 @@
             const path = require('path')
             const dir = './src/';
             const mods = fs.readdirSync(dir).filter(item => fs.statSync(path.join(dir, item)).isDirectory());
-            mods.map(mod => {
-                run('parcel', ['build', '--no-source-maps', '-d', `./dist/${ver}/`, '-o', `azui.${mod}.min.js`, `./src/${mod}/index.js`]);
+            mods.map(async mod => {
+                await run('parcel', [
+                    'build', '--no-source-maps',
+                    '-d', `./dist/${ver}/`,
+                    '-o', `azui.${mod}.min.js`,
+                    `./src/${mod}/index.js`
+                ]);
             });
         } else {
             const mod = args[0];
-            run('parcel', ['build', '--no-source-maps', '-d', `./dist/${ver}/`, '-o', `azui.${mod}.min.js`, `./src/${mod}/index.js`]);
+            run('parcel', ['build', '--no-source-maps',
+                '-d', `./dist/${ver}/`,
+                '-o', `azui.${mod}.min.js`,
+                `./src/${mod}/index.js`
+            ]);
         }
     } else if (command === 'build') {
         if (args.length === 0) {
@@ -48,8 +57,8 @@
             const path = require('path')
             const dir = './src/';
             const mods = fs.readdirSync(dir).filter(item => fs.existsSync(path.join(dir, item, `${item}.html`)));
-            mods.map(mod => {
-                run('parcel', ['build',
+            mods.map(async mod => {
+                await run('parcel', ['build',
                     // '--no-minify',
                     '--no-source-maps',
                     '-d', `./build/${ver}/`, '--public-url', './', `./src/${mod}/${mod}.html`
