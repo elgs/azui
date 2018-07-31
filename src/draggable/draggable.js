@@ -426,7 +426,6 @@ class Draggable extends Base {
                 }
                 if (handle) {
                     const hb = handle.getBoundingClientRect();
-                    console.log(isOutside(mouseX0, mouseY0, hb));
                     if (isOutside(mouseX0, mouseY0, hb)) {
                         return;
                     }

@@ -570,6 +570,8 @@ class Resizable extends Base {
             setWidth(self.node, storedW);
             self.settings.collapse.call(self.node, event, ui, -storedW);
         }
+
+        self._resetCollapseIconStyle();
     }
 
     collapseY(event, ui) {
@@ -586,6 +588,8 @@ class Resizable extends Base {
             setHeight(self.node, storedH);
             self.settings.collapse.call(self.node, event, ui, -storedH);
         }
+
+        self._resetCollapseIconStyle();
     }
 
     _resetCollapseIconStyle() {

@@ -3,14 +3,17 @@
     background-color: $main-color;
     box-sizing: border-box;
     position: absolute;
-    display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &.active {
         background-color: $active0;
     }
     &>div.collapseButton {
         background-color: lighten($color: $main-color, $amount: 10%);
-        margin: auto;
-        display: grid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
         &.active svg {
             fill: $active0 !important;
@@ -19,7 +22,6 @@
             height: 100%;
             width: 40px;
             &>span.collapseIcon {
-                margin: auto;
                 &>svg {
                     height: 6px;
                     fill: $main-color;
@@ -30,7 +32,6 @@
             height: 40px;
             width: 100%;
             &>span.collapseIcon {
-                margin: auto;
                 &>svg {
                     width: 6px;
                     fill: $main-color;

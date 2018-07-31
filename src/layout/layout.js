@@ -6,7 +6,6 @@ import {
     resolveDOM,
     getHeight,
     getWidth,
-    setHeight,
 } from '../utilities/utilities.js';
 
 azui.Layout = function (el, options) {
