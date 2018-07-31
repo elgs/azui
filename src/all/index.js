@@ -2,7 +2,6 @@ import '../utilities/index.js';
 import '../doubleclick/index.js';
 import '../rightclick/index.js';
 import '../contextmenu/index.js';
-import '../dropdown/index.js';
 import '../draggable/index.js';
 import '../droppable/index.js';
 import '../layout/index.js';
