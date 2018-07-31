@@ -140,8 +140,8 @@ class Tabs extends Base {
                 self.dragging = false;
                 const tabId = _getTabId(data.source.id);
                 if (data.escaped) {
-                    const x = data.boundingClientRect.x;
-                    const y = data.boundingClientRect.y;
+                    const x = data.boundingClientRect.left;
+                    const y = data.boundingClientRect.top;
                     self.spawn(tabId, x, y);
                 } else {
                     self.activateTab(tabId);
