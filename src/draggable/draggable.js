@@ -4,13 +4,13 @@ import {
 import {
     dndStateConsts,
     getDocHeight,
+    getDocScrollLeft,
+    getDocScrollTop,
     getDocWidth,
     getDropTargets,
     getPositionState,
     isOutside,
-    isTouchDevice,
-    getDocScrollLeft,
-    getDocScrollTop,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 azui.Draggable = function (el, options) {

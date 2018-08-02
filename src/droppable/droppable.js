@@ -1,12 +1,12 @@
 import {
     Base
 } from '../utilities/core.js';
-
 import {
-    registerDropTarget,
     dndStateConsts,
     randGen,
+    registerDropTarget
 } from '../utilities/utilities.js';
+
 
 azui.Droppable = function (el, options) {
     return new Droppable(el, options);
@@ -17,18 +17,18 @@ class Droppable extends Base {
         super(el);
         const settings = Object.assign({
             // key: '',
-            // source_all_in: function (e, data) {},
-            // source_all_out: function (e, data) {},
-            // target_all_in: function (e, data) {},
-            // target_all_out: function (e, data) {},
-            // source_center_in: function (e, data) {},
-            // source_center_out: function (e, data) {},
-            // target_center_in: function (e, data) {},
-            // target_center_out: function (e, data) {},
-            // touch_in: function (e, data) {},
-            // touch_out: function (e, data) {},
-            // dragged: function (e, data) {},
-            // dropped: function (e, data) {},
+            // source_all_in: function (e) {},
+            // source_all_out: function (e) {},
+            // target_all_in: function (e) {},
+            // target_all_out: function (e) {},
+            // source_center_in: function (e) {},
+            // source_center_out: function (e) {},
+            // target_center_in: function (e) {},
+            // target_center_out: function (e) {},
+            // touch_in: function (e) {},
+            // touch_out: function (e) {},
+            // dragged: function (e) {},
+            // dropped: function (e) {},
         }, options);
 
         const node = this.node;

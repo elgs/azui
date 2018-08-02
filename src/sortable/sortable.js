@@ -2,10 +2,7 @@ import {
     Base
 } from '../utilities/core.js';
 import {
-    dndStateConsts,
-    getDropTargets,
     getHeight,
-    getPositionState,
     getWidth,
     index,
     insertAfter,
@@ -105,46 +102,6 @@ class Sortable extends Base {
             }
         };
 
-        const onDrag = function (e, target) {
-            let currentState = false;
-            let changed = false;
-            const source = target;
-            const dts = getDropTargets(dropKey).filter(dt => dt !== target);
-            for (let dt of dts) {
-                const eventData = {
-                    source,
-                    target: dt
-                };
-                const dropId = dt.getAttribute('az-drop-id');
-                const oState = dropTargetCenterStates[dropId];
-                const state = getPositionState(target, dt);
-                // console.log(state);
-                const nState = state & dndStateConsts.target_center;
-                // console.log(oState, nState);
-                dropTargetCenterStates[dropId] = nState;
-                if (nState) {
-                    currentState = true;
-                }
-                if (oState !== nState) {
-                    changed = true;
-                }
-
-                if (oState !== nState || !currentState) {
-                    if (nState) {
-                        // console.log('target center in');
-                        onOverTargetCenter(e, eventData);
-                        return;
-                    }
-                }
-            }
-            if (changed && !currentState) {
-                // console.log('target center out');
-                onLeaveTargetCenter(e, {
-                    source,
-                });
-            }
-        };
-
         const onOverTargetCenter = function (e, data) {
             if (settings.sort(e, data, self) === false) {
                 return false;
@@ -224,15 +181,24 @@ class Sortable extends Base {
             capture: settings.capture,
             create: onDragCreate,
             start: onDragStart,
-            drag: onDrag,
+            // drag: onDrag,
             stop: (event, ui, draggable) => {
                 onDragStop(event, ui, draggable.escaped);
             },
-            dropKey: dropKey
+            dropKey: dropKey,
+            triggerDropEvents: true,
         };
 
         this.dropConfig = {
-            key: dropKey
+            key: dropKey,
+            target_center_in: function (e) {
+                // console.log('target_center_in', e);
+                onOverTargetCenter(e, e.detail);
+            },
+            target_center_out: function (e) {
+                // console.log('target_center_out', e);
+                onLeaveTargetCenter(e, e.detail.source);
+            },
         };
         const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className));
         items.forEach(item => {
