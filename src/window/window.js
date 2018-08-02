@@ -146,7 +146,7 @@ class Window extends Base {
             handle: header,
             create: function (event, ui) {
                 const target = event.target;
-                pb = node.parentNode.getBoundingClientRect();
+                // pb = node.parentNode.getBoundingClientRect();
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
                     return false; // don't drag when clicking on icons
                 } else if (matches(target, '.azWindowHeader,.azWindowHeader *')) {
@@ -157,9 +157,9 @@ class Window extends Base {
                 }
             },
             drag: function (event, ui) {
-                if (isOutside(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY, pb)) {
-                    return false;
-                }
+                // if (isOutside(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY, pb)) {
+                // return false;
+                // }
             },
         });
 
