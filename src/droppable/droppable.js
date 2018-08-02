@@ -2,7 +2,6 @@ import {
     Base
 } from '../utilities/core.js';
 import {
-    dndStateConsts,
     randGen,
     registerDropTarget
 } from '../utilities/utilities.js';
@@ -39,7 +38,7 @@ class Droppable extends Base {
             return;
         }
         registerDropTarget(settings.key, node);
-        Object.keys(dndStateConsts).map(state => {
+        Object.keys(azui.constants.dndStateConsts).map(state => {
             const stateIn = state + '_in';
             const stateOut = state + '_out';
             if (settings[stateIn]) {

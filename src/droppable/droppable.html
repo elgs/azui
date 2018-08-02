@@ -39,14 +39,6 @@
     <div class="target" id="target0"></div>
     <div class="target" id="target1"></div>
     <script>
-        const dndStateConsts = {
-            touch: 1,
-            source_all: 2,
-            target_all: 4,
-            source_center: 8,
-            target_center: 16,
-        };
-
         const source0 = document.querySelector('div#source0');
         azui.Draggable(source0, {
             triggerDropEvents: true,

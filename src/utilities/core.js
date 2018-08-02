@@ -1,6 +1,29 @@
 global.azui = global.azui || {
-    data: {}
+    data: {},
+    constants: {
+        dndStateConsts: {
+            touch: 1 << 0,
+            source_all: 1 << 1,
+            target_all: 1 << 2,
+            source_center: 1 << 3,
+            target_center: 1 << 4,
+        },
+        dndEventConsts: {
+            touch_in: 1 << 0,
+            source_all_in: 1 << 1,
+            target_all_in: 1 << 2,
+            source_center_in: 1 << 3,
+            target_center_in: 1 << 4,
+            touch_out: 1 << 5,
+            source_all_out: 1 << 6,
+            target_all_out: 1 << 7,
+            source_center_out: 1 << 8,
+            target_center_out: 1 << 9,
+        }
+    },
 };
+
+
 
 export const normalizeElement = function (el) {
     if (typeof el === 'string') {

@@ -2,7 +2,6 @@ import {
     Base
 } from '../utilities/core.js';
 import {
-    dndEventConsts,
     getHeight,
     getWidth,
     index,
@@ -187,8 +186,8 @@ class Sortable extends Base {
                 onDragStop(event, ui, draggable.escaped);
             },
             dropKey: dropKey,
-            triggerDropEvents: dndEventConsts.target_center_in |
-                dndEventConsts.target_center_out,
+            triggerDropEvents: azui.constants.dndEventConsts.target_center_in |
+                azui.constants.dndEventConsts.target_center_out,
             // triggerDropEvents: true,
         };
 

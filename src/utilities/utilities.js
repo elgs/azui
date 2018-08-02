@@ -67,55 +67,33 @@ export const isOutsideY = function (y, bcr) {
     return y <= bcr.top + getDocScrollTop() || y >= bcr.bottom + getDocScrollTop();
 };
 
-
-export const dndStateConsts = {
-    touch: 1 << 0,
-    source_all: 1 << 1,
-    target_all: 1 << 2,
-    source_center: 1 << 3,
-    target_center: 1 << 4,
-};
-
-export const dndEventConsts = {
-    touch_in: 1 << 0,
-    source_all_in: 1 << 1,
-    target_all_in: 1 << 2,
-    source_center_in: 1 << 3,
-    target_center_in: 1 << 4,
-    touch_out: 1 << 5,
-    source_all_out: 1 << 6,
-    target_all_out: 1 << 7,
-    source_center_out: 1 << 8,
-    target_center_out: 1 << 9,
-};
-
 export const getPositionState = function (source, target) {
     let ret = 0;
     const s = source.getBoundingClientRect();
     const t = target.getBoundingClientRect();
 
     if (s.bottom > t.top && s.right > t.left && s.top < t.bottom && s.left < t.right) {
-        ret += dndStateConsts.touch;
+        ret += azui.constants.dndStateConsts.touch;
     }
 
     if (s.top >= t.top && s.left >= t.left && s.bottom <= t.bottom && s.right <= t.right) {
-        ret += dndStateConsts.source_all;
+        ret += azui.constants.dndStateConsts.source_all;
     }
 
     if (t.top >= s.top && t.left >= s.left && t.bottom <= s.bottom && t.right <= s.right) {
-        ret += dndStateConsts.target_all;
+        ret += azui.constants.dndStateConsts.target_all;
     }
 
     const sx = getDocScrollLeft() + s.left + s.width / 2;
     const sy = getDocScrollTop() + s.top + s.height / 2;
     if (!isOutside(sx, sy, t)) {
-        ret += dndStateConsts.source_center;
+        ret += azui.constants.dndStateConsts.source_center;
     }
 
     const tx = getDocScrollLeft() + t.left + t.width / 2;
     const ty = getDocScrollTop() + t.top + t.height / 2;
     if (!isOutside(tx, ty, s)) {
-        ret += dndStateConsts.target_center;
+        ret += azui.constants.dndStateConsts.target_center;
     }
     return ret;
 };
