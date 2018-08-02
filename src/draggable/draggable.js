@@ -10,7 +10,8 @@ import {
     getDropTargets,
     getPositionState,
     isOutside,
-    isTouchDevice
+    isTouchDevice,
+    dndEventConsts
 } from '../utilities/utilities.js';
 
 azui.Draggable = function (el, options) {
@@ -196,14 +197,18 @@ class Draggable extends Base {
                             const nState = ps & dndStateConsts[state];
                             const oState = oldPs & dndStateConsts[state];
                             if (nState !== oState) {
-                                dt.dispatchEvent(new CustomEvent(state + (!!nState ? '_in' : '_out'), {
-                                    detail: {
-                                        source: node,
-                                        target: dt,
-                                        previousState: oldPs,
-                                        state: ps
-                                    }
-                                }));
+                                const eventName = state + (!!nState ? '_in' : '_out');
+                                if (settings.triggerDropEvents === true ||
+                                    (dndEventConsts[eventName] & settings.triggerDropEvents)) {
+                                    dt.dispatchEvent(new CustomEvent(eventName, {
+                                        detail: {
+                                            source: node,
+                                            target: dt,
+                                            previousState: oldPs,
+                                            state: ps
+                                        }
+                                    }));
+                                }
                             }
                         });
                         dropTargetStates[dropId] = ps;

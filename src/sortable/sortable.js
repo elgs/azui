@@ -2,6 +2,7 @@ import {
     Base
 } from '../utilities/core.js';
 import {
+    dndEventConsts,
     getHeight,
     getWidth,
     index,
@@ -186,19 +187,52 @@ class Sortable extends Base {
                 onDragStop(event, ui, draggable.escaped);
             },
             dropKey: dropKey,
-            triggerDropEvents: true,
+            triggerDropEvents: dndEventConsts.target_center_in |
+                dndEventConsts.target_center_out,
+            // triggerDropEvents: true,
         };
 
         this.dropConfig = {
             key: dropKey,
             target_center_in: function (e) {
-                // console.log('target_center_in', e);
+                // console.log(e);
                 onOverTargetCenter(e, e.detail);
             },
             target_center_out: function (e) {
-                // console.log('target_center_out', e);
+                // console.log(e);
                 onLeaveTargetCenter(e, e.detail.source);
             },
+
+            // source_all_in: function (e) {
+            //     console.log(e);
+            // },
+            // source_all_out: function (e) {
+            //     console.log(e);
+            // },
+            // target_all_in: function (e) {
+            //     console.log(e);
+            // },
+            // target_all_out: function (e) {
+            //     console.log(e);
+            // },
+            // source_center_in: function (e) {
+            //     console.log(e);
+            // },
+            // source_center_out: function (e) {
+            //     console.log(e);
+            // },
+            // touch_in: function (e) {
+            //     console.log(e);
+            // },
+            // touch_out: function (e) {
+            //     console.log(e);
+            // },
+            // dragged: function (e) {
+            //     console.log(e)
+            // },
+            // dropped: function (e) {
+            //     console.log(e)
+            // },
         };
         const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className));
         items.forEach(item => {
