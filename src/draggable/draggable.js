@@ -6,10 +6,9 @@ import {
     getDocScrollLeft,
     getDocScrollTop,
     getDocWidth,
-    getDropTargets,
     getPositionState,
     isOutside,
-    isTouchDevice,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 azui.Draggable = function (el, options) {
@@ -79,6 +78,7 @@ class Draggable extends Base {
 
         self.escaped = false;
 
+        self.dropTargets = null;
         self.selected = null;
         let mouseX0 = 0;
         let mouseY0 = 0;
@@ -142,7 +142,8 @@ class Draggable extends Base {
                 started = true;
 
                 if (settings.triggerDropEvents && settings.dropKey) {
-                    const dts = getDropTargets(settings.dropKey);
+                    // const dts = getDropTargets(settings.dropKey);
+                    const dts = self.dropTargets;
                     dts.filter(dt => dt !== node).map(dt => {
                         // console.log(self, elem);
                         // const dropId = dt.getAttribute('drop-id');
@@ -184,7 +185,8 @@ class Draggable extends Base {
             }
 
             if (settings.triggerDropEvents && settings.dropKey) {
-                const dts = getDropTargets(settings.dropKey);
+                // const dts = getDropTargets(settings.dropKey);
+                const dts = self.dropTargets;
                 dts.filter(dt => dt !== node).map(dt => {
                     // console.log(self, elem);
                     const dropId = dt.getAttribute('az-drop-id');
@@ -246,7 +248,8 @@ class Draggable extends Base {
             self.selected = null;
 
             if (settings.triggerDropEvents && settings.dropKey) {
-                const dts = getDropTargets(settings.dropKey);
+                // const dts = getDropTargets(settings.dropKey);
+                const dts = self.dropTargets;
                 dts.filter(dt => dt !== node).map(dt => {
                     // console.log(self, elem);
                     // const dropId = dt.getAttribute('drop-id');
@@ -261,11 +264,14 @@ class Draggable extends Base {
                     }));
                 });
             }
+            self.dropTargets = null;
             // return false;
         };
 
         const initDrag = function (e) {
             const nodeStyles = getComputedStyle(node);
+
+            self.dropTargets = [...document.querySelectorAll('.azDropTarget')];
             if (settings.containment) {
                 let containment;
                 if (typeof settings.containment === 'string') {

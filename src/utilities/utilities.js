@@ -138,24 +138,6 @@ export const getDocScrollTop = function () {
     return Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
 }
 
-export const registerDropTarget = function (key, elem) {
-    azui.data['azDropTargets'] = azui.data['azDropTargets'] || {};
-    const dt = azui.data['azDropTargets'];
-
-    if (elem) {
-        dt[key] = dt[key] || [];
-        dt[key].push(elem);
-    }
-};
-
-export const getDropTargets = function (key) {
-    const dt = azui.data['azDropTargets'];
-    if (dt) {
-        return dt[key] || [];
-    }
-    return [];
-};
-
 export const registerObject = function (key, value) {
     azui.data['azObj'] = azui.data['azObj'] || {};
     const objReg = azui.data['azObj'];

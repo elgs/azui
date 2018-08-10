@@ -53,8 +53,6 @@ class Sortable extends Base {
         const node = this.node;
         node.classList.add('azSortable');
 
-        let dropTargetCenterStates = {};
-
         let selected;
         let ph;
         let z = 0;
@@ -70,7 +68,6 @@ class Sortable extends Base {
             if (settings.start(e, selected, self) === false) {
                 return false;
             }
-            dropTargetCenterStates = {};
 
             target.style['z-index'] = ++z;
             selected.classList.add('azSortableSelected');
@@ -171,14 +168,22 @@ class Sortable extends Base {
             }
         };
 
+        const onEscape = function (e) {
+            settings.escape(e);
+        };
+
+        const onCapture = function (e) {
+            settings.capture(e);
+        };
+
         const dropKey = randGen(8);
 
         this.dragConfig = {
             containment: node,
             resist: 10,
             escapable: settings.escapable,
-            escape: settings.escape,
-            capture: settings.capture,
+            escape: onEscape,
+            capture: onCapture,
             create: onDragCreate,
             start: onDragStart,
             // drag: onDrag,

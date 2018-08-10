@@ -10,7 +10,9 @@ import {
     parseDOMElement,
     randGen,
     remove,
-    siblings
+    siblings,
+    getDocScrollTop,
+    getDocScrollLeft
 } from '../utilities/utilities.js';
 
 
@@ -81,6 +83,7 @@ class Tabs extends Base {
                 if (event.button === 2 || cm.on || self.dragging) {
                     return;
                 }
+                // console.log(event.button);
                 const tabId = _getTabId(event.currentTarget.id);
                 self.activateTab(tabId);
             }
@@ -140,12 +143,18 @@ class Tabs extends Base {
                 self.dragging = false;
                 const tabId = _getTabId(data.source.id);
                 if (data.escaped) {
-                    const x = data.boundingClientRect.left;
-                    const y = data.boundingClientRect.top;
+                    const x = data.boundingClientRect.left + getDocScrollLeft();
+                    const y = data.boundingClientRect.top + getDocScrollTop();
                     self.spawn(tabId, x, y);
                 } else {
                     self.activateTab(tabId);
                 }
+            },
+            escape: (e) => {
+                console.log(e);
+            },
+            capture: (e) => {
+                console.log(e);
             }
         });
 

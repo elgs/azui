@@ -20,7 +20,7 @@ tabs:
 DONE: drag out to create new tabset
 TODO: drag tab between tabsets
 TODO: tab window z-index
-TODO: scroll to switch tab
+CNCL: scroll to switch tab
 CNCL: scroll buttons
 DONE: svg icons
 
