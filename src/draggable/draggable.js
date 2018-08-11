@@ -271,7 +271,6 @@ class Draggable extends Base {
         const initDrag = function (e) {
             const nodeStyles = getComputedStyle(node);
 
-            self.dropTargets = [...document.querySelectorAll('.azDropTarget')];
             if (settings.containment) {
                 let containment;
                 if (typeof settings.containment === 'string') {
@@ -453,6 +452,8 @@ class Draggable extends Base {
             document.addEventListener('mousemove', onmousemove);
             document.addEventListener('mouseup', onmouseup);
             document.addEventListener('mouseleave', onmouseup);
+
+            self.dropTargets = [...document.querySelectorAll('.azDropTarget')];
         };
 
         if (isTouchDevice()) {

@@ -235,21 +235,35 @@ class Tabs extends Base {
         const tabContent = node.querySelector("#azTabContent-" + tabId);
         const isActive = matches(tabHeader, '.active');
 
+        const parentBcr = node.parentNode.getBoundingClientRect();
+        const parentX = parentBcr.left + getDocScrollLeft();
+        const parentY = parentBcr.top + getDocScrollTop();
+        const parentStyle = getComputedStyle(node.parentNode);
+        const parentBorderTop = parseInt(parentStyle["border-top-width"]);
+        const parentBorderLeft = parseInt(parentStyle["border-left-width"]);
+        if (parentStyle.position !== 'relative' &&
+            parentStyle.position !== 'absolute' &&
+            parentStyle.position !== 'fixed') {
+            node.parentNode.style.position = 'relative';
+        }
+
         const nodeStyle = getComputedStyle(node);
         // console.log(nodeStyle.width, nodeStyle.height);
         const newTabsElem = document.createElement('div');
         newTabsElem.style.width = nodeStyle.width;
         newTabsElem.style.height = nodeStyle.height;
         newTabsElem.style.position = nodeStyle.position;
-        newTabsElem.style.top = y + 'px';
-        newTabsElem.style.left = x + 'px';
+        newTabsElem.style.top = (y - parentY - parentBorderTop) + 'px';
+        newTabsElem.style.left = (x - parentX - parentBorderLeft) + 'px';
         node.parentNode.appendChild(newTabsElem);
         const newTabs = azui.Tabs(newTabsElem, {});
         const newNode = newTabs.node;
 
-        const newLabels = newNode.querySelector('div.azTabHeader>.azTabLabels');
+        // const newLabels = newNode.querySelector('div.azTabHeader>.azTabLabels');
         // console.log(tabHeader, newLabels);
-        newLabels.appendChild(tabHeader);
+        // newLabels.appendChild(tabHeader);
+        newTabs.sortable.add(tabHeader);
+
         tabContent.style['display'] = "block";
         newNode.appendChild(tabContent);
 
