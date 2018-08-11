@@ -257,15 +257,13 @@ class Tabs extends Base {
         newTabsElem.style.left = (x - parentX - parentBorderLeft) + 'px';
         node.parentNode.appendChild(newTabsElem);
         const newTabs = azui.Tabs(newTabsElem, {});
-        const newNode = newTabs.node;
 
         // const newLabels = newNode.querySelector('div.azTabHeader>.azTabLabels');
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
-        newTabs.sortable.add(tabHeader);
-
         tabContent.style['display'] = "block";
-        newNode.appendChild(tabContent);
+        newTabs.addTab(tabHeader.cloneNode(true), tabContent, true);
+        remove(tabHeader);
 
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
@@ -279,32 +277,23 @@ class Tabs extends Base {
         }
     }
 
-    addTab(icon, title, closable) {
+    addTab(headerNode, contentNode, activate) {
         const self = this;
         const node = self.node;
         const tabId = randGen(8);
-        const iconDiv = document.createElement('div');
-        iconDiv.classList.add('icon');
-        iconDiv.appendChild(normalizeIcon(icon));
-        const titleDiv = document.createElement('div');
-        titleDiv.classList.add('title');
-        titleDiv.appendChild(normalizeIcon(title));
-        const header = document.createElement('div');
+
+        const header = headerNode;
         header.classList.add('azTabLabel');
         header.setAttribute('id', 'azTabHeader-' + tabId)
-        header.appendChild(iconDiv)
-        header.appendChild(titleDiv);
-        if (closable) {
-            const iconDiv = document.createElement('div');
-            iconDiv.classList.add('close');
-            iconDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
-            iconDiv.addEventListener('click', self.closeClicked);
-            header.appendChild(iconDiv);
+
+        const closeDiv = header.querySelector('.close');
+        if (closeDiv) {
+            closeDiv.addEventListener('click', self.closeClicked);
         }
 
         self.sortable.add(header);
 
-        const content = document.createElement('div');
+        const content = contentNode || document.createElement('div');
         // content.innerHTML = data.content;
         content.setAttribute('id', 'azTabContent-' + tabId);
         content.classList.add('azTabContent');
@@ -314,7 +303,7 @@ class Tabs extends Base {
         if (contents.length) {
             insertAfter(content, contents[contents.length - 1]);
         } else {
-            tabHeaderContainer.appendChild(content);
+            node.appendChild(content);
         }
 
         const cm = azui.ContextMenu(header, {
@@ -326,6 +315,31 @@ class Tabs extends Base {
         header.addEventListener('touchend', headerClicked);
         // self.showHideScrollers();
         self.fitTabWidth();
+        if (activate === true) {
+            self.activateTab(tabId)
+        }
+    }
+
+    addTab0(icon, title, closable, contentNode, activate) {
+        const self = this;
+        const iconDiv = document.createElement('div');
+        iconDiv.classList.add('icon');
+        iconDiv.appendChild(normalizeIcon(icon));
+        const titleDiv = document.createElement('div');
+        titleDiv.classList.add('title');
+        titleDiv.appendChild(normalizeIcon(title));
+        const header = document.createElement('div');
+        header.classList.add('azTabLabel');
+        header.appendChild(iconDiv)
+        header.appendChild(titleDiv);
+        if (closable) {
+            const closeDiv = document.createElement('div');
+            closeDiv.classList.add('close');
+            closeDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
+            header.appendChild(closeDiv);
+        }
+
+        self.addTab(header, contentNode);
     }
     removeTab(tabId) {
         const self = this;
