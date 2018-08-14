@@ -128,13 +128,13 @@ class Sortable extends Base {
             }
         };
 
-        const onDragStop = function (e, target, escaped) {
+        const onDragStop = function (e, target, draggable) {
             // console.log(selected, ph);
             const data = {
                 source: selected,
                 target: ph,
                 boundingClientRect: target.getBoundingClientRect(),
-                escaped: escaped,
+                escaped: draggable.escaped,
             };
             if (selected) {
                 selected.classList.remove('azSortableSelected');
@@ -166,14 +166,17 @@ class Sortable extends Base {
             if (settings.stop(e, data, self) === false) {
                 return false;
             }
+            draggable.escaped = false;
         };
 
         const onEscape = function (e) {
             settings.escape(e);
+            console.log('escaped', e);
         };
 
         const onCapture = function (e) {
             settings.capture(e);
+            console.log('captured', e);
         };
 
         const dropKey = randGen(8);
@@ -188,7 +191,7 @@ class Sortable extends Base {
             start: onDragStart,
             // drag: onDrag,
             stop: (event, ui, draggable) => {
-                onDragStop(event, ui, draggable.escaped);
+                onDragStop(event, ui, draggable);
             },
             dropKey: dropKey,
             triggerDropEvents: azui.constants.dndEventConsts.target_center_in |

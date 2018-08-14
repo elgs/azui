@@ -25,6 +25,8 @@ class Droppable extends Base {
             // target_center_out: function (e) {},
             // touch_in: function (e) {},
             // touch_out: function (e) {},
+            // pointer_in: function (e) {},
+            // pointer_out: function (e) {},
             // dragged: function (e) {},
             // dropped: function (e) {},
         }, options);
@@ -32,12 +34,11 @@ class Droppable extends Base {
         const node = this.node;
 
         node.setAttribute('az-drop-id', randGen(8));
-        node.classList.add('azDroppable');
+        node.classList.add('azDropTarget');
         if (!settings.key) {
             return;
         }
         // registerDropTarget(settings.key, node);
-        node.classList.add('azDropTarget');
         Object.keys(azui.constants.dndStateConsts).map(state => {
             const stateIn = state + '_in';
             const stateOut = state + '_out';

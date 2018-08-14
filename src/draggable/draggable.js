@@ -147,7 +147,7 @@ class Draggable extends Base {
                     dts.filter(dt => dt !== node).map(dt => {
                         // console.log(self, elem);
                         // const dropId = dt.getAttribute('drop-id');
-                        const ps = getPositionState(node, dt);
+                        const ps = getPositionState(node, dt, e);
                         // console.log(ps);
 
                         dt.dispatchEvent(new CustomEvent('dragged', {
@@ -191,7 +191,7 @@ class Draggable extends Base {
                     // console.log(self, elem);
                     const dropId = dt.getAttribute('az-drop-id');
                     const oldPs = dropTargetStates[dropId];
-                    const ps = getPositionState(node, dt);
+                    const ps = getPositionState(node, dt, e);
                     if (oldPs !== ps) {
                         Object.keys(azui.constants.dndStateConsts).map(state => {
                             const nState = ps & azui.constants.dndStateConsts[state];
@@ -253,7 +253,7 @@ class Draggable extends Base {
                 dts.filter(dt => dt !== node).map(dt => {
                     // console.log(self, elem);
                     // const dropId = dt.getAttribute('drop-id');
-                    const ps = getPositionState(node, dt);
+                    const ps = getPositionState(node, dt, e);
                     // console.log(ps);
                     dt.dispatchEvent(new CustomEvent('dropped', {
                         detail: {

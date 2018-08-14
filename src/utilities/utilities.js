@@ -67,13 +67,19 @@ export const isOutsideY = function (y, bcr) {
     return y <= bcr.top + getDocScrollTop() || y >= bcr.bottom + getDocScrollTop();
 };
 
-export const getPositionState = function (source, target) {
+export const getPositionState = function (source, target, event) {
     let ret = 0;
     const s = source.getBoundingClientRect();
     const t = target.getBoundingClientRect();
 
     if (s.bottom > t.top && s.right > t.left && s.top < t.bottom && s.left < t.right) {
         ret += azui.constants.dndStateConsts.touch;
+    }
+
+    const pointerX = event.pageX || event.touches[0].pageX;
+    const pointerY = event.pageY || event.touches[0].pageY;
+    if (!isOutside(pointerX, pointerY, t)) {
+        ret += azui.constants.dndStateConsts.pointer;
     }
 
     if (s.top >= t.top && s.left >= t.left && s.bottom <= t.bottom && s.right <= t.right) {

@@ -6,25 +6,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>azSortable</title>
     <style>
-        div#azSortable0 {
+        div.azSortable0 {
             border: 1px solid gray;
             box-sizing: border-box;
             position: relative;
             padding: 4px;
             /* width: 100px; */
             display: flex;
+            min-height: 40px;
         }
 
-        div#azSortable1 {
+        div.azSortable1 {
             border: 1px solid gray;
             box-sizing: border-box;
             position: relative;
             padding: 4px;
             width: 100px;
             /* display: flex; */
+            min-width: 40px;
+            min-height: 100px;
         }
 
-        div#azSortable0 .azSortableItem {
+        div.azSortable0 .azSortableItem {
             height: 40px;
             flex-grow: 1;
             flex-basis: 0;
@@ -38,7 +41,7 @@
         }
 
 
-        div#azSortable1 .azSortableItem {
+        div.azSortable1 .azSortableItem {
             height: 40px;
             /* width: 100px; */
             /* flex-grow: 1; */
@@ -68,7 +71,7 @@
 </head>
 
 <body>
-    <div id="azSortable0">
+    <div class="azSortable0">
         <div class="azSortableItem">0</div>
         <div class="azSortableItem">1</div>
         <div class="azSortableItem">2</div>
@@ -77,32 +80,46 @@
         <div class="azSortableItem">5</div>
     </div>
     <br>
-    <div id="azSortable1">
+    <div class="azSortable0">
+        <div class="azSortableItem">0</div>
+        <div class="azSortableItem">1</div>
+    </div>
+    <br>
+    <div class="azSortable1">
         <div class="azSortableItem">0</div>
         <div class="azSortableItem">1</div>
         <div class="azSortableItem">2</div>
         <div class="azSortableItem">3</div>
         <div class="azSortableItem">4</div>
         <div class="azSortableItem">5</div>
-
+    </div>
+    <br>
+    <div class="azSortable1">
+        <div class="azSortableItem">0</div>
+        <div class="azSortableItem">1</div>
     </div>
     <script>
         // $('<div/>').azDebugDiv();
-        const elem0 = document.querySelector('#azSortable0');
-        azui.Sortable(elem0, {
-            placeholder: true,
-            create: function (e, target) {
-                e.preventDefault();
-            }
+        const elem0 = document.querySelectorAll('.azSortable0');
+        elem0.forEach(el => {
+            azui.Sortable(el, {
+                placeholder: true,
+                escapable: true,
+                create: function (e, target) {
+                    e.preventDefault();
+                }
+            });
         });
 
-        const elem1 = document.querySelector('#azSortable1');
-        azui.Sortable(elem1, {
-            placeholder: false,
-            escape: true,
-            create: function (e, target) {
-                e.preventDefault();
-            }
+        const elem1 = document.querySelectorAll('.azSortable1');
+        elem1.forEach(el => {
+            azui.Sortable(el, {
+                placeholder: false,
+                escapable: true,
+                create: function (e, target) {
+                    e.preventDefault();
+                }
+            });
         });
     </script>
 </body>
