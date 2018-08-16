@@ -27,8 +27,7 @@ class Draggable extends Base {
             escapable: false,
             resist: false,
             opacity: false,
-            dropKey: false,
-            triggerDropEvents: false,
+            // triggerDropEvents: false,
             create: function (event, ui, self) {
                 // console.log('create', ui);
             },
@@ -37,12 +36,6 @@ class Draggable extends Base {
             },
             drag: function (event, ui, self) {
                 // console.log('drag', ui);
-            },
-            escape: function (event, ui, self) {
-                // console.log('escape', ui);
-            },
-            capture: function (event, ui, self) {
-                // console.log('capture', ui);
             },
             stop: function (event, ui, self) {
                 // console.log('stop', ui);
@@ -141,15 +134,14 @@ class Draggable extends Base {
                 initDrag(e);
                 started = true;
 
-                if (settings.triggerDropEvents && settings.dropKey) {
-                    // const dts = getDropTargets(settings.dropKey);
-                    const dts = self.dropTargets;
-                    dts.filter(dt => dt !== node).map(dt => {
-                        // console.log(self, elem);
-                        // const dropId = dt.getAttribute('drop-id');
-                        const ps = getPositionState(node, dt, e);
-                        // console.log(ps);
-
+                const dts = self.dropTargets;
+                dts.filter(dt => dt !== node).map(dt => {
+                    // console.log(self, elem);
+                    // const dropId = dt.getAttribute('drop-id');
+                    const ps = getPositionState(node, dt, e);
+                    // console.log(ps);
+                    const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
+                    if (azui.constants.dndEventConsts.dragged & interestedDropEvents) {
                         dt.dispatchEvent(new CustomEvent('dragged', {
                             detail: {
                                 source: node,
@@ -157,8 +149,8 @@ class Draggable extends Base {
                                 state: ps
                             }
                         }));
-                    });
-                }
+                    }
+                });
             }
 
             if (settings.drag(e, self.selected, self) === false) {
@@ -176,45 +168,42 @@ class Draggable extends Base {
             // console.log(dx, dy);
 
             if (settings.axis === 'x') {
-                self.moveX(dx, e);
+                self.moveX(dx);
             } else if (settings.axis === 'y') {
-                self.moveY(dy, e);
+                self.moveY(dy);
             } else {
-                self.moveX(dx, e);
-                self.moveY(dy, e);
+                self.moveX(dx);
+                self.moveY(dy);
             }
 
-            if (settings.triggerDropEvents && settings.dropKey) {
-                // const dts = getDropTargets(settings.dropKey);
-                const dts = self.dropTargets;
-                dts.filter(dt => dt !== node).map(dt => {
-                    // console.log(self, elem);
-                    const dropId = dt.getAttribute('az-drop-id');
-                    const oldPs = dropTargetStates[dropId];
-                    const ps = getPositionState(node, dt, e);
-                    if (oldPs !== ps) {
-                        Object.keys(azui.constants.dndStateConsts).map(state => {
-                            const nState = ps & azui.constants.dndStateConsts[state];
-                            const oState = oldPs & azui.constants.dndStateConsts[state];
-                            if (nState !== oState) {
-                                const eventName = state + (!!nState ? '_in' : '_out');
-                                if (settings.triggerDropEvents === true ||
-                                    (azui.constants.dndEventConsts[eventName] & settings.triggerDropEvents)) {
-                                    dt.dispatchEvent(new CustomEvent(eventName, {
-                                        detail: {
-                                            source: node,
-                                            target: dt,
-                                            previousState: oldPs,
-                                            state: ps
-                                        }
-                                    }));
-                                }
+            const dts = self.dropTargets;
+            dts.filter(dt => dt !== node).map(dt => {
+                // console.log(self, elem);
+                const dropId = dt.getAttribute('az-drop-id');
+                const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
+                const oldPs = dropTargetStates[dropId];
+                const ps = getPositionState(node, dt, e);
+                if (oldPs !== ps) {
+                    Object.keys(azui.constants.dndStateConsts).map(state => {
+                        const nState = ps & azui.constants.dndStateConsts[state];
+                        const oState = oldPs & azui.constants.dndStateConsts[state];
+                        if (nState !== oState) {
+                            const eventName = state + (!!nState ? '_in' : '_out');
+                            if (azui.constants.dndEventConsts[eventName] & interestedDropEvents) {
+                                dt.dispatchEvent(new CustomEvent(eventName, {
+                                    detail: {
+                                        source: node,
+                                        target: dt,
+                                        previousState: oldPs,
+                                        state: ps
+                                    }
+                                }));
                             }
-                        });
-                        dropTargetStates[dropId] = ps;
-                    }
-                });
-            }
+                        }
+                    });
+                    dropTargetStates[dropId] = ps;
+                }
+            });
             // self.selected.style['background-color'] = 'red';
         };
 
@@ -247,14 +236,14 @@ class Draggable extends Base {
             // self.selected.style['background-color'] = 'white';
             self.selected = null;
 
-            if (settings.triggerDropEvents && settings.dropKey) {
-                // const dts = getDropTargets(settings.dropKey);
-                const dts = self.dropTargets;
-                dts.filter(dt => dt !== node).map(dt => {
-                    // console.log(self, elem);
-                    // const dropId = dt.getAttribute('drop-id');
-                    const ps = getPositionState(node, dt, e);
-                    // console.log(ps);
+            const dts = self.dropTargets;
+            dts.filter(dt => dt !== node).map(dt => {
+                // console.log(self, elem);
+                // const dropId = dt.getAttribute('drop-id');
+                const ps = getPositionState(node, dt, e);
+                // console.log(ps);
+                const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
+                if (azui.constants.dndEventConsts.dropped & interestedDropEvents) {
                     dt.dispatchEvent(new CustomEvent('dropped', {
                         detail: {
                             source: node,
@@ -262,8 +251,8 @@ class Draggable extends Base {
                             state: ps
                         }
                     }));
-                });
-            }
+                }
+            });
             self.dropTargets = null;
             // return false;
         };
@@ -462,49 +451,34 @@ class Draggable extends Base {
         node.addEventListener('mousedown', onmousedown);
     }
 
-    moveX(by, event) {
+    moveX(by) {
         const self = this;
         if (self.position === 'absolute') {
-            self.moveAbsoluteX(by, event);
+            self.moveAbsoluteX(by);
         } else if (self.position === 'relative') {
-            self.moveRelativeX(by, event);
+            self.moveRelativeX(by);
         } else if (self.position === 'fixed') {
-            self.moveFixedX(by, event);
+            self.moveFixedX(by);
         }
     }
 
-    moveY(by, event) {
+    moveY(by) {
         const self = this;
         if (self.position === 'absolute') {
-            self.moveAbsoluteY(by, event);
+            self.moveAbsoluteY(by);
         } else if (self.position === 'relative') {
-            self.moveRelativeY(by, event);
+            self.moveRelativeY(by);
         } else if (self.position === 'fixed') {
-            self.moveFixedY(by, event);
+            self.moveFixedY(by);
         }
     }
 
-    moveAbsoluteX(dx, event) {
+    moveAbsoluteX(dx) {
         const self = this;
-        if (self.cScrW === undefined) {
+        if (self.cScrW === undefined || self.escaped) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
-            if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
-                    return false;
-                }
-                self.escaped = true;
-                self.selected.style.right = 'auto';
-                self.selected.style.left = (self.selfW + dx) + 'px';
-                return;
-            }
-
-            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
-                return false;
-            }
-            self.escaped = false;
-
             if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
                 // console.log('hit left wall');
                 const di = self.cScrW + self.cbw + self.cpw - (self.pScrW + self.pbw + self.ppw);
@@ -522,27 +496,12 @@ class Draggable extends Base {
         }
     }
 
-    moveAbsoluteY(dy, event) {
+    moveAbsoluteY(dy) {
         const self = this;
-        if (self.cScrW === undefined) {
+        if (self.cScrW === undefined || self.escaped) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
-            if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
-                    return false;
-                }
-                self.escaped = true;
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = (self.selfN + dy) + 'px';
-                return;
-            }
-
-            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
-                return false;
-            }
-            self.escaped = false;
-
             if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
                 // console.log('hit ceiling');
                 const di = self.cScrN + self.cbn + self.cpn - (self.pScrN + self.pbn + self.ppn);
@@ -560,27 +519,12 @@ class Draggable extends Base {
         }
     }
 
-    moveFixedX(dx, event) {
+    moveFixedX(dx) {
         const self = this;
-        if (self.cScrW === undefined) {
+        if (self.cScrW === undefined || self.escaped) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
-            if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
-                    return false;
-                }
-                self.escaped = true;
-                self.selected.style.right = 'auto';
-                self.selected.style.left = (self.selfW + dx) + 'px';
-                return;
-            }
-
-            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
-                return false;
-            }
-            self.escaped = false;
-
             if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
                 // console.log('hit left wall');
                 self.selected.style.right = 'auto';
@@ -596,27 +540,12 @@ class Draggable extends Base {
         }
     }
 
-    moveFixedY(dy, event) {
+    moveFixedY(dy) {
         const self = this;
-        if (self.cScrW === undefined) {
+        if (self.cScrW === undefined || self.escaped) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
-            if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
-                    return false;
-                }
-                self.escaped = true;
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = (self.selfN + dy) + 'px';
-                return;
-            }
-
-            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
-                return false;
-            }
-            self.escaped = false;
-
             if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
                 // console.log('hit ceiling');
                 self.selected.style.bottom = 'auto';
@@ -632,27 +561,12 @@ class Draggable extends Base {
         }
     }
 
-    moveRelativeX(dx, event) {
+    moveRelativeX(dx) {
         const self = this;
-        if (self.cScrW === undefined) {
+        if (self.cScrW === undefined || self.escaped) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
-            if (self.escapeX && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
-                    return false;
-                }
-                self.escaped = true;
-                self.selected.style.right = 'auto';
-                self.selected.style.left = (self.selfW + dx) + 'px';
-                return;
-            }
-
-            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
-                return false;
-            }
-            self.escaped = false;
-
             if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
                 // console.log('hit left wall');
                 self.selected.style.right = 'auto';
@@ -667,27 +581,12 @@ class Draggable extends Base {
             }
         }
     };
-    moveRelativeY(dy, event) {
+    moveRelativeY(dy) {
         const self = this;
-        if (self.cScrW === undefined) {
+        if (self.cScrW === undefined || self.escaped) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
-            if (self.escapeY && isOutside(self.mouseX, self.mouseY, self.containerBoundaries)) {
-                if (!self.escaped && self.settings.escape(event, self.selected, self) === false) {
-                    return false;
-                }
-                self.escaped = true;
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = (self.selfN + dy) + 'px';
-                return;
-            }
-
-            if (self.escaped && self.settings.capture(event, self.selected, self) === false) {
-                return false;
-            }
-            self.escaped = false;
-
             if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
                 // console.log('hit ceiling');
                 self.selected.style.bottom = 'auto';

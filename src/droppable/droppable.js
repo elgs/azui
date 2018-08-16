@@ -29,16 +29,15 @@ class Droppable extends Base {
             // pointer_out: function (e) {},
             // dragged: function (e) {},
             // dropped: function (e) {},
+            interestedDropEvents: azui.constants.dndEventConsts.all,
         }, options);
 
         const node = this.node;
 
         node.setAttribute('az-drop-id', randGen(8));
+        node.setAttribute('az-interested-drop-events', settings.interestedDropEvents);
         node.classList.add('azDropTarget');
-        if (!settings.key) {
-            return;
-        }
-        // registerDropTarget(settings.key, node);
+
         Object.keys(azui.constants.dndStateConsts).map(state => {
             const stateIn = state + '_in';
             const stateOut = state + '_out';

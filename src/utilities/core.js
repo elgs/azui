@@ -22,6 +22,10 @@ global.azui = global.azui || {
             target_all_out: 1 << 9,
             source_center_out: 1 << 10,
             target_center_out: 1 << 11,
+            dragged: 1 << 12,
+            dropped: 1 << 13,
+            all: (1 << 14) - 1,
+            none: 0,
         }
     },
 };

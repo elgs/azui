@@ -9,40 +9,53 @@
         div {
             border: 1px solid gray;
             box-sizing: border-box;
-            margin: 50px;
+            margin: 5px;
             display: grid;
             align-content: center;
             justify-content: center;
             float: left;
+            user-select: none;
         }
 
         div#target0 {
             width: 300px;
             height: 300px;
+            position: relative;
         }
 
         div#target1 {
             width: 150px;
             height: 150px;
+            position: relative;
         }
 
         div#source0 {
             width: 200px;
             height: 200px;
         }
+
+        div.message {
+            position: absolute;
+            bottom: 0;
+            border: 0;
+        }
     </style>
     <script src="./index.js"></script>
 </head>
 
 <body>
-    <div id="source0">+</div>
-    <div class="target" id="target0"></div>
-    <div class="target" id="target1"></div>
+    <div id="source0">+
+        <div class="message">Drag me!</div>
+    </div>
+    <div class="target" id="target0">+
+        <div class="message"></div>
+    </div>
+    <div class="target" id="target1">+
+        <div class="message"></div>
+    </div>
     <script>
         const source0 = document.querySelector('div#source0');
         azui.Draggable(source0, {
-            triggerDropEvents: true,
-            dropKey: 'foo',
             create: function (e) {
                 if (e.type === 'touchstart') {
                     e.preventDefault();
@@ -53,48 +66,48 @@
         const targets = document.querySelectorAll('div.target');
         targets.forEach(target => {
             azui.Droppable(target, {
-                key: 'foo',
+                interestedDropEvents: azui.constants.dndEventConsts.all,
                 source_all_in: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 source_all_out: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 target_all_in: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 target_all_out: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 source_center_in: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 source_center_out: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 target_center_in: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 target_center_out: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 touch_in: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 touch_out: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 pointer_in: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 pointer_out: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 dragged: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
                 dropped: function (e) {
-                    e.detail.target.textContent = e.type;
+                    e.detail.target.querySelector('.message').textContent = e.type;
                 },
             });
         });

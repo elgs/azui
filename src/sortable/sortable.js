@@ -179,8 +179,6 @@ class Sortable extends Base {
             console.log('captured', e);
         };
 
-        const dropKey = randGen(8);
-
         this.dragConfig = {
             containment: node,
             resist: 10,
@@ -193,14 +191,11 @@ class Sortable extends Base {
             stop: (event, ui, draggable) => {
                 onDragStop(event, ui, draggable);
             },
-            dropKey: dropKey,
-            triggerDropEvents: azui.constants.dndEventConsts.target_center_in |
-                azui.constants.dndEventConsts.target_center_out,
-            // triggerDropEvents: true,
         };
 
         this.dropConfig = {
-            key: dropKey,
+            interestedDropEvents: azui.constants.dndEventConsts.target_center_in |
+                azui.constants.dndEventConsts.target_center_out,
             target_center_in: function (e) {
                 // console.log(e);
                 onOverTargetCenter(e, e.detail);
