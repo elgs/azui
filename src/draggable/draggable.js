@@ -1,4 +1,5 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
 import {
@@ -12,7 +13,8 @@ import {
 } from '../utilities/utilities.js';
 
 azui.Draggable = function (el, options) {
-    return new Draggable(el, options);
+    // return new Draggable(el, options);
+    return azObj(Draggable, el, options);
 };
 
 class Draggable extends Base {

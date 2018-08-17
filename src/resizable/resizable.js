@@ -1,22 +1,22 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
-
 import * as icons from '../utilities/icons.js';
-
 import {
-    isTouchDevice,
-    setOuterWidth,
-    setOuterHeight,
-    normalizeIcon,
-    getWidth,
     getHeight,
-    setWidth,
+    getWidth,
+    isTouchDevice,
+    normalizeIcon,
     setHeight,
+    setOuterHeight,
+    setOuterWidth,
+    setWidth
 } from '../utilities/utilities.js';
 
 azui.Resizable = function (el, options) {
-    return new Resizable(el, options);
+    // return new Resizable(el, options);
+    return azObj(Resizable, el, options);
 };
 
 class Resizable extends Base {

@@ -1,9 +1,11 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
 
 azui.RightClick = function (el, options) {
-    return new RightClick(el, options);
+    // return new RightClick(el, options);
+    return azObj(RightClick, el, options);
 };
 
 class RightClick extends Base {

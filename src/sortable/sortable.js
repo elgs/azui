@@ -1,4 +1,5 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
 import {
@@ -9,7 +10,6 @@ import {
     insertBefore,
     matches,
     position,
-    randGen,
     setHeight,
     setWidth,
     siblings,
@@ -17,7 +17,8 @@ import {
 } from '../utilities/utilities.js';
 
 azui.Sortable = function (el, options) {
-    return new Sortable(el, options);
+    // return new Sortable(el, options);
+    return azObj(Sortable, el, options);
 };
 
 class Sortable extends Base {

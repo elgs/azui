@@ -1,4 +1,5 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
@@ -7,7 +8,8 @@ import {
 } from '../utilities/utilities.js';
 
 azui.Select = function (el, options) {
-    return new Select(el, options);
+    // return new Select(el, options);
+    return azObj(Select, el, options);
 };
 
 class Select extends Base {

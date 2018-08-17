@@ -1,4 +1,5 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
 import {
@@ -7,7 +8,8 @@ import {
 
 
 azui.Droppable = function (el, options) {
-    return new Droppable(el, options);
+    // return new Droppable(el, options);
+    return azObj(Droppable, el, options);
 };
 
 class Droppable extends Base {

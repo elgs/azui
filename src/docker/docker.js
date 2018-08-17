@@ -1,5 +1,6 @@
 import {
-    Base
+    Base,
+    azObj,
 } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import {
@@ -13,7 +14,8 @@ import {
 
 
 azui.Docker = function (el, options) {
-    return new Docker(el, options);
+    // return new Docker(el, options);
+    return azObj(Docker, el, options);
 };
 
 class Docker extends Base {

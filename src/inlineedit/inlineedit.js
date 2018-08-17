@@ -1,16 +1,16 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
-
+import * as icons from '../utilities/icons.js';
 import {
-    remove,
     insertAfter,
+    remove
 } from '../utilities/utilities.js';
 
-import * as icons from '../utilities/icons.js';
-
 azui.InlineEdit = function (el, options) {
-    return new InlineEdit(el, options);
+    // return new InlineEdit(el, options);
+    return azObj(InlineEdit, el, options);
 };
 
 class InlineEdit extends Base {

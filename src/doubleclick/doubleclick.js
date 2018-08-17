@@ -1,13 +1,11 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
 
-import {
-    touchDelayTime
-} from '../utilities/utilities.js';
-
 azui.DoubleClick = function (el, options) {
-    return new DoubleClick(el, options);
+    // return new DoubleClick(el, options);
+    return azObj(DoubleClick, el, options);
 };
 
 class DoubleClick extends Base {

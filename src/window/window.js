@@ -1,23 +1,23 @@
 import {
-    Base,
+    azObj,
+    Base
 } from '../utilities/core.js';
-
+import * as icons from '../utilities/icons.js';
 import {
-    isOutside,
-    remove,
-    parseDOMElement,
-    matches,
-    registerObject,
-    removeObject,
     getObject,
+    isOutside,
+    matches,
+    parseDOMElement,
     randGen,
-    siblings,
+    registerObject,
+    remove,
+    removeObject,
+    siblings
 } from '../utilities/utilities.js';
 
-import * as icons from '../utilities/icons.js';
-
 azui.Window = function (el, options) {
-    return new Window(el, options);
+    // return new Window(el, options);
+    return azObj(Window, el, options);
 };
 
 class Window extends Base {

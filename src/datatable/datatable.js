@@ -1,22 +1,24 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
-
 import * as icons from '../utilities/icons.js';
 import {
-    isTouchDevice,
-    textWidth,
-    parseDOMElement,
-    setOuterWidth,
-    setWidth,
     getWidth,
     index,
     insertAfter,
     insertBefore,
+    isTouchDevice,
+    parseDOMElement,
+    setOuterWidth,
+    setWidth,
+    textWidth
 } from '../utilities/utilities.js';
 
+
 azui.DataTable = function (el, options) {
-    return new DataTable(el, options);
+    // return new DataTable(el, options);
+    return azObj(DataTable, el, options);
 };
 
 class DataTable extends Base {

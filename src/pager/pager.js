@@ -1,15 +1,15 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
-
+import * as icons from '../utilities/icons.js';
 import {
-    parseDOMElement,
+    parseDOMElement
 } from '../utilities/utilities.js';
 
-import * as icons from '../utilities/icons.js';
-
 azui.Pager = function (el, options) {
-    return new Pager(el, options);
+    // return new Pager(el, options);
+    return azObj(Pager, el, options);
 };
 
 class Pager extends Base {

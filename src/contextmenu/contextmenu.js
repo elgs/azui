@@ -1,18 +1,20 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
-
 import {
-    isOutside,
     calcMenuPosition,
-    parseDOMElement,
-    getWidth,
     getHeight,
+    getWidth,
+    isOutside,
     normalizeIcon,
+    parseDOMElement
 } from '../utilities/utilities.js';
 
+
 azui.ContextMenu = function (el, options) {
-    return new ContextMenu(el, options);
+    // return new ContextMenu(el, options);
+    return azObj(ContextMenu, el, options);
 };
 
 class ContextMenu extends Base {

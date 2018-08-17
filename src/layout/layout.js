@@ -1,15 +1,16 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
-
 import {
-    resolveDOM,
     getHeight,
     getWidth,
+    resolveDOM
 } from '../utilities/utilities.js';
 
 azui.Layout = function (el, options) {
-    return new Layout(el, options);
+    // return new Layout(el, options);
+    return azObj(Layout, el, options);
 };
 
 class Layout extends Base {

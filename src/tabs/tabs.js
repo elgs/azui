@@ -1,8 +1,11 @@
 import {
+    azObj,
     Base
 } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import {
+    getDocScrollLeft,
+    getDocScrollTop,
     insertAfter,
     matches,
     nextAll,
@@ -10,14 +13,12 @@ import {
     parseDOMElement,
     randGen,
     remove,
-    siblings,
-    getDocScrollTop,
-    getDocScrollLeft
+    siblings
 } from '../utilities/utilities.js';
 
-
 azui.Tabs = function (el, options) {
-    return new Tabs(el, options);
+    // return new Tabs(el, options);
+    return azObj(Tabs, el, options);
 };
 
 const _getTabId = (elemId) => {

@@ -1,5 +1,10 @@
+import {
+    randGen
+} from './utilities.js';
+
 global.azui = global.azui || {
     data: {},
+    objCache: {},
     constants: {
         dndStateConsts: {
             touch: 1 << 0,
@@ -42,9 +47,23 @@ export const normalizeElement = function (el) {
     }
 };
 
+export const azObj = function (cls, el, options) {
+    const objId = el.getAttribute('az-obj-id-' + cls.name);
+    if (objId) {
+        const obj = azui.objCache[objId];
+        if (obj) {
+            return obj;
+        }
+    }
+    return new cls(el, options);
+};
+
 export class Base {
     constructor(el) {
         this.node = normalizeElement(el);
+        const objId = randGen(8);
+        this.node.setAttribute('az-obj-id-' + this.constructor.name, objId);
+        azui.objCache[objId] = this;
     }
 
     on(eventName, eventHandler) {
