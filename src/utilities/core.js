@@ -3,7 +3,7 @@ import {
 } from './utilities.js';
 
 global.azui = global.azui || {
-    data: {},
+    // data: {},
     objCache: {},
     constants: {
         dndStateConsts: {

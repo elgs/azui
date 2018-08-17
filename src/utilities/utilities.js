@@ -144,30 +144,6 @@ export const getDocScrollTop = function () {
     return Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
 }
 
-export const registerObject = function (key, value) {
-    azui.data['azObj'] = azui.data['azObj'] || {};
-    const objReg = azui.data['azObj'];
-
-    if (objReg) {
-        objReg[key] = value;
-    }
-};
-
-export const getObject = function (key) {
-    const objReg = azui.data['azObj'];
-    if (objReg) {
-        return objReg[key];
-    }
-    return null;
-};
-
-export const removeObject = function (key) {
-    const objReg = azui.data['azObj'];
-    if (objReg) {
-        delete objReg[key];
-    }
-};
-
 export const textWidth = function (elem) {
     const s = parseDOMElement(`<span>${elem.innerHTML}</span>`)[0];
     s.style.visibility = 'hidden';

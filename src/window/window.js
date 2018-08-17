@@ -4,14 +4,10 @@ import {
 } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import {
-    getObject,
     isOutside,
     matches,
     parseDOMElement,
-    randGen,
-    registerObject,
     remove,
-    removeObject,
     siblings
 } from '../utilities/utilities.js';
 
@@ -38,9 +34,9 @@ class Window extends Base {
         node.classList.add('azWindow');
         node.style['position'] = 'absolute';
 
-        this.windowId = randGen(8);
-        node.setAttribute('az-window-id', this.windowId);
-        registerObject(this.windowId, this);
+        // this.windowId = randGen(8);
+        // node.setAttribute('az-window-id', this.windowId);
+        // registerObject(this.windowId, this);
 
         const dockers = siblings(node, '.azDocker');
         if (dockers.length === 0) {
@@ -49,8 +45,9 @@ class Window extends Base {
             this.docker = azui.Docker(dockerElem);
         } else {
             const dockerElem = dockers[0];
-            const dockerId = dockerElem.getAttribute('az-docker-id');
-            this.docker = getObject(dockerId);
+            // const dockerId = dockerElem.getAttribute('az-docker-id');
+            // this.docker = getObject(dockerId);
+            this.docker = azui.Docker(dockerElem);
         }
 
         this.headerIcons = {};
@@ -237,8 +234,9 @@ class Window extends Base {
     children() {
         const children = this.node.querySelectorAll('.azWindowContent>.azWindow');
         return [...children].map(el => {
-            const windowId = el.getAttribute('az-window-id');
-            return getObject(windowId);
+            // const windowId = el.getAttribute('az-window-id');
+            // return getObject(windowId);
+            return azObj(Window, el);
         });
     }
 
@@ -277,7 +275,7 @@ class Window extends Base {
         });
         remove(this.node);
         // console.log(getObject(this.windowId));
-        removeObject(this.windowId);
+        // removeObject(this.windowId);
         // console.log(getObject(this.windowId));
         if (notify) {
             this.docker.undock(this.dockId, false);

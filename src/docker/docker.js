@@ -1,17 +1,14 @@
 import {
-    Base,
     azObj,
+    Base
 } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import {
     diffPosition,
     matches,
     randGen,
-    registerObject,
     remove
 } from '../utilities/utilities.js';
-
-
 
 azui.Docker = function (el, options) {
     // return new Docker(el, options);
@@ -33,9 +30,9 @@ class Docker extends Base {
 
         const self = this;
 
-        this.dockerId = randGen(8);
-        node.setAttribute('az-docker-id', this.dockerId);
-        registerObject(this.dockerId, this);
+        // this.dockerId = randGen(8);
+        // node.setAttribute('az-docker-id', this.dockerId);
+        // registerObject(this.dockerId, this);
 
         this.x = 30;
         this.y = 30;
