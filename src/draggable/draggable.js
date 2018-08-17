@@ -181,7 +181,7 @@ class Draggable extends Base {
             const dts = self.dropTargets;
             dts.filter(dt => dt !== node).map(dt => {
                 // console.log(self, elem);
-                const dropId = dt.getAttribute('az-drop-id');
+                const dropId = dt.getAttribute('az-obj-id-droppable');
                 const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
                 const oldPs = dropTargetStates[dropId];
                 const ps = getPositionState(node, dt, e);
