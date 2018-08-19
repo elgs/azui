@@ -26,7 +26,6 @@ class Draggable extends Base {
             handle: false,
             axis: false,
             containment: false,
-            escapable: false,
             resist: false,
             opacity: false,
             // triggerDropEvents: false,
@@ -60,18 +59,6 @@ class Draggable extends Base {
 
         self.escapeX = false;
         self.escapeY = false;
-        if (settings.escapable === 'x') {
-            self.escapeX = true;
-        }
-        if (settings.escapable === 'y') {
-            self.escapeY = true;
-        }
-        if (settings.escapable === true) {
-            self.escapeX = true;
-            self.escapeY = true;
-        }
-
-        self.escaped = false;
 
         self.dropTargets = null;
         self.selected = null;
@@ -477,7 +464,7 @@ class Draggable extends Base {
 
     moveAbsoluteX(dx) {
         const self = this;
-        if (self.cScrW === undefined || self.escaped) {
+        if (self.cScrW === undefined || self.escapeX) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
@@ -500,7 +487,7 @@ class Draggable extends Base {
 
     moveAbsoluteY(dy) {
         const self = this;
-        if (self.cScrW === undefined || self.escaped) {
+        if (self.cScrW === undefined || self.escapeY) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
@@ -523,7 +510,7 @@ class Draggable extends Base {
 
     moveFixedX(dx) {
         const self = this;
-        if (self.cScrW === undefined || self.escaped) {
+        if (self.cScrW === undefined || self.escapeX) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
@@ -544,7 +531,7 @@ class Draggable extends Base {
 
     moveFixedY(dy) {
         const self = this;
-        if (self.cScrW === undefined || self.escaped) {
+        if (self.cScrW === undefined || self.escapeY) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {
@@ -565,7 +552,7 @@ class Draggable extends Base {
 
     moveRelativeX(dx) {
         const self = this;
-        if (self.cScrW === undefined || self.escaped) {
+        if (self.cScrW === undefined || self.escapeX) {
             self.selected.style.right = 'auto';
             self.selected.style.left = (self.selfW + dx) + 'px';
         } else {
@@ -585,7 +572,7 @@ class Draggable extends Base {
     };
     moveRelativeY(dy) {
         const self = this;
-        if (self.cScrW === undefined || self.escaped) {
+        if (self.cScrW === undefined || self.escapeY) {
             self.selected.style.bottom = 'auto';
             self.selected.style.top = (self.selfN + dy) + 'px';
         } else {

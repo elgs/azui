@@ -36,7 +36,6 @@ class Droppable extends Base {
 
         const node = this.node;
 
-        // node.setAttribute('az-drop-id', randGen(8));
         node.setAttribute('az-interested-drop-events', settings.interestedDropEvents);
         node.classList.add('azDropTarget');
 

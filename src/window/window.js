@@ -236,7 +236,7 @@ class Window extends Base {
         return [...children].map(el => {
             // const windowId = el.getAttribute('az-window-id');
             // return getObject(windowId);
-            return azObj(Window, el);
+            return azui.Window(el);
         });
     }
 

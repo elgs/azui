@@ -38,12 +38,6 @@ class Sortable extends Base {
             sort: function (event, data, self) {
                 // console.log('sort', data);
             },
-            escape: function (event, ui, self) {
-                // console.log('escape', ui);
-            },
-            capture: function (event, ui, self) {
-                // console.log('capture', ui);
-            },
             stop: function (event, data, self) {
                 // console.log('stop', data);
             },
@@ -167,25 +161,30 @@ class Sortable extends Base {
             if (settings.stop(e, data, self) === false) {
                 return false;
             }
-            draggable.escaped = false;
         };
 
-        const onEscape = function (e) {
-            settings.escape(e);
-            console.log('escaped', e);
-        };
-
-        const onCapture = function (e) {
-            settings.capture(e);
-            console.log('captured', e);
-        };
+        if (settings.escapable) {
+            azui.Droppable(node, {
+                interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
+                    azui.constants.dndEventConsts.pointer_out,
+                pointer_in: function (e) {
+                    // console.log(e);
+                    const draggable = azui.Draggable(selected);
+                    draggable.escapeX = false;
+                    draggable.escapeY = false;
+                },
+                pointer_out: function (e) {
+                    // console.log(e);
+                    const draggable = azui.Draggable(selected);
+                    draggable.escapeX = true;
+                    draggable.escapeY = true;
+                },
+            });
+        }
 
         this.dragConfig = {
             containment: node,
             resist: 10,
-            escapable: settings.escapable,
-            escape: onEscape,
-            capture: onCapture,
             create: onDragCreate,
             start: onDragStart,
             // drag: onDrag,
@@ -228,6 +227,12 @@ class Sortable extends Base {
             //     console.log(e);
             // },
             // touch_out: function (e) {
+            //     console.log(e);
+            // },
+            // pointer_in: function (e) {
+            //     console.log(e);
+            // },
+            // pointer_out: function (e) {
             //     console.log(e);
             // },
             // dragged: function (e) {
