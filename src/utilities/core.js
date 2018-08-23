@@ -48,14 +48,15 @@ export const normalizeElement = function (el) {
 };
 
 export const azObj = function (cls, el, options) {
-    const objId = el.getAttribute('az-obj-id-' + cls.name);
+    const node = normalizeElement(el);
+    const objId = node.getAttribute('az-obj-id-' + cls.name);
     if (objId) {
         const obj = azui.objCache[objId];
         if (obj) {
             return obj;
         }
     }
-    return new cls(el, options);
+    return new cls(node, options);
 };
 
 export class Base {

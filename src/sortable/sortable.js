@@ -13,7 +13,8 @@ import {
     setHeight,
     setWidth,
     siblings,
-    swapElement
+    swapElement,
+    remove,
 } from '../utilities/utilities.js';
 
 azui.Sortable = function (el, options) {
@@ -101,8 +102,7 @@ class Sortable extends Base {
             if (settings.placeholder) {
                 swapElement(ph, data.target);
             } else {
-                siblings(data.target).forEach(el => el.classList.remove('azSortableDropAfter'));
-                siblings(data.target).forEach(el => el.classList.remove('azSortableDropBefore'));
+                siblings(data.target).forEach(el => el.classList.remove('azSortableDropAfter', 'azSortableDropBefore'));
                 data.target.classList.add(index(selected) < index(data.target) ? 'azSortableDropAfter' : 'azSortableDropBefore');
                 selected.classList.remove('azSortableDeny');
                 selected.classList.add('azSortableAllow');
@@ -115,8 +115,7 @@ class Sortable extends Base {
                 return false;
             }
             if (!settings.placeholder) {
-                siblings(selected).forEach(el => el.classList.remove('azSortableDropAfter'));
-                siblings(selected).forEach(el => el.classList.remove('azSortableDropBefore'));
+                siblings(selected).forEach(el => el.classList.remove('azSortableDropAfter', 'azSortableDropBefore'));
                 selected.classList.remove('azSortableAllow');
                 selected.classList.add('azSortableDeny');
                 ph = null;
@@ -124,12 +123,12 @@ class Sortable extends Base {
         };
 
         const onDragStop = function (e, target, draggable) {
-            // console.log(selected, ph);
+            // console.log(selected, target, ph);
             const data = {
                 source: selected,
                 target: ph,
                 boundingClientRect: target.getBoundingClientRect(),
-                escaped: draggable.escaped,
+                escaped: draggable.escapeX || draggable.escapeY,
             };
             if (selected) {
                 selected.classList.remove('azSortableSelected');
@@ -138,7 +137,7 @@ class Sortable extends Base {
                 if (ph) {
                     if (settings.placeholder) {
                         insertAfter(selected, ph);
-                        ph.parentNode.removeChild(ph);
+                        remove(ph);
                         target.style.position = 'relative';
                     } else {
                         ph.classList.remove('azSortableDropBefore');
@@ -153,6 +152,7 @@ class Sortable extends Base {
                 }
                 selected = null;
             }
+            // console.log(selected, target, ph);
             target.style.top = 0;
             target.style.left = 0;
             target.style.right = 0;
@@ -168,16 +168,17 @@ class Sortable extends Base {
                 interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
-                    // console.log(e);
-                    const draggable = azui.Draggable(selected);
-                    draggable.escapeX = false;
-                    draggable.escapeY = false;
+                    console.log(e);
+                    // const draggable = azui.Draggable(e.detail.source);
+                    // draggable.escapeX = false;
+                    // draggable.escapeY = false;
+                    // azui.Draggable(e.detail.source).setContainment(e.detail.target);
                 },
                 pointer_out: function (e) {
-                    // console.log(e);
-                    const draggable = azui.Draggable(selected);
-                    draggable.escapeX = true;
-                    draggable.escapeY = true;
+                    console.log(e);
+                    // const draggable = azui.Draggable(selected);
+                    // draggable.escapeX = true;
+                    // draggable.escapeY = true;
                 },
             });
         }

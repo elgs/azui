@@ -120,7 +120,12 @@ class Draggable extends Base {
                 if (settings.start(e, self.selected, self) === false) {
                     return false;
                 }
-                initDrag(e);
+                console.log(settings.containment);
+                self.setContainment(settings.containment);
+                // self.style['cursor', 'pointer');
+                if (settings.opacity) {
+                    node.style['opacity'] = settings.opacity;
+                }
                 started = true;
 
                 const dts = self.dropTargets;
@@ -155,6 +160,8 @@ class Draggable extends Base {
             }
             resisted = true;
             // console.log(dx, dy);
+
+            console.log(self.escapeX, self.escapeY);
 
             if (settings.axis === 'x') {
                 self.moveX(dx);
@@ -246,138 +253,6 @@ class Draggable extends Base {
             // return false;
         };
 
-        const initDrag = function (e) {
-            const nodeStyles = getComputedStyle(node);
-
-            if (settings.containment) {
-                let containment;
-                if (typeof settings.containment === 'string') {
-                    if (settings.containment === 'parent') {
-                        containment = node.parentNode;
-                    } else if (settings.containment === 'document') {
-                        // self.cScrN = -document.documentElement.scrollLeft;
-                        // self.cScrW = -document.documentElement.scrollTop;
-                        self.cScrN = -getDocScrollLeft();
-                        self.cScrW = -getDocScrollTop();
-                        self.cScrS = getDocHeight();
-                        self.cScrE = getDocWidth();
-                        // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
-                    } else if (settings.containment === 'window') {
-                        self.cScrN = 0;
-                        self.cScrW = 0;
-                        self.cScrS = window.innerHeight;
-                        self.cScrE = window.innerWidth;
-                        // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
-                    } else {
-                        containment = document.querySelector(settings.containment);
-                    }
-                } else if (Array.isArray(settings.containment)) {
-                    self.cScrW = settings.containment[0];
-                    self.cScrN = settings.containment[1];
-                    self.cScrE = settings.containment[2];
-                    self.cScrS = settings.containment[3];
-                } else if (typeof settings.containment === 'object') {
-                    if (settings.containment instanceof NodeList) {
-                        containment = settings.containment[0];
-                    } else if (settings.containment instanceof Node) {
-                        containment = settings.containment;
-                    }
-                }
-
-                if (containment && typeof containment === 'object') {
-                    const containerStyles = getComputedStyle(containment);
-                    self.cbn = parseInt(containerStyles["border-top-width"]);
-                    self.cbe = parseInt(containerStyles["border-right-width"]);
-                    self.cbs = parseInt(containerStyles["border-bottom-width"]);
-                    self.cbw = parseInt(containerStyles["border-left-width"]);
-
-                    const containerBoundaries = containment.getBoundingClientRect();
-                    self.containerBoundaries = containerBoundaries;
-                    self.cScrN = containerBoundaries.top + getDocScrollTop();
-                    self.cScrE = containerBoundaries.right + getDocScrollLeft();
-                    self.cScrS = containerBoundaries.bottom + getDocScrollTop();
-                    self.cScrW = containerBoundaries.left + getDocScrollLeft();
-
-                    self.cpn = parseInt(containerStyles["padding-top"]);
-                    self.cpe = parseInt(containerStyles["padding-right"]);
-                    self.cps = parseInt(containerStyles["padding-bottom"]);
-                    self.cpw = parseInt(containerStyles["padding-left"]);
-                    // console.log(self.cpn, self.cpe, self.cps, self.cpw);
-                }
-            }
-
-            const parent = node.offsetParent || document.body;
-            const parentStyles = getComputedStyle(parent);
-            const pp = parentStyles['position'];
-            if (pp !== 'relative' && pp !== 'absolute' && pp !== 'fixed') {
-                parent.style['position'] = 'relative';
-            }
-
-            // console.log(parent, self.offsetParent);
-            const pb = parent.getBoundingClientRect();
-            self.pScrN = pb.top + getDocScrollTop();
-            self.pScrE = pb.right + getDocScrollLeft();
-            self.pScrS = pb.bottom + getDocScrollTop();
-            self.pScrW = pb.left + getDocScrollLeft();
-            // console.log(self.pScrN, self.pScrE, self.pScrS, self.pScrW);
-
-            self.pbn = parseInt(parentStyles["border-top-width"]);
-            self.pbe = parseInt(parentStyles["border-right-width"]);
-            self.pbs = parseInt(parentStyles["border-bottom-width"]);
-            self.pbw = parseInt(parentStyles["border-left-width"]);
-            // console.log(self.pbn, self.pbe, self.pbs, self.pbw);
-
-            self.ppn = parseInt(parentStyles["padding-top"]);
-            self.ppe = parseInt(parentStyles["padding-right"]);
-            self.pps = parseInt(parentStyles["padding-bottom"]);
-            self.ppw = parseInt(parentStyles["padding-left"]);
-            // console.log(self.ppn, self.ppe, self.pps, self.ppw);
-
-            self.smn = parseInt(nodeStyles["margin-top"]);
-            self.sme = parseInt(nodeStyles["margin-right"]);
-            self.sms = parseInt(nodeStyles["margin-bottom"]);
-            self.smw = parseInt(nodeStyles["margin-left"]);
-            // console.log(self.smn, self.sme, self.sms, self.smw);
-
-            const selfbcr = self.selected.getBoundingClientRect();
-            self.scrN = selfbcr.top + getDocScrollTop();
-            self.scrE = selfbcr.right + getDocScrollLeft();
-            self.scrS = selfbcr.bottom + getDocScrollTop();
-            self.scrW = selfbcr.left + getDocScrollLeft();
-            // console.log(self.scrN, self.scrE, self.scrS, self.scrW);
-
-            // self.selfW = parseInt(getComputedStyle(self)['left'));
-            // self.selfE = parseInt(getComputedStyle(self)['right'));
-            // self.selfN = parseInt(getComputedStyle(self)['top'));
-            // self.selfS = parseInt(getComputedStyle(self)['bottom'));
-            // console.log(self.selfN, self.selfE, self.selfS, self.selfW);
-
-            if (nodeStyles['position'] === 'relative') {
-                self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
-                self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
-                self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
-                self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
-                // console.log(self.selfN, self.selfE, self.selfS, self.selfW, self.style['position'));
-            } else if (nodeStyles['position'] === 'absolute') {
-                self.selfW = self.scrW - self.pScrW - self.smw - self.pbw;
-                self.selfN = self.scrN - self.pScrN - self.smn - self.pbn;
-                self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe;
-                self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs;
-            } else if (nodeStyles['position'] === 'fixed') {
-                self.selfW = self.scrW - self.smw - getDocScrollLeft();
-                self.selfN = self.scrN - self.smn - getDocScrollTop();
-            }
-
-            self.selfWidth = selfbcr.width;
-            self.selfHeight = selfbcr.height;
-            // console.log(self.selfWidth + ', ' + self.selfHeight);
-
-            // self.style['cursor', 'pointer');
-            if (settings.opacity) {
-                node.style['opacity'] = settings.opacity;
-            }
-        };
-
         const onmousedown = function (e) {
             // console.log(e.type, e.target, self);
             if (e.type === 'mousedown' && e.button !== 0) {
@@ -438,6 +313,138 @@ class Draggable extends Base {
             node.addEventListener('touchstart', onmousedown);
         }
         node.addEventListener('mousedown', onmousedown);
+    }
+
+
+    setContainment(containment) {
+        const self = this;
+        const node = this.node;
+        const nodeStyles = getComputedStyle(node);
+
+        if (containment) {
+            let container;
+            if (typeof containment === 'string') {
+                if (containment === 'parent') {
+                    container = node.parentNode;
+                } else if (containment === 'document') {
+                    // self.cScrN = -document.documentElement.scrollLeft;
+                    // self.cScrW = -document.documentElement.scrollTop;
+                    self.cScrN = -getDocScrollLeft();
+                    self.cScrW = -getDocScrollTop();
+                    self.cScrS = getDocHeight();
+                    self.cScrE = getDocWidth();
+                    // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
+                } else if (containment === 'window') {
+                    self.cScrN = 0;
+                    self.cScrW = 0;
+                    self.cScrS = window.innerHeight;
+                    self.cScrE = window.innerWidth;
+                    // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
+                } else {
+                    container = document.querySelector(containment);
+                }
+            } else if (Array.isArray(containment)) {
+                self.cScrW = containment[0];
+                self.cScrN = containment[1];
+                console.log(self.cScrN);
+                self.cScrE = containment[2];
+                self.cScrS = containment[3];
+            } else if (typeof containment === 'object') {
+                if (containment instanceof NodeList) {
+                    container = containment[0];
+                } else if (containment instanceof Node) {
+                    container = containment;
+                }
+            }
+
+            if (container && typeof container === 'object') {
+                const containerStyles = getComputedStyle(container);
+                self.cbn = parseInt(containerStyles["border-top-width"]);
+                self.cbe = parseInt(containerStyles["border-right-width"]);
+                self.cbs = parseInt(containerStyles["border-bottom-width"]);
+                self.cbw = parseInt(containerStyles["border-left-width"]);
+
+                const containerBoundaries = container.getBoundingClientRect();
+                self.containerBoundaries = containerBoundaries;
+                self.cScrN = containerBoundaries.top + getDocScrollTop();
+                self.cScrE = containerBoundaries.right + getDocScrollLeft();
+                self.cScrS = containerBoundaries.bottom + getDocScrollTop();
+                self.cScrW = containerBoundaries.left + getDocScrollLeft();
+
+                self.cpn = parseInt(containerStyles["padding-top"]);
+                self.cpe = parseInt(containerStyles["padding-right"]);
+                self.cps = parseInt(containerStyles["padding-bottom"]);
+                self.cpw = parseInt(containerStyles["padding-left"]);
+                // console.log(self.cpn, self.cpe, self.cps, self.cpw);
+                console.log(self.cScrN);
+            }
+        }
+
+        const parent = node.offsetParent || document.body;
+        const parentStyles = getComputedStyle(parent);
+        const pp = parentStyles['position'];
+        if (pp !== 'relative' && pp !== 'absolute' && pp !== 'fixed') {
+            parent.style['position'] = 'relative';
+        }
+
+        // console.log(parent, self.offsetParent);
+        const pb = parent.getBoundingClientRect();
+        self.pScrN = pb.top + getDocScrollTop();
+        self.pScrE = pb.right + getDocScrollLeft();
+        self.pScrS = pb.bottom + getDocScrollTop();
+        self.pScrW = pb.left + getDocScrollLeft();
+        // console.log(self.pScrN, self.pScrE, self.pScrS, self.pScrW);
+
+        self.pbn = parseInt(parentStyles["border-top-width"]);
+        self.pbe = parseInt(parentStyles["border-right-width"]);
+        self.pbs = parseInt(parentStyles["border-bottom-width"]);
+        self.pbw = parseInt(parentStyles["border-left-width"]);
+        // console.log(self.pbn, self.pbe, self.pbs, self.pbw);
+
+        self.ppn = parseInt(parentStyles["padding-top"]);
+        self.ppe = parseInt(parentStyles["padding-right"]);
+        self.pps = parseInt(parentStyles["padding-bottom"]);
+        self.ppw = parseInt(parentStyles["padding-left"]);
+        // console.log(self.ppn, self.ppe, self.pps, self.ppw);
+
+        self.smn = parseInt(nodeStyles["margin-top"]);
+        self.sme = parseInt(nodeStyles["margin-right"]);
+        self.sms = parseInt(nodeStyles["margin-bottom"]);
+        self.smw = parseInt(nodeStyles["margin-left"]);
+        // console.log(self.smn, self.sme, self.sms, self.smw);
+
+        const selfbcr = self.selected.getBoundingClientRect();
+        self.scrN = selfbcr.top + getDocScrollTop();
+        self.scrE = selfbcr.right + getDocScrollLeft();
+        self.scrS = selfbcr.bottom + getDocScrollTop();
+        self.scrW = selfbcr.left + getDocScrollLeft();
+        // console.log(self.scrN, self.scrE, self.scrS, self.scrW);
+
+        // self.selfW = parseInt(getComputedStyle(self)['left'));
+        // self.selfE = parseInt(getComputedStyle(self)['right'));
+        // self.selfN = parseInt(getComputedStyle(self)['top'));
+        // self.selfS = parseInt(getComputedStyle(self)['bottom'));
+        // console.log(self.selfN, self.selfE, self.selfS, self.selfW);
+
+        if (nodeStyles['position'] === 'relative') {
+            self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
+            self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
+            self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
+            self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
+            // console.log(self.selfN, self.selfE, self.selfS, self.selfW, self.style['position'));
+        } else if (nodeStyles['position'] === 'absolute') {
+            self.selfW = self.scrW - self.pScrW - self.smw - self.pbw;
+            self.selfN = self.scrN - self.pScrN - self.smn - self.pbn;
+            self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe;
+            self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs;
+        } else if (nodeStyles['position'] === 'fixed') {
+            self.selfW = self.scrW - self.smw - getDocScrollLeft();
+            self.selfN = self.scrN - self.smn - getDocScrollTop();
+        }
+
+        self.selfWidth = selfbcr.width;
+        self.selfHeight = selfbcr.height;
+        // console.log(self.selfWidth + ', ' + self.selfHeight);
     }
 
     moveX(by) {
