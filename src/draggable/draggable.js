@@ -47,7 +47,7 @@ class Draggable extends Base {
         self.settings = settings;
         node.classList.add('azDraggable');
 
-        let dropTargetStates = {};
+        const dropTargetStates = {};
         self.position = getComputedStyle(node)['position'];
         if (self.position !== 'absolute' && self.position !== 'fixed') {
             node.style['position'] = 'relative';
@@ -161,7 +161,7 @@ class Draggable extends Base {
             resisted = true;
             // console.log(dx, dy);
 
-            console.log(self.escapeX, self.escapeY);
+            // console.log(self.escapeX, self.escapeY);
 
             if (settings.axis === 'x') {
                 self.moveX(dx);
@@ -179,10 +179,12 @@ class Draggable extends Base {
                 const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
                 const oldPs = dropTargetStates[dropId];
                 const ps = getPositionState(node, dt, e);
-                if (oldPs !== ps) {
+                dropTargetStates[dropId] = ps;
+                if (oldPs != undefined && oldPs !== ps) {
                     Object.keys(azui.constants.dndStateConsts).map(state => {
                         const nState = ps & azui.constants.dndStateConsts[state];
                         const oState = oldPs & azui.constants.dndStateConsts[state];
+                        // console.log(nState, oState);
                         if (nState !== oState) {
                             const eventName = state + (!!nState ? '_in' : '_out');
                             if (azui.constants.dndEventConsts[eventName] & interestedDropEvents) {
@@ -197,7 +199,6 @@ class Draggable extends Base {
                             }
                         }
                     });
-                    dropTargetStates[dropId] = ps;
                 }
             });
             // self.selected.style['background-color'] = 'red';
@@ -346,7 +347,6 @@ class Draggable extends Base {
             } else if (Array.isArray(containment)) {
                 self.cScrW = containment[0];
                 self.cScrN = containment[1];
-                console.log(self.cScrN);
                 self.cScrE = containment[2];
                 self.cScrS = containment[3];
             } else if (typeof containment === 'object') {
@@ -376,7 +376,6 @@ class Draggable extends Base {
                 self.cps = parseInt(containerStyles["padding-bottom"]);
                 self.cpw = parseInt(containerStyles["padding-left"]);
                 // console.log(self.cpn, self.cpe, self.cps, self.cpw);
-                console.log(self.cScrN);
             }
         }
 
