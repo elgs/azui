@@ -168,15 +168,16 @@ class Sortable extends Base {
                 interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
-                    console.log(e);
-                    const draggable = azui.Draggable(e.detail.source);
+                    const {
+                        source,
+                        target
+                    } = e.detail;
+                    const draggable = azui.Draggable(source);
+                    draggable.setContainment(target);
                     draggable.escapeX = false;
                     draggable.escapeY = false;
-                    // azui.Draggable(e.detail.source).setContainment(e.detail.target);
                 },
                 pointer_out: function (e) {
-                    console.log(e);
-                    console.log(selected);
                     const draggable = azui.Draggable(selected);
                     draggable.escapeX = true;
                     draggable.escapeY = true;

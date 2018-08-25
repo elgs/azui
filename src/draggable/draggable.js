@@ -120,7 +120,7 @@ class Draggable extends Base {
                 if (settings.start(e, self.selected, self) === false) {
                     return false;
                 }
-                console.log(settings.containment);
+                // console.log(settings.containment);
                 self.setContainment(settings.containment);
                 // self.style['cursor', 'pointer');
                 if (settings.opacity) {
@@ -380,6 +380,7 @@ class Draggable extends Base {
         }
 
         const parent = node.offsetParent || document.body;
+        // console.log(parent);
         const parentStyles = getComputedStyle(parent);
         const pp = parentStyles['position'];
         if (pp !== 'relative' && pp !== 'absolute' && pp !== 'fixed') {

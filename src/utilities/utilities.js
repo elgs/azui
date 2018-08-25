@@ -12,7 +12,7 @@ randGenConsts.LowerUpperDigit = randGenConsts.LowerUpper | randGenConsts.Digit;
 randGenConsts.All = randGenConsts.LowerUpperDigit | randGenConsts.Punct;
 
 const lower = "abcdefghijklmnopqrstuvwxyz";
-const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const upper = lower.toUpperCase();
 const digit = "0123456789";
 const punct = "~!@#$%^&*()_+-=";
 
