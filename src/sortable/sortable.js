@@ -29,6 +29,7 @@ class Sortable extends Base {
         const settings = Object.assign({
             className: 'azSortableItem',
             placeholder: true,
+            showPlaceHolder: false,
             escapable: false,
             create: function (event, ui, self) {
                 // console.log('create', ui);
@@ -72,7 +73,9 @@ class Sortable extends Base {
                 ph = target.cloneNode(false);
                 ph.removeAttribute('id');
                 ph.classList.add('az-placeholder');
-                ph.style['visibility'] = 'hidden';
+                if (!settings.showPlaceHolder) {
+                    ph.style['visibility'] = 'hidden';
+                }
 
                 const w = getWidth(selected);
                 const h = getHeight(selected);
@@ -172,12 +175,18 @@ class Sortable extends Base {
                         source,
                         target
                     } = e.detail;
-                    const draggable = azui.Draggable(source);
-                    draggable.setContainment(target);
-                    draggable.escapeX = false;
-                    draggable.escapeY = false;
+                    const phs = siblings(source, '.az-placeholder');
+                    if (phs.length > 0) {
+                        ph = phs[0];
+                    }
+                    target.appendChild(ph);
+                    // const draggable = azui.Draggable(source);
+                    // draggable.setContainment(target);
+                    // draggable.escapeX = false;
+                    // draggable.escapeY = false;
                 },
                 pointer_out: function (e) {
+                    console.log(selected);
                     const draggable = azui.Draggable(selected);
                     draggable.escapeX = true;
                     draggable.escapeY = true;

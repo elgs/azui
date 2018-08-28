@@ -322,8 +322,8 @@ class Draggable extends Base {
         const node = this.node;
         const nodeStyles = getComputedStyle(node);
 
+        let container;
         if (containment) {
-            let container;
             if (typeof containment === 'string') {
                 if (containment === 'parent') {
                     container = node.parentNode;

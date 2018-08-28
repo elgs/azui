@@ -65,6 +65,14 @@
             background-color: blue;
         }
 
+        .azSortableDeny {
+            background-color: red;
+        }
+
+        .azSortableAllow {
+            background-color: green;
+        }
+
         div.azSortableSelected {
             opacity: .5;
         }
@@ -106,6 +114,7 @@
         elem0.forEach(el => {
             azui.Sortable(el, {
                 placeholder: true,
+                showPlaceHolder: true,
                 escapable: true,
                 create: function (e, target) {
                     e.preventDefault();

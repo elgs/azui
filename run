@@ -57,7 +57,7 @@
         if (args.length === 0) {
             // const mods = fs.readdirSync(dir).filter(item => fs.existsSync(path.join(dir, item, `${item}.html`)));
             const mods = fs.readdirSync(srcDir).filter(item => fs.statSync(path.join(srcDir, item)).isDirectory());
-            mods.map(async mod => {
+            mods.map(mod => {
                 const htmls = fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile());
                 htmls.map(async html => {
                     // console.log(html);
@@ -86,7 +86,10 @@
     } else if (command === 'start') {
         const mod = args[0];
         const html = args[1] || mod;
-        run('parcel', ['serve', '-d', 'dev', `${srcDir}/${mod}/${html}.html`]);
+        (async () => {
+            await run('rm', ['-rf', `.cache/`]);
+            await run('parcel', ['serve', '-d', 'dev', `${srcDir}/${mod}/${html}.html`]);
+        })();
     } else if (command === 'clean') {
         if (args.length === 0) {
             run('rm', ['-rf', `${distDir}${ver}/`, `.cache/`]);
