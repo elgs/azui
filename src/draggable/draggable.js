@@ -314,6 +314,13 @@ class Draggable extends Base {
             node.addEventListener('touchstart', onmousedown);
         }
         node.addEventListener('mousedown', onmousedown);
+
+        self.reset = () => {
+            if (isTouchDevice()) {
+                node.removeEventListener('touchstart', onmousedown);
+            }
+            node.removeEventListener('mousedown', onmousedown);
+        };
     }
 
 
