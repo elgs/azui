@@ -16,15 +16,16 @@ import {
 } from '../utilities/utilities.js';
 
 
-azui.DataTable = function (el, options) {
+azui.DataTable = function (el, options, init = true) {
     // return new DataTable(el, options);
-    return azObj(DataTable, el, options);
+    return azObj(DataTable, el, options, init);
 };
 
 class DataTable extends Base {
 
-    constructor(el, options) {
-        super(el);
+    // constructor(el, options) {
+    // super(el);
+    azInit(options) {
         const settings = Object.assign({
             pageNumber: 1,
             pageSize: 25,
@@ -33,7 +34,7 @@ class DataTable extends Base {
             editor: false, // or cell, row
         }, options);
 
-        const self = this;
+        const me = this;
         const node = this.node;
 
         node.classList.add('azDataTable');
@@ -41,7 +42,7 @@ class DataTable extends Base {
         this.totalSize = 0;
 
         const refresh = function (pageData, totalSize) {
-            self.totalSize = totalSize;
+            me.totalSize = totalSize;
             tbody.innerHTML = '';
 
             pageData.map(row => {
@@ -109,11 +110,11 @@ class DataTable extends Base {
         setWidth(node, 2 + totalWidth);
         const pager = azui.Pager(tfoot, {
             pageSize: settings.pageSize,
-            totalSize: self.totalSize,
+            totalSize: me.totalSize,
             pageNumber: settings.pageNumber,
             onPageChange: function (pageNumber) {
                 settings.loadData(pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-                this.update(pageNumber, self.totalSize, settings.pageSize);
+                this.update(pageNumber, me.totalSize, settings.pageSize);
             },
         });
 

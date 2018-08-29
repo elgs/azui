@@ -8,14 +8,15 @@ import {
     remove
 } from '../utilities/utilities.js';
 
-azui.InlineEdit = function (el, options) {
+azui.InlineEdit = function (el, options, init = true) {
     // return new InlineEdit(el, options);
-    return azObj(InlineEdit, el, options);
+    return azObj(InlineEdit, el, options, init);
 };
 
 class InlineEdit extends Base {
-    constructor(el, options) {
-        super(el);
+    // constructor(el, options) {
+    // super(el);
+    azInit(options) {
         const settings = Object.assign({
             inlineEditClass: 'azInlineEditor',
             type: 'text', // number, select
@@ -45,7 +46,7 @@ class InlineEdit extends Base {
         }
 
         const cancel = function (e) {
-            // self.each(function () {
+            // me.each(function () {
             const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
             const v = editor.value;
             if (settings.cancel(e, v) === false) {
@@ -75,7 +76,7 @@ class InlineEdit extends Base {
                 return false;
             }
             const clickedElem = this;
-            // self.each(function () {
+            // me.each(function () {
             const clicked = clickedElem === node;
             const originalValue = node.textContent.trim();
             const editorWrapper = document.createElement('div');

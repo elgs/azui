@@ -1,6 +1,9 @@
 import {
     randGen
 } from './utilities.js';
+import {
+    inherits
+} from 'util';
 
 global.azui = global.azui || {
     // data: {},
@@ -47,36 +50,49 @@ export const normalizeElement = function (el) {
     }
 };
 
-export const azObj = function (cls, el, options) {
+export const azObj = function (cls, el, options, init = true) {
     const node = normalizeElement(el);
-    const objId = node.getAttribute('az-obj-id-' + cls.name);
+    let objId = node.getAttribute('az-obj-id-' + cls.name);
     if (objId) {
         const obj = azui.objCache[objId];
         if (obj) {
+            init && obj.azInit(options);
             return obj;
         }
     }
-    return new cls(node, options);
+    const obj = new cls();
+    obj.node = node;
+    objId = randGen(8);
+    obj.node.setAttribute('az-obj-id-' + cls.name, objId);
+    init && obj.azInit(options);
+    azui.objCache[objId] = obj;
+    return obj;
 };
 
 export class Base {
-    constructor(el) {
-        this.node = normalizeElement(el);
-        const objId = randGen(8);
-        this.node.setAttribute('az-obj-id-' + this.constructor.name, objId);
-        azui.objCache[objId] = this;
+    constructor() {
+        const me = this;
+        me.eventListeners = {};
     }
 
-    on(eventName, eventHandler) {
-        const self = this;
-        if (eventName && eventHandler) {
-            eventName.split(/\s+/).forEach(e => self.node.addEventListener(e, eventHandler));
-        }
+    replaceEventListener(eventId, eventName, eventHandler) {
+        const me = this;
+        const oldHandler = me.eventListeners[eventId];
+        me.node.removeEventListener(eventName, oldHandler);
+        me.eventListeners[eventId] = eventHandler;
+        me.node.addEventListener(eventName, eventHandler);
     }
-    off(eventName, eventHandler) {
-        const self = this;
-        if (eventName && eventHandler) {
-            eventName.split(/\s+/).forEach(e => self.node.removeEventListener(e, eventHandler));
-        }
-    }
+
+    // on(eventName, eventHandler) {
+    //     const me = this;
+    //     if (eventName && eventHandler) {
+    //         eventName.split(/\s+/).forEach(e => me.node.addEventListener(e, eventHandler));
+    //     }
+    // }
+    // off(eventName, eventHandler) {
+    //     const me = this;
+    //     if (eventName && eventHandler) {
+    //         eventName.split(/\s+/).forEach(e => me.node.removeEventListener(e, eventHandler));
+    //     }
+    // }
 };

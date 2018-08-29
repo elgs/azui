@@ -8,14 +8,15 @@ import {
     resolveDOM
 } from '../utilities/utilities.js';
 
-azui.Layout = function (el, options) {
+azui.Layout = function (el, options, init = true) {
     // return new Layout(el, options);
-    return azObj(Layout, el, options);
+    return azObj(Layout, el, options, init);
 };
 
 class Layout extends Base {
-    constructor(el, options) {
-        super(el);
+    // constructor(el, options) {
+    // super(el);
+    azInit(options) {
         const settings = Object.assign({
             north: '.azLayoutNorth',
             east: '.azLayoutEast',
@@ -25,7 +26,7 @@ class Layout extends Base {
         }, options);
 
         const node = this.node;
-        const self = this;
+        const me = this;
         node.classList.add('azLayout');
 
         const northContent = resolveDOM(settings.north);
@@ -38,15 +39,15 @@ class Layout extends Base {
         if (northContent) {
             const north = document.createElement('div');
             north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
-            self.node.appendChild(north);
-            self.north = north;
-            azui.Resizable(self.north, {
+            me.node.appendChild(north);
+            me.north = north;
+            azui.Resizable(me.north, {
                 handles: 's',
                 create: function (e, h) {
-                    centerHeight = getHeight(self.center);
+                    centerHeight = getHeight(me.center);
                 },
                 resize: function (e, h, by) {
-                    if (getHeight(self.north) <= 0) {
+                    if (getHeight(me.north) <= 0) {
                         return;
                     }
                     by.dy = Math.min(by.dy, centerHeight);
@@ -57,13 +58,13 @@ class Layout extends Base {
         if (eastContent) {
             const east = document.createElement('div');
             east.classList.add('azLayoutArea', 'azLayoutAreaEast');
-            self.node.appendChild(east);
-            self.east = east;
-            azui.Resizable(self.east, {
+            me.node.appendChild(east);
+            me.east = east;
+            azui.Resizable(me.east, {
                 handles: 'w',
                 moveOnResize: false,
                 create: function (e, h) {
-                    centerWidth = getWidth(self.center);
+                    centerWidth = getWidth(me.center);
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.max(by.dx, -centerWidth);
@@ -74,16 +75,16 @@ class Layout extends Base {
         if (southContent) {
             const south = document.createElement('div');
             south.classList.add('azLayoutArea', 'azLayoutAreaSouth');
-            self.node.appendChild(south);
-            self.south = south;
-            azui.Resizable(self.south, {
+            me.node.appendChild(south);
+            me.south = south;
+            azui.Resizable(me.south, {
                 handles: 'n',
                 moveOnResize: false,
                 create: function (e, h) {
-                    centerHeight = getHeight(self.center);
+                    centerHeight = getHeight(me.center);
                 },
                 resize: function (e, h, by) {
-                    if (getHeight(self.south) <= 0) {
+                    if (getHeight(me.south) <= 0) {
                         return;
                     }
                     by.dy = Math.max(by.dy, -centerHeight);
@@ -94,12 +95,12 @@ class Layout extends Base {
         if (westContent) {
             const west = document.createElement('div');
             west.classList.add('azLayoutArea', 'azLayoutAreaWest');
-            self.node.appendChild(west);
-            self.west = west;
-            azui.Resizable(self.west, {
+            me.node.appendChild(west);
+            me.west = west;
+            azui.Resizable(me.west, {
                 handles: 'e',
                 create: function (e, h) {
-                    centerWidth = getWidth(self.center);
+                    centerWidth = getWidth(me.center);
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.min(by.dx, centerWidth);
@@ -110,12 +111,12 @@ class Layout extends Base {
         if (centerContent) {
             const center = document.createElement('div');
             center.classList.add('azLayoutArea', 'azLayoutAreaCenter');
-            self.node.appendChild(center);
-            self.center = center;
+            me.node.appendChild(center);
+            me.center = center;
             center.appendChild(centerContent);
 
         }
 
-        // console.log(self.north, self.east, self.south, self.west, self.center);
+        // console.log(me.north, me.east, me.south, me.west, me.center);
     }
 };

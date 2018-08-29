@@ -3,14 +3,13 @@ import {
     Base
 } from '../utilities/core.js';
 
-azui.RightClick = function (el, options) {
+azui.RightClick = function (el, options, init = true) {
     // return new RightClick(el, options);
-    return azObj(RightClick, el, options);
+    return azObj(RightClick, el, options, init);
 };
 
 class RightClick extends Base {
-    constructor(el, options) {
-        super(el);
+    azInit(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},
             onTouchStart: function (e) {},
@@ -37,7 +36,7 @@ class RightClick extends Base {
             timer = setTimeout(function () {
                 triggered = true;
                 if (node === document || node === window || node.parentNode) {
-                    // don't call if self is removed.
+                    // don't call if me is removed.
                     settings.onRightClick(e);
                 }
             }, 500);

@@ -17,30 +17,30 @@ import {
     remove,
 } from '../utilities/utilities.js';
 
-azui.Sortable = function (el, options) {
+azui.Sortable = function (el, options, init = true) {
     // return new Sortable(el, options);
-    return azObj(Sortable, el, options);
+    return azObj(Sortable, el, options, init);
 };
 
 class Sortable extends Base {
-    constructor(el, options) {
-        super(el);
-        const self = this;
+    azInit(options) {
+        // super(el);
+        const me = this;
         const settings = Object.assign({
             className: 'azSortableItem',
             placeholder: true,
             showPlaceHolder: false,
             escapable: false,
-            create: function (event, ui, self) {
+            create: function (event, ui, me) {
                 // console.log('create', ui);
             },
-            start: function (event, ui, self) {
+            start: function (event, ui, me) {
                 // console.log('start', ui);
             },
-            sort: function (event, data, self) {
+            sort: function (event, data, me) {
                 // console.log('sort', data);
             },
-            stop: function (event, data, self) {
+            stop: function (event, data, me) {
                 // console.log('stop', data);
             },
         }, options);
@@ -55,14 +55,14 @@ class Sortable extends Base {
         let z = 0;
 
         const onDragCreate = function (e, target) {
-            if (settings.create(e, target, self) === false) {
+            if (settings.create(e, target, me) === false) {
                 return false;
             }
         };
 
         const onDragStart = function (e, target) {
             selected = target;
-            if (settings.start(e, selected, self) === false) {
+            if (settings.start(e, selected, me) === false) {
                 return false;
             }
 
@@ -99,7 +99,7 @@ class Sortable extends Base {
         };
 
         const onOverTargetCenter = function (e, data) {
-            if (settings.sort(e, data, self) === false) {
+            if (settings.sort(e, data, me) === false) {
                 return false;
             }
             if (settings.placeholder) {
@@ -114,7 +114,7 @@ class Sortable extends Base {
         };
 
         const onLeaveTargetCenter = function (e, data) {
-            if (settings.sort(e, data, self) === false) {
+            if (settings.sort(e, data, me) === false) {
                 return false;
             }
             if (!settings.placeholder) {
@@ -161,7 +161,7 @@ class Sortable extends Base {
             target.style.right = 0;
             target.style.bottom = 0;
 
-            if (settings.stop(e, data, self) === false) {
+            if (settings.stop(e, data, me) === false) {
                 return false;
             }
         };
@@ -180,10 +180,12 @@ class Sortable extends Base {
                         ph = phs[0];
                     }
                     target.appendChild(ph);
-                    // const draggable = azui.Draggable(source);
+                    const draggable = azui.Draggable(source);
                     // draggable.setContainment(target);
-                    // draggable.escapeX = false;
-                    // draggable.escapeY = false;
+                    me.add(source);
+                    // draggable.resetEventListeners();
+                    draggable.escapeX = false;
+                    draggable.escapeY = false;
                 },
                 pointer_out: function (e) {
                     console.log(selected);

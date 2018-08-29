@@ -14,14 +14,12 @@ import {
     setWidth
 } from '../utilities/utilities.js';
 
-azui.Resizable = function (el, options) {
-    // return new Resizable(el, options);
-    return azObj(Resizable, el, options);
+azui.Resizable = function (el, options, init = true) {
+    return azObj(Resizable, el, options, init);
 };
 
 class Resizable extends Base {
-    constructor(el, options) {
-        super(el);
+    azInit(options) {
         const settings = Object.assign({
             minWidth: 0,
             maxWidth: Number.MAX_SAFE_INTEGER,
@@ -53,11 +51,11 @@ class Resizable extends Base {
             },
         }, options);
 
-        const self = this;
+        const me = this;
         const node = this.node;
         node.classList.add('azResizable');
 
-        self.settings = settings;
+        me.settings = settings;
 
         let position = getComputedStyle(node)['position'];
         if (position !== 'absolute' && position !== 'fixed') {
@@ -122,7 +120,7 @@ class Resizable extends Base {
         let mx, my = 0; // position of this element, and mouse x, y coordinate
 
         const eh = {};
-        self.handles = eh;
+        me.handles = eh;
 
         const getCursor = d => {
             if (d === 'e' || d === 'w') {
@@ -160,7 +158,7 @@ class Resizable extends Base {
                 if (direction === 'n' || direction === 's') {
                     collapseButton.classList.add('collapseButtonH');
                     collapseButton.addEventListener('click', function (e) {
-                        self.collapseY(e, collapseButton);
+                        me.collapseY(e, collapseButton);
                     });
 
                     const collapseIconDown = normalizeIcon(icons.svgTriangleDown);
@@ -173,7 +171,7 @@ class Resizable extends Base {
                 } else if (direction === 'w' || direction === 'e') {
                     collapseButton.classList.add('collapseButtonV');
                     collapseButton.addEventListener('click', function (e) {
-                        self.collapseX(e, collapseButton);
+                        me.collapseX(e, collapseButton);
                     });
 
                     const collapseIconRight = normalizeIcon(icons.svgTriangleRight);
@@ -227,7 +225,7 @@ class Resizable extends Base {
 
             // console.log(eh);
 
-            self._resetHandles();
+            me._resetHandles();
 
             const onCreate = function (event, elem) {
                 if (settings.create.call(node, event, elem) === false) {
@@ -237,24 +235,24 @@ class Resizable extends Base {
                 my = event.clientY || event.touches[0].clientY;
 
                 if (position === 'relative') {
-                    self.thisTop = parseInt(node.style.top || 0);
-                    self.thisLeft = parseInt(node.style.left || 0);
+                    me.thisTop = parseInt(node.style.top || 0);
+                    me.thisLeft = parseInt(node.style.left || 0);
                 } else {
                     // child outer border to parent inner border
-                    self.thisTop = node.offsetTop;
-                    self.thisLeft = node.offsetLeft;
+                    me.thisTop = node.offsetTop;
+                    me.thisLeft = node.offsetLeft;
                 }
 
                 // outer border to outer border
-                self.thisWidth = node.offsetWidth;
-                self.thisHeight = node.offsetHeight;
+                me.thisWidth = node.offsetWidth;
+                me.thisHeight = node.offsetHeight;
 
-                self.yToMax = settings.maxHeight - self.thisHeight;
-                self.yToMin = self.thisHeight - settings.minHeight;
-                self.xToMax = settings.maxWidth - self.thisWidth;
-                self.xToMin = self.thisWidth - settings.minWidth;
+                me.yToMax = settings.maxHeight - me.thisHeight;
+                me.yToMin = me.thisHeight - settings.minHeight;
+                me.xToMax = settings.maxWidth - me.thisWidth;
+                me.xToMin = me.thisWidth - settings.minWidth;
 
-                thisAspectRatio = (self.thisHeight * 1.0) / (self.thisWidth * 1.0);
+                thisAspectRatio = (me.thisHeight * 1.0) / (me.thisWidth * 1.0);
                 event.preventDefault(); // prevent text from selecting and mobile screen view port from moving around.
                 // console.log('create');
             };
@@ -264,16 +262,16 @@ class Resizable extends Base {
                     return false;
                 }
 
-                const w = getWidth(self.node);
-                const h = getHeight(self.node);
-                // setWidth(self.node, w);
-                // setHeight(self.node, h);
+                const w = getWidth(me.node);
+                const h = getHeight(me.node);
+                // setWidth(me.node, w);
+                // setHeight(me.node, h);
 
                 if (h > 0) {
-                    self.node.setAttribute('azCollapseHeight', h);
+                    me.node.setAttribute('azCollapseHeight', h);
                 }
                 if (w > 0) {
-                    self.node.setAttribute('azCollapseWidth', w);
+                    me.node.setAttribute('azCollapseWidth', w);
                 }
 
                 elem.classList.add('active');
@@ -286,8 +284,8 @@ class Resizable extends Base {
                 elem.classList.remove('active');
 
                 setTimeout(() => {
-                    self._resetHandles();
-                    self._resetCollapseIconStyle();
+                    me._resetHandles();
+                    me._resetCollapseIconStyle();
                 });
                 // console.log('stop');
             }
@@ -329,7 +327,7 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveN(by.dy);
+                    me.moveN(by.dy);
                     checkAll();
 
                     return false;
@@ -352,7 +350,7 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveE(by.dx);
+                    me.moveE(by.dx);
                     checkAll();
                     return false;
                 },
@@ -374,7 +372,7 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveS(by.dy);
+                    me.moveS(by.dy);
                     checkAll();
                     return false;
                 },
@@ -396,7 +394,7 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveW(by.dx);
+                    me.moveW(by.dx);
                     checkAll();
                     return false;
                 },
@@ -422,8 +420,8 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveN(by.dy);
-                    self.moveE(by.dx);
+                    me.moveN(by.dy);
+                    me.moveE(by.dx);
                     checkAll();
                     return false;
                 },
@@ -448,8 +446,8 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveS(by.dy);
-                    self.moveE(by.dx);
+                    me.moveS(by.dy);
+                    me.moveE(by.dx);
                     checkAll();
                     return false;
                 },
@@ -474,8 +472,8 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveS(by.dy);
-                    self.moveW(by.dx);
+                    me.moveS(by.dy);
+                    me.moveW(by.dx);
                     checkAll();
                     return false;
                 },
@@ -500,8 +498,8 @@ class Resizable extends Base {
                         return false;
                     }
 
-                    self.moveN(by.dy);
-                    self.moveW(by.dx);
+                    me.moveN(by.dy);
+                    me.moveW(by.dx);
                     checkAll();
                     return false;
                 },
@@ -510,100 +508,100 @@ class Resizable extends Base {
         };
 
         createDraggingHandles();
-        self._resetCollapseIconStyle();
+        me._resetCollapseIconStyle();
     }
 
     moveN(by) {
-        const self = this;
-        if (by > self.yToMin) {
-            by = self.yToMin;
-        } else if (-by > self.yToMax) {
-            by = -self.yToMax;
+        const me = this;
+        if (by > me.yToMin) {
+            by = me.yToMin;
+        } else if (-by > me.yToMax) {
+            by = -me.yToMax;
         }
-        if (self.settings.moveOnResize) {
-            self.node.style.top = (self.thisTop + by) + 'px';
+        if (me.settings.moveOnResize) {
+            me.node.style.top = (me.thisTop + by) + 'px';
         }
-        setOuterHeight(self.node, self.thisHeight - by);
+        setOuterHeight(me.node, me.thisHeight - by);
     }
     moveE(by) {
-        const self = this;
-        if (by > self.xToMax) {
-            by = self.xToMax;
-        } else if (-by > self.xToMin) {
-            by = -self.xToMin;
+        const me = this;
+        if (by > me.xToMax) {
+            by = me.xToMax;
+        } else if (-by > me.xToMin) {
+            by = -me.xToMin;
         }
-        setOuterWidth(self.node, self.thisWidth + by);
+        setOuterWidth(me.node, me.thisWidth + by);
     }
     moveS(by) {
-        const self = this;
-        if (by > self.yToMax) {
-            by = self.yToMax;
-        } else if (-by > self.yToMin) {
-            by = -self.yToMin;
+        const me = this;
+        if (by > me.yToMax) {
+            by = me.yToMax;
+        } else if (-by > me.yToMin) {
+            by = -me.yToMin;
         }
-        setOuterHeight(self.node, self.thisHeight + by);
+        setOuterHeight(me.node, me.thisHeight + by);
     }
     moveW(by) {
-        const self = this;
-        if (-by > self.xToMax) {
-            by = -self.xToMax;
-        } else if (by > self.xToMin) {
-            by = self.xToMin;
+        const me = this;
+        if (-by > me.xToMax) {
+            by = -me.xToMax;
+        } else if (by > me.xToMin) {
+            by = me.xToMin;
         }
-        if (self.settings.moveOnResize) {
-            self.node.style.left = (self.thisLeft + by) + 'px';
+        if (me.settings.moveOnResize) {
+            me.node.style.left = (me.thisLeft + by) + 'px';
         }
-        setOuterWidth(self.node, self.thisWidth - by);
+        setOuterWidth(me.node, me.thisWidth - by);
     }
 
     collapseX(event, ui) {
-        const self = this;
-        const w = getWidth(self.node);
-        setWidth(self.node, w);
+        const me = this;
+        const w = getWidth(me.node);
+        setWidth(me.node, w);
 
         if (w > 0) {
-            self.node.setAttribute('azCollapseWidth', w);
-            setWidth(self.node, 0);
-            self.settings.collapse.call(self.node, event, ui, w);
+            me.node.setAttribute('azCollapseWidth', w);
+            setWidth(me.node, 0);
+            me.settings.collapse.call(me.node, event, ui, w);
         } else {
-            const storedW = self.node.getAttribute('azCollapseWidth') * 1;
-            setWidth(self.node, storedW);
-            self.settings.collapse.call(self.node, event, ui, -storedW);
+            const storedW = me.node.getAttribute('azCollapseWidth') * 1;
+            setWidth(me.node, storedW);
+            me.settings.collapse.call(me.node, event, ui, -storedW);
         }
 
-        self._resetCollapseIconStyle();
+        me._resetCollapseIconStyle();
     }
 
     collapseY(event, ui) {
-        const self = this;
-        const h = getHeight(self.node);
-        setHeight(self.node, h);
+        const me = this;
+        const h = getHeight(me.node);
+        setHeight(me.node, h);
 
         if (h > 0) {
-            self.node.setAttribute('azCollapseHeight', h);
-            setHeight(self.node, 0);
-            self.settings.collapse.call(self.node, event, ui, h);
+            me.node.setAttribute('azCollapseHeight', h);
+            setHeight(me.node, 0);
+            me.settings.collapse.call(me.node, event, ui, h);
         } else {
-            const storedH = self.node.getAttribute('azCollapseHeight') * 1;
-            setHeight(self.node, storedH);
-            self.settings.collapse.call(self.node, event, ui, -storedH);
+            const storedH = me.node.getAttribute('azCollapseHeight') * 1;
+            setHeight(me.node, storedH);
+            me.settings.collapse.call(me.node, event, ui, -storedH);
         }
 
-        self._resetCollapseIconStyle();
+        me._resetCollapseIconStyle();
     }
 
     _resetCollapseIconStyle() {
-        const self = this;
-        if (self.settings.hideHandles || self.settings.hideCollapseButton) {
+        const me = this;
+        if (me.settings.hideHandles || me.settings.hideCollapseButton) {
             return;
         }
 
-        const w = getWidth(self.node);
-        const h = getHeight(self.node);
+        const w = getWidth(me.node);
+        const h = getHeight(me.node);
 
-        if (self.handles.n) {
-            const up = self.handles.n.querySelector('span.collapseIconUp');
-            const down = self.handles.n.querySelector('span.collapseIconDown');
+        if (me.handles.n) {
+            const up = me.handles.n.querySelector('span.collapseIconUp');
+            const down = me.handles.n.querySelector('span.collapseIconDown');
             if (h > 0) {
                 up.classList.add('azHide');
                 down.classList.remove('azHide');
@@ -612,9 +610,9 @@ class Resizable extends Base {
                 down.classList.add('azHide');
             }
         }
-        if (self.handles.e) {
-            const left = self.handles.e.querySelector('span.collapseIconLeft');
-            const right = self.handles.e.querySelector('span.collapseIconRight');
+        if (me.handles.e) {
+            const left = me.handles.e.querySelector('span.collapseIconLeft');
+            const right = me.handles.e.querySelector('span.collapseIconRight');
             if (w > 0) {
                 left.classList.remove('azHide');
                 right.classList.add('azHide');
@@ -623,9 +621,9 @@ class Resizable extends Base {
                 right.classList.remove('azHide');
             }
         }
-        if (self.handles.s) {
-            const up = self.handles.s.querySelector('span.collapseIconUp');
-            const down = self.handles.s.querySelector('span.collapseIconDown');
+        if (me.handles.s) {
+            const up = me.handles.s.querySelector('span.collapseIconUp');
+            const down = me.handles.s.querySelector('span.collapseIconDown');
             if (h > 0) {
                 up.classList.remove('azHide');
                 down.classList.add('azHide');
@@ -634,9 +632,9 @@ class Resizable extends Base {
                 down.classList.remove('azHide');
             }
         }
-        if (self.handles.w) {
-            const left = self.handles.w.querySelector('span.collapseIconLeft');
-            const right = self.handles.w.querySelector('span.collapseIconRight');
+        if (me.handles.w) {
+            const left = me.handles.w.querySelector('span.collapseIconLeft');
+            const right = me.handles.w.querySelector('span.collapseIconRight');
             if (w > 0) {
                 left.classList.add('azHide');
                 right.classList.remove('azHide');
@@ -648,74 +646,74 @@ class Resizable extends Base {
     }
 
     _resetHandles() {
-        const self = this;
-        const handleSize = isTouchDevice() ? self.settings.handleSize + 4 : self.settings.handleSize;
-        if (self.handles.n) {
-            self.handles.n.style['top'] = 0;
-            self.handles.n.style['bottom'] = '';
-            self.handles.n.style['right'] = '';
-            self.handles.n.style['left'] = 0;
-            self.handles.n.style['height'] = handleSize + 'px';
-            self.handles.n.style['width'] = '100%';
+        const me = this;
+        const handleSize = isTouchDevice() ? me.settings.handleSize + 4 : me.settings.handleSize;
+        if (me.handles.n) {
+            me.handles.n.style['top'] = 0;
+            me.handles.n.style['bottom'] = '';
+            me.handles.n.style['right'] = '';
+            me.handles.n.style['left'] = 0;
+            me.handles.n.style['height'] = handleSize + 'px';
+            me.handles.n.style['width'] = '100%';
         }
 
-        if (self.handles.e) {
-            self.handles.e.style['right'] = 0;
-            self.handles.e.style['left'] = '';
-            self.handles.e.style['bottom'] = '';
-            self.handles.e.style['top'] = 0;
-            self.handles.e.style['width'] = handleSize + 'px';
-            self.handles.e.style['height'] = '100%';
+        if (me.handles.e) {
+            me.handles.e.style['right'] = 0;
+            me.handles.e.style['left'] = '';
+            me.handles.e.style['bottom'] = '';
+            me.handles.e.style['top'] = 0;
+            me.handles.e.style['width'] = handleSize + 'px';
+            me.handles.e.style['height'] = '100%';
         }
 
-        if (self.handles.s) {
-            self.handles.s.style['bottom'] = 0;
-            self.handles.s.style['top'] = '';
-            self.handles.s.style['right'] = '';
-            self.handles.s.style['left'] = 0;
-            self.handles.s.style['height'] = handleSize + 'px';
-            self.handles.s.style['width'] = '100%';
+        if (me.handles.s) {
+            me.handles.s.style['bottom'] = 0;
+            me.handles.s.style['top'] = '';
+            me.handles.s.style['right'] = '';
+            me.handles.s.style['left'] = 0;
+            me.handles.s.style['height'] = handleSize + 'px';
+            me.handles.s.style['width'] = '100%';
         }
-        if (self.handles.w) {
-            self.handles.w.style['left'] = 0;
-            self.handles.w.style['right'] = '';
-            self.handles.w.style['bottom'] = '';
-            self.handles.w.style['top'] = 0;
-            self.handles.w.style['width'] = handleSize + 'px';
-            self.handles.w.style['height'] = '100%';
+        if (me.handles.w) {
+            me.handles.w.style['left'] = 0;
+            me.handles.w.style['right'] = '';
+            me.handles.w.style['bottom'] = '';
+            me.handles.w.style['top'] = 0;
+            me.handles.w.style['width'] = handleSize + 'px';
+            me.handles.w.style['height'] = '100%';
         }
 
-        if (self.handles.ne) {
-            self.handles.ne.style['left'] = '';
-            self.handles.ne.style['right'] = 0;
-            self.handles.ne.style['bottom'] = '';
-            self.handles.ne.style['top'] = 0;
-            self.handles.ne.style['width'] = handleSize + 'px';
-            self.handles.ne.style['height'] = handleSize + 'px';
+        if (me.handles.ne) {
+            me.handles.ne.style['left'] = '';
+            me.handles.ne.style['right'] = 0;
+            me.handles.ne.style['bottom'] = '';
+            me.handles.ne.style['top'] = 0;
+            me.handles.ne.style['width'] = handleSize + 'px';
+            me.handles.ne.style['height'] = handleSize + 'px';
         }
-        if (self.handles.se) {
-            self.handles.se.style['left'] = '';
-            self.handles.se.style['right'] = 0;
-            self.handles.se.style['bottom'] = 0;
-            self.handles.se.style['top'] = '';
-            self.handles.se.style['width'] = handleSize + 'px';
-            self.handles.se.style['height'] = handleSize + 'px';
+        if (me.handles.se) {
+            me.handles.se.style['left'] = '';
+            me.handles.se.style['right'] = 0;
+            me.handles.se.style['bottom'] = 0;
+            me.handles.se.style['top'] = '';
+            me.handles.se.style['width'] = handleSize + 'px';
+            me.handles.se.style['height'] = handleSize + 'px';
         }
-        if (self.handles.sw) {
-            self.handles.sw.style['left'] = 0;
-            self.handles.sw.style['right'] = '';
-            self.handles.sw.style['bottom'] = 0;
-            self.handles.sw.style['top'] = '';
-            self.handles.sw.style['width'] = handleSize + 'px';
-            self.handles.sw.style['height'] = handleSize + 'px';
+        if (me.handles.sw) {
+            me.handles.sw.style['left'] = 0;
+            me.handles.sw.style['right'] = '';
+            me.handles.sw.style['bottom'] = 0;
+            me.handles.sw.style['top'] = '';
+            me.handles.sw.style['width'] = handleSize + 'px';
+            me.handles.sw.style['height'] = handleSize + 'px';
         }
-        if (self.handles.nw) {
-            self.handles.nw.style['left'] = 0;
-            self.handles.nw.style['right'] = '';
-            self.handles.nw.style['bottom'] = '';
-            self.handles.nw.style['top'] = 0;
-            self.handles.nw.style['width'] = handleSize + 'px';
-            self.handles.nw.style['height'] = handleSize + 'px';
+        if (me.handles.nw) {
+            me.handles.nw.style['left'] = 0;
+            me.handles.nw.style['right'] = '';
+            me.handles.nw.style['bottom'] = '';
+            me.handles.nw.style['top'] = 0;
+            me.handles.nw.style['width'] = handleSize + 'px';
+            me.handles.nw.style['height'] = handleSize + 'px';
         }
     }
 };

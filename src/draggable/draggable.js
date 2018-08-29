@@ -12,16 +12,16 @@ import {
     isTouchDevice
 } from '../utilities/utilities.js';
 
-azui.Draggable = function (el, options) {
+azui.Draggable = function (el, options, init = true) {
     // return new Draggable(el, options);
-    return azObj(Draggable, el, options);
+    return azObj(Draggable, el, options, init);
 };
 
 class Draggable extends Base {
-    constructor(el, options) {
-        super(el);
-
-        const self = this;
+    // constructor(el, options) {
+    //     super(el);
+    azInit(options) {
+        const me = this;
         const settings = Object.assign({
             handle: false,
             axis: false,
@@ -29,108 +29,108 @@ class Draggable extends Base {
             resist: false,
             opacity: false,
             // triggerDropEvents: false,
-            create: function (event, ui, self) {
+            create: function (event, ui, me) {
                 // console.log('create', ui);
             },
-            start: function (event, ui, self) {
+            start: function (event, ui, me) {
                 // console.log('start', ui);
             },
-            drag: function (event, ui, self) {
+            drag: function (event, ui, me) {
                 // console.log('drag', ui);
             },
-            stop: function (event, ui, self) {
+            stop: function (event, ui, me) {
                 // console.log('stop', ui);
             },
         }, options);
 
         const node = this.node;
-        self.settings = settings;
+        me.settings = settings;
         node.classList.add('azDraggable');
 
         const dropTargetStates = {};
-        self.position = getComputedStyle(node)['position'];
-        if (self.position !== 'absolute' && self.position !== 'fixed') {
+        me.position = getComputedStyle(node)['position'];
+        if (me.position !== 'absolute' && me.position !== 'fixed') {
             node.style['position'] = 'relative';
         }
-        self.position = getComputedStyle(node)['position'];
+        me.position = getComputedStyle(node)['position'];
 
-        // console.log(self.style['position'));
+        // console.log(me.style['position'));
         let savedZIndex;
 
-        self.escapeX = false;
-        self.escapeY = false;
+        me.escapeX = false;
+        me.escapeY = false;
 
-        self.dropTargets = null;
-        self.selected = null;
+        me.dropTargets = null;
+        me.selected = null;
         let mouseX0 = 0;
         let mouseY0 = 0;
-        self.containerBoundaries = null;
-        self.mouseX = 0;
-        self.mouseY = 0;
-        self.selfN = 0;
-        self.selfE = 0;
-        self.selfS = 0;
-        self.selfW = 0;
-        self.selfWidth = 0;
-        self.selfHeight = 0;
-        // self n, e, s, w, parent n, e ,s, w, contaner n, e, s, w
-        self.scrN = undefined;
-        self.scrE = undefined;
-        self.scrS = undefined;
-        self.scrW = undefined;
-        self.pScrN = undefined;
-        self.pScrE = undefined;
-        self.pScrS = undefined;
-        self.pScrW = undefined;
-        self.cScrN = undefined;
-        self.cScrE = undefined;
-        self.cScrS = undefined;
-        self.cScrW = undefined;
+        me.containerBoundaries = null;
+        me.mouseX = 0;
+        me.mouseY = 0;
+        me.meN = 0;
+        me.meE = 0;
+        me.meS = 0;
+        me.meW = 0;
+        me.meWidth = 0;
+        me.meHeight = 0;
+        // me n, e, s, w, parent n, e ,s, w, contaner n, e, s, w
+        me.scrN = undefined;
+        me.scrE = undefined;
+        me.scrS = undefined;
+        me.scrW = undefined;
+        me.pScrN = undefined;
+        me.pScrE = undefined;
+        me.pScrS = undefined;
+        me.pScrW = undefined;
+        me.cScrN = undefined;
+        me.cScrE = undefined;
+        me.cScrS = undefined;
+        me.cScrW = undefined;
 
-        self.cbn = 0;
-        self.cbe = 0;
-        self.cbs = 0;
-        self.cbw = 0; // container borders
-        self.cpn = 0;
-        self.cpe = 0;
-        self.cps = 0;
-        self.cpw = 0; // container paddings
-        self.pbn = 0;
-        self.pbe = 0;
-        self.pbs = 0;
-        self.pbw = 0; // offset parent borders
-        self.ppn = 0;
-        self.ppe = 0;
-        self.pps = 0;
-        self.ppw = 0; // offset parent paddings
-        self.smn = 0;
-        self.sme = 0;
-        self.sms = 0;
-        self.smw = 0; // self margin
+        me.cbn = 0;
+        me.cbe = 0;
+        me.cbs = 0;
+        me.cbw = 0; // container borders
+        me.cpn = 0;
+        me.cpe = 0;
+        me.cps = 0;
+        me.cpw = 0; // container paddings
+        me.pbn = 0;
+        me.pbe = 0;
+        me.pbs = 0;
+        me.pbw = 0; // offset parent borders
+        me.ppn = 0;
+        me.ppe = 0;
+        me.pps = 0;
+        me.ppw = 0; // offset parent paddings
+        me.smn = 0;
+        me.sme = 0;
+        me.sms = 0;
+        me.smw = 0; // me margin
         let resisted = false;
         let started = false;
 
         const onmousemove = function (e) {
-            // console.log(e.type, e.currentTarget, self);
+            // console.log(e.type, e.currentTarget, me);
             // console.log(e.currentTarget);
-            if (!self.selected) {
+            if (!me.selected) {
                 return;
             }
             if (!started) {
-                if (settings.start(e, self.selected, self) === false) {
+                if (settings.start(e, me.selected, me) === false) {
                     return false;
                 }
                 // console.log(settings.containment);
-                self.setContainment(settings.containment);
-                // self.style['cursor', 'pointer');
+                me.setContainment(settings.containment);
+                // me.style['cursor', 'pointer');
                 if (settings.opacity) {
                     node.style['opacity'] = settings.opacity;
                 }
                 started = true;
 
-                const dts = self.dropTargets;
+                const dts = me.dropTargets;
                 dts.filter(dt => dt !== node).map(dt => {
-                    // console.log(self, elem);
+                    // console.log(me, elem);
                     // const dropId = dt.getAttribute('drop-id');
                     const ps = getPositionState(node, dt, e);
                     // console.log(ps);
@@ -147,13 +147,13 @@ class Draggable extends Base {
                 });
             }
 
-            if (settings.drag(e, self.selected, self) === false) {
+            if (settings.drag(e, me.selected, me) === false) {
                 return false;
             }
-            self.mouseX = e.pageX || e.touches[0].pageX;
-            self.mouseY = e.pageY || e.touches[0].pageY;
-            const dx = self.mouseX - mouseX0;
-            const dy = self.mouseY - mouseY0;
+            me.mouseX = e.pageX || e.touches[0].pageX;
+            me.mouseY = e.pageY || e.touches[0].pageY;
+            const dx = me.mouseX - mouseX0;
+            const dy = me.mouseY - mouseY0;
             // console.log(dx, dy);
             if (!resisted && Math.abs(dx) < settings.resist && Math.abs(dy) < settings.resist) {
                 return;
@@ -161,20 +161,20 @@ class Draggable extends Base {
             resisted = true;
             // console.log(dx, dy);
 
-            // console.log(self.escapeX, self.escapeY);
+            // console.log(me.escapeX, me.escapeY);
 
             if (settings.axis === 'x') {
-                self.moveX(dx);
+                me.moveX(dx);
             } else if (settings.axis === 'y') {
-                self.moveY(dy);
+                me.moveY(dy);
             } else {
-                self.moveX(dx);
-                self.moveY(dy);
+                me.moveX(dx);
+                me.moveY(dy);
             }
 
-            const dts = self.dropTargets;
+            const dts = me.dropTargets;
             dts.filter(dt => dt !== node).map(dt => {
-                // console.log(self, elem);
+                // console.log(me, elem);
                 const dropId = dt.getAttribute('az-obj-id-droppable');
                 const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
                 const oldPs = dropTargetStates[dropId];
@@ -201,20 +201,20 @@ class Draggable extends Base {
                     });
                 }
             });
-            // self.selected.style['background-color'] = 'red';
+            // me.selected.style['background-color'] = 'red';
         };
 
         const onmouseup = function (e) {
-            // console.log(e.type, e.target, self, self.selected);
-            if (started && settings.stop(e, self.selected, self) === false) {
+            // console.log(e.type, e.target, me, me.selected);
+            if (started && settings.stop(e, me.selected, me) === false) {
                 return false;
             }
             started = false;
             resisted = false;
             node.style['z-index'] = savedZIndex;
-            // console.log('up:', self.style['z-index']);
+            // console.log('up:', me.style['z-index']);
 
-            // self.style['cursor', 'default');
+            // me.style['cursor', 'default');
             if (settings.opacity) {
                 node.style['opacity'] = 1;
             }
@@ -230,12 +230,12 @@ class Draggable extends Base {
             document.removeEventListener('mouseleave', onmouseup);
             // }
 
-            // self.selected.style['background-color'] = 'white';
-            self.selected = null;
+            // me.selected.style['background-color'] = 'white';
+            me.selected = null;
 
-            const dts = self.dropTargets;
+            const dts = me.dropTargets;
             dts.filter(dt => dt !== node).map(dt => {
-                // console.log(self, elem);
+                // console.log(me, elem);
                 // const dropId = dt.getAttribute('drop-id');
                 const ps = getPositionState(node, dt, e);
                 // console.log(ps);
@@ -250,12 +250,12 @@ class Draggable extends Base {
                     }));
                 }
             });
-            self.dropTargets = null;
+            me.dropTargets = null;
             // return false;
         };
 
         const onmousedown = function (e) {
-            // console.log(e.type, e.target, self);
+            // console.log(e.type, e.target, me);
             if (e.type === 'mousedown' && e.button !== 0) {
                 return;
             }
@@ -269,18 +269,18 @@ class Draggable extends Base {
             // the reason not to use stopPropation is to allow other events to bubble through, like click to increase z-index.
             // e.stopPropagation(); // no no
 
-            // only move the self.selected one, not any of it's ancestors.
+            // only move the me.selected one, not any of it's ancestors.
             if (e.target.closest('.azDraggable') !== node) {
                 return;
             }
 
-            if (settings.create(e, node, self) === false) {
+            if (settings.create(e, node, me) === false) {
                 return;
             }
-            self.selected = node;
+            me.selected = node;
 
-            self.mouseX = mouseX0 = e.pageX || e.touches[0].pageX;
-            self.mouseY = mouseY0 = e.pageY || e.touches[0].pageY;
+            me.mouseX = mouseX0 = e.pageX || e.touches[0].pageX;
+            me.mouseY = mouseY0 = e.pageY || e.touches[0].pageY;
             if (settings.handle) {
                 let handle = settings.handle;
                 if (typeof settings.handle === 'string') {
@@ -307,25 +307,24 @@ class Draggable extends Base {
             document.addEventListener('mouseup', onmouseup);
             document.addEventListener('mouseleave', onmouseup);
 
-            self.dropTargets = [...document.querySelectorAll('.azDropTarget')];
+            me.dropTargets = [...document.querySelectorAll('.azDropTarget')];
         };
 
-        if (isTouchDevice()) {
-            node.addEventListener('touchstart', onmousedown);
-        }
-        node.addEventListener('mousedown', onmousedown);
-
-        self.reset = () => {
+        me.resetEventListeners = () => {
             if (isTouchDevice()) {
                 node.removeEventListener('touchstart', onmousedown);
+                node.addEventListener('touchstart', onmousedown);
             }
             node.removeEventListener('mousedown', onmousedown);
+            node.addEventListener('mousedown', onmousedown);
         };
+
+        me.resetEventListeners();
     }
 
 
     setContainment(containment) {
-        const self = this;
+        const me = this;
         const node = this.node;
         const nodeStyles = getComputedStyle(node);
 
@@ -335,27 +334,27 @@ class Draggable extends Base {
                 if (containment === 'parent') {
                     container = node.parentNode;
                 } else if (containment === 'document') {
-                    // self.cScrN = -document.documentElement.scrollLeft;
-                    // self.cScrW = -document.documentElement.scrollTop;
-                    self.cScrN = -getDocScrollLeft();
-                    self.cScrW = -getDocScrollTop();
-                    self.cScrS = getDocHeight();
-                    self.cScrE = getDocWidth();
-                    // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
+                    // me.cScrN = -document.documentElement.scrollLeft;
+                    // me.cScrW = -document.documentElement.scrollTop;
+                    me.cScrN = -getDocScrollLeft();
+                    me.cScrW = -getDocScrollTop();
+                    me.cScrS = getDocHeight();
+                    me.cScrE = getDocWidth();
+                    // console.log(me.cScrN, me.cScrW, me.cScrS, me.cScrE);
                 } else if (containment === 'window') {
-                    self.cScrN = 0;
-                    self.cScrW = 0;
-                    self.cScrS = window.innerHeight;
-                    self.cScrE = window.innerWidth;
-                    // console.log(self.cScrN, self.cScrW, self.cScrS, self.cScrE);
+                    me.cScrN = 0;
+                    me.cScrW = 0;
+                    me.cScrS = window.innerHeight;
+                    me.cScrE = window.innerWidth;
+                    // console.log(me.cScrN, me.cScrW, me.cScrS, me.cScrE);
                 } else {
                     container = document.querySelector(containment);
                 }
             } else if (Array.isArray(containment)) {
-                self.cScrW = containment[0];
-                self.cScrN = containment[1];
-                self.cScrE = containment[2];
-                self.cScrS = containment[3];
+                me.cScrW = containment[0];
+                me.cScrN = containment[1];
+                me.cScrE = containment[2];
+                me.cScrS = containment[3];
             } else if (typeof containment === 'object') {
                 if (containment instanceof NodeList) {
                     container = containment[0];
@@ -366,23 +365,23 @@ class Draggable extends Base {
 
             if (container && typeof container === 'object') {
                 const containerStyles = getComputedStyle(container);
-                self.cbn = parseInt(containerStyles["border-top-width"]);
-                self.cbe = parseInt(containerStyles["border-right-width"]);
-                self.cbs = parseInt(containerStyles["border-bottom-width"]);
-                self.cbw = parseInt(containerStyles["border-left-width"]);
+                me.cbn = parseInt(containerStyles["border-top-width"]);
+                me.cbe = parseInt(containerStyles["border-right-width"]);
+                me.cbs = parseInt(containerStyles["border-bottom-width"]);
+                me.cbw = parseInt(containerStyles["border-left-width"]);
 
                 const containerBoundaries = container.getBoundingClientRect();
-                self.containerBoundaries = containerBoundaries;
-                self.cScrN = containerBoundaries.top + getDocScrollTop();
-                self.cScrE = containerBoundaries.right + getDocScrollLeft();
-                self.cScrS = containerBoundaries.bottom + getDocScrollTop();
-                self.cScrW = containerBoundaries.left + getDocScrollLeft();
+                me.containerBoundaries = containerBoundaries;
+                me.cScrN = containerBoundaries.top + getDocScrollTop();
+                me.cScrE = containerBoundaries.right + getDocScrollLeft();
+                me.cScrS = containerBoundaries.bottom + getDocScrollTop();
+                me.cScrW = containerBoundaries.left + getDocScrollLeft();
 
-                self.cpn = parseInt(containerStyles["padding-top"]);
-                self.cpe = parseInt(containerStyles["padding-right"]);
-                self.cps = parseInt(containerStyles["padding-bottom"]);
-                self.cpw = parseInt(containerStyles["padding-left"]);
-                // console.log(self.cpn, self.cpe, self.cps, self.cpw);
+                me.cpn = parseInt(containerStyles["padding-top"]);
+                me.cpe = parseInt(containerStyles["padding-right"]);
+                me.cps = parseInt(containerStyles["padding-bottom"]);
+                me.cpw = parseInt(containerStyles["padding-left"]);
+                // console.log(me.cpn, me.cpe, me.cps, me.cpw);
             }
         }
 
@@ -394,214 +393,214 @@ class Draggable extends Base {
             parent.style['position'] = 'relative';
         }
 
-        // console.log(parent, self.offsetParent);
+        // console.log(parent, me.offsetParent);
         const pb = parent.getBoundingClientRect();
-        self.pScrN = pb.top + getDocScrollTop();
-        self.pScrE = pb.right + getDocScrollLeft();
-        self.pScrS = pb.bottom + getDocScrollTop();
-        self.pScrW = pb.left + getDocScrollLeft();
-        // console.log(self.pScrN, self.pScrE, self.pScrS, self.pScrW);
+        me.pScrN = pb.top + getDocScrollTop();
+        me.pScrE = pb.right + getDocScrollLeft();
+        me.pScrS = pb.bottom + getDocScrollTop();
+        me.pScrW = pb.left + getDocScrollLeft();
+        // console.log(me.pScrN, me.pScrE, me.pScrS, me.pScrW);
 
-        self.pbn = parseInt(parentStyles["border-top-width"]);
-        self.pbe = parseInt(parentStyles["border-right-width"]);
-        self.pbs = parseInt(parentStyles["border-bottom-width"]);
-        self.pbw = parseInt(parentStyles["border-left-width"]);
-        // console.log(self.pbn, self.pbe, self.pbs, self.pbw);
+        me.pbn = parseInt(parentStyles["border-top-width"]);
+        me.pbe = parseInt(parentStyles["border-right-width"]);
+        me.pbs = parseInt(parentStyles["border-bottom-width"]);
+        me.pbw = parseInt(parentStyles["border-left-width"]);
+        // console.log(me.pbn, me.pbe, me.pbs, me.pbw);
 
-        self.ppn = parseInt(parentStyles["padding-top"]);
-        self.ppe = parseInt(parentStyles["padding-right"]);
-        self.pps = parseInt(parentStyles["padding-bottom"]);
-        self.ppw = parseInt(parentStyles["padding-left"]);
-        // console.log(self.ppn, self.ppe, self.pps, self.ppw);
+        me.ppn = parseInt(parentStyles["padding-top"]);
+        me.ppe = parseInt(parentStyles["padding-right"]);
+        me.pps = parseInt(parentStyles["padding-bottom"]);
+        me.ppw = parseInt(parentStyles["padding-left"]);
+        // console.log(me.ppn, me.ppe, me.pps, me.ppw);
 
-        self.smn = parseInt(nodeStyles["margin-top"]);
-        self.sme = parseInt(nodeStyles["margin-right"]);
-        self.sms = parseInt(nodeStyles["margin-bottom"]);
-        self.smw = parseInt(nodeStyles["margin-left"]);
-        // console.log(self.smn, self.sme, self.sms, self.smw);
+        me.smn = parseInt(nodeStyles["margin-top"]);
+        me.sme = parseInt(nodeStyles["margin-right"]);
+        me.sms = parseInt(nodeStyles["margin-bottom"]);
+        me.smw = parseInt(nodeStyles["margin-left"]);
+        // console.log(me.smn, me.sme, me.sms, me.smw);
 
-        const selfbcr = self.selected.getBoundingClientRect();
-        self.scrN = selfbcr.top + getDocScrollTop();
-        self.scrE = selfbcr.right + getDocScrollLeft();
-        self.scrS = selfbcr.bottom + getDocScrollTop();
-        self.scrW = selfbcr.left + getDocScrollLeft();
-        // console.log(self.scrN, self.scrE, self.scrS, self.scrW);
+        const mebcr = me.selected.getBoundingClientRect();
+        me.scrN = mebcr.top + getDocScrollTop();
+        me.scrE = mebcr.right + getDocScrollLeft();
+        me.scrS = mebcr.bottom + getDocScrollTop();
+        me.scrW = mebcr.left + getDocScrollLeft();
+        // console.log(me.scrN, me.scrE, me.scrS, me.scrW);
 
-        // self.selfW = parseInt(getComputedStyle(self)['left'));
-        // self.selfE = parseInt(getComputedStyle(self)['right'));
-        // self.selfN = parseInt(getComputedStyle(self)['top'));
-        // self.selfS = parseInt(getComputedStyle(self)['bottom'));
-        // console.log(self.selfN, self.selfE, self.selfS, self.selfW);
+        // me.meW = parseInt(getComputedStyle(me)['left'));
+        // me.meE = parseInt(getComputedStyle(me)['right'));
+        // me.meN = parseInt(getComputedStyle(me)['top'));
+        // me.meS = parseInt(getComputedStyle(me)['bottom'));
+        // console.log(me.meN, me.meE, me.meS, me.meW);
 
         if (nodeStyles['position'] === 'relative') {
-            self.selfW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
-            self.selfE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
-            self.selfN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
-            self.selfS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
-            // console.log(self.selfN, self.selfE, self.selfS, self.selfW, self.style['position'));
+            me.meW = parseInt(nodeStyles['left'] === 'auto' ? '0' : nodeStyles['left']);
+            me.meE = parseInt(nodeStyles['right'] === 'auto' ? '0' : nodeStyles['right']);
+            me.meN = parseInt(nodeStyles['top'] === 'auto' ? '0' : nodeStyles['top']);
+            me.meS = parseInt(nodeStyles['bottom'] === 'auto' ? '0' : nodeStyles['bottom']);
+            // console.log(me.meN, me.meE, me.meS, me.meW, me.style['position'));
         } else if (nodeStyles['position'] === 'absolute') {
-            self.selfW = self.scrW - self.pScrW - self.smw - self.pbw;
-            self.selfN = self.scrN - self.pScrN - self.smn - self.pbn;
-            self.selfE = -self.scrE + self.pScrE - self.sme - self.pbe;
-            self.selfS = -self.scrS + self.pScrS - self.sms - self.pbs;
+            me.meW = me.scrW - me.pScrW - me.smw - me.pbw;
+            me.meN = me.scrN - me.pScrN - me.smn - me.pbn;
+            me.meE = -me.scrE + me.pScrE - me.sme - me.pbe;
+            me.meS = -me.scrS + me.pScrS - me.sms - me.pbs;
         } else if (nodeStyles['position'] === 'fixed') {
-            self.selfW = self.scrW - self.smw - getDocScrollLeft();
-            self.selfN = self.scrN - self.smn - getDocScrollTop();
+            me.meW = me.scrW - me.smw - getDocScrollLeft();
+            me.meN = me.scrN - me.smn - getDocScrollTop();
         }
 
-        self.selfWidth = selfbcr.width;
-        self.selfHeight = selfbcr.height;
-        // console.log(self.selfWidth + ', ' + self.selfHeight);
+        me.meWidth = mebcr.width;
+        me.meHeight = mebcr.height;
+        // console.log(me.meWidth + ', ' + me.meHeight);
     }
 
     moveX(by) {
-        const self = this;
-        if (self.position === 'absolute') {
-            self.moveAbsoluteX(by);
-        } else if (self.position === 'relative') {
-            self.moveRelativeX(by);
-        } else if (self.position === 'fixed') {
-            self.moveFixedX(by);
+        const me = this;
+        if (me.position === 'absolute') {
+            me.moveAbsoluteX(by);
+        } else if (me.position === 'relative') {
+            me.moveRelativeX(by);
+        } else if (me.position === 'fixed') {
+            me.moveFixedX(by);
         }
     }
 
     moveY(by) {
-        const self = this;
-        if (self.position === 'absolute') {
-            self.moveAbsoluteY(by);
-        } else if (self.position === 'relative') {
-            self.moveRelativeY(by);
-        } else if (self.position === 'fixed') {
-            self.moveFixedY(by);
+        const me = this;
+        if (me.position === 'absolute') {
+            me.moveAbsoluteY(by);
+        } else if (me.position === 'relative') {
+            me.moveRelativeY(by);
+        } else if (me.position === 'fixed') {
+            me.moveFixedY(by);
         }
     }
 
     moveAbsoluteX(dx) {
-        const self = this;
-        if (self.cScrW === undefined || self.escapeX) {
-            self.selected.style.right = 'auto';
-            self.selected.style.left = (self.selfW + dx) + 'px';
+        const me = this;
+        if (me.cScrW === undefined || me.escapeX) {
+            me.selected.style.right = 'auto';
+            me.selected.style.left = (me.meW + dx) + 'px';
         } else {
-            if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+            if (-dx > me.scrW - me.cScrW - me.cbw - me.cpw - me.smw) {
                 // console.log('hit left wall');
-                const di = self.cScrW + self.cbw + self.cpw - (self.pScrW + self.pbw + self.ppw);
-                self.selected.style.right = 'auto';
-                self.selected.style.left = self.ppw + di + 'px';
-            } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+                const di = me.cScrW + me.cbw + me.cpw - (me.pScrW + me.pbw + me.ppw);
+                me.selected.style.right = 'auto';
+                me.selected.style.left = me.ppw + di + 'px';
+            } else if (dx > me.cScrE - me.scrE - me.cbe - me.cpe - me.sme) {
                 // console.log('hit right wall');
-                const di = self.cScrE - self.cbe - self.cpe - (self.pScrE - self.pbe - self.ppe);
-                self.selected.style.left = 'auto';
-                self.selected.style.right = self.ppe - di + 'px';
+                const di = me.cScrE - me.cbe - me.cpe - (me.pScrE - me.pbe - me.ppe);
+                me.selected.style.left = 'auto';
+                me.selected.style.right = me.ppe - di + 'px';
             } else {
-                self.selected.style.right = 'auto';
-                self.selected.style.left = (self.selfW + dx) + 'px';
+                me.selected.style.right = 'auto';
+                me.selected.style.left = (me.meW + dx) + 'px';
             }
         }
     }
 
     moveAbsoluteY(dy) {
-        const self = this;
-        if (self.cScrW === undefined || self.escapeY) {
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = (self.selfN + dy) + 'px';
+        const me = this;
+        if (me.cScrW === undefined || me.escapeY) {
+            me.selected.style.bottom = 'auto';
+            me.selected.style.top = (me.meN + dy) + 'px';
         } else {
-            if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+            if (-dy > me.scrN - me.cScrN - me.cbn - me.cpn - me.smn) {
                 // console.log('hit ceiling');
-                const di = self.cScrN + self.cbn + self.cpn - (self.pScrN + self.pbn + self.ppn);
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = self.ppn + di + 'px';
-            } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+                const di = me.cScrN + me.cbn + me.cpn - (me.pScrN + me.pbn + me.ppn);
+                me.selected.style.bottom = 'auto';
+                me.selected.style.top = me.ppn + di + 'px';
+            } else if (dy > me.cScrS - me.scrS - me.cbs - me.cps - me.sms) {
                 // console.log('hit floor');
-                const di = self.cScrS - self.cbs - self.cps - (self.pScrS - self.pbs - self.pps);
-                self.selected.style.top = 'auto';
-                self.selected.style.bottom = self.pps - di + 'px';
+                const di = me.cScrS - me.cbs - me.cps - (me.pScrS - me.pbs - me.pps);
+                me.selected.style.top = 'auto';
+                me.selected.style.bottom = me.pps - di + 'px';
             } else {
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = (self.selfN + dy) + 'px';
+                me.selected.style.bottom = 'auto';
+                me.selected.style.top = (me.meN + dy) + 'px';
             }
         }
     }
 
     moveFixedX(dx) {
-        const self = this;
-        if (self.cScrW === undefined || self.escapeX) {
-            self.selected.style.right = 'auto';
-            self.selected.style.left = (self.selfW + dx) + 'px';
+        const me = this;
+        if (me.cScrW === undefined || me.escapeX) {
+            me.selected.style.right = 'auto';
+            me.selected.style.left = (me.meW + dx) + 'px';
         } else {
-            if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+            if (-dx > me.scrW - me.cScrW - me.cbw - me.cpw - me.smw) {
                 // console.log('hit left wall');
-                self.selected.style.right = 'auto';
-                self.selected.style.left = self.cScrW + self.cbw + self.cpw + 'px';
-            } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+                me.selected.style.right = 'auto';
+                me.selected.style.left = me.cScrW + me.cbw + me.cpw + 'px';
+            } else if (dx > me.cScrE - me.scrE - me.cbe - me.cpe - me.sme) {
                 // console.log('hit right wall');
-                self.selected.style.right = 'auto';
-                self.selected.style.left = self.cScrE - self.cbe - self.cpe - self.selfWidth - self.smw - self.sme + 'px';
+                me.selected.style.right = 'auto';
+                me.selected.style.left = me.cScrE - me.cbe - me.cpe - me.meWidth - me.smw - me.sme + 'px';
             } else {
-                self.selected.style.right = 'auto';
-                self.selected.style.left = (self.selfW + dx) + 'px';
+                me.selected.style.right = 'auto';
+                me.selected.style.left = (me.meW + dx) + 'px';
             }
         }
     }
 
     moveFixedY(dy) {
-        const self = this;
-        if (self.cScrW === undefined || self.escapeY) {
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = (self.selfN + dy) + 'px';
+        const me = this;
+        if (me.cScrW === undefined || me.escapeY) {
+            me.selected.style.bottom = 'auto';
+            me.selected.style.top = (me.meN + dy) + 'px';
         } else {
-            if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+            if (-dy > me.scrN - me.cScrN - me.cbn - me.cpn - me.smn) {
                 // console.log('hit ceiling');
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = self.cScrN + self.cbn + self.cpn + 'px';
-            } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+                me.selected.style.bottom = 'auto';
+                me.selected.style.top = me.cScrN + me.cbn + me.cpn + 'px';
+            } else if (dy > me.cScrS - me.scrS - me.cbs - me.cps - me.sms) {
                 // console.log('hit floor');
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = self.cScrS - self.cbs - self.cps - self.selfHeight - self.smn - self.sms + 'px';
+                me.selected.style.bottom = 'auto';
+                me.selected.style.top = me.cScrS - me.cbs - me.cps - me.meHeight - me.smn - me.sms + 'px';
             } else {
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = (self.selfN + dy) + 'px';
+                me.selected.style.bottom = 'auto';
+                me.selected.style.top = (me.meN + dy) + 'px';
             }
         }
     }
 
     moveRelativeX(dx) {
-        const self = this;
-        if (self.cScrW === undefined || self.escapeX) {
-            self.selected.style.right = 'auto';
-            self.selected.style.left = (self.selfW + dx) + 'px';
+        const me = this;
+        if (me.cScrW === undefined || me.escapeX) {
+            me.selected.style.right = 'auto';
+            me.selected.style.left = (me.meW + dx) + 'px';
         } else {
-            if (-dx > self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) {
+            if (-dx > me.scrW - me.cScrW - me.cbw - me.cpw - me.smw) {
                 // console.log('hit left wall');
-                self.selected.style.right = 'auto';
-                self.selected.style.left = -(self.scrW - self.cScrW - self.cbw - self.cpw - self.smw) + self.selfW + 'px';
-            } else if (dx > self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) {
+                me.selected.style.right = 'auto';
+                me.selected.style.left = -(me.scrW - me.cScrW - me.cbw - me.cpw - me.smw) + me.meW + 'px';
+            } else if (dx > me.cScrE - me.scrE - me.cbe - me.cpe - me.sme) {
                 // console.log('hit right wall');
-                self.selected.style.left = 'auto';
-                self.selected.style.right = -(self.cScrE - self.scrE - self.cbe - self.cpe - self.sme) + self.selfE + 'px';
+                me.selected.style.left = 'auto';
+                me.selected.style.right = -(me.cScrE - me.scrE - me.cbe - me.cpe - me.sme) + me.meE + 'px';
             } else {
-                self.selected.style.right = 'auto';
-                self.selected.style.left = (self.selfW + dx) + 'px';
+                me.selected.style.right = 'auto';
+                me.selected.style.left = (me.meW + dx) + 'px';
             }
         }
     };
     moveRelativeY(dy) {
-        const self = this;
-        if (self.cScrW === undefined || self.escapeY) {
-            self.selected.style.bottom = 'auto';
-            self.selected.style.top = (self.selfN + dy) + 'px';
+        const me = this;
+        if (me.cScrW === undefined || me.escapeY) {
+            me.selected.style.bottom = 'auto';
+            me.selected.style.top = (me.meN + dy) + 'px';
         } else {
-            if (-dy > self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) {
+            if (-dy > me.scrN - me.cScrN - me.cbn - me.cpn - me.smn) {
                 // console.log('hit ceiling');
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = -(self.scrN - self.cScrN - self.cbn - self.cpn - self.smn) + self.selfN + 'px';
-            } else if (dy > self.cScrS - self.scrS - self.cbs - self.cps - self.sms) {
+                me.selected.style.bottom = 'auto';
+                me.selected.style.top = -(me.scrN - me.cScrN - me.cbn - me.cpn - me.smn) + me.meN + 'px';
+            } else if (dy > me.cScrS - me.scrS - me.cbs - me.cps - me.sms) {
                 // console.log('hit floor');
-                self.selected.style.top = 'auto';
-                self.selected.style.bottom = -(self.cScrS - self.scrS - self.cbs - self.cps - self.sms) + self.selfS + 'px';
-                // console.log(self.cScrS, self.scrS, self.cbs, self.cps, self.sms, self.selfS);
+                me.selected.style.top = 'auto';
+                me.selected.style.bottom = -(me.cScrS - me.scrS - me.cbs - me.cps - me.sms) + me.meS + 'px';
+                // console.log(me.cScrS, me.scrS, me.cbs, me.cps, me.sms, me.meS);
             } else {
-                self.selected.style.bottom = 'auto';
-                self.selected.style.top = (self.selfN + dy) + 'px';
+                me.selected.style.bottom = 'auto';
+                me.selected.style.top = (me.meN + dy) + 'px';
             }
         }
     }

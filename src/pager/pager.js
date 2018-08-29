@@ -7,14 +7,12 @@ import {
     parseDOMElement
 } from '../utilities/utilities.js';
 
-azui.Pager = function (el, options) {
-    // return new Pager(el, options);
-    return azObj(Pager, el, options);
+azui.Pager = function (el, options, init = true) {
+    return azObj(Pager, el, options, init);
 };
 
 class Pager extends Base {
-    constructor(el, options) {
-        super(el);
+    azInit(options) {
         const settings = Object.assign({
             onPageChange: function (pageNumber) {},
             pageNumber: 1,
@@ -46,15 +44,15 @@ class Pager extends Base {
     };
 
     _createPagerBar() {
-        const self = this;
+        const me = this;
         const pagerBar = document.createElement('div');
         this._createIcon(icons.svgFirstPage, pagerBar, function (e) {
-            self.settings.pageNumber = 1;
-            self.settings.onPageChange.call(self, self.settings.pageNumber);
+            me.settings.pageNumber = 1;
+            me.settings.onPageChange.call(me, me.settings.pageNumber);
         });
         this._createIcon(icons.svgPreviousPage, pagerBar, function (e) {
-            --self.settings.pageNumber;
-            self.settings.onPageChange.call(self, self.settings.pageNumber);
+            --me.settings.pageNumber;
+            me.settings.onPageChange.call(me, me.settings.pageNumber);
         });
         const pn = document.createElement('input');
         pn.setAttribute('type', 'number');
@@ -64,19 +62,19 @@ class Pager extends Base {
         pagerBar.appendChild(pn);
 
         pn.addEventListener('change', function () {
-            self.settings.pageNumber = this.value * 1;
-            self.settings.onPageChange.call(self, self.settings.pageNumber);
+            me.settings.pageNumber = this.value * 1;
+            me.settings.onPageChange.call(me, me.settings.pageNumber);
         });
         this._createIcon(icons.svgNextPage, pagerBar, function (e) {
-            ++self.settings.pageNumber;
-            self.settings.onPageChange.call(self, self.settings.pageNumber);
+            ++me.settings.pageNumber;
+            me.settings.onPageChange.call(me, me.settings.pageNumber);
         });
         this._createIcon(icons.svgLastPage, pagerBar, function (e) {
-            self.settings.pageNumber = Number.MAX_SAFE_INTEGER;
-            self.settings.onPageChange.call(self, self.settings.pageNumber);
+            me.settings.pageNumber = Number.MAX_SAFE_INTEGER;
+            me.settings.onPageChange.call(me, me.settings.pageNumber);
         });
         this._createIcon(icons.svgRefresh, pagerBar, function (e) {
-            self.settings.onPageChange.call(self, self.settings.pageNumber);
+            me.settings.onPageChange.call(me, me.settings.pageNumber);
         });
         pagerBar.classList.add('azPageBar');
         return pagerBar;

@@ -12,14 +12,15 @@ import {
 } from '../utilities/utilities.js';
 
 
-azui.ContextMenu = function (el, options) {
+azui.ContextMenu = function (el, options, init = true) {
     // return new ContextMenu(el, options);
-    return azObj(ContextMenu, el, options);
+    return azObj(ContextMenu, el, options, init);
 };
 
 class ContextMenu extends Base {
-    constructor(el, options) {
-        super(el, options);
+    // constructor(el, options) {
+    // super(el, options);
+    azInit(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},
             onTouchStart: function (e) {},
@@ -27,7 +28,7 @@ class ContextMenu extends Base {
             items: []
         }, options);
 
-        const self = this;
+        const me = this;
         const node = this.node;
 
         this.on = false;
@@ -77,7 +78,7 @@ class ContextMenu extends Base {
                             document.removeEventListener('mousemove', mousePositionTracker);
                             document.removeEventListener('touchstart', blurFocusDetector);
                             menu.parentNode.removeChild(menu);
-                            self.on = false;
+                            me.on = false;
                             // alert('off');
                         } else {
                             focusDetector.focus();
@@ -124,7 +125,7 @@ class ContextMenu extends Base {
             focusDetector.style['opacity'] = 0;
             menu.appendChild(focusDetector);
             focusDetector.focus();
-            self.on = true;
+            me.on = true;
             // alert('on');
             focusDetector.addEventListener('blur', function (e1) {
                 const pb = menu.getBoundingClientRect();
@@ -132,7 +133,7 @@ class ContextMenu extends Base {
                     document.removeEventListener('mousemove', mousePositionTracker);
                     document.removeEventListener('touchstart', blurFocusDetector);
                     menu.remove();
-                    self.on = false;
+                    me.on = false;
                     // alert('off 0');
                 } else {
                     focusDetector.focus();

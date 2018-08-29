@@ -10,14 +10,15 @@ import {
     remove
 } from '../utilities/utilities.js';
 
-azui.Docker = function (el, options) {
+azui.Docker = function (el, options, init = true) {
     // return new Docker(el, options);
-    return azObj(Docker, el, options);
+    return azObj(Docker, el, options, init);
 };
 
 class Docker extends Base {
-    constructor(el, options) {
-        super(el);
+    // constructor(el, options) {
+    // super(el);
+    azInit(options) {
         const settings = Object.assign({
             // height: 30,
             // width: 30,
@@ -28,7 +29,7 @@ class Docker extends Base {
         node.classList.add('azDocker');
         node.style['z-index'] = Number.MAX_SAFE_INTEGER - 1000;
 
-        const self = this;
+        const me = this;
 
         // this.dockerId = randGen(8);
         // node.setAttribute('az-docker-id', this.dockerId);
@@ -47,25 +48,25 @@ class Docker extends Base {
             },
             start: (e, data) => {
                 // console.log('start dragging');
-                self.dragging = true;
+                me.dragging = true;
             },
             stop: (e, data) => {
                 // console.log('stop dragging');
-                self.dragging = false;
+                me.dragging = false;
             }
         });
     }
 
     getContextMenuItems(dockId) {
-        const self = this;
+        const me = this;
         return function () {
-            const docked = self.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
+            const docked = me.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
             const state = docked.getAttribute('state');
             return [{
                     icon: icons.svgClose,
                     title: 'Close',
                     action: function (e, target) {
-                        self.undock(dockId, true);
+                        me.undock(dockId, true);
                         return false;
                     }
                 },
@@ -75,7 +76,7 @@ class Docker extends Base {
                     title: 'Minimize Window',
                     disabled: state === 'minimized',
                     action: function (e, target) {
-                        self.minimize(dockId, true);
+                        me.minimize(dockId, true);
                         return false;
                     }
                 },
@@ -84,7 +85,7 @@ class Docker extends Base {
                     disabled: state === 'normal',
                     title: 'Restore Window',
                     action: function (e, target) {
-                        self.normalize(dockId, true);
+                        me.normalize(dockId, true);
                         return false;
                     }
                 },
@@ -93,7 +94,7 @@ class Docker extends Base {
                     title: 'Maximize Window',
                     disabled: state === 'maximized',
                     action: function (e, target) {
-                        self.maximize(dockId, true);
+                        me.maximize(dockId, true);
                         return false;
                     }
                 },
@@ -103,7 +104,7 @@ class Docker extends Base {
                     title: 'Slide Up',
                     disabled: state !== 'normal',
                     action: function (e, target) {
-                        self.slideup(dockId, true);
+                        me.slideup(dockId, true);
                         return false;
                     }
                 },
@@ -112,7 +113,7 @@ class Docker extends Base {
                     title: 'Slide Down',
                     disabled: state !== 'slidup',
                     action: function (e, target) {
-                        self.slidedown(dockId, true);
+                        me.slidedown(dockId, true);
                         return false;
                     }
                 },
@@ -121,7 +122,7 @@ class Docker extends Base {
     };
 
     dock(el, icon, title, notify) {
-        const self = this;
+        const me = this;
         const id = randGen(8);
         const docked = document.createElement('div');
         docked.setAttribute('az-dock-id', id);
@@ -138,7 +139,7 @@ class Docker extends Base {
         docked.appendChild(titleSpan);
 
         const cm = azui.ContextMenu(docked, {
-            items: self.getContextMenuItems.call(self, id),
+            items: me.getContextMenuItems.call(me, id),
         });
 
         // docked.style.width = this.settings.width + 'px';
@@ -146,19 +147,19 @@ class Docker extends Base {
         this.sortable.add(docked);
 
         const clicked = e => {
-            if (e.button === 2 || cm.on || self.dragging) {
+            if (e.button === 2 || cm.on || me.dragging) {
                 return;
             }
-            const docked = self.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
+            const docked = me.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
             // console.log(docked.getAttribute('state'));
             if (docked.getAttribute('state') === 'normal') {
-                if (self.isActive(id)) {
-                    self.minimize(id, true);
+                if (me.isActive(id)) {
+                    me.minimize(id, true);
                 }
             } else if (docked.getAttribute('state') === 'minimized') {
-                self.normalize(id, true);
+                me.normalize(id, true);
             }
-            self.activate(id, true);
+            me.activate(id, true);
         };
 
         docked.addEventListener('mouseup', clicked);
@@ -185,11 +186,11 @@ class Docker extends Base {
 
     activate(dockId, notify) {
         // docker, window two way notify
-        const self = this;
+        const me = this;
         this.node.querySelectorAll('.azSortableItem').forEach(el => {
             if (el.getAttribute('az-dock-id') !== dockId) {
                 const otherDockId = el.getAttribute('az-dock-id');
-                self.inactivate(otherDockId);
+                me.inactivate(otherDockId);
             }
         });
 

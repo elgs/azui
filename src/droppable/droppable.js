@@ -7,14 +7,15 @@ import {
 } from '../utilities/utilities.js';
 
 
-azui.Droppable = function (el, options) {
+azui.Droppable = function (el, options, init = true) {
     // return new Droppable(el, options);
-    return azObj(Droppable, el, options);
+    return azObj(Droppable, el, options, init);
 };
 
 class Droppable extends Base {
-    constructor(el, options) {
-        super(el);
+    // constructor(el, options) {
+    // super(el);
+    azInit(options) {
         const settings = Object.assign({
             // key: '',
             // source_all_in: function (e) {},

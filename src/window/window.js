@@ -11,14 +11,12 @@ import {
     siblings
 } from '../utilities/utilities.js';
 
-azui.Window = function (el, options) {
-    // return new Window(el, options);
-    return azObj(Window, el, options);
+azui.Window = function (el, options, init = true) {
+    return azObj(Window, el, options, init);
 };
 
 class Window extends Base {
-    constructor(el, options) {
-        super(el);
+    azInit(options) {
         const settings = Object.assign({
             width: 400,
             height: 300,
@@ -27,7 +25,7 @@ class Window extends Base {
             title: 'Arizona',
         }, options);
 
-        const self = this;
+        const me = this;
         const node = this.node;
         this.settings = settings;
 
@@ -47,18 +45,18 @@ class Window extends Base {
             const dockerElem = dockers[0];
             // const dockerId = dockerElem.getAttribute('az-docker-id');
             // this.docker = getObject(dockerId);
-            this.docker = azui.Docker(dockerElem);
+            this.docker = azui.Docker(dockerElem, null, false);
         }
 
         this.headerIcons = {};
 
         const initHeader = function () {
-            addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', self.slideup);
-            addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', self.slidedown);
-            addHeaderIcon('minimize', icons.svgWindowMin, 'Minimize', false, 'right', self.minimize);
-            addHeaderIcon('restore', icons.svgWindowNormal, 'Restore', true, 'right', self.restore);
-            addHeaderIcon('maximize', icons.svgWindowMax, 'Maximize', false, 'right', self.maximize);
-            addHeaderIcon('close', icons.svgClose, 'Close', false, 'right', self.close);
+            addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', me.slideup);
+            addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', me.slidedown);
+            addHeaderIcon('minimize', icons.svgWindowMin, 'Minimize', false, 'right', me.minimize);
+            addHeaderIcon('restore', icons.svgWindowNormal, 'Restore', true, 'right', me.restore);
+            addHeaderIcon('maximize', icons.svgWindowMax, 'Maximize', false, 'right', me.maximize);
+            addHeaderIcon('close', icons.svgClose, 'Close', false, 'right', me.close);
 
             // settings.extIcons.map(icon => {
             //     addHeaderIcon(icon.key, icon.icon, icon.toolTip, icon.hidden, icon.position, icon.callback);
@@ -82,20 +80,20 @@ class Window extends Base {
             iconSpan.appendChild(parseDOMElement(icon)[0]);
             iconSpan.addEventListener('click', function (event) {
                 if (callback) {
-                    callback.call(self, true);
+                    callback.call(me, true);
                 }
             });
-            self.headerIcons[key] = iconSpan;
+            me.headerIcons[key] = iconSpan;
             header.querySelector('.' + position).appendChild(iconSpan);
         };
         // const removeHeaderIcon = function (key) {
-        //     remove(self.headerIcons[key]);
+        //     remove(me.headerIcons[key]);
         // };
         // const showHeaderIcon = function (key) {
-        //     self.headerIcons[key].style.display = 'inline-block';
+        //     me.headerIcons[key].style.display = 'inline-block';
         // };
         // const hideHeaderIcon = function (key) {
-        //     self.headerIcons[key].style.display = 'none';
+        //     me.headerIcons[key].style.display = 'none';
         // };
 
         const content = document.createElement('div');
@@ -119,7 +117,7 @@ class Window extends Base {
         node.insertBefore(header, node.firstChild);
 
         const mouseDownTouchStartEventListener = function (event) {
-            self.activate(true);
+            me.activate(true);
         };
         node.addEventListener('mousedown', mouseDownTouchStartEventListener);
         node.addEventListener('touchstart', mouseDownTouchStartEventListener);
@@ -165,69 +163,69 @@ class Window extends Base {
                 if (!matches(event.target, 'div.azWindowHeader')) {
                     return;
                 }
-                const state = self.docked.getAttribute('state');
+                const state = me.docked.getAttribute('state');
                 if (state === 'normal') {
-                    self.maximize();
+                    me.maximize();
                 } else {
-                    self.restore();
+                    me.restore();
                 }
             }
         });
 
-        node.style['left'] = self.docker.x + 'px';
-        node.style['top'] = self.docker.y + 'px';
+        node.style['left'] = me.docker.x + 'px';
+        node.style['top'] = me.docker.y + 'px';
         node.style['height'] = settings.height + 'px';
         node.style['width'] = settings.width + 'px';
-        node.style['z-index'] = self.docker.z;
+        node.style['z-index'] = me.docker.z;
         node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
-        self.docker.x += settings.headerHeight;
-        self.docker.y += settings.headerHeight;
+        me.docker.x += settings.headerHeight;
+        me.docker.y += settings.headerHeight;
 
-        this.docked = self.docker.dock(node, settings.icon, settings.title);
+        this.docked = me.docker.dock(node, settings.icon, settings.title);
         this.dockId = node.getAttribute('az-dock-ref');
         // console.log(this.dockId);
 
         const cm = azui.ContextMenu(header, {
-            items: self.docker.getContextMenuItems.call(self.docker, self.dockId),
+            items: me.docker.getContextMenuItems.call(me.docker, me.dockId),
         });
 
         node.addEventListener('activated', e => {
-            self.activate(false);
+            me.activate(false);
         });
         node.addEventListener('inactivated', e => {
-            self.inactivate(false);
+            me.inactivate(false);
         });
         node.addEventListener('undocked', e => {
-            self.close(false);
+            me.close(false);
         });
 
         node.addEventListener('minimized', e => {});
         node.addEventListener('maximized', e => {
-            self.headerIcons['slidedown'].style.display = 'none';
-            self.headerIcons['slideup'].style.display = 'none';
-            self.headerIcons['maximize'].style.display = 'none';
-            self.headerIcons['minimize'].style.display = 'inline-block';
-            self.headerIcons['restore'].style.display = 'inline-block';
+            me.headerIcons['slidedown'].style.display = 'none';
+            me.headerIcons['slideup'].style.display = 'none';
+            me.headerIcons['maximize'].style.display = 'none';
+            me.headerIcons['minimize'].style.display = 'inline-block';
+            me.headerIcons['restore'].style.display = 'inline-block';
         });
         node.addEventListener('normalized', e => {
-            self.headerIcons['slidedown'].style.display = 'none';
-            self.headerIcons['slideup'].style.display = 'inline-block';
-            self.headerIcons['maximize'].style.display = 'inline-block';
-            self.headerIcons['minimize'].style.display = 'inline-block';
-            self.headerIcons['restore'].style.display = 'none';
+            me.headerIcons['slidedown'].style.display = 'none';
+            me.headerIcons['slideup'].style.display = 'inline-block';
+            me.headerIcons['maximize'].style.display = 'inline-block';
+            me.headerIcons['minimize'].style.display = 'inline-block';
+            me.headerIcons['restore'].style.display = 'none';
         });
         node.addEventListener('slidup', e => {
-            self.headerIcons['slideup'].style.display = 'none';
-            self.headerIcons['slidedown'].style.display = 'inline-block';
-            self.node.style.transition = 'all .25s ease-in';
-            self.node.style.height = self.settings.headerHeight + 'px';
+            me.headerIcons['slideup'].style.display = 'none';
+            me.headerIcons['slidedown'].style.display = 'inline-block';
+            me.node.style.transition = 'all .25s ease-in';
+            me.node.style.height = me.settings.headerHeight + 'px';
             setTimeout(() => {
-                self.node.style.transition = '';
+                me.node.style.transition = '';
             }, 250);
         });
         node.addEventListener('sliddown', e => {
-            self.headerIcons['slideup'].style.display = 'inline-block';
-            self.headerIcons['slidedown'].style.display = 'none';
+            me.headerIcons['slideup'].style.display = 'inline-block';
+            me.headerIcons['slidedown'].style.display = 'none';
         });
     }
 
@@ -242,8 +240,8 @@ class Window extends Base {
 
     activate(notify) {
         // two way notification
-        const self = this;
-        siblings(self.node, '.azWindow').forEach(el => {
+        const me = this;
+        siblings(me.node, '.azWindow').forEach(el => {
             el.classList.remove('active');
             el.classList.add('inactive');
         });
@@ -251,7 +249,7 @@ class Window extends Base {
         this.node.classList.remove('inactive');
         this.node.classList.add('active');
 
-        self.node.style['z-index'] = ++self.docker.z;
+        me.node.style['z-index'] = ++me.docker.z;
 
         if (notify) {
             this.docker.activate(this.dockId, false);
@@ -269,7 +267,7 @@ class Window extends Base {
 
     close(notify) {
         // two way notification
-        const self = this;
+        const me = this;
         this.children().forEach(child => {
             child.docker.undock(child.dockId, true);
         });

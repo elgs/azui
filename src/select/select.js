@@ -7,14 +7,15 @@ import {
     matches
 } from '../utilities/utilities.js';
 
-azui.Select = function (el, options) {
+azui.Select = function (el, options, init = true) {
     // return new Select(el, options);
-    return azObj(Select, el, options);
+    return azObj(Select, el, options, init);
 };
 
 class Select extends Base {
-    constructor(el, options) {
-        super(el);
+    // constructor(el, options) {
+    // super(el);
+    azInit(options) {
         const settings = Object.assign({
             items: []
         }, options);
@@ -122,10 +123,10 @@ class Select extends Base {
             document.addEventListener('touchstart', offDropdown);
             document.addEventListener('keyup', navigateDropdown);
 
-            const selfBcr = node.getBoundingClientRect();
-            menu.style['left'] = selfBcr.left;
-            menu.style['top'] = selfBcr.bottom;
-            menu.style['width'] = selfBcr.width;
+            const meBcr = node.getBoundingClientRect();
+            menu.style['left'] = meBcr.left;
+            menu.style['top'] = meBcr.bottom;
+            menu.style['width'] = meBcr.width;
             menu.style['display'] = 'block';
 
             e.stopPropagation();
