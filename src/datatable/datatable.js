@@ -12,19 +12,17 @@ import {
     parseDOMElement,
     setOuterWidth,
     setWidth,
-    textWidth
+    textWidth,
+    empty
 } from '../utilities/utilities.js';
 
 
 azui.DataTable = function (el, options, init = true) {
-    // return new DataTable(el, options);
     return azObj(DataTable, el, options, init);
 };
 
 class DataTable extends Base {
 
-    // constructor(el, options) {
-    // super(el);
     azInit(options) {
         const settings = Object.assign({
             pageNumber: 1,
@@ -36,6 +34,8 @@ class DataTable extends Base {
 
         const me = this;
         const node = this.node;
+
+        empty(node);
 
         node.classList.add('azDataTable');
 

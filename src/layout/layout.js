@@ -9,13 +9,10 @@ import {
 } from '../utilities/utilities.js';
 
 azui.Layout = function (el, options, init = true) {
-    // return new Layout(el, options);
     return azObj(Layout, el, options, init);
 };
 
 class Layout extends Base {
-    // constructor(el, options) {
-    // super(el);
     azInit(options) {
         const settings = Object.assign({
             north: '.azLayoutNorth',

@@ -8,7 +8,8 @@ import {
     matches,
     parseDOMElement,
     remove,
-    siblings
+    siblings,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 azui.Window = function (el, options, init = true) {
@@ -119,8 +120,11 @@ class Window extends Base {
         const mouseDownTouchStartEventListener = function (event) {
             me.activate(true);
         };
-        node.addEventListener('mousedown', mouseDownTouchStartEventListener);
-        node.addEventListener('touchstart', mouseDownTouchStartEventListener);
+        me.replaceEventListener('mousedown', 'mousedown', mouseDownTouchStartEventListener);
+
+        if (isTouchDevice()) {
+            me.replaceEventListener('touchstart', 'touchstart', mouseDownTouchStartEventListener);
+        }
 
         let pb;
 
@@ -189,32 +193,32 @@ class Window extends Base {
             items: me.docker.getContextMenuItems.call(me.docker, me.dockId),
         });
 
-        node.addEventListener('activated', e => {
+        me.replaceEventListener('activated', 'activated', e => {
             me.activate(false);
         });
-        node.addEventListener('inactivated', e => {
+        me.replaceEventListener('inactivated', 'inactivated', e => {
             me.inactivate(false);
         });
-        node.addEventListener('undocked', e => {
+        me.replaceEventListener('undocked', 'undocked', e => {
             me.close(false);
         });
 
-        node.addEventListener('minimized', e => {});
-        node.addEventListener('maximized', e => {
+        me.replaceEventListener('minimized', 'minimized', e => {});
+        me.replaceEventListener('maximized', 'maximized', e => {
             me.headerIcons['slidedown'].style.display = 'none';
             me.headerIcons['slideup'].style.display = 'none';
             me.headerIcons['maximize'].style.display = 'none';
             me.headerIcons['minimize'].style.display = 'inline-block';
             me.headerIcons['restore'].style.display = 'inline-block';
         });
-        node.addEventListener('normalized', e => {
+        me.replaceEventListener('normalized', 'normalized', e => {
             me.headerIcons['slidedown'].style.display = 'none';
             me.headerIcons['slideup'].style.display = 'inline-block';
             me.headerIcons['maximize'].style.display = 'inline-block';
             me.headerIcons['minimize'].style.display = 'inline-block';
             me.headerIcons['restore'].style.display = 'none';
         });
-        node.addEventListener('slidup', e => {
+        me.replaceEventListener('slidup', 'slidup', e => {
             me.headerIcons['slideup'].style.display = 'none';
             me.headerIcons['slidedown'].style.display = 'inline-block';
             me.node.style.transition = 'all .25s ease-in';
@@ -223,7 +227,7 @@ class Window extends Base {
                 me.node.style.transition = '';
             }, 250);
         });
-        node.addEventListener('sliddown', e => {
+        me.replaceEventListener('sliddown', 'sliddown', e => {
             me.headerIcons['slideup'].style.display = 'inline-block';
             me.headerIcons['slidedown'].style.display = 'none';
         });

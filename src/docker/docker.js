@@ -11,13 +11,10 @@ import {
 } from '../utilities/utilities.js';
 
 azui.Docker = function (el, options, init = true) {
-    // return new Docker(el, options);
     return azObj(Docker, el, options, init);
 };
 
 class Docker extends Base {
-    // constructor(el, options) {
-    // super(el);
     azInit(options) {
         const settings = Object.assign({
             // height: 30,

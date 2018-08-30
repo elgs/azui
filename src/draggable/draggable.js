@@ -310,16 +310,10 @@ class Draggable extends Base {
             me.dropTargets = [...document.querySelectorAll('.azDropTarget')];
         };
 
-        me.resetEventListeners = () => {
-            if (isTouchDevice()) {
-                node.removeEventListener('touchstart', onmousedown);
-                node.addEventListener('touchstart', onmousedown);
-            }
-            node.removeEventListener('mousedown', onmousedown);
-            node.addEventListener('mousedown', onmousedown);
-        };
-
-        me.resetEventListeners();
+        if (isTouchDevice()) {
+            me.replaceEventListener('touchstart', 'touchstart', onmousedown);
+        }
+        me.replaceEventListener('mousedown', 'mousedown', onmousedown);
     }
 
 

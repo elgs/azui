@@ -76,6 +76,7 @@ export class Base {
     }
 
     replaceEventListener(eventId, eventName, eventHandler) {
+        eventName = eventName || eventId;
         const me = this;
         const oldHandler = me.eventListeners[eventId];
         me.node.removeEventListener(eventName, oldHandler);

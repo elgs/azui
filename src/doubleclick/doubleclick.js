@@ -23,7 +23,6 @@ class DoubleClick extends Base {
             }
         }, options);
 
-        const node = this.node;
         if (isTouchDevice()) {
             let touchtime = 0;
             me.replaceEventListener('touchstart', 'touchstart', function (event) {
@@ -38,10 +37,9 @@ class DoubleClick extends Base {
                     }
                 }
             });
-        } else {
-            me.replaceEventListener('dblclick', 'dblclick', function (event) {
-                settings.onDoubleClick.call(this, event);
-            });
         }
+        me.replaceEventListener('dblclick', 'dblclick', function (event) {
+            settings.onDoubleClick.call(this, event);
+        });
     }
 };

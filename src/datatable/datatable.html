@@ -49,7 +49,7 @@
         ];
 
         const elem = document.querySelector('#table0');
-        azui.DataTable(elem, {
+        const config = {
             columns: [function () {
                 return {
                     text: '#',
@@ -103,7 +103,9 @@
             },
             pageSize: 15,
             editor: 'cell',
-        });
+        };
+        azui.DataTable(elem, config);
+        // azui.DataTable(elem, config);
     </script>
 </body>
 

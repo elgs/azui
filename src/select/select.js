@@ -4,7 +4,8 @@ import {
 } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import {
-    matches
+    matches,
+    empty
 } from '../utilities/utilities.js';
 
 azui.Select = function (el, options, init = true) {
@@ -20,7 +21,11 @@ class Select extends Base {
             items: []
         }, options);
 
-        const node = this.node;
+        const me = this;
+        const node = me.node;
+
+        empty(node);
+
         node.classList.add('azSelect');
 
         const onDropdown = function (e) {

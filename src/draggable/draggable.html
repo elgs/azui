@@ -66,6 +66,11 @@
         azui.Draggable('#c', {
             containment: '#p',
             escapable: true,
+            create: function (e) {
+                if (e.type === 'touchstart') {
+                    e.preventDefault();
+                }
+            },
         });
         azui.Draggable('#f', {
             create: function (e) {

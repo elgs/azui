@@ -8,18 +8,16 @@ import {
     getWidth,
     isOutside,
     normalizeIcon,
-    parseDOMElement
+    parseDOMElement,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 
 azui.ContextMenu = function (el, options, init = true) {
-    // return new ContextMenu(el, options);
     return azObj(ContextMenu, el, options, init);
 };
 
 class ContextMenu extends Base {
-    // constructor(el, options) {
-    // super(el, options);
     azInit(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},
@@ -115,7 +113,9 @@ class ContextMenu extends Base {
             menu.style['visibility'] = 'visible';
 
             document.addEventListener('mousemove', mousePositionTracker);
-            document.addEventListener('touchstart', blurFocusDetector);
+            if (isTouchDevice()) {
+                document.addEventListener('touchstart', blurFocusDetector);
+            }
 
             const focusDetector = parseDOMElement('<input class="azMenuFocusDetector" type="checkbox">')[0];
             focusDetector.style['position'] = 'absolute';

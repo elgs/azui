@@ -19,21 +19,22 @@
 <body>
     <div id="div0"></div>
     <div id="div1"></div>
+    <div id="div2"></div>
     <script>
         const elems = document.querySelectorAll('div');
         elems.forEach(el => {
             azui.RightClick(el, {
                 onRightClick: function (e) {
                     console.log(e);
-                    alert(e);
+                    alert(e.type);
                 },
                 onTouchStart: function (e) {
                     console.log(e);
-                    alert(e);
+                    alert(e.type);
                 },
                 onTouchEnd: function (e) {
                     console.log(e);
-                    alert(e);
+                    alert(e.type);
                 },
             });
         });

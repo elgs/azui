@@ -393,3 +393,9 @@ export const resolveDOM = dom => {
         return resolveDOM(dom());
     }
 };
+
+export const empty = box => {
+    while (box.lastChild) {
+        box.removeChild(box.lastChild);
+    }
+};

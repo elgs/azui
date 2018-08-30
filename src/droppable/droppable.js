@@ -35,7 +35,8 @@ class Droppable extends Base {
             interestedDropEvents: azui.constants.dndEventConsts.all,
         }, options);
 
-        const node = this.node;
+        const me = this;
+        const node = me.node;
 
         node.setAttribute('az-interested-drop-events', settings.interestedDropEvents);
         node.classList.add('azDropTarget');
@@ -44,17 +45,17 @@ class Droppable extends Base {
             const stateIn = state + '_in';
             const stateOut = state + '_out';
             if (settings[stateIn]) {
-                node.addEventListener(stateIn, settings[stateIn]);
+                me.replaceEventListener(stateIn, stateIn, settings[stateIn]);
             }
             if (settings[stateOut]) {
-                node.addEventListener(stateOut, settings[stateOut]);
+                me.replaceEventListener(stateOut, stateOut, settings[stateOut]);
             }
         });
         if (settings.dragged) {
-            node.addEventListener('dragged', settings.dragged);
+            me.replaceEventListener('dragged', 'dragged', settings.dragged);
         }
         if (settings.dropped) {
-            node.addEventListener('dropped', settings.dropped);
+            me.replaceEventListener('dropped', 'dropped', settings.dropped);
         }
     }
 };
