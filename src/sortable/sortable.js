@@ -17,7 +17,7 @@ import {
     remove,
 } from '../utilities/utilities.js';
 
-azui.Sortable = function (el, options, init = true) {
+azui.Sortable = function (el, options, init) {
     // return new Sortable(el, options);
     return azObj(Sortable, el, options, init);
 };
@@ -180,16 +180,18 @@ class Sortable extends Base {
                         ph = phs[0];
                     }
                     target.appendChild(ph);
-                    const draggable = azui.Draggable(source);
+                    // const draggable = azui.Draggable(source);
                     // draggable.setContainment(target);
-                    me.add(source);
+                    // me.add(source);
                     // draggable.resetEventListeners();
-                    draggable.escapeX = false;
-                    draggable.escapeY = false;
+                    // draggable.escapeX = false;
+                    // draggable.escapeY = false;
+
+                    // WORKING HERE NOW...
                 },
                 pointer_out: function (e) {
-                    console.log(selected);
-                    const draggable = azui.Draggable(selected);
+                    // console.log(selected);
+                    const draggable = azui.Draggable(selected, null, false);
                     draggable.escapeX = true;
                     draggable.escapeY = true;
                 },

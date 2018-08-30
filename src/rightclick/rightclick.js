@@ -6,7 +6,7 @@ import {
     isTouchDevice
 } from '../utilities/utilities.js';
 
-azui.RightClick = function (el, options, init = true) {
+azui.RightClick = function (el, options, init) {
     return azObj(RightClick, el, options, init);
 };
 

@@ -12,7 +12,7 @@ import {
     isTouchDevice
 } from '../utilities/utilities.js';
 
-azui.Draggable = function (el, options, init = true) {
+azui.Draggable = function (el, options, init) {
     // return new Draggable(el, options);
     return azObj(Draggable, el, options, init);
 };

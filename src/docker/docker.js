@@ -10,7 +10,7 @@ import {
     remove
 } from '../utilities/utilities.js';
 
-azui.Docker = function (el, options, init = true) {
+azui.Docker = function (el, options, init) {
     return azObj(Docker, el, options, init);
 };
 

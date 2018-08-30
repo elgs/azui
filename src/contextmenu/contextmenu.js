@@ -13,7 +13,7 @@ import {
 } from '../utilities/utilities.js';
 
 
-azui.ContextMenu = function (el, options, init = true) {
+azui.ContextMenu = function (el, options, init) {
     return azObj(ContextMenu, el, options, init);
 };
 

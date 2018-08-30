@@ -8,7 +8,7 @@ import {
     resolveDOM
 } from '../utilities/utilities.js';
 
-azui.Layout = function (el, options, init = true) {
+azui.Layout = function (el, options, init) {
     return azObj(Layout, el, options, init);
 };
 

@@ -16,7 +16,7 @@ import {
     siblings
 } from '../utilities/utilities.js';
 
-azui.Tabs = function (el, options, init = true) {
+azui.Tabs = function (el, options, init) {
     return azObj(Tabs, el, options, init);
 };
 

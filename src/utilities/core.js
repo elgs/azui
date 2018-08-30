@@ -50,7 +50,7 @@ export const normalizeElement = function (el) {
     }
 };
 
-export const azObj = function (cls, el, options, init = true) {
+export const azObj = function (cls, el, options, init) {
     const node = normalizeElement(el);
     let objId = node.getAttribute('az-obj-id-' + cls.name);
     if (objId) {
@@ -64,7 +64,7 @@ export const azObj = function (cls, el, options, init = true) {
     obj.node = node;
     objId = randGen(8);
     obj.node.setAttribute('az-obj-id-' + cls.name, objId);
-    init && obj.azInit(options);
+    obj.azInit(options);
     azui.objCache[objId] = obj;
     return obj;
 };
@@ -76,7 +76,6 @@ export class Base {
     }
 
     replaceEventListener(eventId, eventName, eventHandler) {
-        eventName = eventName || eventId;
         const me = this;
         const oldHandler = me.eventListeners[eventId];
         me.node.removeEventListener(eventName, oldHandler);

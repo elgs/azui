@@ -7,7 +7,7 @@ import {
     parseDOMElement
 } from '../utilities/utilities.js';
 
-azui.Pager = function (el, options, init = true) {
+azui.Pager = function (el, options, init) {
     return azObj(Pager, el, options, init);
 };
 

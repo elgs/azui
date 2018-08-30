@@ -7,7 +7,7 @@ import {
 } from '../utilities/utilities.js';
 
 
-azui.Droppable = function (el, options, init = true) {
+azui.Droppable = function (el, options, init) {
     // return new Droppable(el, options);
     return azObj(Droppable, el, options, init);
 };

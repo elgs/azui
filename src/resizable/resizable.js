@@ -14,7 +14,7 @@ import {
     setWidth
 } from '../utilities/utilities.js';
 
-azui.Resizable = function (el, options, init = true) {
+azui.Resizable = function (el, options, init) {
     return azObj(Resizable, el, options, init);
 };
 

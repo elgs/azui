@@ -6,7 +6,7 @@ import {
     isTouchDevice
 } from '../utilities/utilities.js';
 
-azui.DoubleClick = function (el, options, init = true) {
+azui.DoubleClick = function (el, options, init) {
     // return new DoubleClick(el, options);
     return azObj(DoubleClick, el, options, init);
 };

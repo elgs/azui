@@ -8,7 +8,7 @@ import {
     empty
 } from '../utilities/utilities.js';
 
-azui.Select = function (el, options, init = true) {
+azui.Select = function (el, options, init) {
     // return new Select(el, options);
     return azObj(Select, el, options, init);
 };

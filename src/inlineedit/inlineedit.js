@@ -8,7 +8,7 @@ import {
     remove
 } from '../utilities/utilities.js';
 
-azui.InlineEdit = function (el, options, init = true) {
+azui.InlineEdit = function (el, options, init) {
     // return new InlineEdit(el, options);
     return azObj(InlineEdit, el, options, init);
 };

@@ -12,7 +12,7 @@ import {
     isTouchDevice
 } from '../utilities/utilities.js';
 
-azui.Window = function (el, options, init = true) {
+azui.Window = function (el, options, init) {
     return azObj(Window, el, options, init);
 };
 
@@ -41,7 +41,7 @@ class Window extends Base {
         if (dockers.length === 0) {
             const dockerElem = document.createElement('div');
             node.parentNode.appendChild(dockerElem);
-            this.docker = azui.Docker(dockerElem);
+            this.docker = azui.Docker(dockerElem, null, true);
         } else {
             const dockerElem = dockers[0];
             // const dockerId = dockerElem.getAttribute('az-docker-id');

@@ -17,7 +17,7 @@ import {
 } from '../utilities/utilities.js';
 
 
-azui.DataTable = function (el, options, init = true) {
+azui.DataTable = function (el, options, init) {
     return azObj(DataTable, el, options, init);
 };
 
