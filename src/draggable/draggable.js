@@ -13,13 +13,10 @@ import {
 } from '../utilities/utilities.js';
 
 azui.Draggable = function (el, options, init) {
-    // return new Draggable(el, options);
     return azObj(Draggable, el, options, init);
 };
 
 class Draggable extends Base {
-    // constructor(el, options) {
-    //     super(el);
     azInit(options) {
         const me = this;
         const settings = Object.assign({
@@ -62,8 +59,8 @@ class Draggable extends Base {
 
         me.dropTargets = null;
         me.selected = null;
-        let mouseX0 = 0;
-        let mouseY0 = 0;
+        me.mouseX0 = 0;
+        me.mouseY0 = 0;
         me.containerBoundaries = null;
         me.mouseX = 0;
         me.mouseY = 0;
@@ -152,8 +149,8 @@ class Draggable extends Base {
             }
             me.mouseX = e.pageX || e.touches[0].pageX;
             me.mouseY = e.pageY || e.touches[0].pageY;
-            const dx = me.mouseX - mouseX0;
-            const dy = me.mouseY - mouseY0;
+            const dx = me.mouseX - me.mouseX0;
+            const dy = me.mouseY - me.mouseY0;
             // console.log(dx, dy);
             if (!resisted && Math.abs(dx) < settings.resist && Math.abs(dy) < settings.resist) {
                 return;
@@ -193,7 +190,8 @@ class Draggable extends Base {
                                         source: node,
                                         target: dt,
                                         previousState: oldPs,
-                                        state: ps
+                                        state: ps,
+                                        originalEvent: e,
                                     }
                                 }));
                             }
@@ -279,8 +277,8 @@ class Draggable extends Base {
             }
             me.selected = node;
 
-            me.mouseX = mouseX0 = e.pageX || e.touches[0].pageX;
-            me.mouseY = mouseY0 = e.pageY || e.touches[0].pageY;
+            me.mouseX = me.mouseX0 = e.pageX || e.touches[0].pageX;
+            me.mouseY = me.mouseY0 = e.pageY || e.touches[0].pageY;
             if (settings.handle) {
                 let handle = settings.handle;
                 if (typeof settings.handle === 'string') {
@@ -288,7 +286,7 @@ class Draggable extends Base {
                 }
                 if (handle) {
                     const hb = handle.getBoundingClientRect();
-                    if (isOutside(mouseX0, mouseY0, hb)) {
+                    if (isOutside(me.mouseX0, me.mouseY0, hb)) {
                         return;
                     }
                 }

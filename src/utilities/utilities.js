@@ -348,6 +348,25 @@ export const diffPosition = function (el0, el1) {
     return ret;
 };
 
+export const diffPositionInnerBorder = function (el0, el1) {
+    const el0Styles = getComputedStyle(el0);
+    const el0BorderTop = parseInt(el0Styles["border-top-width"]);
+    const el0BorderLeft = parseInt(el0Styles["border-left-width"]);
+
+    const el1pStyles = getComputedStyle(el1);
+    const el1BorderTop = parseInt(el1pStyles["border-top-width"]);
+    const el1BorderLeft = parseInt(el1pStyles["border-left-width"]);
+
+    const bcr0 = el0.getBoundingClientRect();
+    const bcr1 = el1.getBoundingClientRect();
+
+    const ret = {
+        top: bcr0.top + el0BorderTop - bcr1.top - el1BorderTop,
+        left: bcr0.left + el0BorderLeft - bcr1.left - el1BorderLeft,
+    };
+    return ret;
+};
+
 export const remove = function (el) {
     el.parentNode.removeChild(el);
 };

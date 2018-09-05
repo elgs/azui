@@ -10,27 +10,29 @@ import {
     insertBefore,
     matches,
     position,
+    remove,
     setHeight,
     setWidth,
     siblings,
     swapElement,
-    remove,
+    getDocScrollLeft,
+    getDocScrollTop,
+    diffPositionInnerBorder
 } from '../utilities/utilities.js';
 
 azui.Sortable = function (el, options, init) {
-    // return new Sortable(el, options);
     return azObj(Sortable, el, options, init);
 };
 
 class Sortable extends Base {
     azInit(options) {
-        // super(el);
         const me = this;
         const settings = Object.assign({
             className: 'azSortableItem',
             placeholder: true,
             showPlaceHolder: false,
             escapable: false,
+            align: 'x', // or y
             create: function (event, ui, me) {
                 // console.log('create', ui);
             },
@@ -179,21 +181,35 @@ class Sortable extends Base {
                     if (phs.length > 0) {
                         ph = phs[0];
                     }
-                    target.appendChild(ph);
-                    // const draggable = azui.Draggable(source);
-                    // draggable.setContainment(target);
-                    // me.add(source);
-                    // draggable.resetEventListeners();
-                    // draggable.escapeX = false;
-                    // draggable.escapeY = false;
+                    const ptrEvt = e.detail.originalEvent;
+                    const cursorX = ptrEvt.pageX || ptrEvt.touches[0].pageX;
+                    const cursorY = ptrEvt.pageY || ptrEvt.touches[0].pageY;
 
-                    // WORKING HERE NOW...
+                    source.style.visibility = 'hidden';
+                    me.add(source, cursorX, cursorY);
+
+                    const draggable = azui.Draggable(source);
+
+                    insertAfter(ph, source);
+
+                    const detachedContainer = draggable.detachedContainer;
+                    const diffContainer = diffPositionInnerBorder(detachedContainer.node, me.node);
+
+                    draggable.mouseX0 -= diffContainer.left;
+                    draggable.mouseY0 -= diffContainer.top;
+                    draggable.escapeX = false;
+                    draggable.escapeY = false;
+                    setTimeout(() => {
+                        source.style.visibility = 'visible';
+                    });
+                    selected = source;
                 },
                 pointer_out: function (e) {
                     // console.log(selected);
-                    const draggable = azui.Draggable(selected, null, false);
+                    const draggable = azui.Draggable(selected);
                     draggable.escapeX = true;
                     draggable.escapeY = true;
+                    draggable.detachedContainer = me;
                 },
             });
         }
@@ -258,17 +274,54 @@ class Sortable extends Base {
             //     console.log(e)
             // },
         };
-        const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className));
+        const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className + ':not(.az-placeholder)'));
         items.forEach(item => {
             azui.Draggable(item, this.dragConfig);
             azui.Droppable(item, this.dropConfig);
         });
     }
 
-    add(elem) {
-        this.node.appendChild(elem);
+    add(elem, cursorX = Number.MAX_SAFE_INTEGER, cursorY = Number.MAX_SAFE_INTEGER) {
+        const me = this;
+        const node = me.node;
+        const settings = me.settings;
+
+        const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className + ':not(.az-placeholder'));
+
+        let nearestItem = null;
+        let direction = true;
+        let distance = Number.MAX_SAFE_INTEGER;
+        items.map(item => {
+            const bcr = item.getBoundingClientRect();
+            const x = bcr.left + getDocScrollLeft() + bcr.width / 2;
+            const y = bcr.top + getDocScrollTop() + bcr.height / 2;
+            const dx = cursorX - x;
+            const dy = cursorY - y;
+            const d = dx * dx + dy * dy;
+            if (d < distance) {
+                distance = d;
+                nearestItem = item;
+
+                if (settings.align === 'x') {
+                    direction = dx >= 0;
+                } else if (settings.align === 'y') {
+                    direction = dy >= 0;
+                }
+            }
+        });
+
+        if (!nearestItem) {
+            this.node.appendChild(elem);
+        } else {
+            if (direction) {
+                insertAfter(elem, nearestItem);
+            } else {
+                insertBefore(elem, nearestItem);
+            }
+        }
+
         elem.classList.add(this.settings.className);
-        azui.Draggable(elem, this.dragConfig);
-        azui.Droppable(elem, this.dropConfig);
+        azui.Draggable(elem, this.dragConfig, false);
+        azui.Droppable(elem, this.dropConfig, false);
     }
 };

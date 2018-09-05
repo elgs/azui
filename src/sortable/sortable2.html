@@ -91,10 +91,10 @@
     </div>
     <br>
     <div class="azSortable0">
-        <div class="azSortableItem">0</div>
-        <div class="azSortableItem">1</div>
+        <div class="azSortableItem">a</div>
+        <div class="azSortableItem">b</div>
     </div>
-    <br>
+    <!-- <br>
     <div class="azSortable1">
         <div class="azSortableItem">0</div>
         <div class="azSortableItem">1</div>
@@ -107,15 +107,16 @@
     <div class="azSortable1">
         <div class="azSortableItem">0</div>
         <div class="azSortableItem">1</div>
-    </div>
+    </div> -->
     <script>
         // $('<div/>').azDebugDiv();
         const elem0 = document.querySelectorAll('.azSortable0');
         elem0.forEach(el => {
             azui.Sortable(el, {
                 placeholder: true,
-                showPlaceHolder: true,
+                showPlaceHolder: false,
                 escapable: true,
+                alight: 'x',
                 create: function (e, target) {
                     e.preventDefault();
                 }
@@ -127,6 +128,7 @@
             azui.Sortable(el, {
                 placeholder: false,
                 escapable: true,
+                align: 'y',
                 create: function (e, target) {
                     e.preventDefault();
                 }
