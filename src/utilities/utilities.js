@@ -291,7 +291,14 @@ export const setOuterHeight = function (el, h) {
 };
 
 export const insertAfter = function (newNode, referenceNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    if (referenceNode.nextSibling) {
+        console.log(1);
+        console.log(referenceNode, referenceNode.nextSibling);
+        referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    } else {
+        console.log(2);
+        referenceNode.parentNode.appendChild(newNode);
+    }
 };
 
 export const insertBefore = function (newNode, referenceNode) {
