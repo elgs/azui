@@ -106,13 +106,10 @@ export const getPositionState = function (source, target, event) {
 
 export const swapElement = function (e0, e1) {
     const temp = document.createElement('div');
-    e0.parentNode.insertBefore(temp, e0.nextSibling);
-    // $e0.before($temp);
-    e1.parentNode.insertBefore(e0, e1.nextSibling);
-    // $e1.before($e0);
-    insertAfter(e1, temp);
-    // temp.after($e1)
-    temp.parentNode.removeChild(temp);
+    insertBefore(temp, e0);
+    insertBefore(e0, e1);
+    insertBefore(e1, temp);
+    remove(temp);
 };
 
 export const isTouchDevice = function () {
@@ -292,11 +289,9 @@ export const setOuterHeight = function (el, h) {
 
 export const insertAfter = function (newNode, referenceNode) {
     if (referenceNode.nextSibling) {
-        console.log(1);
-        console.log(referenceNode, referenceNode.nextSibling);
+        // console.log(referenceNode, referenceNode.nextSibling);
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     } else {
-        console.log(2);
         referenceNode.parentNode.appendChild(newNode);
     }
 };
@@ -378,15 +373,22 @@ export const remove = function (el) {
     el.parentNode.removeChild(el);
 };
 
+export const resolveFunction = function (f) {
+    if (typeof f === 'function') {
+        return resolveFunction(f());
+    } else {
+        return f;
+    }
+};
+
 export const normalizeIcon = function (i) {
+    i = resolveFunction(i);
     if (typeof i === 'string') {
         return parseDOMElement(`<span>${i}</span>`)[0];
     } else if (typeof i === 'object') {
         const sp = document.createElement('span');
         sp.appendChild(i);
         return sp;
-    } else if (typeof i === 'function') {
-        return normalizeIcon(i());
     }
 };
 
@@ -411,12 +413,11 @@ export const prevAll = (el, selector) => {
 };
 
 export const resolveDOM = dom => {
+    dom = resolveFunction(dom);
     if (dom instanceof Node) {
         return dom;
     } else if (typeof dom === 'string') {
         return document.querySelector(dom);
-    } else if (typeof dom === 'function') {
-        return resolveDOM(dom());
     }
 };
 

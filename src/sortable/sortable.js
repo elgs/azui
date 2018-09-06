@@ -141,7 +141,7 @@ class Sortable extends Base {
                 selected.classList.remove('azSortableDeny');
                 if (ph) {
                     if (settings.placeholder) {
-                        insertAfter(selected, ph);
+                        insertBefore(selected, ph);
                         remove(ph);
                         target.style.position = 'relative';
                     } else {
@@ -163,6 +163,12 @@ class Sortable extends Base {
             target.style.right = 0;
             target.style.bottom = 0;
 
+            if (draggable.stopHook) {
+                setTimeout(() => {
+                    draggable.stopHook();
+                });
+            }
+
             if (settings.stop(e, data, me) === false) {
                 return false;
             }
@@ -173,10 +179,7 @@ class Sortable extends Base {
                 interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
-                    const {
-                        source,
-                        target
-                    } = e.detail;
+                    const source = e.detail.source;
                     const phs = siblings(source, '.az-placeholder');
                     if (phs.length > 0) {
                         ph = phs[0];
@@ -199,6 +202,14 @@ class Sortable extends Base {
                     draggable.mouseY0 -= diffContainer.top;
                     draggable.escapeX = false;
                     draggable.escapeY = false;
+
+                    // draggable and droppable need to be in the same sortable in order to share the same place holder, improvement?
+                    azui.Droppable(source, me.dropConfig, true);
+
+                    draggable.stopHook = function () {
+                        azui.Draggable(source, me.dragConfig, true);
+                    }
+
                     setTimeout(() => {
                         source.style.visibility = 'visible';
                     });
@@ -209,14 +220,17 @@ class Sortable extends Base {
                     const draggable = azui.Draggable(selected);
                     draggable.escapeX = true;
                     draggable.escapeY = true;
+
                     draggable.detachedContainer = me;
+
+                    draggable.stopHook = null;
                 },
             });
         }
 
         this.dragConfig = {
             containment: node,
-            resist: 10,
+            resist: 5,
             create: onDragCreate,
             start: onDragStart,
             // drag: onDrag,
@@ -321,6 +335,8 @@ class Sortable extends Base {
         }
 
         elem.classList.add(this.settings.className);
+
+        // do nothing if initialized, initialize if not initialized.
         azui.Draggable(elem, this.dragConfig, false);
         azui.Droppable(elem, this.dropConfig, false);
     }
