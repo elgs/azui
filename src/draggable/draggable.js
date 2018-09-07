@@ -279,6 +279,14 @@ class Draggable extends Base {
 
             me.mouseX = me.mouseX0 = e.pageX || e.touches[0].pageX;
             me.mouseY = me.mouseY0 = e.pageY || e.touches[0].pageY;
+
+            const bcr = me.node.getBoundingClientRect();
+            me.originalBpr = {
+                top: bcr.top + getDocScrollTop(),
+                left: bcr.left + getDocScrollLeft(),
+            };
+            // console.log(me.originalBpr);
+
             if (settings.handle) {
                 let handle = settings.handle;
                 if (typeof settings.handle === 'string') {

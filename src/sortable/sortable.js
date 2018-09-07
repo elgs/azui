@@ -3,6 +3,9 @@ import {
     Base
 } from '../utilities/core.js';
 import {
+    diffPositionInnerBorder,
+    getDocScrollLeft,
+    getDocScrollTop,
     getHeight,
     getWidth,
     index,
@@ -14,10 +17,7 @@ import {
     setHeight,
     setWidth,
     siblings,
-    swapElement,
-    getDocScrollLeft,
-    getDocScrollTop,
-    diffPositionInnerBorder
+    swapElement
 } from '../utilities/utilities.js';
 
 azui.Sortable = function (el, options, init) {
@@ -93,8 +93,7 @@ class Sortable extends Base {
                 target.style.bottom = 'auto';
                 setWidth(selected, w);
                 setHeight(selected, h);
-                // selected.after(ph);
-                insertAfter(ph, selected);
+                insertBefore(ph, selected);
             } else {
                 selected.classList.add('azSortableDeny');
             }
@@ -158,10 +157,10 @@ class Sortable extends Base {
                 selected = null;
             }
             // console.log(selected, target, ph);
-            target.style.top = 0;
-            target.style.left = 0;
-            target.style.right = 0;
-            target.style.bottom = 0;
+            target.style.top = '';
+            target.style.left = '';
+            target.style.right = '';
+            target.style.bottom = '';
 
             if (draggable.stopHook) {
                 setTimeout(() => {
@@ -180,6 +179,7 @@ class Sortable extends Base {
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
                     const source = e.detail.source;
+                    selected = source;
                     const phs = siblings(source, '.az-placeholder');
                     if (phs.length > 0) {
                         ph = phs[0];
@@ -193,27 +193,54 @@ class Sortable extends Base {
 
                     const draggable = azui.Draggable(source);
 
-                    insertAfter(ph, source);
+                    if (ph) {
+                        insertBefore(ph, source);
 
-                    const detachedContainer = draggable.detachedContainer;
-                    const diffContainer = diffPositionInnerBorder(detachedContainer.node, me.node);
+                        const detachedContainer = draggable.detachedContainer;
+                        const diffContainer = diffPositionInnerBorder(me.node, detachedContainer.node);
+                        // console.log(diffContainer);
 
-                    draggable.mouseX0 -= diffContainer.left;
-                    draggable.mouseY0 -= diffContainer.top;
+                        draggable.mouseX0 += diffContainer.left;
+                        draggable.mouseY0 += diffContainer.top;
+                        // console.log(draggable.mouseX0, draggable.mouseY0);
+                    } else {
+                        // console.log(draggable.originalBpr);
+                        selected.style.top = '';
+                        selected.style.left = '';
+                        selected.style.right = '';
+                        selected.style.bottom = '';
+
+                        const bcr = selected.getBoundingClientRect();
+                        const bpr = {
+                            top: bcr.top + getDocScrollTop(),
+                            left: bcr.left + getDocScrollLeft(),
+                        };
+
+                        const diffDraggable = {
+                            top: bpr.top - draggable.originalBpr.top,
+                            left: bpr.left - draggable.originalBpr.left,
+                        };
+
+                        draggable.mouseX0 += diffDraggable.left;
+                        draggable.mouseY0 += diffDraggable.top;
+                        draggable.setContainment(me.node);
+                        // console.log(diffDraggable);
+                        // console.log(draggable.mouseX0, draggable.mouseY0);
+                        draggable.originalBpr = bpr;
+                    }
+
                     draggable.escapeX = false;
                     draggable.escapeY = false;
 
-                    // draggable and droppable need to be in the same sortable in order to share the same place holder, improvement?
-                    azui.Droppable(source, me.dropConfig, true);
-
                     draggable.stopHook = function () {
+                        // draggable and droppable need to be in the same sortable in order to share the same place holder, improvement?
+                        azui.Droppable(source, me.dropConfig, true);
                         azui.Draggable(source, me.dragConfig, true);
                     }
 
                     setTimeout(() => {
                         source.style.visibility = 'visible';
                     });
-                    selected = source;
                 },
                 pointer_out: function (e) {
                     // console.log(selected);
@@ -300,7 +327,7 @@ class Sortable extends Base {
         const node = me.node;
         const settings = me.settings;
 
-        const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className + ':not(.az-placeholder'));
+        const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className + ':not(.az-placeholder)'));
 
         let nearestItem = null;
         let direction = true;
@@ -324,6 +351,7 @@ class Sortable extends Base {
             }
         });
 
+        // console.log(nearestItem, direction);
         if (!nearestItem) {
             this.node.appendChild(elem);
         } else {
