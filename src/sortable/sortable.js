@@ -233,6 +233,19 @@ class Sortable extends Base {
                     draggable.escapeY = false;
 
                     draggable.stopHook = function () {
+                        if (ph) {
+                            if (!settings.placeholder) {
+                                ph.classList.remove('azSortableDropBefore');
+                                ph.classList.remove('azSortableDropAfter');
+                                if (index(selected) < index(ph)) {
+                                    insertAfter(selected, ph);
+                                } else {
+                                    insertBefore(selected, ph);
+                                }
+                            }
+                            ph = null;
+                        }
+
                         // draggable and droppable need to be in the same sortable in order to share the same place holder, improvement?
                         azui.Droppable(source, me.dropConfig, true);
                         azui.Draggable(source, me.dragConfig, true);
