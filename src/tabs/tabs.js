@@ -153,32 +153,6 @@ class Tabs extends Base {
 
         tabHeaderContainer.style['height'] = settings.headerHeight + 'px';
 
-        // const leftScroller = parseDOMElement(`<div class='azTabScroller left'>${icons.svgPreviousPage}</div>`)[0];
-        // const rightScroller = parseDOMElement(`<div class='azTabScroller right'>${icons.svgNextPage}</div>`)[0];
-
-        // me.showHideScrollers = () => {
-        //     leftScroller.style.display = tabLabels.scrollLeft <= 0 ? 'none' : 'grid';
-        //     const style = getComputedStyle(tabLabels);
-        //     const width = parseInt(style.width);
-        //     const scrollWidth = tabLabels.scrollWidth;
-        //     // console.log(width, scrollWidth, tabLabels.scrollLeft);
-        //     rightScroller.style.visibility = scrollWidth > width + tabLabels.scrollLeft ? 'visible' : 'hidden';
-        // };
-
-        // leftScroller.addEventListener('click', e => {
-        //     tabLabels.scrollLeft -= 100;
-        //     me.showHideScrollers();
-        //     // console.log(tabLabels.scrollLeft);
-        // });
-        // rightScroller.addEventListener('click', e => {
-        //     tabLabels.scrollLeft += 100;
-        //     me.showHideScrollers();
-        //     // console.log(tabLabels.scrollLeft);
-        // });
-        // tabHeaderContainer.appendChild(leftScroller);
-        // tabHeaderContainer.appendChild(rightScroller);
-        // me.showHideScrollers();
-
         if (settings.draggable) {
             azui.Draggable(node, {
                 handle: '.azTabHeader',
@@ -255,8 +229,8 @@ class Tabs extends Base {
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
         tabContent.style['display'] = "block";
-        newTabs.addTab(tabHeader.cloneNode(true), tabContent, true);
-        remove(tabHeader);
+        newTabs.addTab(tabHeader, tabContent, true);
+        // remove(tabHeader);
 
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
