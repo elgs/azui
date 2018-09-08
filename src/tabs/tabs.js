@@ -148,12 +148,6 @@ class Tabs extends Base {
                 } else {
                     me.activateTab(tabId);
                 }
-            },
-            escape: (e) => {
-                console.log(e);
-            },
-            capture: (e) => {
-                console.log(e);
             }
         });
 
