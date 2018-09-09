@@ -1,5 +1,6 @@
 // 1 800 234 3993
 @import '../utilities/utilities.scss';
+
 .azDataTable {
     &>div.tbody {
         height: 300px;
@@ -8,24 +9,32 @@
         overflow-y: auto;
         border-left: 1px solid darken($color: $main-color, $amount: 10%);
         border-right: 1px solid darken($color: $main-color, $amount: 10%);
+        // border-left: 1px solid red;
+        // border-right: 1px solid red;
         white-space: nowrap;
         box-sizing: border-box;
+
         &>div.tr {
             box-sizing: border-box;
+
             &:nth-child(even) {
                 background-color: $main-color;
             }
+
             &:hover {
                 background-color: darken($color: $main-color, $amount: 10%);
             }
+
             &:active {
                 background-color: darken($color: $main-color, $amount: 20%);
             }
+
             &>div.td {
                 width: 100px; // min-width: 80px;
                 height: 25px;
                 box-sizing: border-box; // padding: 0 0 0 1px;
                 display: inline-block;
+
                 & span {
                     padding: 0 0 0 10px;
                     display: inline-block;
@@ -35,6 +44,7 @@
                     white-space: nowrap;
                     width: 100%;
                     height: 100%;
+
                     &::before {
                         content: "";
                         display: inline-block;
@@ -42,12 +52,14 @@
                         height: 100%;
                     }
                 }
+
                 & .azInlineEditorWrapper {
                     // display: inline-block;
                     box-sizing: border-box;
                     width: 100%;
                     height: 100%;
                     overflow: hidden;
+
                     & input[type=text].azInlineEditor {
                         // font-family: 'Roboto', sans-serif;
                         // font-size: 13px;
@@ -56,13 +68,8 @@
                 }
             }
         }
-        &:first-of-type {
-            border-left: none;
-        }
-        &:last-of-type {
-            border-right: none;
-        }
     }
+
     &>div.thead {
         height: 30px;
         background-color: $main-color;
@@ -71,6 +78,7 @@
         // border-top: 1px solid darken($color: $main-color, $amount: 10%);
         // border-bottom: 1px solid silver;
         white-space: nowrap;
+
         &>div.th {
             height: 100%;
             display: inline-block;
@@ -82,39 +90,50 @@
             border-right: solid 1px darken($color: $main-color, $amount: 7%);
             border-left: solid 1px white;
             width: 100px; // min-width: 80px;
-            &.azSortableItem{
+
+            &.azSortableItem {
                 user-select: none;
             }
+
             &::before {
                 content: "";
                 display: inline-block;
                 vertical-align: middle;
                 height: 100%;
             }
+
             &:hover {
                 background-color: darken($color: $main-color, $amount: 10%);
             }
+
             &:first-of-type {
                 border-left: none;
             }
+
             &:last-of-type {
                 border-right: none;
             }
+
             &.azSortableDropBefore {
                 border-left: 2px solid $allow;
             }
+
             &.azSortableDropAfter {
                 border-right: 2px solid $allow;
             }
+
             &.azSortableSelected {
                 opacity: .5;
             }
+
             &.azSortableDeny {
                 background-color: $deny;
             }
+
             &.azSortableAllow {
                 background-color: $allow;
             }
+
             & .azThSort {
                 display: none;
                 width: 9px;
@@ -124,6 +143,7 @@
             }
         }
     }
+
     &>div.tfoot {
         display: flex;
         justify-content: space-between;
@@ -136,23 +156,28 @@
         background-color: $main-color;
         border-top: 1px solid silver;
         padding: 0 10px;
+
         & a.azPageIcon {
             position: relative;
             top: 2px;
             margin-right: 15px;
             cursor: pointer;
+
             &>svg {
                 width: 12px;
                 height: 12px;
                 fill: $gray-text;
+
                 &:hover {
                     fill: lighten($color: $main-color, $amount: 20%);
                 }
+
                 &:active {
                     fill: darken($color: $main-color, $amount: 20%);
                 }
             }
         }
+
         & input[type=number].pageNumber {
             // position: relative;
             // font-family: 'Roboto', sans-serif;
@@ -160,12 +185,14 @@
             margin-right: 15px;
             width: 50px; // top: -2px;
             -moz-appearance: textfield;
+
             &::-webkit-outer-spin-button,
             &::-webkit-inner-spin-button {
                 -webkit-appearance: none;
                 margin: 0;
             }
         }
+
         & div.azPageInfo {
             color: $gray-text;
         }

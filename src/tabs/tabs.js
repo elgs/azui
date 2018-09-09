@@ -229,8 +229,8 @@ class Tabs extends Base {
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
         tabContent.style['display'] = "block";
-        newTabs.addTab(tabHeader, tabContent, true);
-        // remove(tabHeader);
+        newTabs.addTab(tabHeader.cloneNode(true), tabContent, true);
+        remove(tabHeader);
 
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
