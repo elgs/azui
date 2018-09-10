@@ -23,6 +23,8 @@ azui.DataTable = function (el, options, init) {
 
 class DataTable extends Base {
 
+    static className = 'DataTable';
+
     azInit(options) {
         const settings = Object.assign({
             pageNumber: 1,

@@ -12,8 +12,9 @@ azui.DoubleClick = function (el, options, init) {
 };
 
 class DoubleClick extends Base {
-    // constructor(el, options) {
-    // super(el);
+
+    static className = 'DoubleClick';
+
     azInit(options) {
         const me = this;
         const settings = Object.assign({

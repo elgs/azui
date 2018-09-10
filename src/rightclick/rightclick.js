@@ -11,6 +11,9 @@ azui.RightClick = function (el, options, init) {
 };
 
 class RightClick extends Base {
+
+    static className = 'RightClick';
+
     azInit(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},

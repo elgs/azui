@@ -19,6 +19,9 @@ azui.Resizable = function (el, options, init) {
 };
 
 class Resizable extends Base {
+
+    static className = 'Resizable';
+
     azInit(options) {
         const settings = Object.assign({
             minWidth: 0,

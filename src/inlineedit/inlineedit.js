@@ -14,8 +14,9 @@ azui.InlineEdit = function (el, options, init) {
 };
 
 class InlineEdit extends Base {
-    // constructor(el, options) {
-    // super(el);
+    
+    static className = 'InlineEdit';
+
     azInit(options) {
         const settings = Object.assign({
             inlineEditClass: 'azInlineEditor',

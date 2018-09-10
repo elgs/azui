@@ -25,6 +25,9 @@ azui.Sortable = function (el, options, init) {
 };
 
 class Sortable extends Base {
+
+    static className = 'Sortable';
+
     azInit(options) {
         const me = this;
         const settings = Object.assign({
@@ -67,7 +70,6 @@ class Sortable extends Base {
             if (settings.start(e, selected, me) === false) {
                 return false;
             }
-
             target.style['z-index'] = ++z;
             selected.classList.add('azSortableSelected');
 
@@ -330,8 +332,8 @@ class Sortable extends Base {
         };
         const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className + ':not(.az-placeholder)'));
         items.forEach(item => {
-            azui.Draggable(item, this.dragConfig);
-            azui.Droppable(item, this.dropConfig);
+            azui.Draggable(item, me.dragConfig);
+            azui.Droppable(item, me.dropConfig);
         });
     }
 

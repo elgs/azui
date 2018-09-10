@@ -13,8 +13,9 @@ azui.Droppable = function (el, options, init) {
 };
 
 class Droppable extends Base {
-    // constructor(el, options) {
-    // super(el);
+
+    static className = 'Droppable';
+
     azInit(options) {
         const settings = Object.assign({
             // key: '',

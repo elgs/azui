@@ -18,7 +18,6 @@
             position: absolute;
         }
     </style>
-    <script src="./index.js"></script>
 </head>
 
 <body>
@@ -61,7 +60,7 @@
         let count = 0;
         const newTabButton = document.querySelector('#newTabButton');
         newTabButton.addEventListener('click', e => {
-            tabs.addTab0(svgApps, `${count++} New Tab`, true);
+            tabs.addTab0(svgApps, count++ + ` New Tab`, true);
         });
     </script>
 </body>

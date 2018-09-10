@@ -1,43 +1,53 @@
 @import "../utilities/utilities.scss";
 $bg-color:#1E1E1E;
+
 .azWindow {
     box-sizing: border-box;
     background-color: white;
     display: grid;
     box-shadow: $shadow;
+
     &:hover {
         box-shadow: $shadow-hovered;
     }
+
     &.active {
         &>.azWindowHeader {
             background: $main-active;
             color: $main-color;
+
             & svg {
                 fill: $main-color;
             }
         }
     }
+
     &.inactive {
         & .azWindowHeader {
             background: $main-color;
         }
+
         & .active {
             &>.azWindowHeader {
                 background: $less-active;
                 color: black;
+
                 & svg {
                     fill: black;
                 }
             }
         }
+
         & .dock-active {
             background: $less-active;
             color: black;
+
             & svg {
                 fill: black;
             }
         }
     }
+
     & .azWindowHeader {
         background: $main-color;
         box-sizing: border-box;
@@ -45,47 +55,57 @@ $bg-color:#1E1E1E;
         align-items: center;
         grid-row: 1/2;
         padding: 6px;
+
         & div * {
             // border: 1px solid black;
             user-select: none;
         }
+
         & span.azHeaderIcon {
             cursor: pointer;
             display: inline-block;
             text-align: center;
             width: 24px;
             height: 24px;
+
             &::before {
                 content: "";
                 display: inline-block;
                 vertical-align: middle;
                 height: 100%;
             }
+
             &:hover {
                 border: 1px solid darken($color: $main-color, $amount: 10%);
             }
+
             & svg {
                 width: 8px;
                 height: 8px;
             }
         }
+
         & .left {
             white-space: nowrap;
             float: left;
             height: 100%;
             text-align: left;
+
             &::before {
                 content: "";
                 display: inline-block;
                 vertical-align: middle;
                 height: 100%;
             }
+
             & span.title {
                 cursor: default;
             }
+
             & span.icon {
                 padding: 8px;
                 cursor: default;
+
                 & svg {
                     width: 12px;
                     height: 12px;
@@ -94,11 +114,13 @@ $bg-color:#1E1E1E;
                 }
             }
         }
+
         & .center {
             display: inline-block;
             height: 100%;
             text-align: center;
         }
+
         & .right {
             &::before {
                 content: "";
@@ -106,11 +128,13 @@ $bg-color:#1E1E1E;
                 vertical-align: middle;
                 height: 100%;
             }
+
             float: right;
             height: 100%;
             text-align: right;
         }
     }
+
     & .azWindowContent {
         position: relative;
         width: 100%;

@@ -12,6 +12,9 @@ azui.Pager = function (el, options, init) {
 };
 
 class Pager extends Base {
+
+    static className = 'Pager';
+
     azInit(options) {
         const settings = Object.assign({
             onPageChange: function (pageNumber) {},

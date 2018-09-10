@@ -52,7 +52,7 @@ export const normalizeElement = function (el) {
 
 export const azObj = function (cls, el, options, init) {
     const node = normalizeElement(el);
-    let objId = node.getAttribute('az-obj-id-' + cls.name);
+    let objId = node.getAttribute('az-obj-id-' + cls.className.toLowerCase());
     if (objId) {
         const obj = azui.objCache[objId];
         if (obj) {
@@ -63,7 +63,7 @@ export const azObj = function (cls, el, options, init) {
     const obj = new cls();
     obj.node = node;
     objId = randGen(8);
-    obj.node.setAttribute('az-obj-id-' + cls.name, objId);
+    obj.node.setAttribute('az-obj-id-' + cls.className.toLowerCase(), objId);
     obj.azInit(options);
     azui.objCache[objId] = obj;
     return obj;

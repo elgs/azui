@@ -17,6 +17,9 @@ azui.Draggable = function (el, options, init) {
 };
 
 class Draggable extends Base {
+
+    static className = 'Draggable';
+
     azInit(options) {
         const me = this;
         const settings = Object.assign({

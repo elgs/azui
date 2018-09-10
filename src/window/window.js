@@ -17,6 +17,9 @@ azui.Window = function (el, options, init) {
 };
 
 class Window extends Base {
+
+    static className = 'Window';
+
     azInit(options) {
         const settings = Object.assign({
             width: 400,

@@ -9,13 +9,13 @@ import {
 } from '../utilities/utilities.js';
 
 azui.Select = function (el, options, init) {
-    // return new Select(el, options);
     return azObj(Select, el, options, init);
 };
 
 class Select extends Base {
-    // constructor(el, options) {
-    // super(el);
+    
+    static className = 'Select';
+
     azInit(options) {
         const settings = Object.assign({
             items: []

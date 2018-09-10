@@ -25,6 +25,9 @@ const _getTabId = (elemId) => {
 };
 
 class Tabs extends Base {
+
+    static className = 'Tabs';
+
     azInit(options) {
         const settings = Object.assign({
             headerHeight: 40,

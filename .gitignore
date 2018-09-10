@@ -3,6 +3,5 @@ dist/
 build/
 dev/
 test/
-.cache/
 .DS_Store
 package-lock.json

@@ -13,6 +13,9 @@ azui.Layout = function (el, options, init) {
 };
 
 class Layout extends Base {
+
+    static className = 'Layout';
+
     azInit(options) {
         const settings = Object.assign({
             north: '.azLayoutNorth',

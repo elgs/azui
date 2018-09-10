@@ -2,11 +2,32 @@
   "name": "azui",
   "version": "0.0.4",
   "description": "",
-  "author": "Qian Chen",
-  "license": "",
-  "devDependencies": {
-    "cssnano": "*",
-    "node-sass": "*"
+  "scripts": {
+    "start": "webpack-dev-server --mode=development",
+    "build": "webpack --mode=development",
+    "dist": "webpack --mode=production"
   },
-  "dependencies": {}
+  "author": "Qian Chen",
+  "license": "GPL",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.2",
+    "node-sass": "^4.9.3",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0"
+  }
 }

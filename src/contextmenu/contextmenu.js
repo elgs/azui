@@ -18,6 +18,9 @@ azui.ContextMenu = function (el, options, init) {
 };
 
 class ContextMenu extends Base {
+
+    static className = 'ContextMenu';
+
     azInit(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},

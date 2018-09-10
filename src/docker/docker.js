@@ -15,6 +15,9 @@ azui.Docker = function (el, options, init) {
 };
 
 class Docker extends Base {
+
+    static className = 'Docker';
+
     azInit(options) {
         const settings = Object.assign({
             // height: 30,
