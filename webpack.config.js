@@ -70,7 +70,7 @@ module.exports = (env, argv) => {
             }]
         },
         plugins: [
-            // new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),
+            new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
@@ -85,7 +85,7 @@ module.exports = (env, argv) => {
                 new UglifyJsPlugin({
                     cache: true,
                     parallel: true,
-                    sourceMap: true // set to true if you want JS source maps
+                    sourceMap: false // set to true if you want JS source maps
                 }),
                 new OptimizeCSSAssetsPlugin({})
             ]
@@ -95,6 +95,9 @@ module.exports = (env, argv) => {
         },
         devServer: {
             contentBase: path.join(__dirname, isDev ? buildDir : distDir),
+            stats: {
+                children: false,
+            },
             compress: true,
             hot: true,
             host: '0.0.0.0',
