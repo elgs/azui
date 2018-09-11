@@ -63,15 +63,14 @@ module.exports = (env, argv) => {
             }, {
                 test: /\.scss$/,
                 use: [
-                    // fallback to style-loader in development
                     MiniCssExtractPlugin.loader,
-                    "css-loader" + (isDev ? '?sourceMap' : ''),
-                    "sass-loader" + (isDev ? '?sourceMap' : '')
+                    "css-loader?sourceMap",
+                    "sass-loader?sourceMap"
                 ]
             }]
         },
         plugins: [
-            new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),
+            // new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
@@ -90,6 +89,9 @@ module.exports = (env, argv) => {
                 }),
                 new OptimizeCSSAssetsPlugin({})
             ]
+        },
+        stats: {
+            children: false
         },
         devServer: {
             contentBase: path.join(__dirname, isDev ? buildDir : distDir),
