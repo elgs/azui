@@ -38,7 +38,7 @@ global.azui = global.azui || {
     },
 };
 
-export const normalizeElement = function (el) {
+const normalizeElement = function (el) {
     if (typeof el === 'string') {
         return document.querySelector(el);
     } else if (el instanceof Node) {

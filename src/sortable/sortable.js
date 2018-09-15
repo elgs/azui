@@ -31,7 +31,6 @@ class Sortable extends Base {
     azInit(options) {
         const me = this;
         const settings = Object.assign({
-            className: 'azSortableItem',
             placeholder: true,
             showPlaceHolder: false,
             escapable: false,
@@ -47,6 +46,9 @@ class Sortable extends Base {
             },
             stop: function (event, data, me) {
                 // console.log('stop', data);
+            },
+            add: function (event, data, me) {
+                // console.log('add', data);
             },
         }, options);
 
@@ -164,14 +166,15 @@ class Sortable extends Base {
             target.style.right = '';
             target.style.bottom = '';
 
+            if (settings.stop(e, data, me) === false) {
+                return false;
+            }
+
             if (draggable.stopHook) {
                 setTimeout(() => {
                     draggable.stopHook();
+                    draggable.stopHook = null;
                 });
-            }
-
-            if (settings.stop(e, data, me) === false) {
-                return false;
             }
         };
 
@@ -330,7 +333,7 @@ class Sortable extends Base {
             //     console.log(e)
             // },
         };
-        const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className + ':not(.az-placeholder)'));
+        const items = Array.prototype.filter.call(node.children, n => matches(n, '.azSortableItem:not(.az-placeholder)'));
         items.forEach(item => {
             azui.Draggable(item, me.dragConfig);
             azui.Droppable(item, me.dropConfig);
@@ -342,7 +345,7 @@ class Sortable extends Base {
         const node = me.node;
         const settings = me.settings;
 
-        const items = Array.prototype.filter.call(node.children, n => matches(n, '.' + settings.className + ':not(.az-placeholder)'));
+        const items = Array.prototype.filter.call(node.children, n => matches(n, '.azSortableItem:not(.az-placeholder)'));
 
         let nearestItem = null;
         let direction = true;
@@ -368,7 +371,7 @@ class Sortable extends Base {
 
         // console.log(nearestItem, direction);
         if (!nearestItem) {
-            this.node.appendChild(elem);
+            node.appendChild(elem);
         } else {
             if (direction) {
                 insertAfter(elem, nearestItem);
@@ -377,10 +380,14 @@ class Sortable extends Base {
             }
         }
 
-        elem.classList.add(this.settings.className);
+        elem.classList.add('azSortableItem');
 
         // do nothing if initialized, initialize if not initialized.
         azui.Draggable(elem, this.dragConfig, false);
         azui.Droppable(elem, this.dropConfig, false);
+
+        if (settings.add(null, elem, me) === false) {
+            return false;
+        }
     }
 };

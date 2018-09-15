@@ -151,6 +151,17 @@ class Tabs extends Base {
                 } else {
                     me.activateTab(tabId);
                 }
+            },
+            add: (e, elem) => {
+                const draggable = azui.Draggable(elem);
+                draggable.escapeX = false;
+                draggable.escapeY = false;
+
+                draggable.stopHook = function () {
+                    // draggable and droppable need to be in the same sortable in order to share the same place holder, improvement?
+                    azui.Droppable(elem, me.sortable.dropConfig, true);
+                    azui.Draggable(elem, me.sortable.dragConfig, true);
+                }
             }
         });
 
@@ -232,8 +243,8 @@ class Tabs extends Base {
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
         tabContent.style['display'] = "block";
-        newTabs.addTab(tabHeader.cloneNode(true), tabContent, true);
-        remove(tabHeader);
+        newTabs.addTab(tabHeader, tabContent, true);
+        // remove(tabHeader);
 
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
