@@ -13,9 +13,8 @@ const distDir = './dist/';
 
 const listModules = () => fs.readdirSync(srcDir).filter(item => fs.statSync(path.join(srcDir, item)).isDirectory());
 const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile());
-const flattenDeep = arr => {
-    return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
-}
+const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
+const pkgJson = require('./package.json');
 
 module.exports = (env, argv) => {
     const isDev = argv.mode !== 'production';
@@ -46,7 +45,7 @@ module.exports = (env, argv) => {
         entry: entries,
         output: {
             path: path.resolve(__dirname, isDev ? buildDir : distDir),
-            filename: 'azui.[name].js',
+            filename: pkgJson.name + '.[name].js',
         },
         devtool: 'source-map',
         module: {
@@ -74,8 +73,8 @@ module.exports = (env, argv) => {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: "azui.[name].css",
-                chunkFilename: "azui.[id].css"
+                filename: pkgJson.name + ".[name].css",
+                chunkFilename: pkgJson.name + ".[id].css"
             }),
             new webpack.HotModuleReplacementPlugin(),
             ...flattenDeep(htmls),
@@ -103,5 +102,5 @@ module.exports = (env, argv) => {
             host: '0.0.0.0',
             port: 1234
         }
-    })
+    });
 };
