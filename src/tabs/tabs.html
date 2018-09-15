@@ -23,14 +23,14 @@
 <body>
     <div id="tab0">
         <div class="azTabHeader">
-            <div class="azTabLabel azSortableItem" id="azTabHeader-Paris">
+            <div class="azTabLabel azSortableItem" id="azTabHeader-Home">
                 <div class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                         <path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z" />
                     </svg>
                 </div>
                 <div class="title">
-                    <span>Paris</span>
+                    <span>Home</span>
                 </div>
             </div>
             <div class="azTabLabel azSortableItem azClosable" id="azTabHeader-Tempe">
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div id="azTabContent-Paris" class="azTabContent">
+        <div id="azTabContent-Home" class="azTabContent">
             <div style="height:100%;display:flex;justify-content:center;align-items:center;">
                 <button id='newTabButton'>New Tab</button>
             </div>
@@ -60,7 +60,8 @@
         let count = 0;
         const newTabButton = document.querySelector('#newTabButton');
         newTabButton.addEventListener('click', e => {
-            tabs.addTab0(svgApps, count++ + ` New Tab`, true);
+            tabs.addTab(svgApps, count + ` New Tab`, count + ` New Tab`, true, false);
+            ++count;
         });
     </script>
 </body>

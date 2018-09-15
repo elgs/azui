@@ -6,7 +6,6 @@ import * as icons from '../utilities/icons.js';
 import {
     getDocScrollLeft,
     getDocScrollTop,
-    insertAfter,
     matches,
     nextAll,
     normalizeIcon,
@@ -243,7 +242,7 @@ class Tabs extends Base {
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
         tabContent.style['display'] = "block";
-        newTabs.addTab(tabHeader, tabContent, true);
+        newTabs.addTabNode(tabHeader, tabContent, true);
         // remove(tabHeader);
 
         const headers = node.querySelectorAll('.azTabLabel');
@@ -258,42 +257,33 @@ class Tabs extends Base {
         }
     }
 
-    addTab(headerNode, contentNode, activate) {
+    addTabNode(headerNode, contentNode, activate = true) {
         const me = this;
         const node = me.node;
         const tabId = randGen(8);
 
-        const header = headerNode;
-        header.classList.add('azTabLabel');
-        header.setAttribute('id', 'azTabHeader-' + tabId)
+        headerNode.classList.add('azTabLabel');
+        headerNode.setAttribute('id', 'azTabHeader-' + tabId)
 
-        const closeDiv = header.querySelector('.close');
+        const closeDiv = headerNode.querySelector('.close');
         if (closeDiv) {
             closeDiv.addEventListener('click', me.closeClicked);
         }
 
-        me.sortable.add(header);
+        me.sortable.add(headerNode);
 
-        const content = contentNode || document.createElement('div');
-        // content.innerHTML = data.content;
-        content.setAttribute('id', 'azTabContent-' + tabId);
-        content.classList.add('azTabContent');
-        content.style['display'] = 'none';
+        contentNode.setAttribute('id', 'azTabContent-' + tabId);
+        contentNode.classList.add('azTabContent');
+        contentNode.style['display'] = 'none';
+        node.appendChild(contentNode);
 
-        const contents = node.querySelectorAll('.azTabContent');
-        if (contents.length) {
-            insertAfter(content, contents[contents.length - 1]);
-        } else {
-            node.appendChild(content);
-        }
-
-        const cm = azui.ContextMenu(header, {
+        const cm = azui.ContextMenu(headerNode, {
             items: me.tabContextMenu
         });
 
         const headerClicked = me.headerClicked(cm);
-        header.addEventListener('mouseup', headerClicked);
-        header.addEventListener('touchend', headerClicked);
+        headerNode.addEventListener('mouseup', headerClicked);
+        headerNode.addEventListener('touchend', headerClicked);
         // me.showHideScrollers();
         me.fitTabWidth();
         if (activate === true) {
@@ -301,7 +291,7 @@ class Tabs extends Base {
         }
     }
 
-    addTab0(icon, title, closable, contentNode, activate) {
+    addTab(icon, title, content, closable = true, activate = true) {
         const me = this;
         const iconDiv = document.createElement('div');
         iconDiv.classList.add('icon');
@@ -309,18 +299,21 @@ class Tabs extends Base {
         const titleDiv = document.createElement('div');
         titleDiv.classList.add('title');
         titleDiv.appendChild(normalizeIcon(title));
-        const header = document.createElement('div');
-        header.classList.add('azTabLabel');
-        header.appendChild(iconDiv)
-        header.appendChild(titleDiv);
+        const headerNode = document.createElement('div');
+        // headerNode.classList.add('azTabLabel');
+        headerNode.appendChild(iconDiv)
+        headerNode.appendChild(titleDiv);
         if (closable) {
             const closeDiv = document.createElement('div');
             closeDiv.classList.add('close');
             closeDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
-            header.appendChild(closeDiv);
+            headerNode.appendChild(closeDiv);
         }
 
-        me.addTab(header, contentNode);
+        const contentNode = document.createElement('div');
+        contentNode.innerHTML = content;
+
+        me.addTabNode(headerNode, contentNode, activate);
     }
     removeTab(tabId) {
         const me = this;
