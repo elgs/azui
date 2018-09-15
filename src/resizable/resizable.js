@@ -650,7 +650,7 @@ class Resizable extends Base {
 
     _resetHandles() {
         const me = this;
-        const handleSize = isTouchDevice() ? me.settings.handleSize + 4 : me.settings.handleSize;
+        const handleSize = me.settings.handleSize;
         if (me.handles.n) {
             me.handles.n.style['top'] = 0;
             me.handles.n.style['bottom'] = '';

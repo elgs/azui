@@ -45,7 +45,7 @@ module.exports = (env, argv) => {
         entry: entries,
         output: {
             path: path.resolve(__dirname, isDev ? buildDir : distDir),
-            filename: pkgJson.name + '.[name].js',
+            filename: `${pkgJson.name}.[name].${pkgJson.version}.js`,
         },
         devtool: 'source-map',
         module: {
@@ -73,8 +73,8 @@ module.exports = (env, argv) => {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: pkgJson.name + ".[name].css",
-                chunkFilename: pkgJson.name + ".[id].css"
+                filename: `${pkgJson.name}.[name].${pkgJson.version}.css`,
+                chunkFilename: `${pkgJson.name}.[id].${pkgJson.version}.css`,
             }),
             new webpack.HotModuleReplacementPlugin(),
             ...flattenDeep(htmls),
