@@ -7,17 +7,27 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
-const srcDir = './src/';
-const buildDir = './build/';
-const distDir = './dist/';
+const srcDir = __dirname + '/src/';
+const buildDir = __dirname + '/build/';
+const distDir = __dirname + '/dist/';
 
 const listModules = () => fs.readdirSync(srcDir).filter(item => fs.statSync(path.join(srcDir, item)).isDirectory());
 const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile());
 const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
 const pkgJson = require('./package.json');
 
+const generateAll = () => {
+    let content = '';
+    listModules().filter(mod => mod !== 'all').map(mod => {
+        content += `import '../${mod}/index.js';\n`;
+    });
+    fs.writeFileSync(srcDir + '/all/index.js', content, 'utf8');
+};
+
 module.exports = (env, argv) => {
     const isDev = argv.mode !== 'production';
+
+    generateAll();
 
     const mods = argv._.length > 0 ? argv._ : listModules();
     argv._ = [];

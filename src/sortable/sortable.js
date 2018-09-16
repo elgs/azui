@@ -278,7 +278,6 @@ class Sortable extends Base {
             resist: 1,
             create: onDragCreate,
             start: onDragStart,
-            // drag: onDrag,
             stop: (event, ui, draggable) => {
                 onDragStop(event, ui, draggable);
             },

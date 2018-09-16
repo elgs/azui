@@ -23,6 +23,21 @@ const _getTabId = (elemId) => {
     return elemId.split('-').splice(1, Number.MAX_SAFE_INTEGER).join('-');
 };
 
+class Tab extends Base {
+    azInit(options) {
+        const settings = Object.assign({
+            draggable: true,
+        }, options);
+
+        const me = this;
+        const node = me.node;
+        me.settings = settings;
+
+        node.classList.add('azTabLabel');
+
+    }
+}
+
 class Tabs extends Base {
 
     static className = 'Tabs';
@@ -35,7 +50,7 @@ class Tabs extends Base {
         }, options);
 
         const me = this;
-        const node = this.node;
+        const node = me.node;
         me.settings = settings;
         node.classList.add('azTabs');
 
