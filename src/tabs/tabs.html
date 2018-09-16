@@ -60,7 +60,8 @@
         let count = 0;
         const newTabButton = document.querySelector('#newTabButton');
         newTabButton.addEventListener('click', e => {
-            tabs.addTab(svgApps, count + ` New Tab`, count + ` New Tab`, true, false);
+            const myTabs = e.target.closest('.azTabs');
+            azui.Tabs(myTabs).addTab(svgApps, count + ` New Tab`, count + ` New Tab`, true, false);
             ++count;
         });
     </script>

@@ -148,7 +148,13 @@ class Tabs extends Base {
                     const y = data.boundingClientRect.top + getDocScrollTop();
                     me.spawn(tabId, x, y);
                 } else {
-                    me.activateTab(tabId);
+                    const contentNode = document.querySelector('#azTabContent-' + tabId);
+
+                    const targetTabsNode = data.source.closest('.azTabs');
+                    targetTabsNode.appendChild(contentNode);
+
+                    const targetTabs = azui.Tabs(targetTabsNode);
+                    targetTabs.activateTab(tabId);
                 }
             },
             add: (e, elem) => {
