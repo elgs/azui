@@ -23,20 +23,72 @@ const _getTabId = (elemId) => {
     return elemId.split('-').splice(1, Number.MAX_SAFE_INTEGER).join('-');
 };
 
-class Tab extends Base {
-    azInit(options) {
-        const settings = Object.assign({
-            draggable: true,
-        }, options);
-
-        const me = this;
-        const node = me.node;
-        me.settings = settings;
-
-        node.classList.add('azTabLabel');
-
+const tabContextMenu = [{
+        // icon: icons.svgClose,
+        title: 'Close tab',
+        action: function (e, target) {
+            const currentTabNode = target.closest('.azTabs');
+            const currentTabs = azui.Tabs(currentTabNode);
+            currentTabs.removeTab(_getTabId(target.id));
+            return false;
+        }
+    }, {
+        // icon: icons.svgClose,
+        title: 'Close other tabs',
+        action: function (e, target) {
+            const currentTabNode = target.closest('.azTabs');
+            const currentTabs = azui.Tabs(currentTabNode);
+            siblings(target, '.azTabLabel').forEach(function (element) {
+                currentTabs.removeTab(_getTabId(element.id));
+            });
+            return false;
+        }
+    }, {
+        // icon: icons.svgClose,
+        title: 'Close tabs to the right',
+        action: function (e, target) {
+            const currentTabNode = target.closest('.azTabs');
+            const currentTabs = azui.Tabs(currentTabNode);
+            nextAll(target, '.azTabLabel').forEach(function (element) {
+                currentTabs.removeTab(_getTabId(element.id));
+            });
+            return false;
+        }
+    },
+    null,
+    {
+        // icon: icons.svgClose,
+        title: 'Close All',
+        action: function (e, target) {
+            const currentTabNode = target.closest('.azTabs');
+            const currentTabs = azui.Tabs(currentTabNode);
+            siblings(target, '.azTabLabel').forEach(function (element) {
+                currentTabs.removeTab(_getTabId(element.id));
+            });
+            currentTabs.removeTab(_getTabId(target.id));
+            return false;
+        }
     }
-}
+];
+const createHeaderClicked = function (cm) {
+    return function (event) {
+        const currentTabNode = event.target.closest('.azTabs');
+        const currentTabs = azui.Tabs(currentTabNode);
+        if (event.button === 2 || currentTabs.dragging || cm.on) {
+            return;
+        }
+        // console.log(event.button);
+        const tabId = _getTabId(event.currentTarget.id);
+        currentTabs.activateTab(tabId);
+    };
+};
+const closeClicked = function (event) {
+    const currentTabNode = event.target.closest('.azTabs');
+    const currentTabs = azui.Tabs(currentTabNode);
+    const tabId = _getTabId(event.currentTarget.parentNode.id);
+    currentTabs.removeTab(tabId);
+    event.stopPropagation();
+};
 
 class Tabs extends Base {
 
@@ -54,63 +106,6 @@ class Tabs extends Base {
         me.settings = settings;
         node.classList.add('azTabs');
 
-        me.tabContextMenu = [{
-                // icon: icons.svgClose,
-                title: 'Close tab',
-                action: function (e, target) {
-                    me.removeTab(_getTabId(target.id));
-                    return false;
-                }
-            }, {
-                // icon: icons.svgClose,
-                title: 'Close other tabs',
-                action: function (e, target) {
-                    siblings(target, '.azTabLabel').forEach(function (element) {
-                        me.removeTab(_getTabId(element.id));
-                    });
-                    return false;
-                }
-            }, {
-                // icon: icons.svgClose,
-                title: 'Close tabs to the right',
-                action: function (e, target) {
-                    nextAll(target, '.azTabLabel').forEach(function (element) {
-                        me.removeTab(_getTabId(element.id));
-                    });
-                    return false;
-                }
-            },
-            null,
-            {
-                // icon: icons.svgClose,
-                title: 'Close All',
-                action: function (e, target) {
-                    siblings(target, '.azTabLabel').forEach(function (element) {
-                        me.removeTab(_getTabId(element.id));
-                    });
-                    me.removeTab(_getTabId(target.id));
-                    return false;
-                }
-            }
-        ];
-
-        me.headerClicked = function (cm) {
-            return function (event) {
-                if (event.button === 2 || cm.on || me.dragging) {
-                    return;
-                }
-                // console.log(event.button);
-                const tabId = _getTabId(event.currentTarget.id);
-                me.activateTab(tabId);
-            }
-        };
-
-        me.closeClicked = function (event) {
-            const tabId = _getTabId(event.currentTarget.parentNode.id);
-            me.removeTab(tabId);
-            event.stopPropagation();
-        };
-
         let tabHeaderContainer = node.querySelector('div.azTabHeader');
         if (!tabHeaderContainer) {
             tabHeaderContainer = document.createElement('div');
@@ -124,17 +119,17 @@ class Tabs extends Base {
 
         tabLabelList.forEach(el => {
             const cm = azui.ContextMenu(el, {
-                items: me.tabContextMenu
+                items: tabContextMenu
             });
-            const headerClicked = me.headerClicked(cm);
 
+            const headerClicked = createHeaderClicked(cm);
             el.addEventListener('mouseup', headerClicked);
             el.addEventListener('touchend', headerClicked);
             if (matches(el, '.azClosable')) {
                 const iconDiv = document.createElement('div');
                 iconDiv.classList.add('close');
                 iconDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
-                iconDiv.addEventListener('click', me.closeClicked);
+                iconDiv.addEventListener('click', closeClicked);
                 el.appendChild(iconDiv);
             }
             tabLabels.appendChild(el);
@@ -163,13 +158,26 @@ class Tabs extends Base {
                     const y = data.boundingClientRect.top + getDocScrollTop();
                     me.spawn(tabId, x, y);
                 } else {
-                    const contentNode = document.querySelector('#azTabContent-' + tabId);
+                    const contentNode = me.node.querySelector('#azTabContent-' + tabId);
 
                     const targetTabsNode = data.source.closest('.azTabs');
                     targetTabsNode.appendChild(contentNode);
 
                     const targetTabs = azui.Tabs(targetTabsNode);
                     targetTabs.activateTab(tabId);
+
+                    const tabHeader = e.target.closest(".azTabLabel#azTabHeader-" + tabId);
+                    const isActive = matches(tabHeader, '.active');
+                    const headers = me.node.querySelectorAll('.azTabLabel');
+                    if (headers.length) {
+                        if (isActive) {
+                            me.activateTabByIndex(0);
+                        }
+                        // me.showHideScrollers();
+                        me.fitTabWidth();
+                    } else {
+                        remove(me.node);
+                    }
                 }
             },
             add: (e, elem) => {
@@ -288,7 +296,7 @@ class Tabs extends Base {
 
         const closeDiv = headerNode.querySelector('.close');
         if (closeDiv) {
-            closeDiv.addEventListener('click', me.closeClicked);
+            closeDiv.addEventListener('click', closeClicked);
         }
 
         me.sortable.add(headerNode);
@@ -299,10 +307,10 @@ class Tabs extends Base {
         node.appendChild(contentNode);
 
         const cm = azui.ContextMenu(headerNode, {
-            items: me.tabContextMenu
+            items: tabContextMenu
         });
 
-        const headerClicked = me.headerClicked(cm);
+        const headerClicked = createHeaderClicked(cm);
         headerNode.addEventListener('mouseup', headerClicked);
         headerNode.addEventListener('touchend', headerClicked);
         // me.showHideScrollers();
@@ -395,6 +403,4 @@ class Tabs extends Base {
         });
 
     }
-    attachTab() {}
-    detachTab(tabId) {}
 };
