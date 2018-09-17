@@ -86,7 +86,7 @@ module.exports = (env, argv) => {
                 filename: `${pkgJson.name}.[name].${pkgJson.version}.css`,
                 chunkFilename: `${pkgJson.name}.[id].${pkgJson.version}.css`,
             }),
-            new webpack.HotModuleReplacementPlugin(),
+            ...(isDev ? [new webpack.HotModuleReplacementPlugin()] : []),
             ...flattenDeep(htmls),
         ],
         optimization: {
