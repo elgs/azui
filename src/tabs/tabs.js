@@ -80,7 +80,9 @@ const createHeaderClicked = function (cm) {
         }
         // console.log(event.button);
         const tabId = _getTabId(event.currentTarget.id);
-        currentTabs.activateTab(tabId);
+        if (!event.target.classList.contains('close') && !event.target.parentNode.classList.contains('close')) {
+            currentTabs.activateTab(tabId);
+        }
     };
 };
 const closeClicked = function (event) {
@@ -92,17 +94,17 @@ const closeClicked = function (event) {
 };
 
 class Tabs extends Base {
-
     static className = 'Tabs';
 
     static z = 0;
 
     azInit(options) {
         const settings = Object.assign({
-            headerHeight: 40,
-            draggable: true,
-            resizable: true,
-        }, options);
+                headerHeight: 40,
+                draggable: true,
+                resizable: true,
+            },
+            options);
 
         const me = this;
         const node = me.node;
@@ -169,7 +171,8 @@ class Tabs extends Base {
                     const targetTabs = azui.Tabs(targetTabsNode);
                     targetTabs.activateTab(tabId);
 
-                    const tabHeader = e.target.closest(".azTabLabel#azTabHeader-" + tabId);
+                    const tabHeader =
+                        e.target.closest('.azTabLabel#azTabHeader-' + tabId);
                     const isActive = matches(tabHeader, '.active');
                     const headers = me.node.querySelectorAll('.azTabLabel');
                     if (headers.length) {
@@ -189,7 +192,8 @@ class Tabs extends Base {
                 draggable.escapeY = false;
 
                 draggable.stopHook = function () {
-                    // draggable and droppable need to be in the same sortable in order to share the same place holder, improvement?
+                    // draggable and droppable need to be in the same sortable in order to
+                    // share the same place holder, improvement?
                     azui.Droppable(elem, me.sortable.dropConfig, true);
                     azui.Draggable(elem, me.sortable.dragConfig, true);
                 }
@@ -206,7 +210,8 @@ class Tabs extends Base {
                     me.node.style['z-index'] = ++Tabs.z;
                     // console.log(event.target.classList.contains('azTabHeader'));
                     // console.log(event.target.classList);
-                    if (event.type === 'touchstart' && event.target.classList.contains('azTabLabels')) {
+                    if (event.type === 'touchstart' &&
+                        event.target.classList.contains('azTabLabels')) {
                         event.preventDefault();
                     }
                 },
@@ -225,10 +230,12 @@ class Tabs extends Base {
         const mouseDownTouchStartEventListener = function (event) {
             me.node.style['z-index'] = ++Tabs.z;
         };
-        me.replaceEventListener('mousedown', 'mousedown', mouseDownTouchStartEventListener);
+        me.replaceEventListener(
+            'mousedown', 'mousedown', mouseDownTouchStartEventListener);
 
         if (isTouchDevice()) {
-            me.replaceEventListener('touchstart', 'touchstart', mouseDownTouchStartEventListener);
+            me.replaceEventListener(
+                'touchstart', 'touchstart', mouseDownTouchStartEventListener);
         }
     }
 
@@ -237,7 +244,8 @@ class Tabs extends Base {
         const node = me.node;
         const nodeWidth = parseInt(getComputedStyle(node)['width']);
         const tabLabels = node.querySelectorAll('.azTabLabel:not(.az-placeholder)');
-        const newWidth = Math.min((nodeWidth - (me.settings.draggable ? 40 : 0)) / tabLabels.length, 150);
+        const newWidth = Math.min(
+            (nodeWidth - (me.settings.draggable ? 40 : 0)) / tabLabels.length, 150);
         tabLabels.forEach(tabLabel => {
             // console.log(tabLabel);
             if (newWidth < 60) {
@@ -254,16 +262,16 @@ class Tabs extends Base {
     spawn(tabId, x = 10, y = 10) {
         const me = this;
         const node = me.node;
-        const tabHeader = node.querySelector(".azTabLabel#azTabHeader-" + tabId);
-        const tabContent = node.querySelector("#azTabContent-" + tabId);
+        const tabHeader = node.querySelector('.azTabLabel#azTabHeader-' + tabId);
+        const tabContent = node.querySelector('#azTabContent-' + tabId);
         const isActive = matches(tabHeader, '.active');
 
         const parentBcr = node.parentNode.getBoundingClientRect();
         const parentX = parentBcr.left + getDocScrollLeft();
         const parentY = parentBcr.top + getDocScrollTop();
         const parentStyle = getComputedStyle(node.parentNode);
-        const parentBorderTop = parseInt(parentStyle["border-top-width"]);
-        const parentBorderLeft = parseInt(parentStyle["border-left-width"]);
+        const parentBorderTop = parseInt(parentStyle['border-top-width']);
+        const parentBorderLeft = parseInt(parentStyle['border-left-width']);
         if (parentStyle.position !== 'relative' &&
             parentStyle.position !== 'absolute' &&
             parentStyle.position !== 'fixed') {
@@ -284,7 +292,7 @@ class Tabs extends Base {
         // const newLabels = newNode.querySelector('div.azTabHeader>.azTabLabels');
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
-        tabContent.style['display'] = "block";
+        tabContent.style['display'] = 'block';
         newTabs.addTabNode(tabHeader, tabContent, true);
         // remove(tabHeader);
 
@@ -361,7 +369,7 @@ class Tabs extends Base {
     removeTab(tabId) {
         const me = this;
         const node = me.node;
-        const tab = node.querySelector(".azTabLabel#azTabHeader-" + tabId);
+        const tab = node.querySelector('.azTabLabel#azTabHeader-' + tabId);
         const isActive = matches(tab, '.active');
         remove(tab);
         remove(node.querySelector("#azTabContent-" + tabId));
@@ -370,7 +378,6 @@ class Tabs extends Base {
             if (isActive) {
                 me.activateTabByIndex(0);
             }
-            // me.showHideScrollers();
             me.fitTabWidth();
         } else {
             remove(node);
@@ -382,17 +389,17 @@ class Tabs extends Base {
         const tabContent = node.querySelectorAll('div.azTabContent').forEach(el => {
             const elId = _getTabId(el.id);
             if (elId === tabId) {
-                el.style['display'] = "block";
+                el.style['display'] = 'block';
             } else {
-                el.style['display'] = "none";
+                el.style['display'] = 'none';
             }
         });
         const tabHeaders = node.querySelectorAll('div.azTabLabel').forEach(el => {
             const elId = _getTabId(el.id);
             if (elId === tabId) {
-                el.classList.add("active");
+                el.classList.add('active');
             } else {
-                el.classList.remove("active");
+                el.classList.remove('active');
             }
         });
     }
@@ -400,21 +407,21 @@ class Tabs extends Base {
         const me = this;
         const node = me.node;
 
-        const tabContent = node.querySelectorAll('div.azTabContent').forEach((el, index) => {
-            if (index === tabIndex) {
-                el.style['display'] = "block";
-            } else {
-                el.style['display'] = "none";
-            }
-
-        });
-        const tabHeaders = node.querySelectorAll('div.azTabLabel').forEach((el, index) => {
-            if (index === tabIndex) {
-                el.classList.add("active");
-            } else {
-                el.classList.remove("active");
-            }
-        });
-
+        const tabContent =
+            node.querySelectorAll('div.azTabContent').forEach((el, index) => {
+                if (index === tabIndex) {
+                    el.style['display'] = 'block';
+                } else {
+                    el.style['display'] = 'none';
+                }
+            });
+        const tabHeaders =
+            node.querySelectorAll('div.azTabLabel').forEach((el, index) => {
+                if (index === tabIndex) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
     }
 };
