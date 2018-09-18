@@ -6,6 +6,7 @@ import * as icons from '../utilities/icons.js';
 import {
     getDocScrollLeft,
     getDocScrollTop,
+    isTouchDevice,
     matches,
     nextAll,
     normalizeIcon,
@@ -93,6 +94,8 @@ const closeClicked = function (event) {
 class Tabs extends Base {
 
     static className = 'Tabs';
+
+    static z = 0;
 
     azInit(options) {
         const settings = Object.assign({
@@ -190,6 +193,7 @@ class Tabs extends Base {
                     azui.Droppable(elem, me.sortable.dropConfig, true);
                     azui.Draggable(elem, me.sortable.dragConfig, true);
                 }
+                me.node.style['z-index'] = ++Tabs.z;
             }
         });
 
@@ -199,6 +203,7 @@ class Tabs extends Base {
             azui.Draggable(node, {
                 handle: '.azTabHeader',
                 create: function (event, ui) {
+                    me.node.style['z-index'] = ++Tabs.z;
                     // console.log(event.target.classList.contains('azTabHeader'));
                     // console.log(event.target.classList);
                     if (event.type === 'touchstart' && event.target.classList.contains('azTabLabels')) {
@@ -215,6 +220,15 @@ class Tabs extends Base {
                     me.fitTabWidth();
                 },
             });
+        }
+
+        const mouseDownTouchStartEventListener = function (event) {
+            me.node.style['z-index'] = ++Tabs.z;
+        };
+        me.replaceEventListener('mousedown', 'mousedown', mouseDownTouchStartEventListener);
+
+        if (isTouchDevice()) {
+            me.replaceEventListener('touchstart', 'touchstart', mouseDownTouchStartEventListener);
         }
     }
 
