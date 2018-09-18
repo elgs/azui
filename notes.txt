@@ -18,8 +18,8 @@ TODO: mobile select incorrect dropdown position
 
 tabs:
 DONE: drag out to create new tabset
-TODO: drag tab between tabsets
-TODO: tab window z-index
+DONE: drag tab between tabsets
+DONE: tab window z-index
 CNCL: scroll to switch tab
 CNCL: scroll buttons
 DONE: svg icons
@@ -33,6 +33,9 @@ draggable:
 DONE: touch and pointer devices work together
 DONE: auto is returned for css left on Edge
 DONE: escape
+
+droppable:
+TODO: drop realm
 
 inlineedit:
 DONE: dropdown
