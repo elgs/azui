@@ -20,9 +20,8 @@ tabs:
 DONE: drag out to create new tabset
 DONE: drag tab between tabsets
 DONE: tab window z-index
-CNCL: scroll to switch tab
-CNCL: scroll buttons
 DONE: svg icons
+TODO: drag and placing tab header between 1st and 2nd, and it jump to first poistion
 
 contextmenu:
 DONE: function to return content
@@ -35,7 +34,7 @@ DONE: auto is returned for css left on Edge
 DONE: escape
 
 droppable:
-TODO: drop realm
+TODO: pointer_out not fired when drag starts too fast
 
 inlineedit:
 DONE: dropdown
@@ -48,3 +47,4 @@ DONE: click input not to dismiss the dropdown
 
 sortable:
 DONE: escape/capture
+TODO: error occured when drag in without release, and drag out release

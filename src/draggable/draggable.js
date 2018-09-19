@@ -156,7 +156,7 @@ class Draggable extends Base {
             const dy = me.mouseY - me.mouseY0;
             // console.log(dx, dy);
             if (!resisted && Math.abs(dx) < settings.resist && Math.abs(dy) < settings.resist) {
-                return;
+                // return;
             }
             resisted = true;
             // console.log(dx, dy);
