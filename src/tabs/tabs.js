@@ -321,16 +321,16 @@ class Tabs extends Base {
             closeDiv.addEventListener('click', closeClicked);
         }
 
+        const cm = azui.ContextMenu(headerNode, {
+            items: tabContextMenu
+        });
+
         me.sortable.add(headerNode);
 
         contentNode.setAttribute('id', 'azTabContent-' + tabId);
         contentNode.classList.add('azTabContent');
         contentNode.style['display'] = 'none';
         node.appendChild(contentNode);
-
-        const cm = azui.ContextMenu(headerNode, {
-            items: tabContextMenu
-        });
 
         const headerClicked = createHeaderClicked(cm);
         headerNode.addEventListener('mouseup', headerClicked);

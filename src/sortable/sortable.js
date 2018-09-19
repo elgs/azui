@@ -184,6 +184,9 @@ class Sortable extends Base {
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
                     const source = e.detail.source;
+                    if (!source.classList.contains('azSortableItem')) {
+                        return;
+                    }
                     selected = source;
                     const phs = siblings(source, '.az-placeholder');
                     if (phs.length > 0) {
@@ -261,6 +264,11 @@ class Sortable extends Base {
                     });
                 },
                 pointer_out: function (e) {
+                    const source = e.detail.source;
+                    console.log(source);
+                    if (!source.classList.contains('azSortableItem')) {
+                        return;
+                    }
                     // console.log(selected);
                     const draggable = azui.Draggable(selected);
                     draggable.escapeX = true;
@@ -350,6 +358,7 @@ class Sortable extends Base {
         let direction = true;
         let distance = Number.MAX_SAFE_INTEGER;
         items.map(item => {
+            console.log(item);
             const bcr = item.getBoundingClientRect();
             const x = bcr.left + getDocScrollLeft() + bcr.width / 2;
             const y = bcr.top + getDocScrollTop() + bcr.height / 2;
@@ -368,7 +377,7 @@ class Sortable extends Base {
             }
         });
 
-        // console.log(nearestItem, direction);
+        console.log(nearestItem, direction);
         if (!nearestItem) {
             node.appendChild(elem);
         } else {
