@@ -108,6 +108,11 @@ class Sortable extends Base {
             if (!data.source.classList.contains('azSortableItem')) {
                 return;
             }
+            const draggable = azui.Draggable(data.source);
+            if (draggable['pointer_in']) {
+                delete draggable['pointer_in'];
+                return;
+            }
             if (settings.sort(e, data, me) === false) {
                 return false;
             }
@@ -193,6 +198,7 @@ class Sortable extends Base {
                 interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
+                    // console.log('pointer in fired');
                     const source = e.detail.source;
                     if (!source.classList.contains('azSortableItem')) {
                         return;
@@ -250,6 +256,8 @@ class Sortable extends Base {
                     draggable.escapeX = false;
                     draggable.escapeY = false;
 
+                    draggable['pointer_in'] = true;
+
                     draggable.stopHook = function () {
                         if (ph) {
                             if (!settings.placeholder) {
@@ -306,6 +314,7 @@ class Sortable extends Base {
                 azui.constants.dndEventConsts.target_center_out,
             target_center_in: function (e) {
                 // console.log(e);
+                // console.log('target center in fired');
                 onOverTargetCenter(e);
             },
             target_center_out: function (e) {
