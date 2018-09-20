@@ -174,8 +174,7 @@ class Tabs extends Base {
                     const targetTabs = azui.Tabs(targetTabsNode);
                     targetTabs.activateTab(tabId);
 
-                    const tabHeader =
-                        e.target.closest('.azTabLabel#azTabHeader-' + tabId);
+                    const tabHeader = e.target.closest('.azTabLabel#azTabHeader-' + tabId);
                     const isActive = matches(tabHeader, '.active');
                     const headers = me.node.querySelectorAll('.azTabLabel');
                     if (headers.length) {
@@ -201,6 +200,7 @@ class Tabs extends Base {
                     azui.Draggable(elem, me.sortable.dragConfig, true);
                 }
                 me.node.style['z-index'] = ++Tabs.z;
+                me.fitTabWidth();
             }
         });
 
@@ -265,8 +265,8 @@ class Tabs extends Base {
     spawn(tabId, x = 10, y = 10) {
         const me = this;
         const node = me.node;
-        const tabHeader = node.querySelector('.azTabLabel#azTabHeader-' + tabId);
-        const tabContent = node.querySelector('#azTabContent-' + tabId);
+        const tabHeader = document.querySelector('.azTabLabel#azTabHeader-' + tabId);
+        const tabContent = document.querySelector('#azTabContent-' + tabId);
         const isActive = matches(tabHeader, '.active');
 
         const parentBcr = node.parentNode.getBoundingClientRect();

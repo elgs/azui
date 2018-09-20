@@ -108,6 +108,7 @@ class Sortable extends Base {
                 return false;
             }
             if (settings.placeholder) {
+                // console.log('ph:', ph);
                 swapElement(ph, data.target);
             } else {
                 siblings(data.target).forEach(el => el.classList.remove('azSortableDropAfter', 'azSortableDropBefore'));
@@ -264,7 +265,7 @@ class Sortable extends Base {
                     });
                 },
                 pointer_out: function (e) {
-                    console.log('pointer out fired');
+                    // console.log('pointer out fired');
                     const source = e.detail.source;
                     if (!source.classList.contains('azSortableItem')) {
                         return;

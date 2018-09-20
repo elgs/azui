@@ -156,21 +156,12 @@ class Draggable extends Base {
             const dy = me.mouseY - me.mouseY0;
             // console.log(dx, dy);
             if (!resisted && Math.abs(dx) < settings.resist && Math.abs(dy) < settings.resist) {
-                // return;
+                return;
             }
             resisted = true;
             // console.log(dx, dy);
 
             // console.log(me.escapeX, me.escapeY);
-
-            if (settings.axis === 'x') {
-                me.moveX(dx);
-            } else if (settings.axis === 'y') {
-                me.moveY(dy);
-            } else {
-                me.moveX(dx);
-                me.moveY(dy);
-            }
 
             const dts = me.dropTargets;
             dts.filter(dt => dt !== node).map(dt => {
@@ -203,6 +194,15 @@ class Draggable extends Base {
                 }
             });
             // me.selected.style['background-color'] = 'red';
+
+            if (settings.axis === 'x') {
+                me.moveX(dx);
+            } else if (settings.axis === 'y') {
+                me.moveY(dy);
+            } else {
+                me.moveX(dx);
+                me.moveY(dy);
+            }
         };
 
         const onmouseup = function (e) {
