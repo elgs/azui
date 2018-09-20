@@ -12,5 +12,4 @@ import '../rightclick/index.js';
 import '../select/index.js';
 import '../sortable/index.js';
 import '../tabs/index.js';
-import '../utilities/index.js';
 import '../window/index.js';

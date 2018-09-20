@@ -7,9 +7,9 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
-const srcDir = __dirname + '/src/';
-const buildDir = __dirname + '/build/';
-const distDir = __dirname + '/dist/';
+const srcDir = path.join(__dirname, '/src/');
+const buildDir = path.join(__dirname, '/build/');
+const distDir = path.join(__dirname, '/dist/');
 
 const listModules = () => fs.readdirSync(srcDir).filter(item => fs.statSync(path.join(srcDir, item)).isDirectory());
 const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile());
@@ -17,11 +17,20 @@ const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.con
 const pkgJson = require('./package.json');
 
 const generateAll = () => {
-    let content = '';
-    listModules().filter(mod => mod !== 'all').map(mod => {
-        content += `import '../${mod}/index.js';\n`;
+    let jsContent = '';
+    let htmlContent = '';
+    listModules().filter(mod => mod !== 'all' && mod !== 'utilities').map(mod => {
+        jsContent += `import '../${mod}/index.js';\n`;
+
+        htmlContent += `<h3>${mod}</h3>`;
+        htmlContent += '<ul>';
+        listHtmls(mod).map(html => {
+            htmlContent += `<li><a href='${html}'>${html}</a></li>\n`;
+        });
+        htmlContent += '</ul>'
     });
-    fs.writeFileSync(srcDir + '/all/index.js', content, 'utf8');
+    fs.writeFileSync(srcDir + '/all/index.js', jsContent, 'utf8');
+    fs.writeFileSync(srcDir + '/all/index.html', htmlContent, 'utf8');
 };
 
 module.exports = (env, argv) => {
@@ -38,7 +47,7 @@ module.exports = (env, argv) => {
         entries[mod] = `${srcDir+mod}/index.js`;
     });
     // console.log(entries);
-    const htmls = mods.map(mod => {
+    const htmls = mods.filter(mod => mod !== 'utilities').map(mod => {
         const tpls = listHtmls(mod);
         return tpls.map(tpl => {
             return new HtmlWebpackPlugin({
