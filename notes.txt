@@ -14,7 +14,7 @@ DONE: cell types
 DONE: sort
 TODO: row/cell selection
 DONE: number cell up/down button
-TODO: mobile select incorrect dropdown position
+DONE: mobile select incorrect dropdown position
 
 tabs:
 DONE: drag out to create new tabset

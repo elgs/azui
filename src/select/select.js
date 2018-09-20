@@ -5,7 +5,9 @@ import {
 import * as icons from '../utilities/icons.js';
 import {
     matches,
-    empty
+    empty,
+    getDocScrollLeft,
+    getDocScrollTop
 } from '../utilities/utilities.js';
 
 azui.Select = function (el, options, init) {
@@ -13,7 +15,7 @@ azui.Select = function (el, options, init) {
 };
 
 class Select extends Base {
-    
+
     static className = 'Select';
 
     azInit(options) {
@@ -129,8 +131,8 @@ class Select extends Base {
             document.addEventListener('keyup', navigateDropdown);
 
             const meBcr = node.getBoundingClientRect();
-            menu.style['left'] = meBcr.left;
-            menu.style['top'] = meBcr.bottom;
+            menu.style['left'] = meBcr.left + getDocScrollLeft();
+            menu.style['top'] = meBcr.bottom + getDocScrollTop();
             menu.style['width'] = meBcr.width;
             menu.style['display'] = 'block';
 
