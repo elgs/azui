@@ -21,7 +21,7 @@ DONE: drag out to create new tabset
 DONE: drag tab between tabsets
 DONE: tab window z-index
 DONE: svg icons
-DONE: drag and placing tab header between 1st and 2nd, and it jump to first poistion
+DONE: drag and place tab header between 1st and 2nd, and it jumps to first poistion
 
 contextmenu:
 DONE: function to return content

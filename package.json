@@ -1,6 +1,6 @@
 {
   "name": "azui",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "scripts": {
     "start": "webpack-dev-server --mode=development",
