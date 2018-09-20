@@ -114,6 +114,7 @@ class Sortable extends Base {
             if (settings.placeholder) {
                 // console.log('ph:', ph);
                 swapElement(ph, data.target);
+                // console.log(data.target);
             } else {
                 siblings(data.target).forEach(el => el.classList.remove('azSortableDropAfter', 'azSortableDropBefore'));
                 data.target.classList.add(index(selected) < index(data.target) ? 'azSortableDropAfter' : 'azSortableDropBefore');

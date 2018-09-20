@@ -34,7 +34,7 @@ DONE: auto is returned for css left on Edge
 DONE: escape
 
 droppable:
-TODO: pointer_out not fired when drag starts too fast
+DONE: pointer_out not fired when drag starts too fast
 
 inlineedit:
 DONE: dropdown
