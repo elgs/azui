@@ -155,9 +155,6 @@ class Tabs extends Base {
             start: (e, data) => {
                 me.dragging = true;
             },
-            sort: (e, data) => {
-                return data.source.classList.contains('azSortableItem');
-            },
             stop: (e, data) => {
                 me.dragging = false;
                 const tabId = _getTabId(data.source.id);

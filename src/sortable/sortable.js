@@ -103,7 +103,11 @@ class Sortable extends Base {
             }
         };
 
-        const onOverTargetCenter = function (e, data) {
+        const onOverTargetCenter = function (e) {
+            const data = e.detail;
+            if (!data.source.classList.contains('azSortableItem')) {
+                return;
+            }
             if (settings.sort(e, data, me) === false) {
                 return false;
             }
@@ -119,7 +123,11 @@ class Sortable extends Base {
             }
         };
 
-        const onLeaveTargetCenter = function (e, data) {
+        const onLeaveTargetCenter = function (e) {
+            const data = e.detail;
+            if (!data.source.classList.contains('azSortableItem')) {
+                return;
+            }
             if (settings.sort(e, data, me) === false) {
                 return false;
             }
@@ -297,11 +305,11 @@ class Sortable extends Base {
                 azui.constants.dndEventConsts.target_center_out,
             target_center_in: function (e) {
                 // console.log(e);
-                onOverTargetCenter(e, e.detail);
+                onOverTargetCenter(e);
             },
             target_center_out: function (e) {
                 // console.log(e);
-                onLeaveTargetCenter(e, e.detail);
+                onLeaveTargetCenter(e);
             },
 
             // source_all_in: function (e) {

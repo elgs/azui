@@ -47,4 +47,4 @@ DONE: click input not to dismiss the dropdown
 
 sortable:
 DONE: escape/capture
-TODO: error occured when drag in without release, and drag out release
+DONE: error occured when drag in without release, and drag out release
