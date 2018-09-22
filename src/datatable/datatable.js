@@ -21,6 +21,18 @@ azui.DataTable = function (el, options, init) {
     return azObj(DataTable, el, options, init);
 };
 
+const normalizeCol = (col) => {
+    if (typeof col === 'object') {
+        return col;
+    } else if (typeof col === 'function') {
+        return col();
+    } else {
+        return {
+            text: col
+        };
+    }
+};
+
 class DataTable extends Base {
 
     static className = 'DataTable';
@@ -121,7 +133,7 @@ class DataTable extends Base {
         });
 
         settings.columns = settings.columns.map((col, index) => {
-            const ncol = this._normalizeCol(col);
+            const ncol = normalizeCol(col);
             if (typeof ncol.dataIndex !== 'number') {
                 ncol.dataIndex = index;
             }
@@ -314,17 +326,5 @@ class DataTable extends Base {
         });
 
         settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-    }
-
-    _normalizeCol(col) {
-        if (typeof col === 'object') {
-            return col;
-        } else if (typeof col === 'function') {
-            return col();
-        } else {
-            return {
-                text: col
-            };
-        }
     }
 };

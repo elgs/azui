@@ -198,8 +198,15 @@ class Sortable extends Base {
                 interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
-                    // console.log('pointer in fired');
                     const source = e.detail.source;
+                    const draggable = azui.Draggable(source);
+                    const detachedContainer = draggable.detachedContainer;
+                    if (!detachedContainer) {
+                        return;
+                    }
+
+                    // console.log('pointer in fired');
+                    
                     if (!source.classList.contains('azSortableItem')) {
                         return;
                     }
@@ -215,12 +222,9 @@ class Sortable extends Base {
                     source.style.visibility = 'hidden';
                     me.add(source, cursorX, cursorY);
 
-                    const draggable = azui.Draggable(source);
-
                     if (ph) {
                         insertBefore(ph, source);
 
-                        const detachedContainer = draggable.detachedContainer;
                         const diffContainer = diffPositionInnerBorder(me.node, detachedContainer.node);
                         // console.log(diffContainer);
 

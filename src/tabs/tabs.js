@@ -171,7 +171,7 @@ class Tabs extends Base {
                     const targetTabs = azui.Tabs(targetTabsNode);
                     targetTabs.activateTab(tabId);
 
-                    const tabHeader = e.target.closest('.azTabLabel#azTabHeader-' + tabId);
+                    const tabHeader = data.source;//.closest('.azTabLabel#azTabHeader-' + tabId);
                     const isActive = matches(tabHeader, '.active');
                     const headers = me.node.querySelectorAll('.azTabLabel');
                     if (headers.length) {
