@@ -4,10 +4,11 @@ import {
 } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import {
-    matches,
     empty,
     getDocScrollLeft,
-    getDocScrollTop
+    getDocScrollTop,
+    matches,
+    remove
 } from '../utilities/utilities.js';
 
 azui.Select = function (el, options, init) {
@@ -30,7 +31,7 @@ class Select extends Base {
 
         node.classList.add('azSelect');
 
-        const onDropdown = function (e) {
+        const showDropdown = function (e) {
             // console.log(e.currentTarget);
             const createMenuItem = function (item) {
                 if (!item) {
@@ -53,11 +54,11 @@ class Select extends Base {
                 return menuItem;
             };
 
-            const menu = document.createElement('div');
-            menu.classList.add('azSelectMenu');
-            menu.style['display'] = 'none';
-            menu.style['z-index'] = 1000;
-            document.documentElement.appendChild(menu);
+            me.menu = document.createElement('div');
+            me.menu.classList.add('azSelectMenu');
+            me.menu.style['display'] = 'none';
+            me.menu.style['z-index'] = 1000;
+            document.documentElement.appendChild(me.menu);
             dropdownShown = true;
             highlightIndex = -1;
 
@@ -83,58 +84,19 @@ class Select extends Base {
                     }
                 }
                 if (item.title.toLowerCase().includes(selectInput.value.toLowerCase())) {
-                    menu.appendChild(createMenuItem(item));
+                    me.menu.appendChild(createMenuItem(item));
                 }
             });
-
-            const offDropdown = function (e) {
-                if (e.target === selectInput[0]) {
-                    return;
-                }
-                menu.parentNode.removeChild(menu);
-                document.removeEventListener('click', offDropdown);
-                document.removeEventListener('touchstart', offDropdown);
-                document.removeEventListener('keyup', navigateDropdown);
-                dropdownShown = false;
-            };
-
-            const navigateDropdown = function (e) {
-                // console.log(e.keyCode);
-                const menuLength = menu.querySelectorAll('.azMenuItem').length;
-                if (e.keyCode === 38) {
-                    // up
-                    --highlightIndex;
-                    highlightIndex = highlightIndex < 0 ? 0 : highlightIndex;
-                } else if (e.keyCode === 40) {
-                    // down
-                    ++highlightIndex;
-                    highlightIndex = highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
-                }
-
-                const selected = Array.prototype.filter.call(menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
-                //const selected = menu.children('.azMenuItem').eq(highlightIndex);
-                Array.prototype.filter.call(menu.children, n => matches(n, '.azMenuItem')).forEach(el => {
-                    el.classList.remove('selected');
-                });
-                // menu.children('.azMenuItem').removeClass('selected');
-                if (selected) {
-                    selected.classList.add('selected');
-                    if (e.keyCode === 13) {
-                        selectInput.value = selected.textContent;
-                        document.documentElement.click();
-                    }
-                }
-            };
 
             document.addEventListener('click', offDropdown);
             document.addEventListener('touchstart', offDropdown);
             document.addEventListener('keyup', navigateDropdown);
 
             const meBcr = node.getBoundingClientRect();
-            menu.style['left'] = meBcr.left + getDocScrollLeft();
-            menu.style['top'] = meBcr.bottom + getDocScrollTop();
-            menu.style['width'] = meBcr.width;
-            menu.style['display'] = 'block';
+            me.menu.style['left'] = meBcr.left + getDocScrollLeft();
+            me.menu.style['top'] = meBcr.bottom + getDocScrollTop();
+            me.menu.style['width'] = meBcr.width;
+            me.menu.style['display'] = 'block';
 
             e.stopPropagation();
         };
@@ -142,11 +104,51 @@ class Select extends Base {
         let dropdownShown = false;
         let highlightIndex = -1;
 
+        const navigateDropdown = function (e) {
+            // console.log(e.keyCode);
+            const menuLength = me.menu.querySelectorAll('.azMenuItem').length;
+            if (e.keyCode === 38) {
+                // up
+                --highlightIndex;
+                highlightIndex = highlightIndex < 0 ? 0 : highlightIndex;
+            } else if (e.keyCode === 40) {
+                // down
+                ++highlightIndex;
+                highlightIndex = highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
+            }
+
+            const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
+            //const selected = menu.children('.azMenuItem').eq(highlightIndex);
+            Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem')).forEach(el => {
+                el.classList.remove('selected');
+            });
+            // menu.children('.azMenuItem').removeClass('selected');
+            if (selected) {
+                selected.classList.add('selected');
+                if (e.keyCode === 13) {
+                    selectInput.value = selected.textContent;
+                    document.documentElement.click();
+                }
+            }
+        };
+
+        const offDropdown = function (e) {
+            if (e.target === selectInput[0]) {
+                return;
+            }
+            remove(me.menu);
+            document.removeEventListener('click', offDropdown);
+            document.removeEventListener('touchstart', offDropdown);
+            document.removeEventListener('keyup', navigateDropdown);
+            dropdownShown = false;
+        };
+
         const toggleDropdown = function (e) {
             if (!dropdownShown) {
-                onDropdown(e);
+                showDropdown(e);
+                selectInput.focus();
             } else {
-                document.documentElement.click();
+                offDropdown(e);
             }
         };
 

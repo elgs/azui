@@ -70,7 +70,7 @@ class DataTable extends Base {
                     td.classList.add(`td`, `col-${col.key}`);
                     td.appendChild(cell);
 
-                    if (settings.editor === 'cell') {
+                    if (settings.editor === 'cell' || settings.editor === 'row') {
                         azui.InlineEdit(cell, {
                             type: col.type,
                             options: col.options,
@@ -85,11 +85,11 @@ class DataTable extends Base {
                         setOuterWidth(td, col.width);
                     }
                 });
-                if (settings.editor === 'row') {
-                    tr.querySelectorAll('div.td>span').forEach(el => {
-                        azui.InlineEdit(el);
-                    });
-                }
+                // if (settings.editor === 'row') {
+                //     tr.querySelectorAll('div.td>span').forEach(el => {
+                //         azui.InlineEdit(el);
+                //     });
+                // }
 
                 // sorting
                 if (settings.sortDirection) {
