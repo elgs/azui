@@ -14,12 +14,11 @@ azui.InlineEdit = function (el, options, init) {
 };
 
 class InlineEdit extends Base {
-    
+
     static className = 'InlineEdit';
 
     azInit(options) {
         const settings = Object.assign({
-            inlineEditClass: 'azInlineEditor',
             type: 'text', // number, select
             options: [],
             value: null,
@@ -81,44 +80,48 @@ class InlineEdit extends Base {
             const clicked = clickedElem === node;
             const originalValue = node.textContent.trim();
             const editorWrapper = document.createElement('div');
-            editorWrapper.classList.add(settings.inlineEditClass + 'Wrapper');
+            editorWrapper.classList.add('azInlineEditorWrapper');
+
+            const dirtySign = document.createElement('div');
+            dirtySign.classList.add('dirtySign');
+            dirtySign.style.display = 'none';
+            // $editor.on('blur', cancel);
+
+            const _checkDirty = function (editor) {
+                // console.log(originalValue, editor.value);
+                const dirty = originalValue !== editor.value;
+                if (dirty) {
+                    dirtySign.style.display = '';
+                } else {
+                    dirtySign.style.display = 'none';
+                }
+            };
 
             if (settings.type === 'select') {
                 const select = azui.Select(editorWrapper, {
                     items: settings.options,
+                    select: e => _checkDirty(select.selectInput)
                 });
+                editorWrapper.appendChild(dirtySign);
                 select.node.addEventListener('done', function (e) {
                     done(e);
                 });
-                editorWrapper.querySelector('input').classList.add(settings.inlineEditClass);
-                editorWrapper.value = originalValue;
+                select.selectInput.classList.add('azInlineEditor');
+                // editorWrapper.value = originalValue;
+                select.selectInput.value = originalValue;
                 if (clicked) {
                     setTimeout(() => {
-                        editorWrapper.querySelector('input').focus();
+                        select.selectInput.focus();
                     });
                 }
             } else {
+                editorWrapper.appendChild(dirtySign);
                 const editor = document.createElement('input');
                 editor.setAttribute('type', 'text');
                 editor.setAttribute('size', 1);
-                editor.classList.add(settings.inlineEditClass);
+                editor.classList.add('azInlineEditor');
                 editor.value = originalValue;
                 editorWrapper.appendChild(editor);
-
-                const dirtySign = document.createElement('div');
-                dirtySign.classList.add('dirtySign');
-                dirtySign.style.display = 'none';
-                editorWrapper.appendChild(dirtySign);
-                // $editor.on('blur', cancel);
-
-                const _checkDirty = function () {
-                    const dirty = originalValue !== editor.value;
-                    if (dirty) {
-                        dirtySign.style.display = '';
-                    } else {
-                        dirtySign.style.display = 'none';
-                    }
-                };
 
                 editor.addEventListener('keyup', function (event) {
                     if (event.keyCode === 13) {
@@ -129,7 +132,7 @@ class InlineEdit extends Base {
                         if (settings.edit(event, this.value) === false) {
                             return false;
                         }
-                        _checkDirty();
+                        _checkDirty(editor);
                     }
                 });
 
@@ -141,7 +144,7 @@ class InlineEdit extends Base {
                             editor.value = editor.value * 1 - 1;
                         }
                     }
-                    _checkDirty();
+                    _checkDirty(editor);
                 });
 
                 if (settings.type === 'number') {
@@ -164,12 +167,12 @@ class InlineEdit extends Base {
                     upButton.addEventListener('click', function (event) {
                         event.stopPropagation();
                         editor.value = editor.value * 1 + 1;
-                        _checkDirty();
+                        _checkDirty(editor);
                     });
                     downButton.addEventListener('click', function (event) {
                         event.stopPropagation();
                         editor.value = editor.value * 1 - 1;
-                        _checkDirty();
+                        _checkDirty(editor);
                     });
                 }
 
