@@ -163,12 +163,12 @@ class Select extends Base {
             if (e.keyCode === 27) {
                 // esc key is pressed
                 if (dropdownShown) {
-                    toggleDropdown(e);
+                    offDropdown(e);
                 }
             } else if (e.keyCode === 40) {
                 // if key code is down arrow key, triggered full dropdown
                 if (!dropdownShown) {
-                    toggleDropdown(e);
+                    showDropdown(e);
                 }
             } else if (e.keyCode === 38) {
                 // if key code is up arrow key, remove dropdown
@@ -190,15 +190,15 @@ class Select extends Base {
                 // if input.val().trim().length>0, trigger filtered dropdown
                 settings.select(e);
                 if (!dropdownShown) {
-                    toggleDropdown(e);
+                    showDropdown(e);
                 } else {
-                    toggleDropdown(e);
-                    toggleDropdown(e);
+                    offDropdown(e);
+                    showDropdown(e);
                 }
             } else if (me.selectInput.value.trim().length === 0) {
                 // if (dropdownShown) {
                 settings.select(e);
-                toggleDropdown(e);
+                showDropdown(e);
                 // }
             }
         };
