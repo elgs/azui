@@ -206,7 +206,7 @@ class Sortable extends Base {
                     }
 
                     // console.log('pointer in fired');
-                    
+
                     if (!source.classList.contains('azSortableItem')) {
                         return;
                     }

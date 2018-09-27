@@ -120,8 +120,10 @@ class Draggable extends Base {
                 if (settings.start(e, me.selected, me) === false) {
                     return false;
                 }
+
                 // console.log(settings.containment);
                 me.setContainment(settings.containment);
+
                 // me.style['cursor', 'pointer');
                 if (settings.opacity) {
                     node.style['opacity'] = settings.opacity;
@@ -165,15 +167,16 @@ class Draggable extends Base {
 
             const dts = me.dropTargets;
             for (const dt of dts) {
-                // dts.map(dt => {
                 // console.log(me, elem);
                 const dropId = dt.getAttribute('az-obj-id-droppable');
                 const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
                 const oldPs = dropTargetStates[dropId];
                 const ps = getPositionState(node, dt, e);
                 dropTargetStates[dropId] = ps;
+                if (oldPs === undefined || oldPs === null) {
+                    oldPs = azui.constants.dndStateConsts.pointer;
+                }
                 if (oldPs != undefined && oldPs !== ps) {
-                    // Object.keys(azui.constants.dndStateConsts).map(state => {
                     const states = Object.keys(azui.constants.dndStateConsts);
                     for (const state of states) {
                         const nState = ps & azui.constants.dndStateConsts[state];
@@ -194,10 +197,8 @@ class Draggable extends Base {
                                 break;
                             }
                         }
-                        // });
                     }
                 }
-                // });
             }
             // me.selected.style['background-color'] = 'red';
 
