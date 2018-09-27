@@ -121,6 +121,7 @@ class Window extends Base {
         node.insertBefore(header, node.firstChild);
 
         const mouseDownTouchStartEventListener = function (event) {
+            // console.log(event.type);
             me.activate(true);
         };
         me.replaceEventListener('mousedown', 'mousedown', mouseDownTouchStartEventListener);
@@ -151,12 +152,13 @@ class Window extends Base {
                 pb = node.parentNode.getBoundingClientRect();
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
                     return false; // don't drag when clicking on icons
-                } else if (matches(target, '.azWindowHeader,.azWindowHeader *')) {
-                    // get focus but prevent mobile view port from moving around
-                    if (event.type === 'touchstart') {
-                        event.preventDefault();
-                    }
-                }
+                } 
+                // else if (matches(target, '.azWindowHeader,.azWindowHeader *')) {
+                //     // get focus but prevent mobile view port from moving around
+                //     if (event.type === 'touchstart') {
+                //         // event.preventDefault();
+                //     }
+                // }
             },
             drag: function (event, ui) {
                 if (isOutside(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY, pb)) {

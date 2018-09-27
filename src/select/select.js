@@ -8,7 +8,8 @@ import {
     getDocScrollLeft,
     getDocScrollTop,
     matches,
-    remove
+    remove,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 azui.Select = function (el, options, init) {
@@ -33,6 +34,8 @@ class Select extends Base {
         node.classList.add('azSelect');
 
         const showDropdown = function (e) {
+            console.log('show');
+            // alert(e.currentTarget.outerHTML);
             // console.log(e.currentTarget);
             const createMenuItem = function (item) {
                 if (!item) {
@@ -40,7 +43,7 @@ class Select extends Base {
                     sep.textContent('&nbsp;');
                     sep.classList.add('azMenuSeparator');
                 }
-                let title = item.title;
+                const title = item.title;
                 const titleDiv = document.createElement('div');
                 titleDiv.classList.add('title');
                 const menuItem = document.createElement('div');
@@ -51,7 +54,15 @@ class Select extends Base {
                     me.selectInput.value = title;
                 };
                 menuItem.addEventListener('click', onClick);
-                menuItem.addEventListener('touchstart', onClick);
+                if (isTouchDevice()) {
+                    menuItem.addEventListener('touchstart', onClick);
+                }
+
+                const onMouseOver = function (e) {
+                    console.log(e.currentTarget);
+                };
+                menuItem.addEventListener('mouseover', onMouseOver);
+
                 return menuItem;
             };
 
@@ -90,9 +101,12 @@ class Select extends Base {
                 }
             });
 
-            document.addEventListener('click', offDropdown);
-            document.addEventListener('touchstart', offDropdown);
+            document.addEventListener('mouseup', offDropdown);
             document.addEventListener('keyup', navigateDropdown);
+
+            if (isTouchDevice()) {
+                document.addEventListener('touchstart', offDropdown);
+            }
 
             const meBcr = node.getBoundingClientRect();
             me.menu.style['left'] = meBcr.left + getDocScrollLeft();
@@ -138,18 +152,34 @@ class Select extends Base {
         };
 
         const offDropdown = function (e) {
+            console.log('off');
             // if (e.target === me.selectInput) {
             // return;
             // }
             remove(me.menu);
-            document.removeEventListener('click', offDropdown);
-            document.removeEventListener('touchstart', offDropdown);
+            document.removeEventListener('mouseup', offDropdown);
             document.removeEventListener('keyup', navigateDropdown);
+
+            if (isTouchDevice()) {
+                document.removeEventListener('touchstart', offDropdown);
+            }
+
             dropdownShown = false;
+
+            if (e) {
+                // alert(e.currentTarget.innerHTML);
+                e.stopPropagation();
+            }
         };
 
         const toggleDropdown = function (e) {
-            // console.log(dropdownShown);
+            // console.log(dropdownShown, e.type, e.button, e);
+            if (e.type === 'mouseup' && e.button !== 0) {
+                return;
+            }
+            if (e.type === 'touchstart') {
+                e.preventDefault();
+            }
             if (!dropdownShown) {
                 showDropdown(e);
                 me.selectInput.focus();
@@ -215,6 +245,9 @@ class Select extends Base {
         dropdownButton.classList.add('azSelectdropdownButton');
         node.appendChild(dropdownButton);
 
-        dropdownButton.addEventListener('click', toggleDropdown);
+        if (isTouchDevice()) {
+            dropdownButton.addEventListener('touchstart', toggleDropdown);
+        }
+        dropdownButton.addEventListener('mousedown', toggleDropdown);
     }
 };

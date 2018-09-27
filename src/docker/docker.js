@@ -41,11 +41,11 @@ class Docker extends Base {
         this.dragging = false;
         this.sortable = azui.Sortable(this.node, {
             // placeholder: true,
-            create: (e, target) => {
-                if (e.type === 'touchstart') {
-                    e.preventDefault();
-                }
-            },
+            // create: (e, target) => {
+            //     if (e.type === 'touchstart') {
+            //         e.preventDefault();
+            //     }
+            // },
             start: (e, data) => {
                 // console.log('start dragging');
                 me.dragging = true;

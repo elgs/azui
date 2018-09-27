@@ -256,9 +256,13 @@ class Draggable extends Base {
         };
 
         const onmousedown = function (e) {
-            // console.log(e.type, e.target, me);
+            // console.log(e.type, e.button, e.target, me, e);
+
             if (e.type === 'mousedown' && e.button !== 0) {
                 return;
+            }
+            if (e.type === 'touchstart') {
+                e.preventDefault();
             }
 
             // the reson cannot do it is that scroll content on mobile device becomes not possible
@@ -274,10 +278,10 @@ class Draggable extends Base {
             if (e.target.closest('.azDraggable') !== node) {
                 return;
             }
-
             if (settings.create(e, node, me) === false) {
                 return;
             }
+
             me.selected = node;
 
             me.mouseX = me.mouseX0 = e.pageX || e.touches[0].pageX;
@@ -320,8 +324,10 @@ class Draggable extends Base {
         };
 
         if (isTouchDevice()) {
+            // me.node.addEventListener('touchstart', onmousedown);
             me.replaceEventListener('touchstart', 'touchstart', onmousedown);
         }
+        // me.node.addEventListener('mousedown', onmousedown);
         me.replaceEventListener('mousedown', 'mousedown', onmousedown);
     }
 
