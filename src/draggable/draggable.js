@@ -129,7 +129,7 @@ class Draggable extends Base {
                 started = true;
 
                 const dts = me.dropTargets;
-                dts.filter(dt => dt !== node).map(dt => {
+                dts.map(dt => {
                     // console.log(me, elem);
                     // const dropId = dt.getAttribute('drop-id');
                     const ps = getPositionState(node, dt, e);
@@ -164,7 +164,8 @@ class Draggable extends Base {
             // console.log(me.escapeX, me.escapeY);
 
             const dts = me.dropTargets;
-            dts.filter(dt => dt !== node).map(dt => {
+            for (const dt of dts) {
+                // dts.map(dt => {
                 // console.log(me, elem);
                 const dropId = dt.getAttribute('az-obj-id-droppable');
                 const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
@@ -172,7 +173,9 @@ class Draggable extends Base {
                 const ps = getPositionState(node, dt, e);
                 dropTargetStates[dropId] = ps;
                 if (oldPs != undefined && oldPs !== ps) {
-                    Object.keys(azui.constants.dndStateConsts).map(state => {
+                    // Object.keys(azui.constants.dndStateConsts).map(state => {
+                    const states = Object.keys(azui.constants.dndStateConsts);
+                    for (const state of states) {
                         const nState = ps & azui.constants.dndStateConsts[state];
                         const oState = oldPs & azui.constants.dndStateConsts[state];
                         // console.log(nState, oState);
@@ -188,11 +191,14 @@ class Draggable extends Base {
                                         originalEvent: e,
                                     }
                                 }));
+                                break;
                             }
                         }
-                    });
+                        // });
+                    }
                 }
-            });
+                // });
+            }
             // me.selected.style['background-color'] = 'red';
 
             if (settings.axis === 'x') {
@@ -235,7 +241,7 @@ class Draggable extends Base {
             me.selected = null;
 
             const dts = me.dropTargets;
-            dts.filter(dt => dt !== node).map(dt => {
+            dts.map(dt => {
                 // console.log(me, elem);
                 // const dropId = dt.getAttribute('drop-id');
                 const ps = getPositionState(node, dt, e);
@@ -258,12 +264,13 @@ class Draggable extends Base {
         const onmousedown = function (e) {
             // console.log(e.type, e.button, e.target, me, e);
 
-            if (e.type === 'mousedown' && e.button !== 0) {
-                return;
-            }
             if (e.type === 'touchstart') {
                 e.preventDefault();
             }
+            if (e.type === 'mousedown' && e.button !== 0) {
+                return;
+            }
+
 
             // the reson cannot do it is that scroll content on mobile device becomes not possible
             // client can use this in create() if needed.
@@ -320,7 +327,7 @@ class Draggable extends Base {
             document.addEventListener('mouseup', onmouseup);
             document.addEventListener('mouseleave', onmouseup);
 
-            me.dropTargets = [...document.querySelectorAll('.azDropTarget')];
+            me.dropTargets = [...document.querySelectorAll('.azDropTarget')].filter(dt => dt !== node);
         };
 
         if (isTouchDevice()) {
