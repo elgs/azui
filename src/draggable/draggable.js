@@ -134,14 +134,13 @@ class Draggable extends Base {
                 dts.map(dt => {
                     // console.log(me, elem);
                     // const dropId = dt.getAttribute('drop-id');
-                    const ps = getPositionState(node, dt, e);
+                    const ps = getPositionState(node, dt.dt, e);
                     // console.log(ps);
-                    const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
-                    if (azui.constants.dndEventConsts.dragged & interestedDropEvents) {
-                        dt.dispatchEvent(new CustomEvent('dragged', {
+                    if (azui.constants.dndEventConsts.dragged & dt.interestedDropEvents) {
+                        dt.dt.dispatchEvent(new CustomEvent('dragged', {
                             detail: {
                                 source: node,
-                                target: dt,
+                                target: dt.dt,
                                 state: ps
                             }
                         }));
@@ -168,14 +167,9 @@ class Draggable extends Base {
             const dts = me.dropTargets;
             for (const dt of dts) {
                 // console.log(me, elem);
-                const dropId = dt.getAttribute('az-obj-id-droppable');
-                const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
-                const oldPs = dropTargetStates[dropId];
-                const ps = getPositionState(node, dt, e);
-                dropTargetStates[dropId] = ps;
-                if (oldPs === undefined || oldPs === null) {
-                    oldPs = azui.constants.dndStateConsts.pointer;
-                }
+                const oldPs = dropTargetStates[dt.dropId];
+                const ps = getPositionState(node, dt.dt, e);
+                dropTargetStates[dt.dropId] = ps;
                 if (oldPs != undefined && oldPs !== ps) {
                     const states = Object.keys(azui.constants.dndStateConsts);
                     for (const state of states) {
@@ -184,11 +178,11 @@ class Draggable extends Base {
                         // console.log(nState, oState);
                         if (nState !== oState) {
                             const eventName = state + (!!nState ? '_in' : '_out');
-                            if (azui.constants.dndEventConsts[eventName] & interestedDropEvents) {
-                                dt.dispatchEvent(new CustomEvent(eventName, {
+                            if (azui.constants.dndEventConsts[eventName] & dt.interestedDropEvents) {
+                                dt.dt.dispatchEvent(new CustomEvent(eventName, {
                                     detail: {
                                         source: node,
-                                        target: dt,
+                                        target: dt.dt,
                                         previousState: oldPs,
                                         state: ps,
                                         originalEvent: e,
@@ -245,14 +239,13 @@ class Draggable extends Base {
             dts.map(dt => {
                 // console.log(me, elem);
                 // const dropId = dt.getAttribute('drop-id');
-                const ps = getPositionState(node, dt, e);
+                const ps = getPositionState(node, dt.dt, e);
                 // console.log(ps);
-                const interestedDropEvents = dt.getAttribute('az-interested-drop-events') * 1;
-                if (azui.constants.dndEventConsts.dropped & interestedDropEvents) {
-                    dt.dispatchEvent(new CustomEvent('dropped', {
+                if (azui.constants.dndEventConsts.dropped & dt.interestedDropEvents) {
+                    dt.dt.dispatchEvent(new CustomEvent('dropped', {
                         detail: {
                             source: node,
-                            target: dt,
+                            target: dt.dt,
                             state: ps
                         }
                     }));
@@ -328,7 +321,19 @@ class Draggable extends Base {
             document.addEventListener('mouseup', onmouseup);
             document.addEventListener('mouseleave', onmouseup);
 
-            me.dropTargets = [...document.querySelectorAll('.azDropTarget')].filter(dt => dt !== node);
+            me.dropTargets = [...document.querySelectorAll('.azDropTarget')].filter(dt => dt !== node).map(dt => {
+                return {
+                    dt,
+                    dropId: dt.getAttribute('az-obj-id-droppable'),
+                    interestedDropEvents: dt.getAttribute('az-interested-drop-events') * 1,
+                };
+            });
+
+            const dts = me.dropTargets;
+            dts.map(dt => {
+                const ps = getPositionState(node, dt.dt, e);
+                dropTargetStates[dt.dropId] = ps;
+            });
         };
 
         if (isTouchDevice()) {
