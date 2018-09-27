@@ -171,11 +171,12 @@ class Tabs extends Base {
                     const targetTabs = azui.Tabs(targetTabsNode);
                     targetTabs.activateTab(tabId);
 
-                    const tabHeader = data.source;//.closest('.azTabLabel#azTabHeader-' + tabId);
-                    const isActive = matches(tabHeader, '.active');
+                    const tabHeader = data.source; //.closest('.azTabLabel#azTabHeader-' + tabId);
+                    // const isActive = matches(tabHeader, '.active');
+                    const active = tabHeader.parentNode.querySelector('.active');
                     const headers = me.node.querySelectorAll('.azTabLabel');
                     if (headers.length) {
-                        if (isActive) {
+                        if (!active) {
                             me.activateTabByIndex(0);
                         }
                         // me.showHideScrollers();
@@ -386,7 +387,7 @@ class Tabs extends Base {
     activateTab(tabId) {
         const me = this;
         const node = me.node;
-        const tabContent = node.querySelectorAll('div.azTabContent').forEach(el => {
+        node.querySelectorAll('div.azTabContent').forEach(el => {
             const elId = _getTabId(el.id);
             if (elId === tabId) {
                 el.style['display'] = 'block';
@@ -394,7 +395,7 @@ class Tabs extends Base {
                 el.style['display'] = 'none';
             }
         });
-        const tabHeaders = node.querySelectorAll('div.azTabLabel').forEach(el => {
+        node.querySelectorAll('div.azTabLabel').forEach(el => {
             const elId = _getTabId(el.id);
             if (elId === tabId) {
                 el.classList.add('active');
@@ -407,21 +408,19 @@ class Tabs extends Base {
         const me = this;
         const node = me.node;
 
-        const tabContent =
-            node.querySelectorAll('div.azTabContent').forEach((el, index) => {
-                if (index === tabIndex) {
-                    el.style['display'] = 'block';
-                } else {
-                    el.style['display'] = 'none';
-                }
-            });
-        const tabHeaders =
-            node.querySelectorAll('div.azTabLabel').forEach((el, index) => {
-                if (index === tabIndex) {
-                    el.classList.add('active');
-                } else {
-                    el.classList.remove('active');
-                }
-            });
+        node.querySelectorAll('div.azTabContent').forEach((el, index) => {
+            if (index === tabIndex) {
+                el.style['display'] = 'block';
+            } else {
+                el.style['display'] = 'none';
+            }
+        });
+        node.querySelectorAll('div.azTabLabel').forEach((el, index) => {
+            if (index === tabIndex) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
+        });
     }
 };

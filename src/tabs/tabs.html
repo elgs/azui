@@ -59,11 +59,13 @@
 
         let count = 0;
         const newTabButton = document.querySelector('#newTabButton');
-        newTabButton.addEventListener('click', e => {
+        const onClick = e => {
             const myTabs = e.target.closest('.azTabs');
             azui.Tabs(myTabs).addTab(svgApps, count + ` New Tab`, count + ` New Tab`, true, false);
             ++count;
-        });
+        };
+        newTabButton.addEventListener('click', onClick);
+        newTabButton.addEventListener('touchstart', onClick);
         newTabButton.click();
         newTabButton.click();
         newTabButton.click();
