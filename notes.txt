@@ -17,6 +17,9 @@ DONE: number cell up/down button
 DONE: mobile select incorrect dropdown position
 TODO: row/cell editing
 
+pager:
+TODO: add rows in page in ui
+
 tabs:
 DONE: drag out to create new tabset
 DONE: drag tab between tabsets
@@ -48,6 +51,8 @@ DONE: click input not to dismiss the dropdown
 TODO: start to show all with current value selected
 TODO: if current value is not in the list, show all with none selected
 TODO: option to allow value not in the list
+DONE: mouse hover to select
+TODO: pageable dropdown
 
 sortable:
 DONE: escape/capture

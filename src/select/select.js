@@ -7,9 +7,10 @@ import {
     empty,
     getDocScrollLeft,
     getDocScrollTop,
+    index,
+    isTouchDevice,
     matches,
-    remove,
-    isTouchDevice
+    remove
 } from '../utilities/utilities.js';
 
 azui.Select = function (el, options, init) {
@@ -17,14 +18,14 @@ azui.Select = function (el, options, init) {
 };
 
 class Select extends Base {
-
     static className = 'Select';
 
     azInit(options) {
         const settings = Object.assign({
-            items: [],
-            select: (e) => {},
-        }, options);
+                items: [],
+                select: (e) => {},
+            },
+            options);
 
         const me = this;
         const node = me.node;
@@ -58,10 +59,11 @@ class Select extends Base {
                     menuItem.addEventListener('touchstart', onClick);
                 }
 
-                const onMouseOver = function (e) {
-                    console.log(e.currentTarget);
+                const onMouseEnter = function (e) {
+                    highlightIndex = index(e.currentTarget, '.azMenuItem');
+                    navigateDropdown(e);
                 };
-                menuItem.addEventListener('mouseover', onMouseOver);
+                menuItem.addEventListener('mouseenter', onMouseEnter);
 
                 return menuItem;
             };
@@ -87,7 +89,8 @@ class Select extends Base {
                         key: title,
                         title
                     }
-                } else if (item === null || item === undefined || typeof item === 'object') {
+                } else if (
+                    item === null || item === undefined || typeof item === 'object') {
                     // unchanged.
                 } else {
                     item = {
@@ -96,12 +99,13 @@ class Select extends Base {
                     }
                 }
                 // console.log(item);
-                if (item.title.toLowerCase().includes(me.selectInput.value.toLowerCase())) {
+                if (item.title.toLowerCase().includes(
+                        me.selectInput.value.toLowerCase())) {
                     me.menu.appendChild(createMenuItem(item));
                 }
             });
 
-            document.addEventListener('mouseup', offDropdown);
+            document.addEventListener('mousedown', offDropdown);
             document.addEventListener('keyup', navigateDropdown);
 
             if (isTouchDevice()) {
@@ -113,6 +117,10 @@ class Select extends Base {
             me.menu.style['top'] = meBcr.bottom + getDocScrollTop();
             me.menu.style['width'] = meBcr.width;
             me.menu.style['display'] = 'block';
+
+            setTimeout(() => {
+                me.selectInput.focus();
+            });
 
             if (e) {
                 e.stopPropagation();
@@ -132,14 +140,18 @@ class Select extends Base {
             } else if (e.keyCode === 40) {
                 // down
                 ++highlightIndex;
-                highlightIndex = highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
+                highlightIndex =
+                    highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
             }
 
-            const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
-            //const selected = menu.children('.azMenuItem').eq(highlightIndex);
-            Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem')).forEach(el => {
-                el.classList.remove('selected');
-            });
+            const selected = Array.prototype.filter.call(
+                me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
+            // const selected = menu.children('.azMenuItem').eq(highlightIndex);
+            Array.prototype.filter
+                .call(me.menu.children, n => matches(n, '.azMenuItem'))
+                .forEach(el => {
+                    el.classList.remove('selected');
+                });
             // menu.children('.azMenuItem').removeClass('selected');
             if (selected) {
                 selected.classList.add('selected');
@@ -157,7 +169,7 @@ class Select extends Base {
             // return;
             // }
             remove(me.menu);
-            document.removeEventListener('mouseup', offDropdown);
+            document.removeEventListener('mousedown', offDropdown);
             document.removeEventListener('keyup', navigateDropdown);
 
             if (isTouchDevice()) {
@@ -174,7 +186,7 @@ class Select extends Base {
 
         const toggleDropdown = function (e) {
             // console.log(dropdownShown, e.type, e.button, e);
-            if (e.type === 'mouseup' && e.button !== 0) {
+            if (e.type === 'mousedown' && e.button !== 0) {
                 return;
             }
             if (e.type === 'touchstart') {
@@ -182,13 +194,13 @@ class Select extends Base {
             }
             if (!dropdownShown) {
                 showDropdown(e);
-                me.selectInput.focus();
             } else {
                 offDropdown(e);
             }
         };
 
         const onInputKeyUp = function (e) {
+            console.log(me.selectInput.value.trim().length);
             // console.log(e.keyCode, me.selectInput.value.trim().length);
             if (e.keyCode === 27) {
                 // esc key is pressed
@@ -207,16 +219,19 @@ class Select extends Base {
                 // }
             } else if (e.keyCode === 13) {
                 if (dropdownShown) {
-                    document.documentElement.dispatchEvent(new e.constructor(e.type, e));
+                    // document.documentElement.dispatchEvent(new e.constructor(e.type,
+                    // e));
+
                 } else {
                     // submit
-                    node.dispatchEvent(new CustomEvent('done', {
-                        detail: {
-                            value: me.selectInput.value
-                        }
-                    }));
+                    node.dispatchEvent(
+                        new CustomEvent('done', {
+                            detail: {
+                                value: me.selectInput.value
+                            }
+                        }));
                 }
-            } else if (me.selectInput.value.trim().length > 0) {
+            } else if (me.selectInput.value.trim().length >= 0) {
                 // if input.val().trim().length>0, trigger filtered dropdown
                 settings.select(e);
                 if (!dropdownShown) {
@@ -225,11 +240,6 @@ class Select extends Base {
                     offDropdown(e);
                     showDropdown(e);
                 }
-            } else if (me.selectInput.value.trim().length === 0) {
-                // if (dropdownShown) {
-                settings.select(e);
-                showDropdown(e);
-                // }
             }
         };
 

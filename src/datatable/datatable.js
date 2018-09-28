@@ -67,7 +67,7 @@ class DataTable extends Base {
                 settings.columns.map(col => {
                     const cell = parseDOMElement(`<span>${row[col.dataIndex]}</span>`)[0];
                     const td = document.createElement('div');
-                    td.classList.add(`td`, `col-${col.key}`);
+                    td.classList.add('td', `col-${col.key}`);
                     td.appendChild(cell);
 
                     if (settings.editor === 'cell' || settings.editor === 'row') {

@@ -312,8 +312,14 @@ export const siblings = function (el, selector) {
     }
 };
 
-export const index = function (node) {
-    return Array.prototype.indexOf.call(node.parentNode.children, node);
+export const index = function (node, selector) {
+    let children = node.parentNode.children;
+    if (selector) {
+        children = Array.prototype.filter.call(children, function (child) {
+            return matches(child, selector);
+        });
+    }
+    return Array.prototype.indexOf.call(children, node);
 };
 
 export const matches = function (el, selector) {
