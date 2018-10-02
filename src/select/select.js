@@ -34,8 +34,8 @@ class Select extends Base {
 
         node.classList.add('azSelect');
 
-        const showDropdown = function (e) {
-            console.log('show');
+        const showDropdown = function (e, showAll = false) {
+            // console.log('show');
             // alert(e.currentTarget.outerHTML);
             // console.log(e.currentTarget);
             const createMenuItem = function (item) {
@@ -51,12 +51,12 @@ class Select extends Base {
                 menuItem.classList.add('azMenuItem');
                 menuItem.appendChild(titleDiv);
                 titleDiv.textContent = title;
-                const onClick = function (e) {
+                const onSelect = function (e) {
                     me.selectInput.value = title;
                 };
-                menuItem.addEventListener('click', onClick);
+                menuItem.addEventListener('mousedown', onSelect);
                 if (isTouchDevice()) {
-                    menuItem.addEventListener('touchstart', onClick);
+                    menuItem.addEventListener('touchstart', onSelect);
                 }
 
                 const onMouseEnter = function (e) {
@@ -82,7 +82,7 @@ class Select extends Base {
                 settings.items = settings.items();
             }
 
-            settings.items.map(item => {
+            settings.items.map((item, index) => {
                 if (typeof item === 'function') {
                     const title = item();
                     item = {
@@ -99,9 +99,14 @@ class Select extends Base {
                     }
                 }
                 // console.log(item);
-                if (item.title.toLowerCase().includes(
-                        me.selectInput.value.toLowerCase())) {
+                if (!!showAll || item.title.toLowerCase().includes(me.selectInput.value.toLowerCase())) {
                     me.menu.appendChild(createMenuItem(item));
+
+                    // highlight the selected
+                    if (!!showAll && item.title === me.selectInput.value) {
+                        highlightIndex = index;
+                        navigateDropdown(e);
+                    }
                 }
             });
 
@@ -164,11 +169,12 @@ class Select extends Base {
         };
 
         const offDropdown = function (e) {
-            console.log('off');
+            // console.log('off');
             // if (e.target === me.selectInput) {
             // return;
             // }
             remove(me.menu);
+
             document.removeEventListener('mousedown', offDropdown);
             document.removeEventListener('keyup', navigateDropdown);
 
@@ -193,14 +199,14 @@ class Select extends Base {
                 e.preventDefault();
             }
             if (!dropdownShown) {
-                showDropdown(e);
+                showDropdown(e, true);
             } else {
                 offDropdown(e);
             }
         };
 
         const onInputKeyUp = function (e) {
-            console.log(me.selectInput.value.trim().length);
+            // console.log(me.selectInput.value.trim().length);
             // console.log(e.keyCode, me.selectInput.value.trim().length);
             if (e.keyCode === 27) {
                 // esc key is pressed
@@ -210,7 +216,7 @@ class Select extends Base {
             } else if (e.keyCode === 40) {
                 // if key code is down arrow key, triggered full dropdown
                 if (!dropdownShown) {
-                    showDropdown(e);
+                    showDropdown(e, true);
                 }
             } else if (e.keyCode === 38) {
                 // if key code is up arrow key, remove dropdown
