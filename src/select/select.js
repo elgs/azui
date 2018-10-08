@@ -23,12 +23,15 @@ class Select extends Base {
     azInit(options) {
         const settings = Object.assign({
                 items: [],
+                allowNewItems: true,
                 select: (e) => {},
             },
             options);
 
         const me = this;
         const node = me.node;
+
+        me.settings = settings;
 
         empty(node);
 
@@ -165,7 +168,10 @@ class Select extends Base {
                 selected.classList.add('selected');
                 if (e.keyCode === 13) {
                     me.selectInput.value = selected.textContent;
-                    // document.documentElement.click();
+                    offDropdown(e);
+                }
+            } else if (me.settings.allowNewItems) {
+                if (e.keyCode === 13) {
                     offDropdown(e);
                 }
             }
