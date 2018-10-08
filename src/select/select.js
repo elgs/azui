@@ -53,6 +53,9 @@ class Select extends Base {
                 titleDiv.textContent = title;
                 const onSelect = function (e) {
                     me.selectInput.value = title;
+                    setTimeout(() => {
+                        me.selectInput.focus();
+                    });
                 };
                 menuItem.addEventListener('mousedown', onSelect);
                 if (isTouchDevice()) {
