@@ -73,6 +73,7 @@ class DataTable extends Base {
                     if (settings.editor === 'cell' || settings.editor === 'row') {
                         azui.InlineEdit(cell, {
                             type: col.type,
+                            allowNewItems: col.allowNewItems,
                             options: col.options,
                         });
                     }

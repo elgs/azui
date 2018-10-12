@@ -20,6 +20,7 @@ class InlineEdit extends Base {
     azInit(options) {
         const settings = Object.assign({
             type: 'text', // number, select
+            allowNewItems: true,
             options: [],
             value: null,
             create: function (event, ui) {
@@ -100,11 +101,15 @@ class InlineEdit extends Base {
             if (settings.type === 'select') {
                 const select = azui.Select(editorWrapper, {
                     items: settings.options,
+                    allowNewItems: settings.allowNewItems,
                     select: e => _checkDirty(select.selectInput)
                 });
                 editorWrapper.appendChild(dirtySign);
                 select.node.addEventListener('done', function (e) {
                     done(e);
+                });
+                select.node.addEventListener('cancel', function (e) {
+                    cancel(e);
                 });
                 select.selectInput.classList.add('azInlineEditor');
                 // editorWrapper.value = originalValue;
