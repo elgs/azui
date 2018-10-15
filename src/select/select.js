@@ -56,19 +56,13 @@ class Select extends Base {
                 titleDiv.textContent = title;
                 const onSelect = function (e) {
                     me.selectInput.value = title;
-                    if (settings.allowNewItems) {
-                        setTimeout(() => {
-                            me.selectInput.focus();
-                        });
-                    } else {
-                        node.dispatchEvent(
-                            new CustomEvent('done', {
-                                detail: {
-                                    value: me.selectInput.value
-                                }
-                            })
-                        );
-                    }
+                    node.dispatchEvent(
+                        new CustomEvent('done', {
+                            detail: {
+                                value: me.selectInput.value
+                            }
+                        })
+                    );
                 };
                 menuItem.addEventListener('mousedown', onSelect);
                 if (isTouchDevice()) {
@@ -225,6 +219,7 @@ class Select extends Base {
                 // up
                 --highlightIndex;
                 highlightIndex = highlightIndex < 0 ? 0 : highlightIndex;
+                navigateDropdown();
             } else if (e.keyCode === 40) {
                 // if key code is down arrow key, triggered full dropdown
                 if (!dropdownShown) {
@@ -236,35 +231,36 @@ class Select extends Base {
                     navigateDropdown();
                 }
             } else if (e.keyCode === 13) {
-                if (dropdownShown) {
-                    const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
-                    if (selected) {
-                        me.selectInput.value = selected.textContent;
+                if (me.settings.allowNewItems) {
+                    if (dropdownShown) {
+                        const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
+                        if (selected) {
+                            me.selectInput.value = selected.textContent;
+                        }
+                        offDropdown(e);
                     }
-                    if (me.settings.allowNewItems) {
-                        setTimeout(() => {
-                            me.selectInput.focus();
-                        });
-                    } else {
-                        node.dispatchEvent(
-                            new CustomEvent('done', {
-                                detail: {
-                                    value: me.selectInput.value
-                                }
-                            })
-                        );
-                    }
-                    offDropdown(e);
                 } else {
-                    // submit
-                    node.dispatchEvent(
-                        new CustomEvent('done', {
-                            detail: {
-                                value: me.selectInput.value
-                            }
-                        })
-                    );
+                    if (dropdownShown) {
+                        const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
+                        if (selected) {
+                            me.selectInput.value = selected.textContent;
+                        } else {
+                            return;
+                        }
+                        offDropdown(e);
+                    } else {
+                        return;
+                    }
                 }
+
+                // submit
+                node.dispatchEvent(
+                    new CustomEvent('done', {
+                        detail: {
+                            value: me.selectInput.value
+                        }
+                    })
+                );
             } else if (me.selectInput.value.trim().length >= 0) {
                 // if input.val().trim().length>0, trigger filtered dropdown
                 settings.select(e);

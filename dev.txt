@@ -50,7 +50,7 @@ DONE: keyboard to filter dropdown list
 DONE: click input not to dismiss the dropdown
 DONE: start to show all with current value selected
 DONE: if current value is not in the list, show all with none selected
-TODO: option to allow value not in the list
+DONE: option to allow value not in the list
 DONE: mouse hover to select ???
 TODO: pageable dropdown
 
