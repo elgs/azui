@@ -104,7 +104,7 @@ class DataTable extends Base {
                         });
                 }
 
-                pager.update(settings.pageNumber, totalSize, settings.pageSize);
+                pager.update(settings.pageNumber, totalSize, settings.pageSize, false);
             });
         };
 
@@ -127,9 +127,8 @@ class DataTable extends Base {
             pageSize: settings.pageSize,
             totalSize: me.totalSize,
             pageNumber: settings.pageNumber,
-            onPageChange: function (pageNumber) {
-                settings.loadData(pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-                this.update(pageNumber, me.totalSize, settings.pageSize);
+            onPageChange: function (pageNumber, pageSize, totalSize) {
+                settings.loadData(pageNumber, pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
             },
         });
 

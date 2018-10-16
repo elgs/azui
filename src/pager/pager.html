@@ -18,8 +18,10 @@
     <script>
         const elem = document.querySelector('#pager0');
         azui.Pager(elem, {
-            onPageChange: function (pageNumber) {
-                this.update(pageNumber, 101, 25);
+            pageSize: 25,
+            pageNumber: 1,
+            totalSize: 101,
+            onPageChange: function (pageNumber, pageSize, totalSize) {
             },
         });
     </script>

@@ -17,7 +17,7 @@ class Pager extends Base {
 
     azInit(options) {
         const settings = Object.assign({
-            onPageChange: function (pageNumber) {},
+            onPageChange: function (pageNumber, pageSize, totalSize) {},
             pageNumber: 1,
             totalSize: 0,
             pageSize: 25,
@@ -51,11 +51,11 @@ class Pager extends Base {
         const pagerBar = document.createElement('div');
         this._createIcon(icons.svgFirstPage, pagerBar, function (e) {
             me.settings.pageNumber = 1;
-            me.settings.onPageChange.call(me, me.settings.pageNumber);
+            me.update();
         });
         this._createIcon(icons.svgPreviousPage, pagerBar, function (e) {
             --me.settings.pageNumber;
-            me.settings.onPageChange.call(me, me.settings.pageNumber);
+            me.update();
         });
         const pn = document.createElement('input');
         pn.setAttribute('type', 'number');
@@ -66,18 +66,18 @@ class Pager extends Base {
 
         pn.addEventListener('change', function () {
             me.settings.pageNumber = this.value * 1;
-            me.settings.onPageChange.call(me, me.settings.pageNumber);
+            me.update();
         });
         this._createIcon(icons.svgNextPage, pagerBar, function (e) {
             ++me.settings.pageNumber;
-            me.settings.onPageChange.call(me, me.settings.pageNumber);
+            me.update();
         });
         this._createIcon(icons.svgLastPage, pagerBar, function (e) {
             me.settings.pageNumber = Number.MAX_SAFE_INTEGER;
-            me.settings.onPageChange.call(me, me.settings.pageNumber);
+            me.update();
         });
         this._createIcon(icons.svgRefresh, pagerBar, function (e) {
-            me.settings.onPageChange.call(me, me.settings.pageNumber);
+            me.update();
         });
         pagerBar.classList.add('azPageBar');
         return pagerBar;
@@ -101,10 +101,11 @@ class Pager extends Base {
         pager.querySelector('.azPageInfo>span.total').textContent = this.settings.totalSize;
     };
 
-    update(pageNumber, totalSize, pageSize) {
+    update(pageNumber = this.settings.pageNumber, totalSize = this.settings.totalSize, pageSize = this.settings.pageSize, trigger = true) {
         this.settings.pageNumber = Math.min(Math.ceil(totalSize / pageSize), Math.max(1, pageNumber));
         this.settings.pageSize = pageSize;
         this.settings.totalSize = totalSize;
         this._updatePager(this.node);
+        trigger && this.settings.onPageChange.call(this, this.settings.pageNumber, this.settings.pageSize, this.settings.totalSize);
     };
 };
