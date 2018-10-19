@@ -57,17 +57,24 @@ class Pager extends Base {
             --me.settings.pageNumber;
             me.update();
         });
+
         const pn = document.createElement('input');
         pn.setAttribute('type', 'number');
         pn.setAttribute('min', 1);
         pn.value = this.settings.pageNumber;
-        pn.classList.add('pageNumber');
+        pn.classList.add('pagerInput', 'pageNumber');
         pagerBar.appendChild(pn);
 
         pn.addEventListener('change', function () {
             me.settings.pageNumber = this.value * 1;
             me.update();
         });
+
+        const totalPagesTmpl = `<span style='margin-right: 15px;'>/ <span class="totalPages">0</span></span>`;
+        const totalPages = parseDOMElement(totalPagesTmpl)[0];
+        totalPages.classList.add('azPageInfo');
+        pagerBar.appendChild(totalPages);
+
         this._createIcon(icons.svgNextPage, pagerBar, function (e) {
             ++me.settings.pageNumber;
             me.update();
@@ -79,6 +86,19 @@ class Pager extends Base {
         this._createIcon(icons.svgRefresh, pagerBar, function (e) {
             me.update();
         });
+
+        const ps = document.createElement('input');
+        ps.setAttribute('type', 'number');
+        ps.setAttribute('min', 1);
+        ps.value = this.settings.pageSize;
+        ps.classList.add('pagerInput', 'pageSize');
+        pagerBar.appendChild(ps);
+
+        ps.addEventListener('change', function () {
+            me.settings.pageSize = this.value * 1;
+            me.update();
+        });
+
         pagerBar.classList.add('azPageBar');
         return pagerBar;
     };
@@ -95,7 +115,9 @@ class Pager extends Base {
     };
 
     _updatePager(pager) {
-        pager.querySelector('.azPageBar>input[type=number].pageNumber').value = this.settings.pageNumber;
+        pager.querySelector('.azPageBar>input[type=number].pagerInput.pageNumber').value = this.settings.pageNumber;
+        pager.querySelector('.azPageBar>input[type=number].pagerInput.pageSize').value = this.settings.pageSize;
+        pager.querySelector('.azPageBar .totalPages').textContent = Math.ceil(this.settings.totalSize / this.settings.pageSize);
         pager.querySelector('.azPageInfo>span.start').textContent = (this.settings.pageNumber - 1) * this.settings.pageSize + 1;
         pager.querySelector('.azPageInfo>span.end').textContent = Math.min(this.settings.pageNumber * this.settings.pageSize, this.settings.totalSize);
         pager.querySelector('.azPageInfo>span.total').textContent = this.settings.totalSize;

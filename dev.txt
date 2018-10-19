@@ -18,7 +18,7 @@ DONE: mobile select incorrect dropdown position
 TODO: row/cell editing
 
 pager:
-TODO: add rows in page in ui
+DONE: add rows in page in ui
 
 tabs:
 DONE: drag out to create new tabset
