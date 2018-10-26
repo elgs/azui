@@ -91,13 +91,18 @@ class Pager extends Base {
         ps.setAttribute('type', 'number');
         ps.setAttribute('min', 1);
         ps.value = this.settings.pageSize;
-        ps.classList.add('pagerInput', 'pageSize');
+        ps.classList.add('pagerInput', 'pageSize', 'azWideScreen');
         pagerBar.appendChild(ps);
 
         ps.addEventListener('change', function () {
             me.settings.pageSize = this.value * 1;
             me.update();
         });
+
+        const pageSizeTextTmpl = `<span class='azWideScreen'>items per page</span>`;
+        const pageSizeText = parseDOMElement(pageSizeTextTmpl)[0];
+        pageSizeText.classList.add('azPageInfo');
+        pagerBar.appendChild(pageSizeText);
 
         pagerBar.classList.add('azPageBar');
         return pagerBar;
