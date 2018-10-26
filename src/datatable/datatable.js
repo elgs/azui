@@ -103,8 +103,6 @@ class DataTable extends Base {
                             el.style['display'] = 'inline-block';
                         });
                 }
-
-                pager.update(settings.pageNumber, totalSize, settings.pageSize, false);
             });
         };
 
@@ -123,14 +121,6 @@ class DataTable extends Base {
         const totalWidth = settings.columns.reduce((a, c) => a + (c.width || 100), 0);
 
         setWidth(node, 2 + totalWidth);
-        const pager = azui.Pager(tfoot, {
-            pageSize: settings.pageSize,
-            totalSize: me.totalSize,
-            pageNumber: settings.pageNumber,
-            onPageChange: function (pageNumber, pageSize, totalSize) {
-                settings.loadData(pageNumber, pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
-            },
-        });
 
         settings.columns = settings.columns.map((col, index) => {
             const ncol = normalizeCol(col);
@@ -326,5 +316,14 @@ class DataTable extends Base {
         });
 
         settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
+
+        const pager = azui.Pager(tfoot, {
+            pageSize: settings.pageSize,
+            totalSize: me.totalSize,
+            pageNumber: settings.pageNumber,
+            onPageChange: function (pageNumber, pageSize, totalSize) {
+                settings.loadData(pageNumber, pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
+            },
+        });
     }
 };
