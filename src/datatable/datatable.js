@@ -322,7 +322,9 @@ class DataTable extends Base {
             totalSize: me.totalSize,
             pageNumber: settings.pageNumber,
             onPageChange: function (pageNumber, pageSize, totalSize) {
-                settings.loadData(pageNumber, pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
+                settings.pageSize = pageSize;
+                settings.pageNumber = pageNumber;
+                settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
             },
         });
     }
