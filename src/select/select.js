@@ -151,6 +151,9 @@ class Select extends Base {
 
         const navigateDropdown = function () {
             // console.log(e.keyCode);
+            if (!me.menu) {
+                return;
+            }
             const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
             // const selected = menu.children('.azMenuItem').eq(highlightIndex);
             Array.prototype.filter

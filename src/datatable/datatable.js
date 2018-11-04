@@ -55,14 +55,26 @@ class DataTable extends Base {
 
         this.totalSize = 0;
 
+        const rowClicked = e => {
+            if (e.type === 'touchstart') {
+                e.preventDefault();
+            }
+            console.log(e);
+        };
+
         const refresh = function (pageData, totalSize) {
             me.totalSize = totalSize;
-            tbody.innerHTML = '';
+            empty(tbody);
 
             pageData.map(row => {
                 const tr = document.createElement('div');
                 tr.classList.add('tr');
                 tbody.appendChild(tr);
+
+                if (isTouchDevice()) {
+                    tr.addEventListener('touchstart', rowClicked);
+                }
+                tr.addEventListener('mousedown', rowClicked);
 
                 settings.columns.map(col => {
                     const cell = parseDOMElement(`<span>${row[col.dataIndex]}</span>`)[0];
