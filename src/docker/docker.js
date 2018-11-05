@@ -7,7 +7,8 @@ import {
     diffPosition,
     matches,
     randGen,
-    remove
+    remove,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 azui.Docker = function (el, options, init) {
@@ -147,6 +148,9 @@ class Docker extends Base {
         this.sortable.add(docked);
 
         const clicked = e => {
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
             if (e.button === 2 || cm.on || me.dragging) {
                 return;
             }
@@ -163,7 +167,9 @@ class Docker extends Base {
         };
 
         docked.addEventListener('mouseup', clicked);
-        docked.addEventListener('touchend', clicked);
+        if (isTouchDevice()) {
+            docked.addEventListener('touchend', clicked);
+        }
         el.setAttribute('az-dock-ref', id);
         if (notify) {
             el.dispatchEvent(new CustomEvent('docked'));

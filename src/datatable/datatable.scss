@@ -29,6 +29,11 @@
                 background-color: darken($color: $main-color, $amount: 20%);
             }
 
+            &.selected {
+                background-color: #498DD5;
+                color: $bg-color;
+            }
+
             &>div.td {
                 width: 100px; // min-width: 80px;
                 height: 25px;
@@ -100,10 +105,6 @@
                 display: inline-block;
                 vertical-align: middle;
                 height: 100%;
-            }
-
-            &:hover {
-                background-color: darken($color: $main-color, $amount: 10%);
             }
 
             &:first-of-type {

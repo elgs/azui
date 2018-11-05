@@ -56,10 +56,10 @@ class DataTable extends Base {
         this.totalSize = 0;
 
         const rowClicked = e => {
-            if (e.type === 'touchstart') {
+            if (e.type === 'touchend') {
                 e.preventDefault();
             }
-            console.log(e);
+            e.target.closest('div.tr').classList.toggle('selected');
         };
 
         const refresh = function (pageData, totalSize) {
@@ -70,11 +70,6 @@ class DataTable extends Base {
                 const tr = document.createElement('div');
                 tr.classList.add('tr');
                 tbody.appendChild(tr);
-
-                if (isTouchDevice()) {
-                    tr.addEventListener('touchstart', rowClicked);
-                }
-                tr.addEventListener('mousedown', rowClicked);
 
                 settings.columns.map(col => {
                     const cell = parseDOMElement(`<span>${row[col.dataIndex]}</span>`)[0];
@@ -119,15 +114,19 @@ class DataTable extends Base {
         };
 
         const thead = document.createElement('div');
-        thead.classList.add('thead')
+        thead.classList.add('thead');
         node.appendChild(thead);
 
         const tbody = document.createElement('div');
-        tbody.classList.add('tbody')
+        tbody.classList.add('tbody');
+        tbody.addEventListener('mouseup', rowClicked);
+        if (isTouchDevice()) {
+            tbody.addEventListener('touchend', rowClicked);
+        }
         node.appendChild(tbody);
 
         const tfoot = document.createElement('div');
-        tfoot.classList.add('tfoot')
+        tfoot.classList.add('tfoot');
         node.appendChild(tfoot);
 
         const totalWidth = settings.columns.reduce((a, c) => a + (c.width || 100), 0);
