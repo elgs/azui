@@ -31,6 +31,7 @@ contextmenu:
 DONE: function to return content
 DONE: optionally click on menu to dismiss
 CNCL: multi level menus
+TODO: keyboard navigation
 
 draggable:
 DONE: touch and pointer devices work together

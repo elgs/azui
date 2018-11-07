@@ -43,7 +43,6 @@ class DataTable extends Base {
             pageSize: 25,
             sortColumnKey: false,
             sortDirection: false,
-            editor: false, // or cell, row
         }, options);
 
         const me = this;
@@ -54,13 +53,6 @@ class DataTable extends Base {
         node.classList.add('azDataTable');
 
         this.totalSize = 0;
-
-        const rowClicked = e => {
-            if (e.type === 'touchend') {
-                e.preventDefault();
-            }
-            e.target.closest('div.tr').classList.toggle('selected');
-        };
 
         const refresh = function (pageData, totalSize) {
             me.totalSize = totalSize;
@@ -77,13 +69,11 @@ class DataTable extends Base {
                     td.classList.add('td', `col-${col.key}`);
                     td.appendChild(cell);
 
-                    if (settings.editor === 'cell' || settings.editor === 'row') {
-                        azui.InlineEdit(cell, {
-                            type: col.type,
-                            allowNewItems: col.allowNewItems,
-                            options: col.options,
-                        });
-                    }
+                    azui.InlineEdit(cell, {
+                        type: col.type,
+                        allowNewItems: col.allowNewItems,
+                        options: col.options,
+                    });
                     if (col.hidden) {
                         td.style.display = 'none';
                     }
@@ -93,11 +83,6 @@ class DataTable extends Base {
                         setOuterWidth(td, col.width);
                     }
                 });
-                // if (settings.editor === 'row') {
-                //     tr.querySelectorAll('div.td>span').forEach(el => {
-                //         azui.InlineEdit(el);
-                //     });
-                // }
 
                 // sorting
                 if (settings.sortDirection) {
@@ -111,6 +96,17 @@ class DataTable extends Base {
                         });
                 }
             });
+        };
+
+        const rowClicked = e => {
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
+            e.target.closest('div.tr').classList.toggle('selected');
+            console.log('shift:', e.shiftKey);
+            console.log('ctrl:', e.ctrlKey);
+            console.log('alt:', e.altKey);
+            console.log('meta:', e.metaKey);
         };
 
         const thead = document.createElement('div');
