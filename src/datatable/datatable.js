@@ -119,7 +119,6 @@ class DataTable extends Base {
             const shiftPressed = e.shiftKey;
 
             const shiftPress = () => {
-                console.log(me.lastSelectedRowNum, trNum);
                 if (me.lastSelectedRowNum <= trNum) {
                     for (let i = me.lastSelectedRowNum; i < trNum; ++i) {
                         me.trs[i + 1].classList.toggle('selected');
