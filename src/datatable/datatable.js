@@ -43,6 +43,7 @@ class DataTable extends Base {
             pageSize: 25,
             sortColumnKey: false,
             sortDirection: false,
+            selectMode: false, // volatile, sticky, 
         }, options);
 
         const me = this;
@@ -52,15 +53,17 @@ class DataTable extends Base {
 
         node.classList.add('azDataTable');
 
-        this.totalSize = 0;
+        me.totalSize = 0;
 
         const refresh = function (pageData, totalSize) {
+            me.lastSelectedRowNum = 0;
             me.totalSize = totalSize;
             empty(tbody);
 
-            pageData.map(row => {
+            me.trs = pageData.map((row, index) => {
                 const tr = document.createElement('div');
                 tr.classList.add('tr');
+                tr.setAttribute('tr-num', index);
                 tbody.appendChild(tr);
 
                 settings.columns.map(col => {
@@ -95,18 +98,51 @@ class DataTable extends Base {
                             el.style['display'] = 'inline-block';
                         });
                 }
+                return tr;
             });
         };
 
-        const rowClicked = e => {
+        const rowSelected = e => {
             if (e.type === 'touchend') {
                 e.preventDefault();
             }
-            e.target.closest('div.tr').classList.toggle('selected');
-            console.log('shift:', e.shiftKey);
-            console.log('ctrl:', e.ctrlKey);
-            console.log('alt:', e.altKey);
-            console.log('meta:', e.metaKey);
+            const tr = e.target.closest('div.tr');
+
+            const trNum = tr.getAttribute('tr-num') * 1;
+
+            // console.log('shift:', e.shiftKey);
+            // console.log('ctrl:', e.ctrlKey);
+            // console.log('alt:', e.altKey);
+            // console.log('meta:', e.metaKey);
+
+            const ctrlOrCmdPressed = e.ctrlKey || e.metaKey;
+            const shiftPressed = e.shiftKey;
+
+            if (settings.selectMode === 'sticky') {
+                if (shiftPressed) {} else {}
+
+            } else if (settings.selectMode === 'volatile') {
+                if (shiftPressed) {
+                    if (me.lastSelectedRowNum <= trNum) {
+                        for (let i = me.lastSelectedRowNum; i < trNum; ++i) {
+                            me.trs[i + 1].classList.toggle('selected');
+                        }
+                    } else {
+                        for (let i = me.lastSelectedRowNum; i > trNum; --i) {
+                            me.trs[i - 1].classList.toggle('selected');
+                        }
+                    }
+                    window.getSelection().removeAllRanges();
+                } else if (ctrlOrCmdPressed) {
+                    tr.classList.toggle('selected');
+                } else {
+                    me.trs.map(tr => {
+                        tr.classList.remove('selected');
+                    });
+                    tr.classList.add('selected');
+                }
+                me.lastSelectedRowNum = trNum;
+            }
         };
 
         const thead = document.createElement('div');
@@ -115,10 +151,14 @@ class DataTable extends Base {
 
         const tbody = document.createElement('div');
         tbody.classList.add('tbody');
-        tbody.addEventListener('mouseup', rowClicked);
-        if (isTouchDevice()) {
-            tbody.addEventListener('touchend', rowClicked);
+
+        if (settings.selectMode) {
+            tbody.addEventListener('mouseup', rowSelected);
+            if (isTouchDevice()) {
+                tbody.addEventListener('touchend', rowSelected);
+            }
         }
+
         node.appendChild(tbody);
 
         const tfoot = document.createElement('div');

@@ -13,6 +13,7 @@ DONE: row right click menu
 DONE: cell types
 DONE: sort
 TODO: row/cell selection
+TODO: keyboard navigation selection
 DONE: number cell up/down button
 DONE: mobile select incorrect dropdown position
 TODO: row/cell editing
@@ -30,7 +31,6 @@ DONE: drag and place tab header between 1st and 2nd, and it jumps to first poist
 contextmenu:
 DONE: function to return content
 DONE: optionally click on menu to dismiss
-CNCL: multi level menus
 TODO: keyboard navigation
 
 draggable:
