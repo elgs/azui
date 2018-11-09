@@ -118,21 +118,30 @@ class DataTable extends Base {
             const ctrlOrCmdPressed = e.ctrlKey || e.metaKey;
             const shiftPressed = e.shiftKey;
 
-            if (settings.selectMode === 'sticky') {
-                if (shiftPressed) {} else {}
+            const shiftPress = () => {
+                console.log(me.lastSelectedRowNum, trNum);
+                if (me.lastSelectedRowNum <= trNum) {
+                    for (let i = me.lastSelectedRowNum; i < trNum; ++i) {
+                        me.trs[i + 1].classList.toggle('selected');
+                    }
+                } else {
+                    for (let i = me.lastSelectedRowNum; i > trNum; --i) {
+                        me.trs[i - 1].classList.toggle('selected');
+                    }
+                }
+                window.getSelection().removeAllRanges();
+            };
 
+            if (settings.selectMode === 'sticky') {
+                if (shiftPressed) {
+                    shiftPress();
+                } else {
+                    tr.classList.toggle('selected');
+                }
+                me.lastSelectedRowNum = trNum;
             } else if (settings.selectMode === 'volatile') {
                 if (shiftPressed) {
-                    if (me.lastSelectedRowNum <= trNum) {
-                        for (let i = me.lastSelectedRowNum; i < trNum; ++i) {
-                            me.trs[i + 1].classList.toggle('selected');
-                        }
-                    } else {
-                        for (let i = me.lastSelectedRowNum; i > trNum; --i) {
-                            me.trs[i - 1].classList.toggle('selected');
-                        }
-                    }
-                    window.getSelection().removeAllRanges();
+                    shiftPress();
                 } else if (ctrlOrCmdPressed) {
                     tr.classList.toggle('selected');
                 } else {
