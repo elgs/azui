@@ -204,7 +204,7 @@ class Select extends Base {
         const onInputKeyUp = function (e) {
             // console.log(me.selectInput.value.trim().length);
             // console.log(e.keyCode, me.selectInput.value.trim().length);
-
+            e.stopPropagation();
             if (e.keyCode === 27) {
                 // esc key is pressed
                 if (dropdownShown) {
@@ -279,6 +279,9 @@ class Select extends Base {
         me.selectInput.classList.add('azSelectInput');
         node.appendChild(me.selectInput);
 
+        me.selectInput.addEventListener('keydown', e => {
+            e.stopPropagation();
+        });
         me.selectInput.addEventListener('keyup', onInputKeyUp);
 
         const dropdownButton = document.createElement('div');

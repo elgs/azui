@@ -137,7 +137,6 @@ class DataTable extends Base {
                 } else {
                     tr.classList.toggle('selected');
                 }
-                me.lastSelectedRowNum = trNum;
             } else if (settings.selectMode === 'volatile') {
                 if (shiftPressed) {
                     shiftPress();
@@ -149,7 +148,24 @@ class DataTable extends Base {
                     });
                     tr.classList.add('selected');
                 }
-                me.lastSelectedRowNum = trNum;
+            }
+            me.lastSelectedRowNum = trNum;
+        };
+
+        const onKeyDown = e => {
+            e.preventDefault();
+            // console.log(e.keyCode);
+
+            if (e.keyCode === 27) {
+                // esc
+            } else if (e.keyCode === 38) {
+                // up
+            } else if (e.keyCode === 40) {
+                // down
+            } else if (e.keyCode === 93) {
+                // contextmenu
+            } else if (e.keyCode === 13) {
+                // enter
             }
         };
 
@@ -166,6 +182,9 @@ class DataTable extends Base {
                 tbody.addEventListener('touchend', rowSelected);
             }
         }
+
+        tbody.setAttribute('tabindex', 0);
+        tbody.addEventListener('keydown', onKeyDown);
 
         node.appendChild(tbody);
 
