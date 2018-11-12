@@ -13,7 +13,9 @@ import {
     setOuterWidth,
     setWidth,
     textWidth,
-    empty
+    empty,
+    getHeight,
+    diffPosition
 } from '../utilities/utilities.js';
 
 
@@ -55,9 +57,16 @@ class DataTable extends Base {
 
         me.totalSize = 0;
 
-        const refresh = function (pageData, totalSize) {
+        const refresh = function (pageData, totalSize, pageNumber) {
             me.lastSelectedRowNum = 0;
             me.totalSize = totalSize;
+            settings.pageNumber = pageNumber;
+
+            if (me.pager) {
+                me.pager.settings.totalSize = totalSize;
+                me.pager.settings.pageNumber = pageNumber;
+            }
+
             empty(tbody);
 
             me.trs = pageData.map((row, index) => {
@@ -158,10 +167,44 @@ class DataTable extends Base {
 
             if (e.keyCode === 27) {
                 // esc
+                me.trs[me.lastSelectedRowNum].classList.remove('selected');
+            } else if (e.keyCode === 37) {
+                // left
+                me.pager.update(--settings.pageNumber);
+                e.currentTarget.scrollTop = 0;
             } else if (e.keyCode === 38) {
                 // up
+                me.trs[me.lastSelectedRowNum].classList.remove('selected');
+                me.lastSelectedRowNum = --me.lastSelectedRowNum < 0 ? 0 : me.lastSelectedRowNum;
+                me.trs[me.lastSelectedRowNum].classList.add('selected');
+
+                // const tbodyHeight = getHeight(e.currentTarget);
+                const rowHeight = me.trs[me.lastSelectedRowNum].offsetHeight;
+                const topDiff = diffPosition(me.trs[me.lastSelectedRowNum], e.currentTarget).top;
+                if (topDiff < 0) {
+                    // scroll down rowHeight
+                    e.currentTarget.scrollTop -= rowHeight;
+                }
+            } else if (e.keyCode === 39) {
+                // right
+                me.pager.update(++settings.pageNumber);
+                e.currentTarget.scrollTop = 0;
             } else if (e.keyCode === 40) {
                 // down
+                if (me.trs[me.lastSelectedRowNum + 1]) {
+                    me.trs[me.lastSelectedRowNum].classList.remove('selected');
+                    me.lastSelectedRowNum = ++me.lastSelectedRowNum >= settings.pageSize ? settings.pageSize - 1 : me.lastSelectedRowNum;
+
+                    me.trs[me.lastSelectedRowNum].classList.add('selected');
+
+                    const tbodyHeight = getHeight(e.currentTarget);
+                    const rowHeight = me.trs[me.lastSelectedRowNum].offsetHeight;
+                    const topDiff = diffPosition(me.trs[me.lastSelectedRowNum], e.currentTarget).top;
+                    if (rowHeight + topDiff > tbodyHeight) {
+                        // scroll down rowHeight
+                        e.currentTarget.scrollTop += rowHeight;
+                    }
+                }
             } else if (e.keyCode === 93) {
                 // contextmenu
             } else if (e.keyCode === 13) {
@@ -391,14 +434,14 @@ class DataTable extends Base {
 
         settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
 
-        const pager = azui.Pager(tfoot, {
+        me.pager = azui.Pager(tfoot, {
             pageSize: settings.pageSize,
             totalSize: me.totalSize,
             pageNumber: settings.pageNumber,
-            onPageChange: function (pageNumber, pageSize, totalSize) {
+            onPageChange: function (pageNumber, pageSize) {
                 settings.pageSize = pageSize;
                 settings.pageNumber = pageNumber;
-                settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
+                settings.loadData(pageNumber, pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
             },
         });
     }

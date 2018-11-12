@@ -82,7 +82,7 @@
             const totalSize = data.length;
 
             // the whole point of loadData is to call refresh;
-            refresh(pageData, totalSize);
+            refresh(pageData, totalSize, _pageNumber);
         };
         const columns = [function () {
             return {

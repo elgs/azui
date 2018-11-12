@@ -128,11 +128,10 @@ class Pager extends Base {
         pager.querySelector('.azPageInfo>span.total').textContent = this.settings.totalSize;
     };
 
-    update(pageNumber = this.settings.pageNumber, totalSize = this.settings.totalSize, pageSize = this.settings.pageSize, trigger = true) {
-        this.settings.pageNumber = Math.min(Math.ceil(totalSize / pageSize), Math.max(1, pageNumber));
+    update(pageNumber = this.settings.pageNumber, pageSize = this.settings.pageSize) {
         this.settings.pageSize = pageSize;
-        this.settings.totalSize = totalSize;
+        this.settings.onPageChange.call(this, pageNumber, this.settings.pageSize);
+        // total size and page number need to be figured out/updated by onPageChange call back.
         this._updatePager(this.node);
-        trigger && this.settings.onPageChange.call(this, this.settings.pageNumber, this.settings.pageSize, this.settings.totalSize);
     };
 };
