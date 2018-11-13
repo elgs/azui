@@ -40,13 +40,14 @@ class InlineEdit extends Base {
             },
         }, options);
 
+        const me = this;
         const node = this.node;
 
         if (settings.create(null, this) === false) {
             return false;
         }
 
-        const cancel = function (e) {
+        me.cancel = function (e) {
             // me.each(function () {
             const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
             const v = editor.value;
@@ -57,7 +58,7 @@ class InlineEdit extends Base {
             node.style.display = '';
         };
 
-        const done = function (e) {
+        me.done = function (e) {
             const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
             const v = editor.value;
             if (settings.done(e, v) === false) {
@@ -72,13 +73,13 @@ class InlineEdit extends Base {
             node.style.display = '';
         };
 
-        const edit = function (e) {
+        me.edit = function (e) {
             if (settings.start(e, node) === false) {
                 return false;
             }
-            const clickedElem = this;
+            // const clickedElem = this;
             // me.each(function () {
-            const clicked = clickedElem === node;
+            // const clicked = clickedElem === node;
             const originalValue = node.textContent.trim();
             const editorWrapper = document.createElement('div');
             editorWrapper.classList.add('azInlineEditorWrapper');
@@ -106,19 +107,19 @@ class InlineEdit extends Base {
                 });
                 editorWrapper.appendChild(dirtySign);
                 select.node.addEventListener('done', function (e) {
-                    done(e);
+                    me.done(e);
                 });
                 select.node.addEventListener('cancel', function (e) {
-                    cancel(e);
+                    me.cancel(e);
                 });
                 select.selectInput.classList.add('azInlineEditor');
                 // editorWrapper.value = originalValue;
                 select.selectInput.value = originalValue;
-                if (clicked) {
-                    setTimeout(() => {
-                        select.selectInput.focus();
-                    });
-                }
+                // if (clicked) {
+                setTimeout(() => {
+                    select.selectInput.focus();
+                });
+                // }
             } else {
                 editorWrapper.appendChild(dirtySign);
                 const editor = document.createElement('input');
@@ -130,9 +131,9 @@ class InlineEdit extends Base {
 
                 editor.addEventListener('keyup', function (event) {
                     if (event.keyCode === 13) {
-                        done(event);
+                        me.done(event);
                     } else if (event.keyCode === 27) {
-                        cancel(event)
+                        me.cancel(event)
                     } else {
                         if (settings.edit(event, this.value) === false) {
                             return false;
@@ -185,12 +186,12 @@ class InlineEdit extends Base {
                     // prevent view port from moving around while moving cursor on a mobile screen.
                     event.stopPropagation();
                 })
-                if (clicked) {
-                    setTimeout(() => {
-                        editor.focus();
-                        editor.setSelectionRange(0, 9999);
-                    });
-                }
+                // if (clicked) {
+                setTimeout(() => {
+                    editor.focus();
+                    editor.setSelectionRange(0, 9999);
+                });
+                // }
             }
             node.style.display = 'none';
             insertAfter(editorWrapper, node)
@@ -198,7 +199,7 @@ class InlineEdit extends Base {
         };
 
         azui.DoubleClick(node, {
-            onDoubleClick: edit
+            onDoubleClick: me.edit
         });
     }
 };

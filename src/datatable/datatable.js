@@ -46,6 +46,7 @@ class DataTable extends Base {
             sortColumnKey: false,
             sortDirection: false,
             selectMode: false, // volatile, sticky, 
+            rowContextMenu: false
         }, options);
 
         const me = this;
@@ -76,7 +77,7 @@ class DataTable extends Base {
                 tbody.appendChild(tr);
 
                 settings.columns.map(col => {
-                    const cell = parseDOMElement(`<span>${row[col.dataIndex]}</span>`)[0];
+                    const cell = parseDOMElement(`<span class='cell'>${row[col.dataIndex]}</span>`)[0];
                     const td = document.createElement('div');
                     td.classList.add('td', `col-${col.key}`);
                     td.appendChild(cell);
@@ -162,18 +163,20 @@ class DataTable extends Base {
         };
 
         const onKeyDown = e => {
-            e.preventDefault();
             // console.log(e.keyCode);
 
             if (e.keyCode === 27) {
                 // esc
+                e.preventDefault();
                 me.trs[me.lastSelectedRowNum].classList.remove('selected');
             } else if (e.keyCode === 37) {
                 // left
+                e.preventDefault();
                 me.pager.update(--settings.pageNumber);
                 e.currentTarget.scrollTop = 0;
             } else if (e.keyCode === 38) {
                 // up
+                e.preventDefault();
                 me.trs[me.lastSelectedRowNum].classList.remove('selected');
                 me.lastSelectedRowNum = --me.lastSelectedRowNum < 0 ? 0 : me.lastSelectedRowNum;
                 me.trs[me.lastSelectedRowNum].classList.add('selected');
@@ -187,10 +190,12 @@ class DataTable extends Base {
                 }
             } else if (e.keyCode === 39) {
                 // right
+                e.preventDefault();
                 me.pager.update(++settings.pageNumber);
                 e.currentTarget.scrollTop = 0;
             } else if (e.keyCode === 40) {
                 // down
+                e.preventDefault();
                 if (me.trs[me.lastSelectedRowNum + 1]) {
                     me.trs[me.lastSelectedRowNum].classList.remove('selected');
                     me.lastSelectedRowNum = ++me.lastSelectedRowNum >= settings.pageSize ? settings.pageSize - 1 : me.lastSelectedRowNum;
@@ -205,10 +210,9 @@ class DataTable extends Base {
                         e.currentTarget.scrollTop += rowHeight;
                     }
                 }
-            } else if (e.keyCode === 93) {
-                // contextmenu
             } else if (e.keyCode === 13) {
                 // enter
+                e.preventDefault();
             }
         };
 
@@ -218,6 +222,19 @@ class DataTable extends Base {
 
         const tbody = document.createElement('div');
         tbody.classList.add('tbody');
+
+        const tbodyCtxMenu = azui.ContextMenu(tbody, {
+            items: settings.rowContextMenu,
+            onContextMenu: e => {
+                tbodyCtxMenu.settings.target = e.target.closest('span.cell');
+            },
+            onDismiss: e => {
+                // if context menu is activate by menu key, tbody will lose focus, causing next menu key press not activating the context menu
+                tbody.focus({
+                    preventScroll: true
+                });
+            },
+        });
 
         if (settings.selectMode) {
             tbody.addEventListener('mouseup', rowSelected);

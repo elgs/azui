@@ -31,9 +31,25 @@ global.azui = global.azui || {
             dropped: 1 << 13,
             all: (1 << 14) - 1,
             none: 0,
-        }
+        },
     },
+    cursor: {
+        x: undefined,
+        y: undefined,
+    }
 };
+
+let wait = false;
+document.addEventListener('mousemove', e => {
+    if (!wait) {
+        azui.cursor.x = e.clientX;
+        azui.cursor.y = e.clientY;
+        wait = true;
+        setTimeout(() => {
+            wait = false;
+        }, 200);
+    }
+});
 
 const normalizeElement = function (el) {
     if (typeof el === 'string') {

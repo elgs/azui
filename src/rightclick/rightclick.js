@@ -17,8 +17,8 @@ class RightClick extends Base {
     azInit(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},
-            onTouchStart: function (e) {},
-            onTouchEnd: function (e) {},
+            // onTouchStart: function (e) {},
+            // onTouchEnd: function (e) {},
         }, options);
 
         const me = this;
@@ -33,7 +33,7 @@ class RightClick extends Base {
 
         if (isTouchDevice()) {
             'touchmove touchend touchcancel'.split(' ').forEach(e => me.replaceEventListener(e, e, function (event) {
-                settings.onTouchEnd(event);
+                // settings.onTouchEnd(event);
                 clearTimeout(timer);
                 if (triggered) {
                     triggered = false;
@@ -43,7 +43,7 @@ class RightClick extends Base {
             }));
             me.replaceEventListener('touchstart', 'touchstart', function (event) {
                 // blurFocusDetector(e);
-                settings.onTouchStart(event);
+                // settings.onTouchStart(event);
                 timer = setTimeout(function () {
                     triggered = true;
                     if (node === document || node === window || node.parentNode) {

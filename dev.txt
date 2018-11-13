@@ -17,7 +17,7 @@ DONE: keyboard navigation selection
 DONE: number cell up/down button
 DONE: mobile select incorrect dropdown position
 DONE: cell editing
-TODO: row context menu
+DONE: row context menu
 
 pager:
 DONE: add rows in page in ui

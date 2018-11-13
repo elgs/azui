@@ -11,7 +11,8 @@ import {
     isTouchDevice,
     matches,
     normalizeIcon,
-    parseDOMElement
+    parseDOMElement,
+    resolveFunction
 } from '../utilities/utilities.js';
 
 
@@ -24,15 +25,21 @@ class ContextMenu extends Base {
 
     azInit(options) {
         const settings = Object.assign({
-                onRightClick: function (e) {},
-                onTouchStart: function (e) {},
-                onTouchEnd: function (e) {},
-                items: []
+                onContextMenu: function (e) {},
+                onDismiss: function (e) {},
+                items: null,
+                target: null,
             },
             options);
 
+        const items = resolveFunction(settings.items);
+        if (!items) {
+            return;
+        }
+
         const me = this;
         const node = this.node;
+        me.settings = settings;
 
         let highlightIndex = -1;
 
@@ -58,6 +65,7 @@ class ContextMenu extends Base {
                 const pb = me.menu.getBoundingClientRect();
                 if (isOutside(e.pageX || e.touches[0].pageX, e.pageY || e.touches[0].pageY, pb)) {
                     me.menu.remove();
+                    settings.onDismiss(e);
                 } else {
                     document.addEventListener('touchstart', me.dismissMenu, {
                         once: true
@@ -65,6 +73,7 @@ class ContextMenu extends Base {
                 }
             } else {
                 me.menu.remove();
+                settings.onDismiss(e);
             }
         };
 
@@ -94,7 +103,7 @@ class ContextMenu extends Base {
             // titleDiv.innerHTML = title;
             if (!item.disabled) {
                 menuItem.addEventListener('click', e => {
-                    if (item.action.call(menuItem, e, node) === false) {
+                    if (item.action.call(menuItem, e, settings.target || node) === false) {
                         menu.blur();
                     }
                     e.stopPropagation();
@@ -110,92 +119,82 @@ class ContextMenu extends Base {
             return menuItem;
         };
 
-        const onContextMenu =
-            function (e) {
-                // console.log(e.currentTarget);
+        const onContextMenu = function (e) {
+            // console.log(e.currentTarget);
 
-                const menu = document.createElement('div');
-                me.menu = menu;
-                menu.classList.add('azContextMenu');
-                menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
+            const menu = document.createElement('div');
+            me.menu = menu;
+            menu.classList.add('azContextMenu');
+            menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
 
-                const onKeyDown = e => {
-                    e.preventDefault();
-                    // console.log(e.keyCode);
+            const onKeyDown = e => {
+                e.preventDefault();
+                // console.log(e.keyCode);
 
-                    if (e.keyCode === 27) {
-                        // esc
-                        menu.blur();
-                    } else if (e.keyCode === 38) {
-                        // up
-                        --highlightIndex;
-                        highlightIndex = highlightIndex < 0 ? 0 : highlightIndex;
-                        navigateMenu();
-                    } else if (e.keyCode === 40) {
-                        // down
-                        const menuLength = me.menu.querySelectorAll('.azMenuItem').length;
-                        // console.log(menuLength);
-                        ++highlightIndex;
-                        highlightIndex = highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
-                        // console.log(highlightIndex);
-                        navigateMenu();
-                    } else if (e.keyCode === 13 || e.keyCode === 32) {
-                        // enter
-                        const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
-                        // console.log(selected.innerHTML);
-                        selected.click();
-                    }
-                };
-
-                menu.setAttribute('tabindex', 0);
-                document.documentElement.appendChild(menu);
-                menu.addEventListener('blur', e => {
-                    me.dismissMenu(e);
-                });
-                menu.addEventListener('keydown', onKeyDown);
-                menu.focus({
-                    preventScroll: true
-                });
-
-                // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
-
-                let items = settings.items;
-                if (typeof items === 'function') {
-                    items = items();
+                if (e.keyCode === 27) {
+                    // esc
+                    menu.blur();
+                } else if (e.keyCode === 38) {
+                    // up
+                    --highlightIndex;
+                    highlightIndex = highlightIndex < 0 ? 0 : highlightIndex;
+                    navigateMenu();
+                } else if (e.keyCode === 40) {
+                    // down
+                    const menuLength = me.menu.querySelectorAll('.azMenuItem').length;
+                    // console.log(menuLength);
+                    ++highlightIndex;
+                    highlightIndex = highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
+                    // console.log(highlightIndex);
+                    navigateMenu();
+                } else if (e.keyCode === 13 || e.keyCode === 32) {
+                    // enter
+                    const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
+                    // console.log(selected.innerHTML);
+                    selected.click();
                 }
-                items.map(item => {
-                    const menuItem = createMenuItem(item, menu)
-                    menu.appendChild(menuItem);
+            };
+
+            menu.setAttribute('tabindex', 0);
+            document.documentElement.appendChild(menu);
+            menu.addEventListener('blur', e => {
+                me.dismissMenu(e);
+            });
+            menu.addEventListener('keydown', onKeyDown);
+            menu.focus({
+                preventScroll: true
+            });
+
+            // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
+
+            items.map(item => {
+                const menuItem = createMenuItem(item, menu)
+                menu.appendChild(menuItem);
+            });
+
+            // console.log(getWidth(menu), getHeight(menu));
+            const menuPosition = calcMenuPosition(
+                azui.cursor.x || e.clientX || e.touches[0].clientX,
+                azui.cursor.y || e.clientY || e.touches[0].clientY,
+                getWidth(menu), getHeight(menu));
+            // console.log(menuPosition);
+            menu.style['position'] = 'absolute';
+            menu.style['left'] = menuPosition.x + 'px';
+            menu.style['top'] = menuPosition.y + 'px';
+
+            if (isTouchDevice()) {
+                document.addEventListener('touchstart', me.dismissMenu, {
+                    once: true
                 });
-
-                // console.log(getWidth(menu), getHeight(menu));
-                const menuPosition = calcMenuPosition(
-                    e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY,
-                    getWidth(menu), getHeight(menu));
-                // console.log(menuPosition);
-                menu.style['position'] = 'absolute';
-                menu.style['left'] = menuPosition.x + 'px';
-                menu.style['top'] = menuPosition.y + 'px';
-
-                if (isTouchDevice()) {
-                    document.addEventListener('touchstart', me.dismissMenu, {
-                        once: true
-                    });
-                }
-
-                e.preventDefault(); // prevent browser context menu
             }
+
+            e.preventDefault(); // prevent browser context menu
+        }
 
         azui.RightClick(node, {
             onRightClick: function (e) {
                 onContextMenu(e);
-                settings.onRightClick(e);
-            },
-            onTouchStart: function (e) {
-                settings.onTouchStart(e);
-            },
-            onTouchEnd: function (e) {
-                settings.onTouchEnd(e);
+                settings.onContextMenu(e);
             },
         });
     }
