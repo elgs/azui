@@ -7,9 +7,9 @@ import {
     getHeight,
     getWidth,
     isOutside,
+    isTouchDevice,
     normalizeIcon,
-    parseDOMElement,
-    isTouchDevice
+    parseDOMElement
 } from '../utilities/utilities.js';
 
 
@@ -18,132 +18,133 @@ azui.ContextMenu = function (el, options, init) {
 };
 
 class ContextMenu extends Base {
-
     static className = 'ContextMenu';
 
     azInit(options) {
         const settings = Object.assign({
-            onRightClick: function (e) {},
-            onTouchStart: function (e) {},
-            onTouchEnd: function (e) {},
-            items: []
-        }, options);
+                onRightClick: function (e) {},
+                onTouchStart: function (e) {},
+                onTouchEnd: function (e) {},
+                items: []
+            },
+            options);
 
         const me = this;
         const node = this.node;
 
-        this.on = false;
-        let mx, my = 0;
-        const mousePositionTracker = function (e) {
-            mx = e.pageX || e.touches[0].pageX;
-            my = e.pageY || e.touches[0].pageY;
-        };
-
-        const blurFocusDetector = function (e) {
-            mousePositionTracker(e);
-            document.querySelectorAll('.azMenuFocusDetector').forEach(function (el) {
-                el.blur();
-            });
-        };
-
-        const onContextMenu = function (e) {
-            // console.log(e.currentTarget);
-
-            const createMenuItem = function (item, menu) {
-                if (!item) {
-                    const separator = parseDOMElement('<div>&nbsp;</div>')[0];
-                    separator.classList.add('azMenuSeparator');
-                    return separator;
-                }
-
-                const menuItem = document.createElement('div');
-                menuItem.classList.add('azMenuItem');
-                if (item.disabled) {
-                    menuItem.classList.add('disabled');
-                }
-
-                const icon = item.icon || '';
-                const iconDiv = normalizeIcon(icon);
-                iconDiv.classList.add('icon');
-                menuItem.appendChild(iconDiv);
-
-                const title = item.title || '';
-                const titleDiv = normalizeIcon(title);
-                titleDiv.classList.add('title');
-                menuItem.appendChild(titleDiv);
-                // iconDiv.innerHTML = icon;
-                // titleDiv.innerHTML = title;
-                if (!item.disabled) {
-                    menuItem.addEventListener('click', function (e) {
-                        if (item.action.call(menuItem, e, node) === false) {
-                            document.removeEventListener('mousemove', mousePositionTracker);
-                            document.removeEventListener('touchstart', blurFocusDetector);
-                            menu.parentNode.removeChild(menu);
-                            me.on = false;
-                            // alert('off');
-                        } else {
-                            focusDetector.focus();
-                        }
-                        e.stopPropagation();
+        me.dismissMenu = e => {
+            if (e.type === 'touchstart') {
+                const pb = me.menu.getBoundingClientRect();
+                if (isOutside(e.pageX || e.touches[0].pageX, e.pageY || e.touches[0].pageY, pb)) {
+                    me.menu.remove();
+                } else {
+                    document.addEventListener('touchstart', me.dismissMenu, {
+                        once: true
                     });
                 }
-                return menuItem;
-            };
-
-            const menu = document.createElement('div');
-            menu.classList.add('azContextMenu');
-            menu.style['visibility'] = 'hidden';
-            menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
-            document.documentElement.appendChild(menu);
-
-            // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
-
-            let items = settings.items;
-            if (typeof items === 'function') {
-                items = items();
+            } else {
+                me.menu.remove();
             }
-            items.map(item => {
-                const menuItem = createMenuItem(item, menu)
-                menu.appendChild(menuItem);
-            });
+        };
 
-            // console.log(getWidth(menu), getHeight(menu));
-            const menuPosition = calcMenuPosition(e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, getWidth(menu), getHeight(menu));
-            // console.log(menuPosition);
-            menu.style['position'] = 'absolute';
-            menu.style['left'] = menuPosition.x + 'px';
-            menu.style['top'] = menuPosition.y + 'px';
-            menu.style['visibility'] = 'visible';
-
-            document.addEventListener('mousemove', mousePositionTracker);
-            if (isTouchDevice()) {
-                document.addEventListener('touchstart', blurFocusDetector);
+        const createMenuItem = function (item, menu) {
+            if (!item) {
+                const separator = parseDOMElement('<div>&nbsp;</div>')[0];
+                separator.classList.add('azMenuSeparator');
+                return separator;
             }
 
-            const focusDetector = parseDOMElement('<input class="azMenuFocusDetector" type="checkbox">')[0];
-            focusDetector.style['position'] = 'absolute';
-            focusDetector.style['z-index'] = -1000;
-            focusDetector.style['top'] = 0;
-            focusDetector.style['left'] = 0;
-            focusDetector.style['opacity'] = 0;
-            menu.appendChild(focusDetector);
-            focusDetector.focus();
-            me.on = true;
-            // alert('on');
-            focusDetector.addEventListener('blur', function (e1) {
-                const pb = menu.getBoundingClientRect();
-                if (isOutside(mx, my, pb)) {
-                    document.removeEventListener('mousemove', mousePositionTracker);
-                    document.removeEventListener('touchstart', blurFocusDetector);
-                    menu.remove();
-                    me.on = false;
-                    // alert('off 0');
-                } else {
-                    focusDetector.focus();
+            const menuItem = document.createElement('div');
+            menuItem.classList.add('azMenuItem');
+            if (item.disabled) {
+                menuItem.classList.add('disabled');
+            }
+
+            const icon = item.icon || '';
+            const iconDiv = normalizeIcon(icon);
+            iconDiv.classList.add('icon');
+            menuItem.appendChild(iconDiv);
+
+            const title = item.title || '';
+            const titleDiv = normalizeIcon(title);
+            titleDiv.classList.add('title');
+            menuItem.appendChild(titleDiv);
+            // iconDiv.innerHTML = icon;
+            // titleDiv.innerHTML = title;
+            if (!item.disabled) {
+                menuItem.addEventListener('click', function (e) {
+                    if (item.action.call(menuItem, e, node) === false) {
+                        menu.blur();
+                    }
+                    e.stopPropagation();
+                });
+            }
+            return menuItem;
+        };
+
+        const onContextMenu =
+            function (e) {
+                // console.log(e.currentTarget);
+
+                const menu = document.createElement('div');
+                me.menu = menu;
+                menu.classList.add('azContextMenu');
+                menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
+
+                const onKeyDown = e => {
+                    e.preventDefault();
+                    // console.log(e.keyCode);
+
+                    if (e.keyCode === 27) {
+                        // esc
+                        menu.blur();
+                    } else if (e.keyCode === 38) {
+                        // up
+                    } else if (e.keyCode === 40) {
+                        // down
+                    } else if (e.keyCode === 13) {
+                        // enter
+                    }
+                };
+
+                menu.setAttribute('tabindex', 0);
+                document.documentElement.appendChild(menu);
+                menu.addEventListener('blur', e => {
+                    me.dismissMenu(e);
+                });
+                menu.addEventListener('keydown', onKeyDown);
+                menu.focus({
+                    preventScroll: true
+                });
+
+                // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
+
+                let items = settings.items;
+                if (typeof items === 'function') {
+                    items = items();
                 }
-            });
-            e.preventDefault(); // prevent browser context menu
-        }
+                items.map(item => {
+                    const menuItem = createMenuItem(item, menu)
+                    menu.appendChild(menuItem);
+                });
+
+                // console.log(getWidth(menu), getHeight(menu));
+                const menuPosition = calcMenuPosition(
+                    e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY,
+                    getWidth(menu), getHeight(menu));
+                // console.log(menuPosition);
+                menu.style['position'] = 'absolute';
+                menu.style['left'] = menuPosition.x + 'px';
+                menu.style['top'] = menuPosition.y + 'px';
+
+                if (isTouchDevice()) {
+                    document.addEventListener('touchstart', me.dismissMenu, {
+                        once: true
+                    });
+                }
+
+                e.preventDefault(); // prevent browser context menu
+            }
 
         azui.RightClick(node, {
             onRightClick: function (e) {
@@ -151,7 +152,6 @@ class ContextMenu extends Base {
                 settings.onRightClick(e);
             },
             onTouchStart: function (e) {
-                blurFocusDetector(e);
                 settings.onTouchStart(e);
             },
             onTouchEnd: function (e) {

@@ -4,6 +4,7 @@
     position: absolute;
     min-width: 100px;
     box-shadow: 0 0 5px rgba(0, 0, 0, .12), 0 5px 5px rgba(0, 0, 0, .12), 0 10px 30px rgba(0, 0, 0, .1);
+    outline: none;
     & div.azMenuItem {
         // height: 50px;
         display: grid;
@@ -12,7 +13,6 @@
         background-color: $bg-color;
         width: 100%; // text-align: left;
         padding: 5px 0; // border: none;
-        // outline: none;
         & span{
             display: inline-block;
             &.icon {
