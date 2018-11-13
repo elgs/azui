@@ -64,6 +64,8 @@ class Select extends Base {
                         })
                     );
                 };
+                // menuItem.addEventListener('click', onSelect);
+
                 menuItem.addEventListener('mousedown', onSelect);
                 if (isTouchDevice()) {
                     menuItem.addEventListener('touchstart', onSelect);

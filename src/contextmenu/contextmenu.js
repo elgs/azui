@@ -6,8 +6,10 @@ import {
     calcMenuPosition,
     getHeight,
     getWidth,
+    index,
     isOutside,
     isTouchDevice,
+    matches,
     normalizeIcon,
     parseDOMElement
 } from '../utilities/utilities.js';
@@ -31,6 +33,25 @@ class ContextMenu extends Base {
 
         const me = this;
         const node = this.node;
+
+        let highlightIndex = -1;
+
+        const navigateMenu = function () {
+            // console.log(me.menu);
+            if (!me.menu) {
+                return;
+            }
+            const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
+            // console.log(selected.innerHTML);
+            // const selected = menu.children('.azMenuItem').eq(highlightIndex);
+            Array.prototype.filter
+                .call(me.menu.children, n => matches(n, '.azMenuItem'))
+                .forEach(el => {
+                    el.classList.remove('selected');
+                });
+            // menu.children('.azMenuItem').removeClass('selected');
+            selected.classList.add('selected');
+        };
 
         me.dismissMenu = e => {
             if (e.type === 'touchstart') {
@@ -72,13 +93,20 @@ class ContextMenu extends Base {
             // iconDiv.innerHTML = icon;
             // titleDiv.innerHTML = title;
             if (!item.disabled) {
-                menuItem.addEventListener('click', function (e) {
+                menuItem.addEventListener('click', e => {
                     if (item.action.call(menuItem, e, node) === false) {
                         menu.blur();
                     }
                     e.stopPropagation();
                 });
             }
+
+            const onMouseEnter = function (e) {
+                highlightIndex = index(e.currentTarget, '.azMenuItem');
+                navigateMenu();
+            };
+            menuItem.addEventListener('mouseenter', onMouseEnter);
+
             return menuItem;
         };
 
@@ -100,10 +128,22 @@ class ContextMenu extends Base {
                         menu.blur();
                     } else if (e.keyCode === 38) {
                         // up
+                        --highlightIndex;
+                        highlightIndex = highlightIndex < 0 ? 0 : highlightIndex;
+                        navigateMenu();
                     } else if (e.keyCode === 40) {
                         // down
-                    } else if (e.keyCode === 13) {
+                        const menuLength = me.menu.querySelectorAll('.azMenuItem').length;
+                        // console.log(menuLength);
+                        ++highlightIndex;
+                        highlightIndex = highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
+                        // console.log(highlightIndex);
+                        navigateMenu();
+                    } else if (e.keyCode === 13 || e.keyCode === 32) {
                         // enter
+                        const selected = Array.prototype.filter.call(me.menu.children, n => matches(n, '.azMenuItem'))[highlightIndex];
+                        // console.log(selected.innerHTML);
+                        selected.click();
                     }
                 };
 

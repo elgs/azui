@@ -32,7 +32,7 @@ DONE: drag and place tab header between 1st and 2nd, and it jumps to first poist
 contextmenu:
 DONE: function to return content
 DONE: optionally click on menu to dismiss
-TODO: keyboard navigation
+DONE: keyboard navigation
 
 draggable:
 DONE: touch and pointer devices work together
