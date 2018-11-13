@@ -13,7 +13,7 @@ DONE: row right click menu
 DONE: cell types
 DONE: sort
 DONE: row selection
-TODO: keyboard navigation selection
+DONE: keyboard navigation selection
 DONE: number cell up/down button
 DONE: mobile select incorrect dropdown position
 DONE: cell editing
@@ -54,7 +54,7 @@ DONE: start to show all with current value selected
 DONE: if current value is not in the list, show all with none selected
 DONE: option to allow value not in the list
 DONE: mouse hover to select ???
-TODO: pageable dropdown
+HOLD: pageable dropdown
 
 sortable:
 DONE: escape/capture

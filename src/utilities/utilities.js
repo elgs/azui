@@ -165,6 +165,7 @@ export const elemSize = function (elem) {
 };
 
 export const calcMenuPosition = function (mx, my, mw, mh) {
+    // console.log(mx, my);
     // mouse x, y, menu width, height
     const buf = 20;
     const m2p = 5;

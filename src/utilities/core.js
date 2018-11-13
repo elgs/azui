@@ -1,9 +1,6 @@
 import {
     randGen
 } from './utilities.js';
-import {
-    inherits
-} from 'util';
 
 global.azui = global.azui || {
     // data: {},

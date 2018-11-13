@@ -24,6 +24,9 @@ class RightClick extends Base {
         const me = this;
         const node = me.node;
 
+        node.setAttribute('tabindex', 0);
+        node.style.outline = 'none';
+
         let timer;
         let triggered = false;
         me.replaceEventListener('contextmenu', 'contextmenu', settings.onRightClick);
