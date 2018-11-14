@@ -61,7 +61,10 @@ class Docker extends Base {
     getContextMenuItems(dockId) {
         const me = this;
         return function () {
+            // console.log(dockId);
+            // console.log(me.node);
             const docked = me.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
+            // console.log(docked);
             const state = docked.getAttribute('state');
             return [{
                     icon: icons.svgClose,

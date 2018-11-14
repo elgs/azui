@@ -32,8 +32,7 @@ class ContextMenu extends Base {
             },
             options);
 
-        const items = resolveFunction(settings.items);
-        if (!items) {
+        if (!settings.items) {
             return;
         }
 
@@ -168,6 +167,7 @@ class ContextMenu extends Base {
 
             // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
 
+            const items = resolveFunction(settings.items);
             items.map(item => {
                 const menuItem = createMenuItem(item, menu)
                 menu.appendChild(menuItem);
