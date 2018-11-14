@@ -64,8 +64,8 @@
                 });
                 data.sort(function (a, b) {
                     // minifier bug causing compile error when using let.
-                    var av = a[column.dataIndex];
-                    var bv = b[column.dataIndex];
+                    var av = a[column.key];
+                    var bv = b[column.key];
                     if (column.type === 'number') {
                         av *= 1;
                         bv *= 1;
@@ -113,7 +113,7 @@
             icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
             title: 'Edit',
             action: function (e, target) {
-                const inlineEditCell = azui.InlineEdit(target);
+                const inlineEditCell = azui.InlineEdit(table.selectedCell);
                 inlineEditCell.edit();
                 return false;
             }
@@ -121,7 +121,7 @@
             icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
             title: 'Print Row to Console',
             action: function (e, target) {
-                console.log(target);
+                console.log(table.selectedCell);
                 return false;
             }
         }];
@@ -133,7 +133,7 @@
             rowContextMenu,
             selectMode: 'volatile'
         };
-        azui.DataTable(elem, config);
+        const table = azui.DataTable(elem, config);
         // azui.DataTable(elem, config);
     </script>
 </body>

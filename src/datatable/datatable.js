@@ -60,7 +60,7 @@ class DataTable extends Base {
 
         const refresh = function (pageData, totalSize, pageNumber) {
             me.lastSelectedRowNum = 0;
-            me.lastSelectedCol = null;
+            me.lastSelectedColKey = 0;
             me.totalSize = totalSize;
             settings.pageNumber = pageNumber;
 
@@ -88,6 +88,16 @@ class DataTable extends Base {
                         type: col.type,
                         allowNewItems: col.allowNewItems,
                         options: col.options,
+                        cancel: (event, ui) => {
+                            tbody.focus({
+                                preventScroll: true
+                            });
+                        },
+                        done: (event, ui) => {
+                            tbody.focus({
+                                preventScroll: true
+                            });
+                        },
                     });
                     if (col.hidden) {
                         td.style.display = 'none';
@@ -119,8 +129,10 @@ class DataTable extends Base {
                 e.preventDefault();
             }
             const tr = e.target.closest('div.tr');
+            const td = e.target.closest('div.td');
 
             const trNum = tr.getAttribute('tr-num') * 1;
+            const colKey = td.getAttribute('col-key') * 1;
 
             // console.log('shift:', e.shiftKey);
             // console.log('ctrl:', e.ctrlKey);
@@ -162,7 +174,9 @@ class DataTable extends Base {
                 }
             }
             me.lastSelectedRowNum = trNum;
-            console.log(tr);
+            me.lastSelectedColKey = colKey;
+            me.selectedCell = td.querySelector('span.cell');
+            // console.log(me.selectedCell.innerHTML);
         };
 
         const onKeyDown = e => {
@@ -228,10 +242,6 @@ class DataTable extends Base {
 
         azui.ContextMenu(tbody, {
             items: settings.rowContextMenu,
-            // onContextMenu: e => {
-            //     console.log(e.target);
-            //     tbodyCtxMenu.settings.target = e.target.closest('span.cell');
-            // },
             onDismiss: e => {
                 // if context menu is activate by menu key, tbody will lose focus, causing next menu key press not activating the context menu
                 tbody.focus({

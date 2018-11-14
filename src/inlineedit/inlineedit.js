@@ -43,12 +43,16 @@ class InlineEdit extends Base {
         const me = this;
         const node = this.node;
 
+        me.active = false;
+
         if (settings.create(null, this) === false) {
             return false;
         }
 
         me.cancel = function (e) {
-            // me.each(function () {
+            if (!me.active) {
+                return;
+            }
             const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
             const v = editor.value;
             if (settings.cancel(e, v) === false) {
@@ -56,9 +60,13 @@ class InlineEdit extends Base {
             }
             remove(editor.parentNode);
             node.style.display = '';
+            me.active = false;
         };
 
         me.done = function (e) {
+            if (!me.active) {
+                return;
+            }
             const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
             const v = editor.value;
             if (settings.done(e, v) === false) {
@@ -71,9 +79,13 @@ class InlineEdit extends Base {
             }
             remove(editor.parentNode);
             node.style.display = '';
+            me.active = false;
         };
 
         me.edit = function (e) {
+            if (me.active) {
+                return;
+            }
             if (settings.start(e, node) === false) {
                 return false;
             }
@@ -195,6 +207,7 @@ class InlineEdit extends Base {
             }
             node.style.display = 'none';
             insertAfter(editorWrapper, node)
+            me.active = true;
             return false;
         };
 
