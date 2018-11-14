@@ -120,6 +120,7 @@ class ContextMenu extends Base {
         };
 
         const onContextMenu = function (e) {
+            // console.log(e.target);
             // console.log(e.currentTarget);
 
             const menu = document.createElement('div');
@@ -127,7 +128,7 @@ class ContextMenu extends Base {
             menu.classList.add('azContextMenu');
             menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
 
-            const onKeyDown = e => {
+            const onKeyUp = e => {
                 e.preventDefault();
                 // console.log(e.keyCode);
 
@@ -160,7 +161,7 @@ class ContextMenu extends Base {
             menu.addEventListener('blur', e => {
                 me.dismissMenu(e);
             });
-            menu.addEventListener('keydown', onKeyDown);
+            menu.addEventListener('keyup', onKeyUp);
             menu.focus({
                 preventScroll: true
             });

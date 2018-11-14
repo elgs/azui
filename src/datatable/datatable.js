@@ -60,6 +60,7 @@ class DataTable extends Base {
 
         const refresh = function (pageData, totalSize, pageNumber) {
             me.lastSelectedRowNum = 0;
+            me.lastSelectedCol = null;
             me.totalSize = totalSize;
             settings.pageNumber = pageNumber;
 
@@ -70,16 +71,17 @@ class DataTable extends Base {
 
             empty(tbody);
 
-            me.trs = pageData.map((row, index) => {
+            me.rows = pageData.map((row, index) => {
                 const tr = document.createElement('div');
                 tr.classList.add('tr');
                 tr.setAttribute('tr-num', index);
                 tbody.appendChild(tr);
 
                 settings.columns.map(col => {
-                    const cell = parseDOMElement(`<span class='cell'>${row[col.dataIndex]}</span>`)[0];
+                    const cell = parseDOMElement(`<span class='cell'>${row[col.key]}</span>`)[0];
                     const td = document.createElement('div');
-                    td.classList.add('td', `col-${col.key}`);
+                    td.classList.add('td');
+                    td.setAttribute('col-key', col.key);
                     td.appendChild(cell);
 
                     azui.InlineEdit(cell, {
@@ -99,7 +101,7 @@ class DataTable extends Base {
 
                 // sorting
                 if (settings.sortDirection) {
-                    const th = thead.querySelector(`.th.col-${settings.sortColumnKey}`);
+                    const th = thead.querySelector(`.th[col-key="${settings.sortColumnKey}"]`);
                     thead.querySelectorAll('.azThSort').forEach(el => {
                         el.style['display'] = 'none';
                     });
@@ -131,11 +133,11 @@ class DataTable extends Base {
             const shiftPress = () => {
                 if (me.lastSelectedRowNum <= trNum) {
                     for (let i = me.lastSelectedRowNum; i < trNum; ++i) {
-                        me.trs[i + 1].classList.toggle('selected');
+                        me.rows[i + 1].classList.toggle('selected');
                     }
                 } else {
                     for (let i = me.lastSelectedRowNum; i > trNum; --i) {
-                        me.trs[i - 1].classList.toggle('selected');
+                        me.rows[i - 1].classList.toggle('selected');
                     }
                 }
                 window.getSelection().removeAllRanges();
@@ -153,13 +155,14 @@ class DataTable extends Base {
                 } else if (ctrlOrCmdPressed) {
                     tr.classList.toggle('selected');
                 } else {
-                    me.trs.map(tr => {
+                    me.rows.map(tr => {
                         tr.classList.remove('selected');
                     });
                     tr.classList.add('selected');
                 }
             }
             me.lastSelectedRowNum = trNum;
+            console.log(tr);
         };
 
         const onKeyDown = e => {
@@ -168,7 +171,7 @@ class DataTable extends Base {
             if (e.keyCode === 27) {
                 // esc
                 e.preventDefault();
-                me.trs[me.lastSelectedRowNum].classList.remove('selected');
+                me.rows[me.lastSelectedRowNum].classList.remove('selected');
             } else if (e.keyCode === 37) {
                 // left
                 e.preventDefault();
@@ -177,13 +180,13 @@ class DataTable extends Base {
             } else if (e.keyCode === 38) {
                 // up
                 e.preventDefault();
-                me.trs[me.lastSelectedRowNum].classList.remove('selected');
+                me.rows[me.lastSelectedRowNum].classList.remove('selected');
                 me.lastSelectedRowNum = --me.lastSelectedRowNum < 0 ? 0 : me.lastSelectedRowNum;
-                me.trs[me.lastSelectedRowNum].classList.add('selected');
+                me.rows[me.lastSelectedRowNum].classList.add('selected');
 
                 // const tbodyHeight = getHeight(e.currentTarget);
-                const rowHeight = me.trs[me.lastSelectedRowNum].offsetHeight;
-                const topDiff = diffPosition(me.trs[me.lastSelectedRowNum], e.currentTarget).top;
+                const rowHeight = me.rows[me.lastSelectedRowNum].offsetHeight;
+                const topDiff = diffPosition(me.rows[me.lastSelectedRowNum], e.currentTarget).top;
                 if (topDiff < 0) {
                     // scroll down rowHeight
                     e.currentTarget.scrollTop -= rowHeight;
@@ -196,15 +199,15 @@ class DataTable extends Base {
             } else if (e.keyCode === 40) {
                 // down
                 e.preventDefault();
-                if (me.trs[me.lastSelectedRowNum + 1]) {
-                    me.trs[me.lastSelectedRowNum].classList.remove('selected');
+                if (me.rows[me.lastSelectedRowNum + 1]) {
+                    me.rows[me.lastSelectedRowNum].classList.remove('selected');
                     me.lastSelectedRowNum = ++me.lastSelectedRowNum >= settings.pageSize ? settings.pageSize - 1 : me.lastSelectedRowNum;
 
-                    me.trs[me.lastSelectedRowNum].classList.add('selected');
+                    me.rows[me.lastSelectedRowNum].classList.add('selected');
 
                     const tbodyHeight = getHeight(e.currentTarget);
-                    const rowHeight = me.trs[me.lastSelectedRowNum].offsetHeight;
-                    const topDiff = diffPosition(me.trs[me.lastSelectedRowNum], e.currentTarget).top;
+                    const rowHeight = me.rows[me.lastSelectedRowNum].offsetHeight;
+                    const topDiff = diffPosition(me.rows[me.lastSelectedRowNum], e.currentTarget).top;
                     if (rowHeight + topDiff > tbodyHeight) {
                         // scroll down rowHeight
                         e.currentTarget.scrollTop += rowHeight;
@@ -223,11 +226,12 @@ class DataTable extends Base {
         const tbody = document.createElement('div');
         tbody.classList.add('tbody');
 
-        const tbodyCtxMenu = azui.ContextMenu(tbody, {
+        azui.ContextMenu(tbody, {
             items: settings.rowContextMenu,
-            onContextMenu: e => {
-                tbodyCtxMenu.settings.target = e.target.closest('span.cell');
-            },
+            // onContextMenu: e => {
+            //     console.log(e.target);
+            //     tbodyCtxMenu.settings.target = e.target.closest('span.cell');
+            // },
             onDismiss: e => {
                 // if context menu is activate by menu key, tbody will lose focus, causing next menu key press not activating the context menu
                 tbody.focus({
@@ -258,8 +262,8 @@ class DataTable extends Base {
 
         settings.columns = settings.columns.map((col, index) => {
             const ncol = normalizeCol(col);
-            if (typeof ncol.dataIndex !== 'number') {
-                ncol.dataIndex = index;
+            if (typeof ncol.key !== 'number') {
+                ncol.key = index;
             }
             if (ncol.key === undefined || ncol.key === null) {
                 ncol.key = index;
@@ -273,7 +277,7 @@ class DataTable extends Base {
             const sortDown = parseDOMElement(icons.svgTriangleDown)[0];
             sortDown.classList.add('azThSort', 'azThSortDown');
             const th = document.createElement('div');
-            th.classList.add(`th`, `azSortableItem`, `col-${col.key}`);
+            th.classList.add(`th`, `azSortableItem`);
             th.innerHTML = col.text;
             th.appendChild(sortUp);
             th.appendChild(sortDown);
@@ -371,12 +375,12 @@ class DataTable extends Base {
                             // neglect the effect of e.preventDefault in the icon function;
                             cb.checked = !cb.checked;
                             if (cb.checked) {
-                                node.querySelectorAll(`.col-${col.key}`).forEach(el => {
+                                node.querySelectorAll(`[col-key="${col.key}"]`).forEach(el => {
                                     el.style.display = '';
                                 });
                                 col.hidden = false;
                             } else {
-                                node.querySelectorAll(`.col-${col.key}`).forEach(el => {
+                                node.querySelectorAll(`[col-key="${col.key}"]`).forEach(el => {
                                     el.style.display = 'none';
                                 });
                                 col.hidden = true;
@@ -427,7 +431,6 @@ class DataTable extends Base {
         });
 
         const sortAll = function (colKey) {
-            const th = thead.querySelector(`.th.col-${colKey}`);
             const column = settings.columns.find(column => column.key == colKey);
             const sortKey = column.key;
             if (sortKey !== settings.sortColumnKey || settings.sortDirection === 'desc') {
