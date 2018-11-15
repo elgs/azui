@@ -44,7 +44,7 @@ module.exports = (env, argv) => {
 
     const entries = {};
     mods.map(mod => {
-        entries[mod] = `${srcDir+mod}/index.js`;
+        entries[mod] = ['@babel/polyfill', `${srcDir+mod}/index.js`];
     });
     // console.log(entries);
     const htmls = mods.filter(mod => mod !== 'utilities').map(mod => {
