@@ -104,10 +104,13 @@ class Sortable extends Base {
         };
 
         const onOverTargetCenter = function (e) {
+            // console.log('on over target center!');
+            // console.log(e.target);
             const data = e.detail;
             if (!data.source.classList.contains('azSortableItem')) {
                 return;
             }
+
             const draggable = azui.Draggable(data.source);
             if (draggable['pointer_in']) {
                 delete draggable['pointer_in'];
@@ -117,8 +120,11 @@ class Sortable extends Base {
                 return false;
             }
             if (settings.placeholder) {
-                // console.log('ph:', ph);
-                swapElement(ph, data.target);
+                if (ph) {
+                    // console.log('ph:', ph);
+                    // console.log('target:', data.target);
+                    swapElement(ph, data.target);
+                }
                 // console.log(data.target);
             } else {
                 siblings(data.target).forEach(el => el.classList.remove('azSortableDropAfter', 'azSortableDropBefore'));
@@ -130,6 +136,7 @@ class Sortable extends Base {
         };
 
         const onLeaveTargetCenter = function (e) {
+            // console.log('on leave target center!');
             const data = e.detail;
             if (!data.source.classList.contains('azSortableItem')) {
                 return;
@@ -147,12 +154,14 @@ class Sortable extends Base {
 
         const onDragStop = function (e, target, draggable) {
             // console.log(selected, target, ph);
+            // console.log('on drag stop');
             const data = {
                 source: selected,
                 target: ph,
                 boundingClientRect: target.getBoundingClientRect(),
                 escaped: draggable.escapeX || draggable.escapeY,
             };
+            delete draggable['pointer_in'];
             if (selected) {
                 selected.classList.remove('azSortableSelected');
                 selected.classList.remove('azSortableAllow');
@@ -198,18 +207,18 @@ class Sortable extends Base {
                 interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
                     azui.constants.dndEventConsts.pointer_out,
                 pointer_in: function (e) {
+                    // console.log('pointer in fired');
                     const source = e.detail.source;
+                    if (!source.classList.contains('azSortableItem')) {
+                        return;
+                    }
+
                     const draggable = azui.Draggable(source);
                     const detachedContainer = draggable.detachedContainer;
                     if (!detachedContainer) {
                         return;
                     }
 
-                    // console.log('pointer in fired');
-
-                    if (!source.classList.contains('azSortableItem')) {
-                        return;
-                    }
                     selected = source;
                     const phs = siblings(source, '.az-placeholder');
                     if (phs.length > 0) {
@@ -223,14 +232,14 @@ class Sortable extends Base {
                     me.add(source, cursorX, cursorY);
 
                     if (ph) {
-                        insertBefore(ph, source);
-
                         const diffContainer = diffPositionInnerBorder(me.node, detachedContainer.node);
                         // console.log(diffContainer);
 
                         draggable.mouseX0 += diffContainer.left;
                         draggable.mouseY0 += diffContainer.top;
                         // console.log(draggable.mouseX0, draggable.mouseY0);
+
+                        insertBefore(ph, source);
                     } else {
                         // console.log(draggable.originalBpr);
                         selected.style.top = '';
@@ -318,7 +327,6 @@ class Sortable extends Base {
                 azui.constants.dndEventConsts.target_center_out,
             target_center_in: function (e) {
                 // console.log(e);
-                // console.log('target center in fired');
                 onOverTargetCenter(e);
             },
             target_center_out: function (e) {

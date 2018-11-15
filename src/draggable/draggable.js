@@ -188,6 +188,8 @@ class Draggable extends Base {
                                         originalEvent: e,
                                     }
                                 }));
+                                // console.log(dt.dt, eventName, oldPs, ps);
+                                // because states are mutually exclusive, so break;
                                 break;
                             }
                         }
@@ -321,6 +323,7 @@ class Draggable extends Base {
             document.addEventListener('mouseup', onmouseup);
             document.addEventListener('mouseleave', onmouseup);
 
+            // console.log(document.querySelectorAll('.azDropTarget').length);
             me.dropTargets = [...document.querySelectorAll('.azDropTarget')].filter(dt => dt !== node).map(dt => {
                 return {
                     dt,
@@ -328,6 +331,7 @@ class Draggable extends Base {
                     interestedDropEvents: dt.getAttribute('az-interested-drop-events') * 1,
                 };
             });
+            // console.log(me.dropTargets.length);
 
             const dts = me.dropTargets;
             dts.map(dt => {
