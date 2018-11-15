@@ -44,7 +44,7 @@ module.exports = (env, argv) => {
 
     const entries = {};
     mods.map(mod => {
-        entries[mod] = ['@babel/polyfill', `${srcDir+mod}/index.js`];
+        entries[mod] = `${srcDir+mod}/index.js`;
     });
     // console.log(entries);
     const htmls = mods.filter(mod => mod !== 'utilities').map(mod => {
@@ -74,7 +74,11 @@ module.exports = (env, argv) => {
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ['@babel/preset-env'],
+                        presets: [
+                            ['@babel/preset-env', {
+                                useBuiltIns: 'usage'
+                            }, ]
+                        ],
                         plugins: ["transform-class-properties"]
                     }
                 },
