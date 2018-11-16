@@ -20,8 +20,8 @@ class Accordion extends Base {
 
         const acc = me.node.querySelectorAll('.accordion');
 
-        for (let i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function () {
+        for (let i = 0; i < acc.length; ++i) {
+            acc[i].addEventListener("touchend", function () {
                 this.classList.toggle("active");
                 var panel = this.nextElementSibling;
                 if (panel.style.maxHeight) {

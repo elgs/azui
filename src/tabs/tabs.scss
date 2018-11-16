@@ -1,21 +1,5 @@
 @import "../utilities/utilities.scss";
 
-%hoveractive {
-    &:hover {
-        background-color: darken($color: $main-color, $amount: 5%);
-    }
-
-    &.active {
-        background-color: darken($color: $main-color, $amount: 10%);
-    }
-
-    & * {
-        // border: 1px solid black;
-        user-select: none;
-        // -moz-user-select: -moz-none;
-    }
-}
-
 .azTabs {
     box-shadow: $shadow;
     display: grid;
@@ -45,6 +29,8 @@
                 width: 150px;
                 border-right: solid 1px darken($color: $main-color, $amount: 7%);
                 border-left: solid 1px white;
+                transition: 0.5s;
+                transition-property: background-color;
 
                 &:first-of-type {
                     border-left: none;

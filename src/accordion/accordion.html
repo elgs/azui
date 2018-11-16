@@ -6,12 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>azAccordion</title>
     <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+        }
+
+        #acc0 {
+            height: 600px;
+            width: 100%;
+            max-width: 400px;
+            position: absolute;
+        }
     </style>
 </head>
 
 <body>
-    <div class='acc0'>
-        <button class="accordion">Section 1</button>
+    <div id='acc0'>
+        <div class="accordion">Section 1</div>
         <div class="panel">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -19,7 +30,7 @@
                 ea commodo consequat.</p>
         </div>
 
-        <button class="accordion">Section 2</button>
+        <div class="accordion">Section 2</div>
         <div class="panel">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -27,7 +38,7 @@
                 ea commodo consequat.</p>
         </div>
 
-        <button class="accordion">Section 3</button>
+        <div class="accordion">Section 3</div>
         <div class="panel">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
@@ -37,7 +48,7 @@
     </div>
 
     <script>
-        const acc = document.querySelector('.acc0');
+        const acc = document.querySelector('#acc0');
         azui.Accordion(acc);
     </script>
 </body>
