@@ -1,9 +1,3 @@
-// html,
-// body {
-//     font-family: 'Roboto', sans-serif;
-//     font-size: 13px;
-// }
-
 * {
     box-sizing: border-box;
 }
@@ -36,8 +30,10 @@ inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 
 
 %hoveractive {
-    &:hover {
-        background-color: darken($color: $main-color, $amount: 5%);
+    @media (hover: hover) {
+        &:hover {
+            background-color: darken($color: $main-color, $amount: 5%);
+        }
     }
 
     &.active {
@@ -45,8 +41,6 @@ inset 0 0 0 1px rgba(0, 0, 0, 0.08);
     }
 
     & * {
-        // border: 1px solid black;
         user-select: none;
-        // -moz-user-select: -moz-none;
     }
 }

@@ -15,21 +15,59 @@ class Accordion extends Base {
     static className = 'Accordion';
 
     azInit(options) {
+        const settings = Object.assign({
+            collapseOthers: true,
+        }, options);
+
         const me = this;
-        const settings = Object.assign({}, options);
+        const node = me.node;
+        me.settings = settings;
+        node.classList.add('azAccordion');
 
-        const acc = me.node.querySelectorAll('.accordion');
+        const acc = me.node.querySelectorAll('.azAccordionHeader');
 
-        for (let i = 0; i < acc.length; ++i) {
-            acc[i].addEventListener("touchend", function () {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
+        const toggle = (header, state) => {
+            const content = header.nextElementSibling;
+
+            if (state === undefined || state === null) {
+                header.classList.toggle("active");
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
                 } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
+                    content.style.maxHeight = content.scrollHeight + "px";
                 }
-            });
+            } else if (state === true) {
+                header.classList.add("active");
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else if (state === false) {
+                header.classList.remove("active");
+                content.style.maxHeight = null;
+            }
+        };
+
+        const headerSelected = e => {
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
+
+            if (settings.collapseOthers) {
+                for (const a of acc) {
+                    if (a === e.currentTarget) {
+                        toggle(e.currentTarget);
+                    } else {
+                        toggle(e.currentTarget, false);
+                    }
+                }
+            } else {
+                toggle(e.currentTarget);
+            }
+        };
+
+        for (const a of acc) {
+            if (isTouchDevice()) {
+                a.addEventListener("touchend", headerSelected);
+            }
+            a.addEventListener("mouseup", headerSelected);
         }
     }
 };
