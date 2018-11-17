@@ -20,11 +20,17 @@ const excludes = ['utilities'];
 
 const generateAll = () => {
     let jsContent = '';
-    let htmlContent = '';
+    let htmlContent = `<style>
+    * {
+        font-family: 'Roboto', sans-serif;
+        font-size: 13px;
+    }
+</style>
+<p>Build time: ${new Date()}</p>`;
     listModules().filter(mod => mod !== 'all' && mod !== 'utilities').map(mod => {
         jsContent += `import '../${mod}/index.js';\n`;
 
-        htmlContent += `<h3>${mod}</h3>`;
+        htmlContent += `<h5>${mod}</h5>`;
         htmlContent += '<ul>';
         listHtmls(mod).map(html => {
             htmlContent += `<li><a href='${html}'>${html}</a></li>\n`;
