@@ -60,10 +60,11 @@
     </div>
 
     <script>
-        const acc = document.querySelector('#acc0');
-        azui.Accordion(acc, {
+        const accDOM = document.querySelector('#acc0');
+        const acc = azui.Accordion(accDOM, {
             collapseOthers: true,
         });
+        acc.append('Added by append() API');
     </script>
 </body>
 

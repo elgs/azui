@@ -3,7 +3,9 @@ import {
     Base
 } from '../utilities/core.js';
 import {
-    isTouchDevice
+    isTouchDevice,
+    randGen,
+    parseDOMElement
 } from '../utilities/utilities.js';
 
 azui.Accordion = function (el, options, init) {
@@ -24,7 +26,7 @@ class Accordion extends Base {
         me.settings = settings;
         node.classList.add('azAccordion');
 
-        const acc = me.node.querySelectorAll('.azAccordionHeader');
+        const headers = [...me.node.querySelectorAll('.azAccordionHeader')];
 
         me.toggle = (header, state) => {
             const content = header.nextElementSibling;
@@ -55,20 +57,27 @@ class Accordion extends Base {
             }
         };
 
-        me.append = () => {};
+        me.append = (title) => {
+            const markup = `<div class="azAccordionComponent"><div class="azAccordionHeader"><span>${title}</span></div><div class="azAccordionContent"></div></div>`;
+            const comp = parseDOMElement(markup)[0];
+            const header = comp.querySelector('.azAccordionHeader');
+            applyEvents(header);
+            headers.push(header);
+            node.appendChild(comp);
+        };
         me.remove = (key) => {};
-        me.insert = (pos) => {};
+        me.insert = (title, pos) => {};
         me.move = (key, pos) => {};
 
 
         me.toggleAll = (state) => {
-            for (const a of acc) {
+            for (const a of headers) {
                 me.toggle(a, state);
             }
         };
 
         me.toggleOthers = (header, state) => {
-            for (const a of acc) {
+            for (const a of headers) {
                 if (a === header) {
                     continue;
                 }
@@ -91,7 +100,7 @@ class Accordion extends Base {
                 }
 
                 if (settings.collapseOthers) {
-                    for (const a of acc) {
+                    for (const a of headers) {
                         if (a === e.currentTarget) {
                             me.toggle(a);
                         } else {
@@ -138,7 +147,7 @@ class Accordion extends Base {
             title: 'Expand',
             action: function (e, target) {
                 // console.log(target);
-                for (const a of acc) {
+                for (const a of headers) {
                     if (a === target) {
                         me.toggle(a, true);
                     } else {
@@ -156,7 +165,7 @@ class Accordion extends Base {
             }
         }];
 
-        for (const a of acc) {
+        const applyEvents = a => {
             const cm = azui.ContextMenu(a, {
                 items: settings.collapseOthers ? contexMenuItemsForCollapseOthersTrue : contexMenuItemsForCollapseOthersFalse,
             });
@@ -165,6 +174,11 @@ class Accordion extends Base {
                 a.addEventListener("touchend", createHeaderSelected(cm));
             }
             a.addEventListener("mouseup", createHeaderSelected(cm));
+        };
+
+        for (const a of headers) {
+            a.setAttribute('acc-key', randGen(8));
+            applyEvents(a);
         }
     }
 };

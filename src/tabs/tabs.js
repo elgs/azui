@@ -100,6 +100,16 @@ const closeClicked = function (event) {
     event.stopPropagation();
 };
 
+
+const applyEvents = a => {
+    const cm = azui.ContextMenu(a, {
+        items: tabContextMenu
+    });
+    const headerClicked = createHeaderClicked(cm);
+    a.addEventListener('mouseup', headerClicked);
+    a.addEventListener('touchend', headerClicked);
+};
+
 class Tabs extends Base {
     static className = 'Tabs';
 
@@ -130,13 +140,8 @@ class Tabs extends Base {
         tabHeaderContainer.appendChild(tabLabels);
 
         tabLabelList.forEach(el => {
-            const cm = azui.ContextMenu(el, {
-                items: tabContextMenu
-            });
+            applyEvents(el);
 
-            const headerClicked = createHeaderClicked(cm);
-            el.addEventListener('mouseup', headerClicked);
-            el.addEventListener('touchend', headerClicked);
             if (matches(el, '.azClosable')) {
                 const iconDiv = document.createElement('div');
                 iconDiv.classList.add('close');
@@ -329,10 +334,6 @@ class Tabs extends Base {
             closeDiv.addEventListener('click', closeClicked);
         }
 
-        const cm = azui.ContextMenu(headerNode, {
-            items: tabContextMenu
-        });
-
         me.sortable.add(headerNode);
 
         contentNode.setAttribute('id', 'azTabContent-' + tabId);
@@ -340,9 +341,8 @@ class Tabs extends Base {
         contentNode.style['display'] = 'none';
         node.appendChild(contentNode);
 
-        const headerClicked = createHeaderClicked(cm);
-        headerNode.addEventListener('mouseup', headerClicked);
-        headerNode.addEventListener('touchend', headerClicked);
+        applyEvents(headerNode);
+
         // me.showHideScrollers();
         me.fitTabWidth();
         if (activate === true) {

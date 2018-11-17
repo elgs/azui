@@ -272,7 +272,10 @@ class DataTable extends Base {
 
         settings.columns = settings.columns.map((col, index) => {
             const ncol = normalizeCol(col);
-            ncol.key = index;
+            // yes, not !==
+            if (ncol.key != '0') {
+                ncol.key = ncol.key || index;
+            }
             return ncol;
         });
 
