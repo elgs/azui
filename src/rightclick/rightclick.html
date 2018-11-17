@@ -22,20 +22,15 @@
     <script>
         const elems = document.querySelectorAll('div');
         elems.forEach(el => {
-            azui.RightClick(el, {
+            const rc = azui.RightClick(el, {
                 onRightClick: function (e) {
                     console.log(e);
                     alert(e.type);
                     e.preventDefault();
                 },
-                // onTouchStart: function (e) {
-                //     console.log(e);
-                //     alert(e.type);
-                // },
-                // onTouchEnd: function (e) {
-                //     console.log(e);
-                //     alert(e.type);
-                // },
+            });
+            el.addEventListener('touchend', e => {
+                alert(rc.triggered);
             });
         });
     </script>

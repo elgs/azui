@@ -25,22 +25,22 @@ class RightClick extends Base {
         node.setAttribute('tabindex', 0);
         node.style.outline = 'none';
 
-        let timer;
-        let triggered = false;
         me.replaceEventListener('contextmenu', 'contextmenu', settings.onRightClick);
 
         if (isTouchDevice()) {
-            'touchmove touchend touchcancel'.split(' ').forEach(e => me.replaceEventListener(e, e, function (event) {
-                clearTimeout(timer);
-                if (triggered) {
-                    triggered = false;
-                } else {
-                    event.target.dispatchEvent(new CustomEvent('click'));
-                }
-            }));
+            let timer;
+            me.triggered = false;
             me.replaceEventListener('touchstart', 'touchstart', function (event) {
+                'touchmove touchend touchcancel'.split(' ').forEach(e => me.replaceEventListener(e, e, function (event) {
+                    clearTimeout(timer);
+                    if (me.triggered) {
+                        me.triggered = false;
+                        // } else {
+                        // event.target.dispatchEvent(new CustomEvent('click'));
+                    }
+                }));
                 timer = setTimeout(function () {
-                    triggered = true;
+                    me.triggered = true;
                     if (node === document || node === window || node.parentNode) {
                         // don't call if me is removed.
                         settings.onRightClick(event);

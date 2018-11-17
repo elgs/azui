@@ -195,7 +195,7 @@ class ContextMenu extends Base {
             e.preventDefault(); // prevent browser context menu
         }
 
-        azui.RightClick(node, {
+        me.rightClick = azui.RightClick(node, {
             onRightClick: function (e) {
                 onContextMenu(e);
                 settings.onContextMenu(e);

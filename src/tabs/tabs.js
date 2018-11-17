@@ -73,6 +73,13 @@ const tabContextMenu = [{
 ];
 const createHeaderClicked = function (cm) {
     return function (event) {
+        if (event.type === 'touchend') {
+            event.preventDefault();
+            if (cm.rightClick.triggered) {
+                return;
+            }
+        }
+
         const currentTabNode = event.target.closest('.azTabs');
         const currentTabs = azui.Tabs(currentTabNode);
         if (event.button === 2 || currentTabs.dragging || cm.on) {
