@@ -272,12 +272,7 @@ class DataTable extends Base {
 
         settings.columns = settings.columns.map((col, index) => {
             const ncol = normalizeCol(col);
-            if (typeof ncol.key !== 'number') {
-                ncol.key = index;
-            }
-            if (ncol.key === undefined || ncol.key === null) {
-                ncol.key = index;
-            }
+            ncol.key = index;
             return ncol;
         });
 
@@ -411,32 +406,44 @@ class DataTable extends Base {
             });
         });
 
+        const indexOfColumn = colKey => {
+            for (let i = 0; i < settings.columns.length; ++i) {
+                // yes, not ===
+                if (colKey == settings.columns[i].key) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
         // moving columns
         azui.Sortable(thead, {
             placeholder: false,
-            create: function (e, data) {
-                if (isTouchDevice()) {
-                    e.target.click();
-                    e.preventDefault();
-                }
-            },
             stop: function (e, data) {
                 if (!data.source || !data.target) {
                     return;
                 }
-                const sIndex = index(data.source);
-                const tIndex = index(data.target);
-                settings.columns.splice(tIndex, 0, settings.columns.splice(sIndex, 1)[0]);
 
+                // console.log(data.source, data.target);
+                const sourceColKey = data.source.getAttribute('col-key');
+                const targetColKey = data.target.getAttribute('col-key');
+                // console.log(sourceColKey, targetColKey);
+
+                const sourceIndex = indexOfColumn(sourceColKey);
+                const targetIndex = indexOfColumn(targetColKey);
+
+                settings.columns.splice(targetIndex, 0, settings.columns.splice(sourceIndex, 1)[0]);
                 tbody.querySelectorAll('div.tr').forEach(tr => {
-                    const std = tr.querySelectorAll('div.td')[sIndex];
-                    const ttd = tr.querySelectorAll('div.td')[tIndex];
-                    if (sIndex < tIndex) {
+                    const std = tr.querySelector(`div.td[col-key='${sourceColKey}']`);
+                    const ttd = tr.querySelector(`div.td[col-key='${targetColKey}']`);
+                    // console.log(std, ttd, sourceIndex, targetIndex);
+                    if (sourceIndex < targetIndex) {
                         insertAfter(std, ttd);
                     } else {
                         insertBefore(std, ttd);
                     }
                 });
+                // console.log(settings.columns);
             }
         });
 

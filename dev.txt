@@ -18,10 +18,12 @@ DONE: number cell up/down button
 DONE: mobile select incorrect dropdown position
 DONE: cell editing
 DONE: row context menu
-TODO: selectedRow, selectedCol, selectedCell
+DONE: selectedRow, selectedCol, selectedCell
+DONE: moving cross columns wide column bug
 
 pager:
 DONE: add rows in page in ui
+HOLD: slow responding item per pages
 
 tabs:
 DONE: drag out to create new tabset
@@ -62,6 +64,6 @@ DONE: escape/capture
 DONE: error occured when drag in without release, and drag out release
 
 accordion:
-TODO: add remove components
+TODO: add/remove/reorder components
 DONE: toggle API
 DONE: context menu to toggle
