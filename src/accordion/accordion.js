@@ -29,20 +29,37 @@ class Accordion extends Base {
         me.toggle = (header, state) => {
             const content = header.nextElementSibling;
             if (state === undefined || state === null) {
-                header.classList.toggle("active");
-                if (content.style.maxHeight) {
+                state = header.getAttribute('state') || (content.style.maxHeight ? '1' : '0');
+
+                if (state == '1') {
+                    header.setAttribute('state', '0');
+                    header.classList.remove('active');
                     content.style.maxHeight = null;
+                    content.style.minHeight = 0;
                 } else {
+                    header.setAttribute('state', '1');
+                    header.classList.add('active');
                     content.style.maxHeight = content.scrollHeight + "px";
+                    content.style.minHeight = "20px";
                 }
             } else if (state === true) {
+                header.setAttribute('state', '1');
                 header.classList.add("active");
                 content.style.maxHeight = content.scrollHeight + "px";
+                content.style.minHeight = "20px";
             } else if (state === false) {
+                header.setAttribute('state', '0');
                 header.classList.remove("active");
                 content.style.maxHeight = null;
+                content.style.minHeight = 0;
             }
         };
+
+        me.append = () => {};
+        me.remove = (key) => {};
+        me.insert = (pos) => {};
+        me.move = (key, pos) => {};
+
 
         me.toggleAll = (state) => {
             for (const a of acc) {
