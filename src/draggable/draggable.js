@@ -151,8 +151,8 @@ class Draggable extends Base {
             if (settings.drag(e, me.selected, me) === false) {
                 return false;
             }
-            me.mouseX = e.pageX || e.touches[0].pageX;
-            me.mouseY = e.pageY || e.touches[0].pageY;
+            me.mouseX = e.touches ? e.touches[0].pageX : e.pageX;
+            me.mouseY = e.touches ? e.touches[0].pageY : e.pageY;
             const dx = me.mouseX - me.mouseX0;
             const dy = me.mouseY - me.mouseY0;
             // console.log(dx, dy);
@@ -287,8 +287,8 @@ class Draggable extends Base {
 
             me.selected = node;
 
-            me.mouseX = me.mouseX0 = e.pageX || e.touches[0].pageX;
-            me.mouseY = me.mouseY0 = e.pageY || e.touches[0].pageY;
+            me.mouseX = me.mouseX0 = e.touches ? e.touches[0].pageX : e.pageX;
+            me.mouseY = me.mouseY0 = e.touches ? e.touches[0].pageY : e.pageY;
 
             const bcr = me.node.getBoundingClientRect();
             me.originalBpr = {

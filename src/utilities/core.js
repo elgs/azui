@@ -47,7 +47,7 @@ document.addEventListener('mousemove', e => {
         wait = true;
         setTimeout(() => {
             wait = false;
-        }, 200);
+        }, 50);
     }
 });
 

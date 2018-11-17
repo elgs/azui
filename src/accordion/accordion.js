@@ -26,7 +26,7 @@ class Accordion extends Base {
 
         const acc = me.node.querySelectorAll('.azAccordionHeader');
 
-        const toggle = (header, state) => {
+        me.toggle = (header, state) => {
             const content = header.nextElementSibling;
 
             if (state === undefined || state === null) {
@@ -50,20 +50,36 @@ class Accordion extends Base {
                 e.preventDefault();
             }
 
+            if (e.type === 'mouseup' && e.button !== 0) {
+                return;
+            }
+
             if (settings.collapseOthers) {
                 for (const a of acc) {
                     if (a === e.currentTarget) {
-                        toggle(e.currentTarget);
+                        me.toggle(e.currentTarget);
                     } else {
-                        toggle(e.currentTarget, false);
+                        me.toggle(e.currentTarget, false);
                     }
                 }
             } else {
-                toggle(e.currentTarget);
+                me.toggle(e.currentTarget);
             }
         };
 
+        const contexMenuItems = [{
+            title: 'Toggle Me',
+            action: function (e, target) {
+                // console.log(target);
+                me.toggle(target);
+                return false;
+            }
+        }];
+
         for (const a of acc) {
+            const cm = azui.ContextMenu(a, {
+                items: contexMenuItems,
+            });
             if (isTouchDevice()) {
                 a.addEventListener("touchend", headerSelected);
             }

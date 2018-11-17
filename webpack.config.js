@@ -16,6 +16,8 @@ const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => i
 const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
 const pkgJson = require('./package.json');
 
+const excludes = ['utilities'];
+
 const generateAll = () => {
     let jsContent = '';
     let htmlContent = '';
@@ -47,7 +49,9 @@ module.exports = (env, argv) => {
         entries[mod] = `${srcDir+mod}/index.js`;
     });
     // console.log(entries);
-    const htmls = mods.filter(mod => mod !== 'utilities').map(mod => {
+    const htmls = mods.filter(mod => {
+        return !excludes.includes(mod);
+    }).map(mod => {
         const tpls = listHtmls(mod);
         return tpls.map(tpl => {
             return new HtmlWebpackPlugin({

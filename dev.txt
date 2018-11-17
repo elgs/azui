@@ -62,3 +62,6 @@ DONE: escape/capture
 DONE: error occured when drag in without release, and drag out release
 
 accordion:
+TODO: add remove components
+TODO: toggle API
+TODO: context menu to toggle

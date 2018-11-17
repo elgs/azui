@@ -62,7 +62,10 @@ class ContextMenu extends Base {
         me.dismissMenu = e => {
             if (e.type === 'touchstart') {
                 const pb = me.menu.getBoundingClientRect();
-                if (isOutside(e.pageX || e.touches[0].pageX, e.pageY || e.touches[0].pageY, pb)) {
+                if (isOutside(
+                        e.touches ? e.touches[0].pageX : e.pageX,
+                        e.touches ? e.touches[0].pageY : e.pageY,
+                        pb)) {
                     me.menu.remove();
                     settings.onDismiss(e);
                 } else {
@@ -175,8 +178,8 @@ class ContextMenu extends Base {
 
             // console.log(getWidth(menu), getHeight(menu));
             const menuPosition = calcMenuPosition(
-                azui.cursor.x || e.clientX || e.touches[0].clientX,
-                azui.cursor.y || e.clientY || e.touches[0].clientY,
+                e.touches ? e.touches[0].clientX : azui.cursor.x || e.clientX,
+                e.touches ? e.touches[0].clientY : azui.cursor.y || e.clientY,
                 getWidth(menu), getHeight(menu));
             // console.log(menuPosition);
             menu.style['position'] = 'absolute';

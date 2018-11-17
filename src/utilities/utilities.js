@@ -76,8 +76,8 @@ export const getPositionState = function (source, target, event) {
         ret += azui.constants.dndStateConsts.touch;
     }
 
-    const pointerX = event.pageX || event.touches[0].pageX;
-    const pointerY = event.pageY || event.touches[0].pageY;
+    const pointerX = event.touches ? event.touches[0].pageX : event.pageX;
+    const pointerY = event.touches ? event.touches[0].pageY : event.pageY;
     if (!isOutside(pointerX, pointerY, t)) {
         ret += azui.constants.dndStateConsts.pointer;
     }
