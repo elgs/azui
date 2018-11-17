@@ -63,5 +63,5 @@ DONE: error occured when drag in without release, and drag out release
 
 accordion:
 TODO: add remove components
-TODO: toggle API
-TODO: context menu to toggle
+DONE: toggle API
+DONE: context menu to toggle

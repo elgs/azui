@@ -16,7 +16,7 @@ class Accordion extends Base {
 
     azInit(options) {
         const settings = Object.assign({
-            collapseOthers: true,
+            collapseOthers: false,
         }, options);
 
         const me = this;
@@ -28,7 +28,6 @@ class Accordion extends Base {
 
         me.toggle = (header, state) => {
             const content = header.nextElementSibling;
-
             if (state === undefined || state === null) {
                 header.classList.toggle("active");
                 if (content.style.maxHeight) {
@@ -45,21 +44,24 @@ class Accordion extends Base {
             }
         };
 
-        const contexMenuItems = [{
-            title: 'Toggle Me',
-            action: function (e, target) {
-                // console.log(target);
-                me.toggle(target);
-                return false;
+        me.toggleAll = (state) => {
+            for (const a of acc) {
+                me.toggle(a, state);
             }
-        }];
+        };
 
-        for (const a of acc) {
-            const cm = azui.ContextMenu(a, {
-                items: contexMenuItems,
-            });
+        me.toggleOthers = (header, state) => {
+            for (const a of acc) {
+                if (a === header) {
+                    continue;
+                }
+                me.toggle(a, state);
+            }
+        };
 
-            const headerSelected = e => {
+
+        const createHeaderSelected = cm => {
+            return e => {
                 if (e.type === 'touchend') {
                     e.preventDefault();
                     if (cm.rightClick.triggered) {
@@ -74,20 +76,78 @@ class Accordion extends Base {
                 if (settings.collapseOthers) {
                     for (const a of acc) {
                         if (a === e.currentTarget) {
-                            me.toggle(e.currentTarget);
+                            me.toggle(a);
                         } else {
-                            me.toggle(e.currentTarget, false);
+                            me.toggle(a, false);
                         }
                     }
                 } else {
                     me.toggle(e.currentTarget);
                 }
             };
+        }
+
+        const contexMenuItemsForCollapseOthersFalse = [{
+            title: 'Expand All',
+            action: function (e, target) {
+                // console.log(target);
+                me.toggleAll(true);
+                return false;
+            }
+        }, {
+            title: 'Collpase All',
+            action: function (e, target) {
+                // console.log(target);
+                me.toggleAll(false);
+                return false;
+            }
+        }, {
+            title: 'Expand Others',
+            action: function (e, target) {
+                // console.log(target);
+                me.toggleOthers(target, true);
+                return false;
+            }
+        }, {
+            title: 'Collpase Others',
+            action: function (e, target) {
+                // console.log(target);
+                me.toggleOthers(target, false);
+                return false;
+            }
+        }];
+
+        const contexMenuItemsForCollapseOthersTrue = [{
+            title: 'Expand',
+            action: function (e, target) {
+                // console.log(target);
+                for (const a of acc) {
+                    if (a === target) {
+                        me.toggle(a, true);
+                    } else {
+                        me.toggle(a, false);
+                    }
+                }
+                return false;
+            }
+        }, {
+            title: 'Collpase',
+            action: function (e, target) {
+                // console.log(target);
+                me.toggle(target, false);
+                return false;
+            }
+        }];
+
+        for (const a of acc) {
+            const cm = azui.ContextMenu(a, {
+                items: settings.collapseOthers ? contexMenuItemsForCollapseOthersTrue : contexMenuItemsForCollapseOthersFalse,
+            });
 
             if (isTouchDevice()) {
-                a.addEventListener("touchend", headerSelected);
+                a.addEventListener("touchend", createHeaderSelected(cm));
             }
-            a.addEventListener("mouseup", headerSelected);
+            a.addEventListener("mouseup", createHeaderSelected(cm));
         }
     }
 };
