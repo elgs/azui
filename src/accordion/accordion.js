@@ -26,8 +26,6 @@ class Accordion extends Base {
         me.settings = settings;
         node.classList.add('azAccordion');
 
-        const headers = [...me.node.querySelectorAll('.azAccordionHeader')];
-
         me.toggle = (header, state) => {
             const content = header.nextElementSibling;
             if (state === undefined || state === null) {
@@ -58,26 +56,58 @@ class Accordion extends Base {
         };
 
         me.append = (title) => {
-            const markup = `<div class="azAccordionComponent"><div class="azAccordionHeader"><span>${title}</span></div><div class="azAccordionContent"></div></div>`;
+            const key = randGen(8);
+            const markup = `<div class="azAccordionComponent" acc-key="${key}"><div class="azAccordionHeader"><span>${title}</span></div><div class="azAccordionContent"></div></div>`;
             const comp = parseDOMElement(markup)[0];
+
             const header = comp.querySelector('.azAccordionHeader');
             applyEvents(header);
-            headers.push(header);
             node.appendChild(comp);
-        };
-        me.remove = (key) => {};
-        me.insert = (title, pos) => {};
-        me.move = (key, pos) => {};
 
+            return key;
+        };
+
+        me.remove = (key) => {
+            const comp = node.querySelector(`[acc-key="${key}"]`);
+            if (comp) {
+                comp.remove();
+            }
+        };
+
+        me.insert = (title, pos) => {
+            const key = randGen(8);
+            const markup = `<div class="azAccordionComponent" acc-key="${key}"><div class="azAccordionHeader"><span>${title}</span></div><div class="azAccordionContent"></div></div>`;
+            const comp = parseDOMElement(markup)[0];
+
+            const header = comp.querySelector('.azAccordionHeader');
+            applyEvents(header);
+            node.insertBefore(comp, node.children[pos]);
+
+            return key;
+        };
+
+        me.move = (key, pos) => {
+            const comp = node.querySelector(`[acc-key="${key}"]`);
+            if (comp) {
+                node.insertBefore(comp, node.children[pos]);
+            }
+        };
+
+        me.alert = (key, state) => {
+            const header = node.querySelector(`[acc-key="${key}"]>.azAccordionHeader`);
+            if (header) {
+                state ? header.classList.add('azAccordionAlert') : header.classList.remove('azAccordionAlert');
+            }
+        };
 
         me.toggleAll = (state) => {
-            for (const a of headers) {
+            for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
                 me.toggle(a, state);
             }
         };
 
         me.toggleOthers = (header, state) => {
-            for (const a of headers) {
+            for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
                 if (a === header) {
                     continue;
                 }
@@ -100,7 +130,7 @@ class Accordion extends Base {
                 }
 
                 if (settings.collapseOthers) {
-                    for (const a of headers) {
+                    for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
                         if (a === e.currentTarget) {
                             me.toggle(a);
                         } else {
@@ -147,7 +177,7 @@ class Accordion extends Base {
             title: 'Expand',
             action: function (e, target) {
                 // console.log(target);
-                for (const a of headers) {
+                for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
                     if (a === target) {
                         me.toggle(a, true);
                     } else {
@@ -176,8 +206,8 @@ class Accordion extends Base {
             a.addEventListener("mouseup", createHeaderSelected(cm));
         };
 
-        for (const a of headers) {
-            a.setAttribute('acc-key', randGen(8));
+        for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
+            a.closest('.azAccordionComponent').setAttribute('acc-key', randGen(8));
             applyEvents(a);
         }
     }

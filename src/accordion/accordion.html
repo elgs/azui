@@ -62,9 +62,13 @@
     <script>
         const accDOM = document.querySelector('#acc0');
         const acc = azui.Accordion(accDOM, {
-            collapseOthers: true,
+            collapseOthers: false,
         });
-        acc.append('Added by append() API');
+        const key = acc.append('Added by append() API');
+        acc.alert(key, true);
+        // acc.alert(key, false);
+
+        acc.insert('Inserted by insert() API', 1);
     </script>
 </body>
 

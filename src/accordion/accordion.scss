@@ -35,6 +35,10 @@
         &.active:after {
             content: "\2212";
         }
+
+        &.azAccordionAlert {
+            font-weight: bold;
+        }
     }
 
     & .azAccordionContent {
