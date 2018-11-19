@@ -15,7 +15,8 @@ import {
     textWidth,
     empty,
     getHeight,
-    diffPosition
+    diffPosition,
+    siblings
 } from '../utilities/utilities.js';
 
 
@@ -470,6 +471,28 @@ class DataTable extends Base {
                     sortAll(this.getAttribute('col-key'));
                 }
             });
+        });
+
+        const thSelected = e => {
+            if (e.type === 'touchend') {
+                e.preventDefault();
+            }
+
+            if (e.type === 'mouseup' && e.button !== 0) {
+                return;
+            }
+
+            siblings(e.currentTarget, '.th').forEach(s => {
+                s.classList.remove('active');
+            });
+            e.currentTarget.classList.add('active');
+        };
+
+        thead.querySelectorAll('.th').forEach(el => {
+            el.addEventListener('mouseup', thSelected);
+            if (isTouchDevice()) {
+                el.addEventListener('touchend', thSelected);
+            }
         });
 
         settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);

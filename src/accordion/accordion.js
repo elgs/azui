@@ -106,7 +106,8 @@ class Accordion extends Base {
             }
         };
 
-        me.toggleOthers = (header, state) => {
+        me.toggleOthers = (key, state) => {
+            const header = node.querySelector(`[acc-key="${key}"]>.azAccordionHeader`);
             for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
                 if (a === header) {
                     continue;
@@ -161,14 +162,16 @@ class Accordion extends Base {
             title: 'Expand Others',
             action: function (e, target) {
                 // console.log(target);
-                me.toggleOthers(target, true);
+                const key = target.closest('.azAccordionComponent').getAttribute('acc-key');
+                me.toggleOthers(key, true);
                 return false;
             }
         }, {
             title: 'Collpase Others',
             action: function (e, target) {
+                const key = target.closest('.azAccordionComponent').getAttribute('acc-key');
                 // console.log(target);
-                me.toggleOthers(target, false);
+                me.toggleOthers(key, false);
                 return false;
             }
         }];

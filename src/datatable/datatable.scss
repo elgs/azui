@@ -97,6 +97,11 @@
             border-left: solid 1px white;
             width: 100px; // min-width: 80px;
 
+            transition: 0.5s;
+            transition-property: background-color;
+
+            @extend %hoveractive;
+
             &.azSortableItem {
                 user-select: none;
             }
