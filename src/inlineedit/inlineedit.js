@@ -142,6 +142,7 @@ class InlineEdit extends Base {
                 editorWrapper.appendChild(editor);
 
                 editor.addEventListener('keyup', function (event) {
+                    // console.log('keyup');
                     if (event.keyCode === 13) {
                         me.done(event);
                     } else if (event.keyCode === 27) {
@@ -155,6 +156,7 @@ class InlineEdit extends Base {
                 });
 
                 editor.addEventListener('keydown', function (event) {
+                    // console.log('keydown');
                     if (settings.type === 'number') {
                         if (event.keyCode === 38) {
                             editor.value = editor.value * 1 + 1;
@@ -200,6 +202,7 @@ class InlineEdit extends Base {
                 })
                 // if (clicked) {
                 setTimeout(() => {
+                    console.log(123);
                     editor.focus();
                     editor.setSelectionRange(0, 9999);
                 });

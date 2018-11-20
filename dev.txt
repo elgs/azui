@@ -20,6 +20,8 @@ DONE: cell editing
 DONE: row context menu
 DONE: selectedRow, selectedCol, selectedCell
 DONE: moving cross columns wide column bug
+TODO: inline edit doesn't edit on touch device
+TODO: tbody events should be masked when cell is in active edit mode
 
 pager:
 DONE: add rows in page in ui
