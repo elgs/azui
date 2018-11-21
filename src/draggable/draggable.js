@@ -209,6 +209,7 @@ class Draggable extends Base {
         };
 
         const onmouseup = function (e) {
+            // console.log('mouseup');
             // console.log(e.type, e.target, me, me.selected);
             if (started && settings.stop(e, me.selected, me) === false) {
                 return false;

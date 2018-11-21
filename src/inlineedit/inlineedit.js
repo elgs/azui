@@ -53,7 +53,8 @@ class InlineEdit extends Base {
             if (!me.active) {
                 return;
             }
-            const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
+            // const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
+            const editor = me.editor;
             const v = editor.value;
             if (settings.cancel(e, v) === false) {
                 return false;
@@ -67,7 +68,8 @@ class InlineEdit extends Base {
             if (!me.active) {
                 return;
             }
-            const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
+            // const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
+            const editor = me.editor;
             const v = editor.value;
             if (settings.done(e, v) === false) {
                 return false;
@@ -85,9 +87,6 @@ class InlineEdit extends Base {
         me.edit = function (e) {
             if (me.active) {
                 return;
-            }
-            if (settings.start(e, node) === false) {
-                return false;
             }
             // const clickedElem = this;
             // me.each(function () {
@@ -125,6 +124,7 @@ class InlineEdit extends Base {
                     me.cancel(e);
                 });
                 select.selectInput.classList.add('azInlineEditor');
+                me.editor = select.selectInput;
                 // editorWrapper.value = originalValue;
                 select.selectInput.value = originalValue;
                 // if (clicked) {
@@ -135,6 +135,7 @@ class InlineEdit extends Base {
             } else {
                 editorWrapper.appendChild(dirtySign);
                 const editor = document.createElement('input');
+                me.editor = editor;
                 editor.setAttribute('type', 'text');
                 editor.setAttribute('size', 1);
                 editor.classList.add('azInlineEditor');
@@ -202,7 +203,6 @@ class InlineEdit extends Base {
                 })
                 // if (clicked) {
                 setTimeout(() => {
-                    console.log(123);
                     editor.focus();
                     editor.setSelectionRange(0, 9999);
                 });
@@ -211,6 +211,7 @@ class InlineEdit extends Base {
             node.style.display = 'none';
             insertAfter(editorWrapper, node)
             me.active = true;
+            settings.start(e, node);
             return false;
         };
 

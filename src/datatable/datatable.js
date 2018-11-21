@@ -85,16 +85,21 @@ class DataTable extends Base {
                     td.setAttribute('col-key', col.key);
                     td.appendChild(cell);
 
-                    azui.InlineEdit(cell, {
+                    const ie = azui.InlineEdit(cell, {
                         type: col.type,
                         allowNewItems: col.allowNewItems,
                         options: col.options,
+                        start: function (event, ui) {
+                            me.activeEditor = ie.editor;
+                        },
                         cancel: (event, ui) => {
+                            me.activeEditor = null;
                             tbody.focus({
                                 preventScroll: true
                             });
                         },
                         done: (event, ui) => {
+                            me.activeEditor = null;
                             tbody.focus({
                                 preventScroll: true
                             });
@@ -126,9 +131,6 @@ class DataTable extends Base {
         };
 
         const rowSelected = e => {
-            if (e.type === 'touchend') {
-                e.preventDefault();
-            }
             const tr = e.target.closest('div.tr');
             const td = e.target.closest('div.td');
 
@@ -189,11 +191,17 @@ class DataTable extends Base {
                 me.rows[me.lastSelectedRowNum].classList.remove('selected');
             } else if (e.keyCode === 37) {
                 // left
+                if (document.activeElement === me.activeEditor) {
+                    return;
+                }
                 e.preventDefault();
                 me.pager.update(--settings.pageNumber);
                 e.currentTarget.scrollTop = 0;
             } else if (e.keyCode === 38) {
                 // up
+                if (document.activeElement === me.activeEditor) {
+                    return;
+                }
                 e.preventDefault();
                 me.rows[me.lastSelectedRowNum].classList.remove('selected');
                 me.lastSelectedRowNum = --me.lastSelectedRowNum < 0 ? 0 : me.lastSelectedRowNum;
@@ -208,11 +216,17 @@ class DataTable extends Base {
                 }
             } else if (e.keyCode === 39) {
                 // right
+                if (document.activeElement === me.activeEditor) {
+                    return;
+                }
                 e.preventDefault();
                 me.pager.update(++settings.pageNumber);
                 e.currentTarget.scrollTop = 0;
             } else if (e.keyCode === 40) {
                 // down
+                if (document.activeElement === me.activeEditor) {
+                    return;
+                }
                 e.preventDefault();
                 if (me.rows[me.lastSelectedRowNum + 1]) {
                     me.rows[me.lastSelectedRowNum].classList.remove('selected');
@@ -240,16 +254,6 @@ class DataTable extends Base {
 
         const tbody = document.createElement('div');
         tbody.classList.add('tbody');
-
-        azui.ContextMenu(tbody, {
-            items: settings.rowContextMenu,
-            onDismiss: e => {
-                // if context menu is activate by menu key, tbody will lose focus, causing next menu key press not activating the context menu
-                tbody.focus({
-                    preventScroll: true
-                });
-            },
-        });
 
         if (settings.selectMode) {
             tbody.addEventListener('mouseup', rowSelected);
@@ -343,6 +347,7 @@ class DataTable extends Base {
                     setOuterWidth(th, maxWidth);
                     settings.columns[idx].width = tds[0].offsetWidth;
 
+                    // prevent sorting
                     event.stopPropagation();
                 },
             });
@@ -496,6 +501,19 @@ class DataTable extends Base {
         });
 
         settings.loadData(settings.pageNumber, settings.pageSize, settings.sortColumnKey, settings.sortDirection, refresh);
+
+        azui.ContextMenu(tbody, {
+            items: settings.rowContextMenu,
+            preventDefault: e => {
+                return e.target.tagName.toLowerCase() === 'span';
+            },
+            onDismiss: e => {
+                // if context menu is activate by menu key, tbody will lose focus, causing next menu key press not activating the context menu
+                tbody.focus({
+                    preventScroll: true
+                });
+            },
+        });
 
         me.pager = azui.Pager(tfoot, {
             pageSize: settings.pageSize,

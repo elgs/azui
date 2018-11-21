@@ -26,6 +26,11 @@ class ContextMenu extends Base {
     azInit(options) {
         const settings = Object.assign({
                 onContextMenu: function (e) {},
+                start: function (e) {},
+                preventDefault: function (e) {
+                    return true;
+                },
+                resumeDefaultEvent: function (e) {},
                 onDismiss: function (e) {},
                 items: null,
                 target: null,
@@ -197,9 +202,14 @@ class ContextMenu extends Base {
 
         me.rightClick = azui.RightClick(node, {
             onRightClick: function (e) {
+                if (settings.start(e) === false) {
+                    return false;
+                }
                 onContextMenu(e);
                 settings.onContextMenu(e);
             },
+            preventDefault: settings.preventDefault,
+            resumeDefaultEvent: settings.resumeDefaultEvent,
         });
     }
 };

@@ -17,6 +17,12 @@ class RightClick extends Base {
     azInit(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},
+            preventDefault: function (e) {
+                return true;
+            },
+            resumeDefaultEvent: function (e) {
+                e.currentTarget.dispatchEvent(new CustomEvent('click'));
+            },
         }, options);
 
         const me = this;
@@ -35,8 +41,8 @@ class RightClick extends Base {
                     clearTimeout(timer);
                     if (me.triggered) {
                         me.triggered = false;
-                        // } else {
-                        // event.target.dispatchEvent(new CustomEvent('click'));
+                    } else {
+                        settings.resumeDefaultEvent(event);
                     }
                 }));
                 timer = setTimeout(function () {
@@ -46,7 +52,10 @@ class RightClick extends Base {
                         settings.onRightClick(event);
                     }
                 }, 500);
-                event.preventDefault(); // prevent browser default behavior;
+                // console.log(settings.preventDefault(event));
+                if (settings.preventDefault(event)) {
+                    event.preventDefault(); // prevent long press browser menu;
+                }
             });
         }
     }
