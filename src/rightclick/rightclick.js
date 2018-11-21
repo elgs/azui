@@ -21,7 +21,7 @@ class RightClick extends Base {
                 return true;
             },
             resumeDefaultEvent: function (e) {
-                e.currentTarget.dispatchEvent(new CustomEvent('click'));
+                e.target.dispatchEvent(new CustomEvent('click'));
             },
         }, options);
 

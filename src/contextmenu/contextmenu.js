@@ -30,7 +30,6 @@ class ContextMenu extends Base {
                 preventDefault: function (e) {
                     return true;
                 },
-                resumeDefaultEvent: function (e) {},
                 onDismiss: function (e) {},
                 items: null,
                 target: null,
@@ -209,7 +208,6 @@ class ContextMenu extends Base {
                 settings.onContextMenu(e);
             },
             preventDefault: settings.preventDefault,
-            resumeDefaultEvent: settings.resumeDefaultEvent,
         });
     }
 };
