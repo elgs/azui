@@ -11,9 +11,8 @@
 }
 
 $main-color:#E8E8E8;
-$active0 :#182848;
-$main-active:linear-gradient(to right, $active0, lighten($active0, 10%));
-$less-active:linear-gradient(to right, darken($main-color, 10%), $main-color);
+$main-active:darken($main-color, 10%);
+$less-active:darken($main-color, 5%);
 $bg-color:#E8E8E8;
 $gray-text:#666666;
 $allow:#A4D666;
@@ -32,12 +31,12 @@ inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 %hoveractive {
     @media (hover: hover) {
         &:hover {
-            background-color: darken($color: $main-color, $amount: 5%);
+            background-color: $less-active;
         }
     }
 
     &.active {
-        background-color: darken($color: $main-color, $amount: 10%);
+        background-color: $main-active;
     }
 
     & * {

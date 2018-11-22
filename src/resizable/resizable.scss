@@ -1,4 +1,5 @@
 @import '../utilities/utilities.scss';
+
 .azResizable>.handle {
     background-color: $main-color;
     box-sizing: border-box;
@@ -6,21 +7,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
     &.active {
-        background-color: $active0;
+        background-color: $main-active;
     }
+
     &>div.collapseButton {
         background-color: lighten($color: $main-color, $amount: 10%);
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
+
         &.active svg {
-            fill: $active0 !important;
+            fill: $main-active !important;
         }
+
         &.collapseButtonH {
             height: 100%;
             width: 40px;
+
             &>span.collapseIcon {
                 &>svg {
                     height: 6px;
@@ -28,9 +34,11 @@
                 }
             }
         }
+
         &.collapseButtonV {
             height: 40px;
             width: 100%;
+
             &>span.collapseIcon {
                 &>svg {
                     width: 6px;

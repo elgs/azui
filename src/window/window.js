@@ -152,7 +152,7 @@ class Window extends Base {
                 pb = node.parentNode.getBoundingClientRect();
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
                     return false; // don't drag when clicking on icons
-                } 
+                }
                 // else if (matches(target, '.azWindowHeader,.azWindowHeader *')) {
                 //     // get focus but prevent mobile view port from moving around
                 //     if (event.type === 'touchstart') {
@@ -161,7 +161,7 @@ class Window extends Base {
                 // }
             },
             drag: function (event, ui) {
-                if (isOutside(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY, pb)) {
+                if (isOutside(event.touches ? event.touches[0].pageX : event.pageX, event.touches ? event.touches[0].pageY : event.pageY, pb)) {
                     return false;
                 }
             },
