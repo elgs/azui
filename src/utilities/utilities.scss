@@ -11,8 +11,10 @@
 }
 
 $main-color:#E8E8E8;
-$main-active:darken($main-color, 10%);
-$less-active:darken($main-color, 5%);
+$more-active:darken($main-color, 12%);
+$active:darken($main-color, 8%);
+$less-active:darken($main-color, 4%);
+
 $bg-color:#E8E8E8;
 $gray-text:#666666;
 $allow:#A4D666;
@@ -36,7 +38,7 @@ inset 0 0 0 1px rgba(0, 0, 0, 0.08);
     }
 
     &.active {
-        background-color: $main-active;
+        background-color: $more-active;
     }
 
     & * {

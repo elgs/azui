@@ -13,7 +13,13 @@ $bg-color:#1E1E1E;
 
     &.active {
         &>.azWindowHeader {
-            background-color: $main-active;
+            background-color: $more-active;
+
+            @media (hover: hover) {
+                &:hover {
+                    background-color: $more-active;
+                }
+            }
         }
     }
 
@@ -24,13 +30,12 @@ $bg-color:#1E1E1E;
 
         & .active {
             &>.azWindowHeader {
-                background-color: $less-active;
+                background-color: $active;
             }
         }
     }
 
     & .azWindowHeader {
-        background-color: $main-color;
         box-sizing: border-box;
         width: 100%; // display: inline-block;
         align-items: center;
@@ -39,7 +44,14 @@ $bg-color:#1E1E1E;
 
         transition: 0.5s;
         transition-property: background-color;
-        @extend %hoveractive;
+
+        background-color: $main-color;
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: $less-active;
+            }
+        }
 
         & span.azHeaderIcon {
             cursor: pointer;

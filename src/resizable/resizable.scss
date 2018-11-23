@@ -9,7 +9,7 @@
     align-items: center;
 
     &.active {
-        background-color: $main-active;
+        background-color: $active;
     }
 
     &>div.collapseButton {
@@ -20,7 +20,7 @@
         cursor: pointer;
 
         &.active svg {
-            fill: $main-active !important;
+            fill: $active !important;
         }
 
         &.collapseButtonH {

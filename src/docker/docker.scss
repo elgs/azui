@@ -16,6 +16,16 @@
         cursor: pointer;
         user-select: none;
         background-color: $main-color;
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: $less-active;
+            }
+        }
+
+        transition: 0.5s;
+        transition-property: background-color;
+
         padding: 8px 0;
         white-space: nowrap;
 
@@ -32,10 +42,20 @@
     }
 
     & .dock-active {
-        background: $main-active;
-        // color: $main-color;
-        // & svg {
-        // fill: $main-color;
-        // }
+        background: $more-active;
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: $more-active;
+            }
+        }
+    }
+
+    &.inactive {
+        background-color: $main-color;
+
+        & .dock-active {
+            background-color: $active;
+        }
     }
 }
