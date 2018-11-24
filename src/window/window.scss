@@ -33,6 +33,14 @@ $bg-color:#1E1E1E;
                 background-color: $active;
             }
         }
+
+        & .azDocker .azSortableItem {
+            background-color: $main-color;
+
+            &.dock-active {
+                background-color: $active;
+            }
+        }
     }
 
     & .azWindowHeader {

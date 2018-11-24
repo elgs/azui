@@ -23,6 +23,16 @@
             }
         }
 
+        &.dock-active {
+            background: $more-active;
+
+            @media (hover: hover) {
+                &:hover {
+                    background-color: $more-active;
+                }
+            }
+        }
+
         transition: 0.5s;
         transition-property: background-color;
 
@@ -41,21 +51,12 @@
         }
     }
 
-    & .dock-active {
-        background: $more-active;
 
-        @media (hover: hover) {
-            &:hover {
-                background-color: $more-active;
-            }
-        }
-    }
+    // &.inactive {
+    //     background-color: $main-color;
 
-    &.inactive {
-        background-color: $main-color;
-
-        & .dock-active {
-            background-color: $active;
-        }
-    }
+    //     & .dock-active {
+    //         background-color: $active;
+    //     }
+    // }
 }
