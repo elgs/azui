@@ -6,7 +6,6 @@ import * as icons from '../utilities/icons.js';
 import {
     getHeight,
     getWidth,
-    isTouchDevice,
     normalizeIcon,
     setHeight,
     setOuterHeight,
@@ -29,7 +28,7 @@ class Resizable extends Base {
             minHeight: 0,
             maxHeight: Number.MAX_SAFE_INTEGER,
             aspectRatio: false,
-            handleSize: 6,
+            handleSize: 4,
             handles: 'all', //n, e, s, w, ne, se, sw, nw, all
             moveOnResize: true,
             hideHandles: false,

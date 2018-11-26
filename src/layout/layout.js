@@ -23,6 +23,7 @@ class Layout extends Base {
             south: '.azLayoutSouth',
             west: '.azLayoutWest',
             center: '.azLayoutCenter',
+            hideCollapseButton: true,
         }, options);
 
         const node = this.node;
@@ -43,13 +44,11 @@ class Layout extends Base {
             me.north = north;
             azui.Resizable(me.north, {
                 handles: 's',
+                hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);
                 },
                 resize: function (e, h, by) {
-                    if (getHeight(me.north) <= 0) {
-                        return;
-                    }
                     by.dy = Math.min(by.dy, centerHeight);
                 },
             });
@@ -62,6 +61,7 @@ class Layout extends Base {
             me.east = east;
             azui.Resizable(me.east, {
                 handles: 'w',
+                hideCollapseButton: settings.hideCollapseButton,
                 moveOnResize: false,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
@@ -79,14 +79,12 @@ class Layout extends Base {
             me.south = south;
             azui.Resizable(me.south, {
                 handles: 'n',
+                hideCollapseButton: settings.hideCollapseButton,
                 moveOnResize: false,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);
                 },
                 resize: function (e, h, by) {
-                    if (getHeight(me.south) <= 0) {
-                        return;
-                    }
                     by.dy = Math.max(by.dy, -centerHeight);
                 },
             });
@@ -99,6 +97,7 @@ class Layout extends Base {
             me.west = west;
             azui.Resizable(me.west, {
                 handles: 'e',
+                hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
                 },

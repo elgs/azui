@@ -20,30 +20,26 @@
         cursor: pointer;
 
         &.active svg {
-            fill: $active !important;
+            fill: $allow !important;
         }
 
         &.collapseButtonH {
             height: 100%;
-            width: 40px;
+            width: 30px;
 
-            &>span.collapseIcon {
-                &>svg {
-                    height: 6px;
-                    fill: $main-color;
-                }
+            &>span.collapseIcon>svg {
+                height: $collapseIconSize;
+                fill: $main-color;
             }
         }
 
         &.collapseButtonV {
-            height: 40px;
+            height: 30px;
             width: 100%;
 
-            &>span.collapseIcon {
-                &>svg {
-                    width: 6px;
-                    fill: $main-color;
-                }
+            &>span.collapseIcon>svg {
+                width: $collapseIconSize;
+                fill: $main-color;
             }
         }
     }

@@ -311,6 +311,7 @@ class DataTable extends Base {
                 handles: 'e',
                 minWidth: 100,
                 hideHandles: true,
+                handleSize: 6,
                 // maxWidth: 400,
                 create: function (e) {
                     const target = this;
