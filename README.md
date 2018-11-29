@@ -52,6 +52,10 @@ These two lines of code are what you want to put in your html file:
             margin: 0;
             padding: 0;
         }
+
+        * {
+            font-size: 13;
+        }
     </style>
 
     <link href="./node_modules/azui/dist/azui.all.0.0.7.css" rel="stylesheet" type="text/css">
@@ -59,17 +63,17 @@ These two lines of code are what you want to put in your html file:
 </head>
 
 <body>
-    <div id='myWindow0'></div>
-    <div id='myWindow1'></div>
+    <div id='win0'></div>
+    <div id='win1'></div>
 
     <script>
-        azui.Window('#myWindow0', {
+        azui.Window('#win0', {
             width: 400,
             height: 300,
             title: 'Win 0',
         });
 
-        azui.Window('#myWindow1', {
+        azui.Window('#win1', {
             width: 400,
             height: 300,
             title: 'Win 1',
@@ -79,3 +83,35 @@ These two lines of code are what you want to put in your html file:
 
 </html>
 ```
+You can try to:  
+* drag the window around
+* drag the edges to resize the window
+* drag to reorder the items in the docker bar
+* right click on the window header for a menu
+* right click on the items in the docker bar for the same menu
+
+## A few more words
+I have been working on this project in the past few months. Today I am excited to publish my work for the first public preview. Everything is likely to change incompatibly until version 1.0.0. API docs are not done yet. You will need to look at those html files in the src directory for examples. I'm sorry for that, but this will be worked on soon.
+
+## License
+MIT License
+
+Copyright (c) 2018 Elgs Qian Chen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
