@@ -35,6 +35,7 @@
         "type": "git",
         "url": "git+https://github.com/elgs/azui.git"
     },
+    "files": ["src/", "dist/", "build/"],
     "keywords": [
         "azui"
     ],
