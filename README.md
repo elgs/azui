@@ -89,6 +89,10 @@ You can try to:
 * drag to reorder the items in the docker bar
 * right click on the window header for a menu
 * right click on the items in the docker bar for the same menu
+* double click on the window header to maximize/restore the window
+* try it on your computers, phones and tablets
+* try it on Chrome, Firefox, Safari and Edge
+* try it on Linux, Mac and Windows
 
 ## A few more words
 I have been working on this project in the past few months. Today I am excited to publish my work for the first public preview. Everything is likely to change incompatibly until version 1.0.0. API docs are not done yet. You will need to look at those html files in the src directory for examples. I'm sorry for that, but this will be worked on soon.
