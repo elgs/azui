@@ -1,14 +1,14 @@
 {
   "name": "azui",
   "version": "0.0.7",
-  "description": "",
+  "description": "More desktop/mobile/touchscreen friendly web UI components.",
   "scripts": {
     "start": "webpack-dev-server --mode=development",
     "build": "webpack --mode=development",
     "dist": "webpack --mode=production"
   },
   "author": "Qian Chen",
-  "license": "GPL",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",

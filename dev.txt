@@ -33,7 +33,7 @@ DONE: drag tab between tabsets
 DONE: tab window z-index
 DONE: svg icons
 DONE: drag and place tab header between 1st and 2nd, and it jumps to first poistion
-TODO: cannot close tab on touch devices
+DONE: cannot close tab on touch devices
 
 contextmenu:
 DONE: function to return content
