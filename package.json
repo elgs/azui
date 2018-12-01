@@ -37,7 +37,7 @@
     },
     "files": ["src/", "dist/", "build/"],
     "keywords": [
-        "azui"
+        "azui", "webui", "ui", "css"
     ],
     "bugs": {
         "url": "https://github.com/elgs/azui/issues"
