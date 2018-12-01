@@ -1,6 +1,6 @@
 {
     "name": "azui",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A set of more desktop/mobile/touchscreen friendly web UI components.",
     "scripts": {
         "start": "webpack-dev-server --mode=development",

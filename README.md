@@ -10,6 +10,7 @@ for the most recently commits.
 ## Run locally
 `git clone https://github.com/elgs/azui`  
 `cd azui`  
+`npm install`  
 `npm run start {component_name0}, {component_name1}, ...`  
 
 For example:  
@@ -28,6 +29,7 @@ respectively.
 ## Build locally
 `git clone https://github.com/elgs/azui`  
 `cd azui`  
+`npm install`  
 `npm run build` or `npm run dist`  
 will create `build/` or `dist/` which contain debug or release/minified js/css files.
 
