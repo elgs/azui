@@ -20,6 +20,7 @@ DONE: selectedRow, selectedCol, selectedCell
 DONE: moving cross columns wide column bug
 DONE: inline edit doesn't edit on touch device
 DONE: tbody events should be masked when cell is in active edit mode
+TODO: when multiple rows are selected, right click will deselect rows
 
 pager:
 DONE: add rows in page in ui

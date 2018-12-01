@@ -22,7 +22,10 @@
             pageNumber: 1,
             totalSize: 101,
             onPageChange: function (pageNumber, pageSize) {
-                console.log(pageSize, pageNumber);
+                const _pageNumber = Math.max(1, Math.min(Math.ceil(this.settings.totalSize / pageSize),
+                    pageNumber));
+                this.settings.pageNumber = _pageNumber;
+                console.log(pageSize, _pageNumber);
             },
         });
     </script>
