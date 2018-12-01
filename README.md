@@ -2,10 +2,7 @@
 A set of more desktop/mobile/touchscreen friendly web UI components.
 
 ## Examples
-http://az.ht/ui/build/0.0.7/  
-for versioned releases, or  
 http://az.ht/ui/build/curr/  
-for the most recently commits.
 
 ## Run locally
 `git clone https://github.com/elgs/azui`  
