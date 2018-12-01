@@ -1,151 +1,145 @@
 @import "../utilities/utilities.scss";
-$bg-color:#1E1E1E;
 
-.azWindow {
-    box-sizing: border-box;
-    background-color: white;
-    display: grid;
-    box-shadow: $shadow;
+.azui {
+    &.azWindow {
+        box-sizing: border-box;
+        background-color: white;
+        display: grid;
+        box-shadow: $shadow;
 
-    &:hover {
-        box-shadow: $shadow-hovered;
-    }
+        &:hover {
+            box-shadow: $shadow-hovered;
+        }
 
-    &.active {
-        &>.azWindowHeader {
-            background-color: $more-active;
+        &.active {
+            &>.azWindowHeader {
+                background-color: $more-active;
+
+                @media (hover: hover) {
+                    &:hover {
+                        background-color: $more-active;
+                    }
+                }
+            }
+        }
+
+        &.inactive {
+            & .azWindowHeader {
+                background-color: $main-color;
+            }
+
+            & .active {
+                &>.azWindowHeader {
+                    background-color: $active;
+                }
+            }
+
+            & .azDocker .azSortableItem {
+                background-color: $main-color;
+
+                &.dock-active {
+                    background-color: $active;
+                }
+            }
+        }
+
+        & .azWindowHeader {
+            box-sizing: border-box;
+            width: 100%; // display: inline-block;
+            align-items: center;
+            grid-row: 1/2;
+            padding: 6px;
+
+            transition: 0.5s;
+            transition-property: background-color;
+
+            background-color: $main-color;
 
             @media (hover: hover) {
                 &:hover {
-                    background-color: $more-active;
+                    background-color: $less-active;
                 }
             }
-        }
-    }
 
-    &.inactive {
-        & .azWindowHeader {
-            background-color: $main-color;
-        }
-
-        & .active {
-            &>.azWindowHeader {
-                background-color: $active;
-            }
-        }
-
-        & .azDocker .azSortableItem {
-            background-color: $main-color;
-
-            &.dock-active {
-                background-color: $active;
-            }
-        }
-    }
-
-    & .azWindowHeader {
-        box-sizing: border-box;
-        width: 100%; // display: inline-block;
-        align-items: center;
-        grid-row: 1/2;
-        padding: 6px;
-
-        transition: 0.5s;
-        transition-property: background-color;
-
-        background-color: $main-color;
-
-        @media (hover: hover) {
-            &:hover {
-                background-color: $less-active;
-            }
-        }
-
-        & span.azHeaderIcon {
-            cursor: pointer;
-            display: inline-block;
-            text-align: center;
-            width: 24px;
-            height: 24px;
-
-            &::before {
-                content: "";
+            & span.azHeaderIcon {
+                cursor: pointer;
                 display: inline-block;
-                vertical-align: middle;
-                height: 100%;
-            }
+                text-align: center;
+                width: 24px;
+                height: 24px;
 
-            &:hover {
-                border: 1px solid $less-active;
-            }
+                &::before {
+                    content: "";
+                    display: inline-block;
+                    vertical-align: middle;
+                    height: 100%;
+                }
 
-            & svg {
-                width: 8px;
-                height: 8px;
-            }
-        }
-
-        & .left {
-            white-space: nowrap;
-            float: left;
-            height: 100%;
-            text-align: left;
-
-            &::before {
-                content: "";
-                display: inline-block;
-                vertical-align: middle;
-                height: 100%;
-            }
-
-            & span.title {
-                cursor: default;
-            }
-
-            & span.icon {
-                padding: 8px;
-                cursor: default;
+                &:hover {
+                    border: 1px solid $less-active;
+                }
 
                 & svg {
-                    width: 12px;
-                    height: 12px;
-                    position: relative;
-                    top: 2px;
+                    width: 8px;
+                    height: 8px;
                 }
             }
-        }
 
-        & .center {
-            display: inline-block;
-            height: 100%;
-            text-align: center;
-        }
-
-        & .right {
-            &::before {
-                content: "";
-                display: inline-block;
-                vertical-align: middle;
+            & .left {
+                white-space: nowrap;
+                float: left;
                 height: 100%;
+                text-align: left;
+
+                &::before {
+                    content: "";
+                    display: inline-block;
+                    vertical-align: middle;
+                    height: 100%;
+                }
+
+                & span.title {
+                    cursor: default;
+                }
+
+                & span.icon {
+                    padding: 8px;
+                    cursor: default;
+
+                    & svg {
+                        width: 12px;
+                        height: 12px;
+                        position: relative;
+                        top: 2px;
+                    }
+                }
             }
 
-            float: right;
-            height: 100%;
-            text-align: right;
+            & .center {
+                display: inline-block;
+                height: 100%;
+                text-align: center;
+            }
+
+            & .right {
+                &::before {
+                    content: "";
+                    display: inline-block;
+                    vertical-align: middle;
+                    height: 100%;
+                }
+
+                float: right;
+                height: 100%;
+                text-align: right;
+            }
+        }
+
+        & .azWindowContent {
+            position: relative;
+            width: 100%;
+            grid-row: 2/3;
+            overflow: hidden; // box-sizing: border-box;
         }
     }
-
-    & .azWindowContent {
-        position: relative;
-        width: 100%;
-        grid-row: 2/3;
-        overflow: hidden; // box-sizing: border-box;
-    }
 }
-
-// .azResizable {
-//     &>.handle {
-//         opacity: 1 !important;
-//         border: 1px solid black;
-//     }
-// }

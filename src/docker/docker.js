@@ -27,7 +27,6 @@ class Docker extends Base {
         this.settings = settings;
 
         const node = this.node;
-        node.classList.add('azDocker');
         node.style['z-index'] = Number.MAX_SAFE_INTEGER - 1000;
 
         const me = this;

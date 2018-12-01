@@ -1,45 +1,47 @@
 @import '../utilities/utilities.scss';
 
-.azResizable>.handle {
-    background-color: $main-color;
-    box-sizing: border-box;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &.active {
-        background-color: $active;
-    }
-
-    &>div.collapseButton {
-        background-color: lighten($color: $main-color, $amount: 10%);
+.azui {
+    &.azResizable>.handle {
+        background-color: $main-color;
+        box-sizing: border-box;
+        position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
-        cursor: pointer;
 
-        &.active svg {
-            fill: $allow !important;
+        &.active {
+            background-color: $active;
         }
 
-        &.collapseButtonH {
-            height: 100%;
-            width: 30px;
+        &>div.collapseButton {
+            background-color: lighten($color: $main-color, $amount: 10%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
 
-            &>span.collapseIcon>svg {
-                height: $collapseIconSize;
-                fill: $main-color;
+            &.active svg {
+                fill: $allow !important;
             }
-        }
 
-        &.collapseButtonV {
-            height: 30px;
-            width: 100%;
+            &.collapseButtonH {
+                height: 100%;
+                width: 30px;
 
-            &>span.collapseIcon>svg {
-                width: $collapseIconSize;
-                fill: $main-color;
+                &>span.collapseIcon>svg {
+                    height: $collapseIconSize;
+                    fill: $main-color;
+                }
+            }
+
+            &.collapseButtonV {
+                height: 30px;
+                width: 100%;
+
+                &>span.collapseIcon>svg {
+                    width: $collapseIconSize;
+                    fill: $main-color;
+                }
             }
         }
     }

@@ -40,7 +40,6 @@ class Droppable extends Base {
         const node = me.node;
 
         node.setAttribute('az-interested-drop-events', settings.interestedDropEvents);
-        node.classList.add('azDropTarget');
 
         Object.keys(azui.constants.dndStateConsts).map(state => {
             const stateIn = state + '_in';

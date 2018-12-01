@@ -55,8 +55,6 @@ class DataTable extends Base {
 
         empty(node);
 
-        node.classList.add('azDataTable');
-
         me.totalSize = 0;
 
         const refresh = function (pageData, totalSize, pageNumber) {

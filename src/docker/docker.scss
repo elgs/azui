@@ -1,52 +1,54 @@
 @import "../utilities/utilities.scss";
 
-.azDocker {
-    box-sizing: border-box;
-    padding: 2px;
-    position: absolute;
-    bottom: 0;
-    width: 100%; // background-color: red;
-    display: grid;
-    grid-auto-flow: row;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    grid-gap: 2px;
-
-    & .azSortableItem {
+.azui {
+    &.azDocker {
         box-sizing: border-box;
-        cursor: pointer;
-        user-select: none;
-        background-color: $main-color;
+        padding: 2px;
+        position: absolute;
+        bottom: 0;
+        width: 100%; // background-color: red;
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-gap: 2px;
 
-        @media (hover: hover) {
-            &:hover {
-                background-color: $less-active;
-            }
-        }
-
-        &.dock-active {
-            background: $more-active;
+        & .azSortableItem {
+            box-sizing: border-box;
+            cursor: pointer;
+            user-select: none;
+            background-color: $main-color;
 
             @media (hover: hover) {
                 &:hover {
-                    background-color: $more-active;
+                    background-color: $less-active;
                 }
             }
-        }
 
-        transition: 0.5s;
-        transition-property: background-color;
+            &.dock-active {
+                background: $more-active;
 
-        padding: 8px 0;
-        white-space: nowrap;
+                @media (hover: hover) {
+                    &:hover {
+                        background-color: $more-active;
+                    }
+                }
+            }
 
-        & span.icon {
-            padding: 8px;
+            transition: 0.5s;
+            transition-property: background-color;
 
-            & svg {
-                width: 12px;
-                height: 12px;
-                position: relative;
-                top: 2px;
+            padding: 8px 0;
+            white-space: nowrap;
+
+            & span.icon {
+                padding: 8px;
+
+                & svg {
+                    width: 12px;
+                    height: 12px;
+                    position: relative;
+                    top: 2px;
+                }
             }
         }
     }

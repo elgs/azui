@@ -24,7 +24,6 @@ class Accordion extends Base {
         const me = this;
         const node = me.node;
         me.settings = settings;
-        node.classList.add('azAccordion');
 
         me.toggle = (header, state) => {
             const content = header.nextElementSibling;

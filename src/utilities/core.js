@@ -65,6 +65,7 @@ const normalizeElement = function (el) {
 
 export const azObj = function (cls, el, options, init) {
     const node = normalizeElement(el);
+    node.classList.add('azui', 'az' + cls.className);
     let objId = node.getAttribute('az-obj-id-' + cls.className.toLowerCase());
     if (objId) {
         const obj = azui.objCache[objId];

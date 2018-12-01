@@ -55,7 +55,6 @@ class Resizable extends Base {
 
         const me = this;
         const node = this.node;
-        node.classList.add('azResizable');
 
         me.settings = settings;
 

@@ -55,7 +55,6 @@ class Sortable extends Base {
         this.settings = settings;
 
         const node = this.node;
-        node.classList.add('azSortable');
 
         let selected;
         let ph;

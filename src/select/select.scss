@@ -1,82 +1,84 @@
 @import "../utilities/utilities.scss";
 
-.azSelect {
-    box-sizing: border-box;
-    display: inline-block;
-    position: relative;
-
-    & input.azSelectInput {
-        margin: 0;
+.azui {
+    &.azSelect {
         box-sizing: border-box;
-        width: 100%; // height: 100%;
-        border: 1px solid gray;
+        display: inline-block;
+        position: relative;
+
+        & input.azSelectInput {
+            margin: 0;
+            box-sizing: border-box;
+            width: 100%; // height: 100%;
+            border: 1px solid gray;
+        }
+
+        & .dirtySign {
+            position: absolute;
+            border-style: inset;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 6px 6px 0;
+            border-color: transparent $deny transparent transparent;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        & .azSelectdropdownButton {
+            position: absolute;
+            background-color: $bg-color;
+            right: 0;
+            top: 0;
+            width: 20px;
+            border: 1px solid gray;
+            height: 100%;
+            display: grid;
+            align-content: center;
+            justify-content: center;
+
+            & svg {
+                width: 10px;
+                height: 10px;
+                fill: darken($gray-text, 10%);
+            }
+        }
     }
 
-    & .dirtySign {
-        position: absolute;
-        border-style: inset;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 6px 6px 0;
-        border-color: transparent $deny transparent transparent;
-        top: 0;
-        right: 0;
-        z-index: 1;
-    }
-
-    & .azSelectdropdownButton {
-        position: absolute;
+    &.azSelectMenu {
         background-color: $bg-color;
-        right: 0;
-        top: 0;
-        width: 20px;
-        border: 1px solid gray;
-        height: 100%;
-        display: grid;
-        align-content: center;
-        justify-content: center;
+        border: 1px solid darken($color: $main-color, $amount: 7%);
+        position: absolute;
+        min-width: 100px; // box-shadow: 0 0 5px rgba(0, 0, 0, .12), 0 5px 5px rgba(0, 0, 0, .12), 0 10px 30px rgba(0, 0, 0, .1);
 
-        & svg {
-            width: 10px;
-            height: 10px;
-            fill: darken($gray-text, 10%);
-        }
-    }
-}
+        & div.azMenuItem {
+            // height: 50px;
+            display: grid;
+            align-content: center; // grid-template-columns: 24px 1fr;
+            background-color: $bg-color;
+            width: 100%; // text-align: left;
+            padding: 5px 0; // border: none;
 
-.azSelectMenu {
-    background-color: $bg-color;
-    border: 1px solid darken($color: $main-color, $amount: 7%);
-    position: absolute;
-    min-width: 100px; // box-shadow: 0 0 5px rgba(0, 0, 0, .12), 0 5px 5px rgba(0, 0, 0, .12), 0 10px 30px rgba(0, 0, 0, .1);
+            // outline: none;
+            & .title {
+                display: inline-block; // grid-column: 2/3;
+                margin: 1px 10px 0 8px; // background-color: red;
+                user-select: none;
+            }
 
-    & div.azMenuItem {
-        // height: 50px;
-        display: grid;
-        align-content: center; // grid-template-columns: 24px 1fr;
-        background-color: $bg-color;
-        width: 100%; // text-align: left;
-        padding: 5px 0; // border: none;
-
-        // outline: none;
-        & .title {
-            display: inline-block; // grid-column: 2/3;
-            margin: 1px 10px 0 8px; // background-color: red;
-            user-select: none;
+            &.selected {
+                background-color: #498DD5;
+                color: $bg-color;
+            }
         }
 
-        &.selected {
-            background-color: #498DD5;
-            color: $bg-color;
+        & div.azMenuSeparator {
+            height: 2px;
+            border-top: solid 1px darken($color: $main-color, $amount: 7%);
+            background-color: white;
+            margin: 2px 0;
+            padding: 0;
         }
-    }
-
-    & div.azMenuSeparator {
-        height: 2px;
-        border-top: solid 1px darken($color: $main-color, $amount: 7%);
-        background-color: white;
-        margin: 2px 0;
-        padding: 0;
     }
 }

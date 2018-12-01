@@ -28,7 +28,6 @@ class Layout extends Base {
 
         const node = this.node;
         const me = this;
-        node.classList.add('azLayout');
 
         const northContent = resolveDOM(settings.north);
         const eastContent = resolveDOM(settings.east);

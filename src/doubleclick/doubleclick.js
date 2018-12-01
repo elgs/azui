@@ -24,6 +24,8 @@ class DoubleClick extends Base {
             }
         }, options);
 
+        const node = this.node;
+
         if (isTouchDevice()) {
             let touchtime = 0;
             me.replaceEventListener('touchstart', 'touchstart', function (event) {

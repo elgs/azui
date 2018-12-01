@@ -26,7 +26,6 @@ class Pager extends Base {
         this.settings = settings;
 
         const node = this.node;
-        node.classList.add('azPager');
 
         const pageBar = this._createPagerBar();
         node.appendChild(pageBar);

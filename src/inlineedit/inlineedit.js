@@ -53,7 +53,7 @@ class InlineEdit extends Base {
             if (!me.active) {
                 return;
             }
-            // const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
+
             const editor = me.editor;
             const v = editor.value;
             if (settings.cancel(e, v) === false) {
@@ -68,7 +68,7 @@ class InlineEdit extends Base {
             if (!me.active) {
                 return;
             }
-            // const editor = node.nextElementSibling.querySelector('input.azInlineEditor');
+
             const editor = me.editor;
             const v = editor.value;
             if (settings.done(e, v) === false) {
@@ -93,7 +93,7 @@ class InlineEdit extends Base {
             // const clicked = clickedElem === node;
             const originalValue = node.textContent.trim();
             const editorWrapper = document.createElement('div');
-            editorWrapper.classList.add('azInlineEditorWrapper');
+            editorWrapper.classList.add('azui', 'azInlineEditorWrapper');
 
             const dirtySign = document.createElement('div');
             dirtySign.classList.add('dirtySign');
@@ -123,7 +123,7 @@ class InlineEdit extends Base {
                 select.node.addEventListener('cancel', function (e) {
                     me.cancel(e);
                 });
-                select.selectInput.classList.add('azInlineEditor');
+                select.selectInput.classList.add('azInlineEditorInput');
                 me.editor = select.selectInput;
                 // editorWrapper.value = originalValue;
                 select.selectInput.value = originalValue;
@@ -138,7 +138,7 @@ class InlineEdit extends Base {
                 me.editor = editor;
                 editor.setAttribute('type', 'text');
                 editor.setAttribute('size', 1);
-                editor.classList.add('azInlineEditor');
+                editor.classList.add('azInlineEditorInput');
                 editor.value = originalValue;
                 editorWrapper.appendChild(editor);
 

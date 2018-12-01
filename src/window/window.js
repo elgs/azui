@@ -33,7 +33,6 @@ class Window extends Base {
         const node = this.node;
         this.settings = settings;
 
-        node.classList.add('azWindow');
         node.style['position'] = 'absolute';
 
         // this.windowId = randGen(8);

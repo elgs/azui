@@ -42,6 +42,7 @@ class ContextMenu extends Base {
 
         const me = this;
         const node = this.node;
+
         me.settings = settings;
 
         let highlightIndex = -1;
@@ -131,7 +132,7 @@ class ContextMenu extends Base {
 
             const menu = document.createElement('div');
             me.menu = menu;
-            menu.classList.add('azContextMenu');
+            menu.classList.add('azui', 'azContextMenuPopup');
             menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
 
             const onKeyUp = e => {

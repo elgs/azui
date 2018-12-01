@@ -45,7 +45,6 @@ class Draggable extends Base {
 
         const node = this.node;
         me.settings = settings;
-        node.classList.add('azDraggable');
 
         const dropTargetStates = {};
         me.position = getComputedStyle(node)['position'];
@@ -324,8 +323,8 @@ class Draggable extends Base {
             document.addEventListener('mouseup', onmouseup);
             document.addEventListener('mouseleave', onmouseup);
 
-            // console.log(document.querySelectorAll('.azDropTarget').length);
-            me.dropTargets = [...document.querySelectorAll('.azDropTarget')].filter(dt => dt !== node).map(dt => {
+            // console.log(document.querySelectorAll('.azDroppable').length);
+            me.dropTargets = [...document.querySelectorAll('.azDroppable')].filter(dt => dt !== node).map(dt => {
                 return {
                     dt,
                     dropId: dt.getAttribute('az-obj-id-droppable'),

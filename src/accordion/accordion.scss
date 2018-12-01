@@ -1,51 +1,53 @@
 @import "../utilities/utilities.scss";
 
-.azAccordion {
-    border: 1px solid #ccc;
+.azui {
+    &.azAccordion {
+        border: 1px solid #ccc;
 
-    & .azAccordionHeader {
-        background-color: #eee;
-        color: #444;
-        padding: 10px;
-        width: 100%;
-        border-bottom: 1px solid #ccc;
-        border-top: 1px solid white;
-        text-align: left;
-        transition: 0.5s;
-        transition-property: background-color;
+        & .azAccordionHeader {
+            background-color: #eee;
+            color: #444;
+            padding: 10px;
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid white;
+            text-align: left;
+            transition: 0.5s;
+            transition-property: background-color;
 
-        @extend %hoveractive;
+            @extend %hoveractive;
 
-        &:first-of-type {
-            border-top: none;
+            &:first-of-type {
+                border-top: none;
+            }
+
+            &:last-of-type {
+                border-bottom: none;
+            }
+
+            &:after {
+                content: '\002B';
+                color: #777;
+                font-weight: bold;
+                float: right;
+                margin-left: 5px;
+            }
+
+            &.active:after {
+                content: "\2212";
+            }
+
+            &.azAccordionAlert {
+                font-weight: bold;
+            }
         }
 
-        &:last-of-type {
-            border-bottom: none;
+        & .azAccordionContent {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
         }
-
-        &:after {
-            content: '\002B';
-            color: #777;
-            font-weight: bold;
-            float: right;
-            margin-left: 5px;
-        }
-
-        &.active:after {
-            content: "\2212";
-        }
-
-        &.azAccordionAlert {
-            font-weight: bold;
-        }
-    }
-
-    & .azAccordionContent {
-        padding: 0 18px;
-        background-color: white;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.2s ease-out;
     }
 }

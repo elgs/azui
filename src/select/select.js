@@ -35,8 +35,6 @@ class Select extends Base {
 
         empty(node);
 
-        node.classList.add('azSelect');
-
         const showDropdown = function (e, init = false) {
             // console.log('show');
             // alert(e.currentTarget.outerHTML);
@@ -76,12 +74,11 @@ class Select extends Base {
                     navigateDropdown();
                 };
                 menuItem.addEventListener('mouseenter', onMouseEnter);
-
                 return menuItem;
             };
 
             me.menu = document.createElement('div');
-            me.menu.classList.add('azSelectMenu');
+            me.menu.classList.add('azui', 'azSelectMenu');
             me.menu.style['display'] = 'none';
             me.menu.style['z-index'] = 1000;
             highlightIndex = -1;

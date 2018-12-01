@@ -126,7 +126,6 @@ class Tabs extends Base {
         const me = this;
         const node = me.node;
         me.settings = settings;
-        node.classList.add('azTabs');
 
         let tabHeaderContainer = node.querySelector('div.azTabHeader');
         if (!tabHeaderContainer) {
