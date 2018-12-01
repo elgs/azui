@@ -1,118 +1,142 @@
 {
-  "buildTime": "Fri Nov 30 2018 22:22:14 GMT-0800 (Pacific Standard Time)",
-  "modules": {
-    "accordion": {
+  "buildTime": "Fri Nov 30 2018 23:06:53 GMT-0800 (Pacific Standard Time)",
+  "modules": [
+    {
+      "name": "accordion",
       "type": 3,
-      "seq": 5,
+      "seq": 50,
       "pages": [
         "accordion.html"
       ]
     },
-    "all": {
+    {
+      "name": "all",
       "type": 4,
       "pages": []
     },
-    "contextmenu": {
-      "type": 3,
+    {
+      "name": "contextmenu",
+      "type": 2,
       "pages": [
         "contextmenu.html"
       ]
     },
-    "datatable": {
+    {
+      "name": "datatable",
       "type": 3,
+      "seq": 20,
       "pages": [
         "datatable.html"
       ]
     },
-    "docker": {
+    {
+      "name": "docker",
       "type": 2,
       "pages": [
         "docker.html"
       ]
     },
-    "doubleclick": {
+    {
+      "name": "doubleclick",
       "type": 1,
       "pages": [
         "doubleclick.html"
       ]
     },
-    "draggable": {
+    {
+      "name": "draggable",
       "type": 1,
       "pages": [
         "draggable.html"
       ]
     },
-    "droppable": {
+    {
+      "name": "droppable",
       "type": 1,
+      "seq": 10,
       "pages": [
         "droppable.html"
       ]
     },
-    "index": {
+    {
+      "name": "index",
       "type": 5,
       "pages": [
         "index.html"
       ]
     },
-    "inlineedit": {
+    {
+      "name": "inlineedit",
       "type": 2,
       "pages": [
         "inlineedit.html"
       ]
     },
-    "layout": {
+    {
+      "name": "layout",
       "type": 3,
+      "seq": 40,
       "pages": [
         "layout.html",
         "layout2.html"
       ]
     },
-    "pager": {
+    {
+      "name": "pager",
       "type": 2,
       "pages": [
         "pager.html"
       ]
     },
-    "resizable": {
+    {
+      "name": "resizable",
       "type": 1,
       "pages": [
         "resizable.html"
       ]
     },
-    "rightclick": {
+    {
+      "name": "rightclick",
       "type": 1,
       "pages": [
         "rightclick.html"
       ]
     },
-    "select": {
+    {
+      "name": "select",
       "type": 2,
       "pages": [
         "select.html"
       ]
     },
-    "sortable": {
+    {
+      "name": "sortable",
       "type": 1,
       "pages": [
         "sortable.html",
         "sortable2.html"
       ]
     },
-    "tabs": {
+    {
+      "name": "tabs",
       "type": 3,
+      "seq": 30,
       "pages": [
         "tabs.html"
       ]
     },
-    "utilities": {
+    {
+      "name": "utilities",
       "type": 0,
       "pages": []
     },
-    "window": {
+    {
+      "name": "window",
       "type": 3,
+      "seq": 10,
       "pages": [
         "window.html"
       ]
     }
-  }
+  ]
 }

@@ -74,8 +74,17 @@
         <div id='myWindow11'></div>
     </div>
     <div id='myWindow2'>
-        <div id='myWindow20'></div>
-        <div id='myWindow21'></div>
+        <ul>
+            <li>drag the window around</li>
+            <li>drag the edges to resize the window</li>
+            <li>drag to reorder the items in the docker bar</li>
+            <li>right click on the window header for a menu</li>
+            <li>right click on the items in the docker bar for the same menu</li>
+            <li>double click on the window header to maximize/restore the window</li>
+            <li>try it on your computers, phones and tablets</li>
+            <li>try it on Chrome, Firefox, Safari and Edge</li>
+            <li>try it on Linux, Mac and Windows</li>
+        </ul>
     </div>
     <div id="docker0"></div>
     <script>
@@ -120,17 +129,7 @@
         azui.Window(document.querySelector("#myWindow2"), {
             width: width0,
             height: height0,
-            title: 'New Mexico',
-        });
-        azui.Window(document.querySelector("#myWindow20"), {
-            width: width1,
-            height: height1,
-            title: 'Santa Fe',
-        });
-        azui.Window(document.querySelector("#myWindow21"), {
-            width: width1,
-            height: height1,
-            title: 'Albuquerque',
+            title: 'Try me!',
         });
 
         document.querySelector('#fout').style['display'] = 'block';

@@ -31,7 +31,7 @@ const generateAll = () => {
     let jsContent = '';
     const moduleContent = {
         buildTime: new Date().toString(),
-        modules: {},
+        modules: [],
     };
 
     listModules().map(mod => {
@@ -41,13 +41,14 @@ const generateAll = () => {
         }
 
         const moduleData = {
+            name: mod,
             ...m,
             pages: [],
         };
         listHtmls(mod).map(html => {
             moduleData.pages.push(html);
         });
-        moduleContent.modules[mod] = moduleData;
+        moduleContent.modules.push(moduleData);
     });
     fs.writeFileSync(srcDir + '/all/index.js', jsContent, 'utf8');
     fs.writeFileSync(srcDir + '/index/modules.json', JSON.stringify(moduleContent, null, 2), 'utf8');

@@ -1,1 +1,14 @@
 @import '../utilities/utilities.scss';
+
+.azui {
+    color: #444;
+
+    & a {
+        text-decoration: none;
+    }
+
+    & .moduleList {
+        position: relative;
+        left: 20px;
+    }
+}
