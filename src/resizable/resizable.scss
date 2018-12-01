@@ -13,6 +13,10 @@
             background-color: $active;
         }
 
+        & .azHide {
+            display: none;
+        }
+
         &>div.collapseButton {
             background-color: lighten($color: $main-color, $amount: 10%);
             display: flex;

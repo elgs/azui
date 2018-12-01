@@ -52,10 +52,6 @@ These two lines of code are what you want to put in your html file:
             margin: 0;
             padding: 0;
         }
-
-        * {
-            font-size: 13;
-        }
     </style>
 
     <link href="./node_modules/azui/dist/azui.all.0.0.7.css" rel="stylesheet" type="text/css">
@@ -93,6 +89,9 @@ You can try to:
 * try it on your computers, phones and tablets
 * try it on Chrome, Firefox, Safari and Edge
 * try it on Linux, Mac and Windows
+
+## Global footprint
+In this library, everything in Javascript is under `window.azui`, and in CSS, under `.azui`.
 
 ## A few more words
 I have been working on this project in the past few months. Now I am excited to publish my work for the first public preview. Everything is likely to change incompatibly until version 1.0.0. API docs are not done yet. You will need to look at those html files in the src directory for examples. I'm sorry for that, but this will be worked on soon. Please feel free to open issues and pull requests.
