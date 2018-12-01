@@ -1,0 +1,118 @@
+{
+  "buildTime": "Fri Nov 30 2018 17:39:23 GMT-0800 (Pacific Standard Time)",
+  "modules": {
+    "accordion": {
+      "type": 3,
+      "seq": 5,
+      "pages": [
+        "accordion.html"
+      ]
+    },
+    "all": {
+      "type": 4,
+      "pages": []
+    },
+    "contextmenu": {
+      "type": 3,
+      "pages": [
+        "contextmenu.html"
+      ]
+    },
+    "datatable": {
+      "type": 3,
+      "pages": [
+        "datatable.html"
+      ]
+    },
+    "docker": {
+      "type": 2,
+      "pages": [
+        "docker.html"
+      ]
+    },
+    "doubleclick": {
+      "type": 1,
+      "pages": [
+        "doubleclick.html"
+      ]
+    },
+    "draggable": {
+      "type": 1,
+      "pages": [
+        "draggable.html"
+      ]
+    },
+    "droppable": {
+      "type": 1,
+      "pages": [
+        "droppable.html"
+      ]
+    },
+    "index": {
+      "type": 5,
+      "pages": [
+        "index.html"
+      ]
+    },
+    "inlineedit": {
+      "type": 2,
+      "pages": [
+        "inlineedit.html"
+      ]
+    },
+    "layout": {
+      "type": 3,
+      "pages": [
+        "layout.html",
+        "layout2.html"
+      ]
+    },
+    "pager": {
+      "type": 2,
+      "pages": [
+        "pager.html"
+      ]
+    },
+    "resizable": {
+      "type": 1,
+      "pages": [
+        "resizable.html"
+      ]
+    },
+    "rightclick": {
+      "type": 1,
+      "pages": [
+        "rightclick.html"
+      ]
+    },
+    "select": {
+      "type": 2,
+      "pages": [
+        "select.html"
+      ]
+    },
+    "sortable": {
+      "type": 1,
+      "pages": [
+        "sortable.html",
+        "sortable2.html"
+      ]
+    },
+    "tabs": {
+      "type": 3,
+      "pages": [
+        "tabs.html"
+      ]
+    },
+    "utilities": {
+      "type": 0,
+      "pages": []
+    },
+    "window": {
+      "type": 3,
+      "pages": [
+        "window.html"
+      ]
+    }
+  }
+}

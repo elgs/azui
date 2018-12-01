@@ -11,34 +11,46 @@ const srcDir = path.join(__dirname, '/src/');
 const buildDir = path.join(__dirname, '/build/');
 const distDir = path.join(__dirname, '/dist/');
 
-const listModules = () => fs.readdirSync(srcDir).filter(item => fs.statSync(path.join(srcDir, item)).isDirectory());
+const listModules = (...excludes) => fs.readdirSync(srcDir).filter(item => !excludes.includes(item) && fs.statSync(path.join(srcDir, item)).isDirectory());
 const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile());
 const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
+const loadModule = mod => {
+    const m = fs.readdirSync(path.join(srcDir, mod)).filter(item => item === 'module.json' && fs.statSync(path.join(srcDir, mod, item)).isFile());
+    if (m && m.length === 1) {
+        const moduleJson = m[0];
+        const mj = fs.readFileSync(path.join(srcDir, mod, moduleJson), 'utf8');
+        return JSON.parse(mj);
+    }
+    return null;
+}
 const pkgJson = require('./package.json');
 
 const excludes = ['utilities'];
 
 const generateAll = () => {
     let jsContent = '';
-    let htmlContent = `<style>
-    * {
-        font-family: 'Roboto', sans-serif;
-        font-size: 13px;
-    }
-</style>
-<p>Build time: ${new Date()}</p>`;
-    listModules().filter(mod => mod !== 'all' && mod !== 'utilities').map(mod => {
-        jsContent += `import '../${mod}/index.js';\n`;
+    const moduleContent = {
+        buildTime: new Date().toString(),
+        modules: {},
+    };
 
-        htmlContent += `<h5>${mod}</h5>`;
-        htmlContent += '<ul>';
+    listModules().map(mod => {
+        const m = loadModule(mod);
+        if (m.type < 4) {
+            jsContent += `import '../${mod}/index.js';\n`;
+        }
+
+        const moduleData = {
+            ...m,
+            pages: [],
+        };
         listHtmls(mod).map(html => {
-            htmlContent += `<li><a href='${html}'>${html}</a></li>\n`;
+            moduleData.pages.push(html);
         });
-        htmlContent += '</ul>'
+        moduleContent.modules[mod] = moduleData;
     });
     fs.writeFileSync(srcDir + '/all/index.js', jsContent, 'utf8');
-    fs.writeFileSync(srcDir + '/all/index.html', htmlContent, 'utf8');
+    fs.writeFileSync(srcDir + '/index/modules.json', JSON.stringify(moduleContent, null, 2), 'utf8');
 };
 
 module.exports = (env, argv) => {

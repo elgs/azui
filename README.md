@@ -95,7 +95,7 @@ You can try to:
 * try it on Linux, Mac and Windows
 
 ## A few more words
-I have been working on this project in the past few months. Today I am excited to publish my work for the first public preview. Everything is likely to change incompatibly until version 1.0.0. API docs are not done yet. You will need to look at those html files in the src directory for examples. I'm sorry for that, but this will be worked on soon.
+I have been working on this project in the past few months. Now I am excited to publish my work for the first public preview. Everything is likely to change incompatibly until version 1.0.0. API docs are not done yet. You will need to look at those html files in the src directory for examples. I'm sorry for that, but this will be worked on soon. Please feel free to open issues and pull requests.
 
 ## License
 MIT License
