@@ -123,6 +123,9 @@
         const rowContextMenu = [{
             icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
             title: 'Edit',
+            disabled: () => {
+                return !table.selectedCell;
+            },
             action: function (e, target) {
                 const inlineEditCell = azui.InlineEdit(table.selectedCell);
                 inlineEditCell.edit();
@@ -131,6 +134,9 @@
         }, {
             icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
             title: 'Print Row to Console',
+            disabled: () => {
+                return !table.selectedCell;
+            },
             action: function (e, target) {
                 console.log(table.selectedCell);
                 return false;

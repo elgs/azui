@@ -4,6 +4,8 @@ DONE: plain jquery plugin
 DONE: active window
 DONE: minimize bar
 DONE: window manager/window ID
+TODO: option for minimize/show docker
+TODO: snap to container edge/grid/siblings
 
 datatable:
 DONE: header right click menu
@@ -20,7 +22,8 @@ DONE: selectedRow, selectedCol, selectedCell
 DONE: moving cross columns wide column bug
 DONE: inline edit doesn't edit on touch device
 DONE: tbody events should be masked when cell is in active edit mode
-TODO: when multiple rows are selected, right click will deselect rows
+DONE: when multiple rows are selected, right click will deselect rows
+TODO: filters
 
 pager:
 DONE: add rows in page in ui

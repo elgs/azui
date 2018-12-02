@@ -25,8 +25,6 @@ const loadModule = mod => {
 }
 const pkgJson = require('./package.json');
 
-const excludes = ['utilities'];
-
 const generateAll = () => {
     let jsContent = '';
     const moduleContent = {
@@ -68,9 +66,7 @@ module.exports = (env, argv) => {
         entries[mod] = `${srcDir+mod}/index.js`;
     });
     // console.log(entries);
-    const htmls = mods.filter(mod => {
-        return !excludes.includes(mod);
-    }).map(mod => {
+    const htmls = mods.map(mod => {
         const tpls = listHtmls(mod);
         return tpls.map(tpl => {
             return new HtmlWebpackPlugin({

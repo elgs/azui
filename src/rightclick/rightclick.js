@@ -39,9 +39,13 @@ class RightClick extends Base {
             me.replaceEventListener('touchstart', 'touchstart', function (event) {
                 'touchmove touchend touchcancel'.split(' ').forEach(e => me.replaceEventListener(e, e, function (event) {
                     clearTimeout(timer);
+                    // console.log(event);
                     if (me.triggered) {
+                        // console.log('triggered');
+                        event._azRightClickTriggered = true;
                         me.triggered = false;
                     } else {
+                        // console.log('not triggered');
                         settings.resumeDefaultEvent(event);
                     }
                 }));

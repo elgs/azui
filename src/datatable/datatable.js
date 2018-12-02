@@ -129,55 +129,65 @@ class DataTable extends Base {
         };
 
         const rowSelected = e => {
-            const tr = e.target.closest('div.tr');
-            const td = e.target.closest('div.td');
-
-            const trNum = tr.getAttribute('tr-num') * 1;
-            const colKey = td.getAttribute('col-key') * 1;
-
-            // console.log('shift:', e.shiftKey);
-            // console.log('ctrl:', e.ctrlKey);
-            // console.log('alt:', e.altKey);
-            // console.log('meta:', e.metaKey);
-
-            const ctrlOrCmdPressed = e.ctrlKey || e.metaKey;
-            const shiftPressed = e.shiftKey;
-
-            const shiftPress = () => {
-                if (me.lastSelectedRowNum <= trNum) {
-                    for (let i = me.lastSelectedRowNum; i < trNum; ++i) {
-                        me.rows[i + 1].classList.toggle('selected');
-                    }
-                } else {
-                    for (let i = me.lastSelectedRowNum; i > trNum; --i) {
-                        me.rows[i - 1].classList.toggle('selected');
-                    }
-                }
-                window.getSelection().removeAllRanges();
-            };
-
-            if (settings.selectMode === 'sticky') {
-                if (shiftPressed) {
-                    shiftPress();
-                } else {
-                    tr.classList.toggle('selected');
-                }
-            } else if (settings.selectMode === 'volatile') {
-                if (shiftPressed) {
-                    shiftPress();
-                } else if (ctrlOrCmdPressed) {
-                    tr.classList.toggle('selected');
-                } else {
-                    me.rows.map(tr => {
-                        tr.classList.remove('selected');
-                    });
-                    tr.classList.add('selected');
-                }
+            if (e.type === 'mouseup' && e.button !== 0) {
+                return;
             }
-            me.lastSelectedRowNum = trNum;
-            me.lastSelectedColKey = colKey;
-            me.selectedCell = td.querySelector('span.cell');
-            // console.log(me.selectedCell.innerHTML);
+
+            setTimeout(() => {
+                if (e._azRightClickTriggered) {
+                    return;
+                }
+
+                const tr = e.target.closest('div.tr');
+                const td = e.target.closest('div.td');
+
+                const trNum = tr.getAttribute('tr-num') * 1;
+                const colKey = td.getAttribute('col-key') * 1;
+
+                // console.log('shift:', e.shiftKey);
+                // console.log('ctrl:', e.ctrlKey);
+                // console.log('alt:', e.altKey);
+                // console.log('meta:', e.metaKey);
+
+                const ctrlOrCmdPressed = e.ctrlKey || e.metaKey;
+                const shiftPressed = e.shiftKey;
+
+                const shiftPress = () => {
+                    if (me.lastSelectedRowNum <= trNum) {
+                        for (let i = me.lastSelectedRowNum; i < trNum; ++i) {
+                            me.rows[i + 1].classList.toggle('selected');
+                        }
+                    } else {
+                        for (let i = me.lastSelectedRowNum; i > trNum; --i) {
+                            me.rows[i - 1].classList.toggle('selected');
+                        }
+                    }
+                    window.getSelection().removeAllRanges();
+                };
+
+                if (settings.selectMode === 'sticky') {
+                    if (shiftPressed) {
+                        shiftPress();
+                    } else {
+                        tr.classList.toggle('selected');
+                    }
+                } else if (settings.selectMode === 'volatile') {
+                    if (shiftPressed) {
+                        shiftPress();
+                    } else if (ctrlOrCmdPressed) {
+                        tr.classList.toggle('selected');
+                    } else {
+                        me.rows.map(tr => {
+                            tr.classList.remove('selected');
+                        });
+                        tr.classList.add('selected');
+                    }
+                }
+                me.lastSelectedRowNum = trNum;
+                me.lastSelectedColKey = colKey;
+                me.selectedCell = td.querySelector('span.cell');
+                // console.log(me.selectedCell.innerHTML);
+            });
         };
 
         const onKeyDown = e => {
@@ -503,9 +513,7 @@ class DataTable extends Base {
 
         azui.ContextMenu(tbody, {
             items: settings.rowContextMenu,
-            preventDefault: e => {
-                return e.target.tagName.toLowerCase() === 'span';
-            },
+            preventDefault: e => e.target.tagName.toLowerCase() === 'span',
             onDismiss: e => {
                 // if context menu is activate by menu key, tbody will lose focus, causing next menu key press not activating the context menu
                 tbody.focus({

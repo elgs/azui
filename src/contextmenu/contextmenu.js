@@ -93,7 +93,8 @@ class ContextMenu extends Base {
 
             const menuItem = document.createElement('div');
             menuItem.classList.add('azMenuItem');
-            if (item.disabled) {
+            const disabled = resolveFunction(item.disabled);
+            if (disabled) {
                 menuItem.classList.add('disabled');
             }
 
@@ -108,7 +109,7 @@ class ContextMenu extends Base {
             menuItem.appendChild(titleDiv);
             // iconDiv.innerHTML = icon;
             // titleDiv.innerHTML = title;
-            if (!item.disabled) {
+            if (!disabled) {
                 menuItem.addEventListener('click', e => {
                     if (item.action.call(menuItem, e, settings.target || node) === false) {
                         menu.blur();
