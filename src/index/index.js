@@ -12,31 +12,7 @@ window.onload = () => {
     const moduleList2 = document.querySelector('.azui div.moduleList2');
     const moduleList1 = document.querySelector('.azui div.moduleList1');
 
-    const m3 = [];
-    const m2 = [];
-    const m1 = [];
-
-    modules.modules.map(m => {
-        switch (m.type) {
-            case 3:
-                m3.push(m);
-                break;
-            case 2:
-                m2.push(m);
-                break;
-            case 1:
-                m1.push(m);
-                break;
-        }
-    });
-
-    const sortFunction = (a, b) => a.seq - b.seq;
-    m3.sort(sortFunction);
-    m2.sort(sortFunction);
-    m1.sort(sortFunction);
-    // console.log(m3, m2, m1);
-
-    m3.map(m => {
+    modules.modules3.map(m => {
         const moduleTpl = `<div class="modules">
         <h5>${m.name}</h5>
         <ul></ul>
@@ -53,7 +29,7 @@ window.onload = () => {
         moduleList3.appendChild(moduleDOM);
     });
 
-    m2.map(m => {
+    modules.modules2.map(m => {
         const moduleTpl = `<div class="modules">
         <h5>${m.name}</h5>
         <ul></ul>
@@ -70,7 +46,7 @@ window.onload = () => {
         moduleList2.appendChild(moduleDOM);
     });
 
-    m1.map(m => {
+    modules.modules1.map(m => {
         const moduleTpl = `<div class="modules">
         <h5>${m.name}</h5>
         <ul></ul>
