@@ -35,6 +35,8 @@ class Docker extends Base {
         // node.setAttribute('az-docker-id', this.dockerId);
         // registerObject(this.dockerId, this);
 
+        me.winSettingsCache = {};
+
         this.x = 30;
         this.y = 30;
         this.z = 0;
@@ -133,6 +135,7 @@ class Docker extends Base {
     dock(el, winSettings, notify) {
         const me = this;
         const id = randGen(8);
+        me.winSettingsCache[id] = winSettings;
         const docked = document.createElement('div');
         docked.setAttribute('az-dock-id', id);
         docked.setAttribute('state', 'normal');
@@ -245,13 +248,16 @@ class Docker extends Base {
     }
 
     maximize(dockId, notify) {
+        const me = this;
         // always docker notifies window
         this.storeState(dockId);
 
         const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         docked.setAttribute('state', 'maximized');
-        docked.style['display'] = 'none';
+        if (!me.winSettingsCache[dockId].showButtonInDocker) {
+            docked.style['display'] = 'none';
+        }
 
         dockedRef.style.transition = 'all .3s ease-in';
         dockedRef.style.left = 0;
@@ -303,11 +309,14 @@ class Docker extends Base {
     }
 
     normalize(dockId, notify) {
+        const me = this;
         // always docker notifies window
         const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
         const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
         docked.setAttribute('state', 'normal');
-        docked.style['display'] = 'none';
+        if (!me.winSettingsCache[dockId].showButtonInDocker) {
+            docked.style['display'] = 'none';
+        }
 
         dockedRef.style.transition = 'all .25s ease-in';
         dockedRef.style.left = docked.getAttribute('x') + 'px';
