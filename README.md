@@ -40,7 +40,6 @@ These two lines of code are what you want to put in your html file:
 ## Quick start
 ```html
 <html>
-
 <head>
     <style>
         html,
@@ -56,7 +55,6 @@ These two lines of code are what you want to put in your html file:
     <link href="./node_modules/azui/dist/azui.all.0.0.7.css" rel="stylesheet" type="text/css">
     <script src="./node_modules/azui/dist/azui.all.0.0.7.js"></script>
 </head>
-
 <body>
     <div id='win0'></div>
     <div id='win1'></div>
@@ -75,7 +73,6 @@ These two lines of code are what you want to put in your html file:
         });
     </script>
 </body>
-
 </html>
 ```
 You can try to:  

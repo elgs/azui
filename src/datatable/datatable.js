@@ -347,7 +347,7 @@ class DataTable extends Base {
                     tds.forEach(el => {
                         maxWidth = Math.max(textWidth(el), maxWidth);
                     });
-                    maxWidth = Math.max(80, maxWidth) + 10;
+                    maxWidth = Math.max(80, maxWidth) + 15;
                     const newWidth = getWidth(node) + maxWidth - getWidth(tds[0]);
                     setWidth(node, newWidth);
                     tds.forEach(el => {
