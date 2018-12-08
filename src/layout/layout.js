@@ -23,6 +23,10 @@ class Layout extends Base {
             south: '.azLayoutSouth',
             west: '.azLayoutWest',
             center: '.azLayoutCenter',
+            northHeight: '50px',
+            southHeight: '50px',
+            westWidth: '100px',
+            eastWidth: '100px',
             hideCollapseButton: true,
         }, options);
 
@@ -39,6 +43,7 @@ class Layout extends Base {
         if (northContent) {
             const north = document.createElement('div');
             north.classList.add('azLayoutArea', 'azLayoutAreaNorth');
+            north.style.height = settings.northHeight;
             me.node.appendChild(north);
             me.north = north;
             azui.Resizable(me.north, {
@@ -46,9 +51,13 @@ class Layout extends Base {
                 hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);
+                    centerContent.querySelector('iframe').style['pointer-events'] = 'none';
                 },
                 resize: function (e, h, by) {
                     by.dy = Math.min(by.dy, centerHeight);
+                },
+                stop: function (e, el) {
+                    centerContent.querySelector('iframe').style['pointer-events'] = '';
                 },
             });
             north.appendChild(northContent);
@@ -56,6 +65,7 @@ class Layout extends Base {
         if (eastContent) {
             const east = document.createElement('div');
             east.classList.add('azLayoutArea', 'azLayoutAreaEast');
+            east.style.width = settings.eastWidth;
             me.node.appendChild(east);
             me.east = east;
             azui.Resizable(me.east, {
@@ -64,9 +74,13 @@ class Layout extends Base {
                 moveOnResize: false,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
+                    centerContent.querySelector('iframe').style['pointer-events'] = 'none';
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.max(by.dx, -centerWidth);
+                },
+                stop: function (e, el) {
+                    centerContent.querySelector('iframe').style['pointer-events'] = '';
                 },
             });
             east.appendChild(eastContent);
@@ -74,6 +88,7 @@ class Layout extends Base {
         if (southContent) {
             const south = document.createElement('div');
             south.classList.add('azLayoutArea', 'azLayoutAreaSouth');
+            south.style.height = settings.southHeight;
             me.node.appendChild(south);
             me.south = south;
             azui.Resizable(me.south, {
@@ -82,9 +97,13 @@ class Layout extends Base {
                 moveOnResize: false,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);
+                    centerContent.querySelector('iframe').style['pointer-events'] = 'none';
                 },
                 resize: function (e, h, by) {
                     by.dy = Math.max(by.dy, -centerHeight);
+                },
+                stop: function (e, el) {
+                    centerContent.querySelector('iframe').style['pointer-events'] = '';
                 },
             });
             south.appendChild(southContent);
@@ -92,6 +111,7 @@ class Layout extends Base {
         if (westContent) {
             const west = document.createElement('div');
             west.classList.add('azLayoutArea', 'azLayoutAreaWest');
+            west.style.width = settings.westWidth;
             me.node.appendChild(west);
             me.west = west;
             azui.Resizable(me.west, {
@@ -99,9 +119,13 @@ class Layout extends Base {
                 hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
+                    centerContent.querySelector('iframe').style['pointer-events'] = 'none';
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.min(by.dx, centerWidth);
+                },
+                stop: function (e, el) {
+                    centerContent.querySelector('iframe').style['pointer-events'] = '';
                 },
             });
             west.appendChild(westContent);
@@ -112,7 +136,6 @@ class Layout extends Base {
             me.node.appendChild(center);
             me.center = center;
             center.appendChild(centerContent);
-
         }
 
         // console.log(me.north, me.east, me.south, me.west, me.center);

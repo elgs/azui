@@ -115,6 +115,10 @@ class Accordion extends Base {
             }
         };
 
+        me.getContentDiv = key => {
+            return node.querySelector(`[acc-key="${key}"] .azAccordionContent`);
+        };
+
 
         const createHeaderSelected = cm => {
             return e => {

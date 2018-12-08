@@ -4,7 +4,7 @@ DONE: plain jquery plugin
 DONE: active window
 DONE: minimize bar
 DONE: window manager/window ID
-TODO: option for minimize/show docker
+DONE: option for minimize/show docker
 TODO: snap to container edge/grid/siblings
 
 datatable:
@@ -73,3 +73,6 @@ DONE: append/remove/insert/move APIs
 DONE: toggle API
 DONE: context menu to toggle
 DONE: alert/dismissAlert APIs
+
+layout:
+DONE: options for width/height

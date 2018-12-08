@@ -1,3 +1,6 @@
+import '../layout/index.js';
+import '../accordion/index.js';
+
 import './index.scss';
 import {
     parseDOMElement,
@@ -8,60 +11,33 @@ window.onload = () => {
     const buildTime = document.querySelector('.azui span.buildTime');
     buildTime.innerHTML = modules.buildTime;
 
-    const moduleList3 = document.querySelector('.azui div.moduleList3');
-    const moduleList2 = document.querySelector('.azui div.moduleList2');
-    const moduleList1 = document.querySelector('.azui div.moduleList1');
-
-    modules.modules3.map(m => {
-        const moduleTpl = `<div class="modules">
-        <h5>${m.name}</h5>
-        <ul></ul>
-        </div>`;
-        const moduleDOM = parseDOMElement(moduleTpl)[0];
-
-        m.pages.map(page => {
-            const pageLiTpl = `<li><a href='${page}'>${page}</a></li>`
-            const pageLi = parseDOMElement(pageLiTpl)[0];
-            const ul = moduleDOM.querySelector('ul');
-            ul.appendChild(pageLi);
-        });
-
-        moduleList3.appendChild(moduleDOM);
+    const container = document.querySelector('.azui.azIndex');
+    azui.Layout(container, {
+        hideCollapseButton: true,
+        westWidth: '150px',
     });
 
-    modules.modules2.map(m => {
-        const moduleTpl = `<div class="modules">
-        <h5>${m.name}</h5>
-        <ul></ul>
-        </div>`;
-        const moduleDOM = parseDOMElement(moduleTpl)[0];
-
-        m.pages.map(page => {
-            const pageLiTpl = `<li><a href='${page}'>${page}</a></li>`
-            const pageLi = parseDOMElement(pageLiTpl)[0];
-            const ul = moduleDOM.querySelector('ul');
-            ul.appendChild(pageLi);
-        });
-
-        moduleList2.appendChild(moduleDOM);
+    const accDOM = document.querySelector('#accordionMenu');
+    const acc = azui.Accordion(accDOM, {
+        collapseOthers: false,
     });
 
-    modules.modules1.map(m => {
-        const moduleTpl = `<div class="modules">
-        <h5>${m.name}</h5>
-        <ul></ul>
-        </div>`;
-        const moduleDOM = parseDOMElement(moduleTpl)[0];
+    [modules.modules3, modules.modules2, modules.modules1, ].map(m => {
+        m.map(m => {
+            const k = acc.append(m.name);
+            const c = acc.getContentDiv(k);
 
-        m.pages.map(page => {
-            const pageLiTpl = `<li><a href='${page}'>${page}</a></li>`
-            const pageLi = parseDOMElement(pageLiTpl)[0];
-            const ul = moduleDOM.querySelector('ul');
-            ul.appendChild(pageLi);
+            const ul = parseDOMElement(`<ul></ul>`)[0];
+            m.pages.map(page => {
+                const pageLiTpl = `<li><a href='${page}' target='content'>${page}</a></li>`
+                const pageLi = parseDOMElement(pageLiTpl)[0];
+                ul.appendChild(pageLi);
+            });
+
+            c.append(ul);
         });
-
-        moduleList1.appendChild(moduleDOM);
     });
+
 
     // console.log(modules);
 };
