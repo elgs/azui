@@ -100,6 +100,7 @@
 
                 & span.title {
                     cursor: default;
+                    user-select: none;
                 }
 
                 & span.icon {

@@ -10,9 +10,9 @@
     "author": "Qian Chen",
     "license": "MIT",
     "devDependencies": {
-        "@babel/cli": "^7.1.5",
-        "@babel/core": "^7.1.6",
-        "@babel/preset-env": "^7.1.6",
+        "@babel/cli": "^7.2.0",
+        "@babel/core": "^7.2.0",
+        "@babel/preset-env": "^7.2.0",
         "babel-loader": "^8.0.4",
         "babel-plugin-transform-class-properties": "^6.24.1",
         "clean-webpack-plugin": "^0.1.19",
@@ -24,7 +24,7 @@
         "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
         "uglifyjs-webpack-plugin": "^2.0.1",
-        "webpack": "^4.26.1",
+        "webpack": "^4.27.1",
         "webpack-cli": "^3.1.2",
         "webpack-dev-server": "^3.1.10"
     },
@@ -35,9 +35,16 @@
         "type": "git",
         "url": "git+https://github.com/elgs/azui.git"
     },
-    "files": ["src/", "dist/", "build/"],
+    "files": [
+        "src/",
+        "dist/",
+        "build/"
+    ],
     "keywords": [
-        "azui", "webui", "ui", "css"
+        "azui",
+        "webui",
+        "ui",
+        "css"
     ],
     "bugs": {
         "url": "https://github.com/elgs/azui/issues"

@@ -26,6 +26,11 @@ class Window extends Base {
             height: 300,
             headerHeight: 36,
             icon: icons.svgApps,
+            showMinimizeButton: true,
+            showMaximizeButton: true,
+            showCloseButton: true,
+            showSlideButton: true,
+            showButtonInDocker: true,
             title: 'Arizona',
         }, options);
 
@@ -33,37 +38,31 @@ class Window extends Base {
         const node = this.node;
         this.settings = settings;
 
-        node.style['position'] = 'absolute';
+        if (!settings.showMinimizeButton) {
+            settings.showButtonInDocker = false;
+        }
 
-        // this.windowId = randGen(8);
-        // node.setAttribute('az-window-id', this.windowId);
-        // registerObject(this.windowId, this);
+        node.style['position'] = 'absolute';
 
         const dockers = siblings(node, '.azDocker');
         if (dockers.length === 0) {
             const dockerElem = document.createElement('div');
             node.parentNode.appendChild(dockerElem);
-            this.docker = azui.Docker(dockerElem, null, true);
+            me.docker = azui.Docker(dockerElem, null, true);
         } else {
             const dockerElem = dockers[0];
-            // const dockerId = dockerElem.getAttribute('az-docker-id');
-            // this.docker = getObject(dockerId);
-            this.docker = azui.Docker(dockerElem, null, false);
+            me.docker = azui.Docker(dockerElem, null, false);
         }
 
         this.headerIcons = {};
 
         const initHeader = function () {
-            addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', me.slideup);
-            addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', me.slidedown);
-            addHeaderIcon('minimize', icons.svgWindowMin, 'Minimize', false, 'right', me.minimize);
-            addHeaderIcon('restore', icons.svgWindowNormal, 'Restore', true, 'right', me.restore);
-            addHeaderIcon('maximize', icons.svgWindowMax, 'Maximize', false, 'right', me.maximize);
-            addHeaderIcon('close', icons.svgClose, 'Close', false, 'right', me.close);
-
-            // settings.extIcons.map(icon => {
-            //     addHeaderIcon(icon.key, icon.icon, icon.toolTip, icon.hidden, icon.position, icon.callback);
-            // });
+            settings.showSlideButton && addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', me.slideup);
+            settings.showSlideButton && addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', me.slidedown);
+            settings.showMinimizeButton && addHeaderIcon('minimize', icons.svgWindowMin, 'Minimize', false, 'right', me.minimize);
+            (settings.showMinimizeButton || settings.showMaximizeButton) && addHeaderIcon('restore', icons.svgWindowNormal, 'Restore', true, 'right', me.restore);
+            settings.showMaximizeButton && addHeaderIcon('maximize', icons.svgWindowMax, 'Maximize', false, 'right', me.maximize);
+            settings.showCloseButton && addHeaderIcon('close', icons.svgClose, 'Close', false, 'right', me.close);
         };
 
         const setHeaderIcon = function (icon) {
@@ -168,9 +167,9 @@ class Window extends Base {
 
         azui.DoubleClick(header, {
             onDoubleClick: function (event) {
-                if (!matches(event.target, 'div.azWindowHeader')) {
-                    return;
-                }
+                // if (!matches(event.target, 'div.azWindowHeader')) {
+                // return;
+                // }
                 const state = me.docked.getAttribute('state');
                 if (state === 'normal') {
                     me.maximize();
@@ -189,12 +188,12 @@ class Window extends Base {
         me.docker.x += settings.headerHeight;
         me.docker.y += settings.headerHeight;
 
-        this.docked = me.docker.dock(node, settings.icon, settings.title);
-        this.dockId = node.getAttribute('az-dock-ref');
-        // console.log(this.dockId);
+        me.docked = me.docker.dock(node, settings);
+        me.dockId = node.getAttribute('az-dock-ref');
+        // console.log(me.docked, me.dockId);
 
         const cm = azui.ContextMenu(header, {
-            items: me.docker.getContextMenuItems.call(me.docker, me.dockId),
+            items: me.docker.getContextMenuItems.call(me.docker, me.dockId, settings),
         });
 
         me.replaceEventListener('activated', 'activated', e => {
@@ -207,22 +206,22 @@ class Window extends Base {
             me.close(false);
         });
 
-        me.replaceEventListener('minimized', 'minimized', e => {});
-        me.replaceEventListener('maximized', 'maximized', e => {
-            me.headerIcons['slidedown'].style.display = 'none';
-            me.headerIcons['slideup'].style.display = 'none';
+        // me.replaceEventListener('minimized', 'minimized', e => {});
+        settings.showMaximizeButton && me.replaceEventListener('maximized', 'maximized', e => {
+            settings.showSlideButton && (me.headerIcons['slidedown'].style.display = 'none');
+            settings.showSlideButton && (me.headerIcons['slideup'].style.display = 'none');
             me.headerIcons['maximize'].style.display = 'none';
-            me.headerIcons['minimize'].style.display = 'inline-block';
+            settings.showMinimizeButton && (me.headerIcons['minimize'].style.display = 'inline-block');
             me.headerIcons['restore'].style.display = 'inline-block';
         });
-        me.replaceEventListener('normalized', 'normalized', e => {
-            me.headerIcons['slidedown'].style.display = 'none';
-            me.headerIcons['slideup'].style.display = 'inline-block';
-            me.headerIcons['maximize'].style.display = 'inline-block';
-            me.headerIcons['minimize'].style.display = 'inline-block';
+        (settings.showMaximizeButton || settings.showMinimizeButton) && me.replaceEventListener('normalized', 'normalized', e => {
+            settings.showSlideButton && (me.headerIcons['slidedown'].style.display = 'none');
+            settings.showSlideButton && (me.headerIcons['slideup'].style.display = 'inline-block');
+            settings.showMaximizeButton && (me.headerIcons['maximize'].style.display = 'inline-block');
+            settings.showMinimizeButton && (me.headerIcons['minimize'].style.display = 'inline-block');
             me.headerIcons['restore'].style.display = 'none';
         });
-        me.replaceEventListener('slidup', 'slidup', e => {
+        settings.showSlideButton && me.replaceEventListener('slidup', 'slidup', e => {
             me.headerIcons['slideup'].style.display = 'none';
             me.headerIcons['slidedown'].style.display = 'inline-block';
             me.node.style.transition = 'all .25s ease-in';
@@ -231,7 +230,7 @@ class Window extends Base {
                 me.node.style.transition = '';
             }, 250);
         });
-        me.replaceEventListener('sliddown', 'sliddown', e => {
+        me.showSlideButton && me.replaceEventListener('sliddown', 'sliddown', e => {
             me.headerIcons['slideup'].style.display = 'inline-block';
             me.headerIcons['slidedown'].style.display = 'none';
         });
@@ -240,8 +239,6 @@ class Window extends Base {
     children() {
         const children = this.node.querySelectorAll('.azWindowContent>.azWindow');
         return [...children].map(el => {
-            // const windowId = el.getAttribute('az-window-id');
-            // return getObject(windowId);
             return azui.Window(el);
         });
     }
@@ -260,16 +257,17 @@ class Window extends Base {
         me.node.style['z-index'] = ++me.docker.z;
 
         if (notify) {
-            this.docker.activate(this.dockId, false);
+            me.docker.activate(this.dockId, false);
         }
     }
 
     inactivate(notify) {
         // two way notification
+        const me = this;
         this.node.classList.remove('active');
         this.node.classList.add('inactive');
         if (notify) {
-            this.docker.inactivate(this.dockId, false);
+            me.docker.inactivate(this.dockId, false);
         }
     }
 
@@ -280,11 +278,8 @@ class Window extends Base {
             child.docker.undock(child.dockId, true);
         });
         remove(this.node);
-        // console.log(getObject(this.windowId));
-        // removeObject(this.windowId);
-        // console.log(getObject(this.windowId));
         if (notify) {
-            this.docker.undock(this.dockId, false);
+            me.docker.undock(this.dockId, false);
         }
     }
 

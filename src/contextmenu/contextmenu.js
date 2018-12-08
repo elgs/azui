@@ -91,6 +91,11 @@ class ContextMenu extends Base {
                 return separator;
             }
 
+            const hidden = resolveFunction(item.hidden);
+            if (hidden === true) {
+                return null;
+            }
+
             const menuItem = document.createElement('div');
             menuItem.classList.add('azMenuItem');
             const disabled = resolveFunction(item.disabled);
@@ -177,9 +182,18 @@ class ContextMenu extends Base {
             // $('<div>&nbsp;</div>').addClass('azMenuIconSeparator').appendTo($menu);
 
             const items = resolveFunction(settings.items);
-            items.map(item => {
+            let lastItem = null;
+            items.map((item, index) => {
                 const menuItem = createMenuItem(item, menu)
-                menu.appendChild(menuItem);
+                lastItem = menuItem;
+                let append = !!menuItem;
+                if (append && matches(menuItem, '.azMenuSeparator') && !!lastItem) {
+                    append = false;
+                }
+                // console.log(menuItem, append);
+                if (append) {
+                    menu.appendChild(menuItem);
+                }
             });
 
             // console.log(getWidth(menu), getHeight(menu));
