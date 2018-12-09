@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>azMenu</title>
     <style>
-        div {
+        div#div0 {
             width: 200px;
-            border: 1px solid gray;
         }
     </style>
 </head>
@@ -16,7 +15,33 @@
     <div id="div0"></div>
     <script>
         const elem = document.querySelectorAll('div#div0');
-        azui.Menu(elem, {});
+        azui.Menu(elem, {
+            items: [{
+                    icon: '☺',
+                    title: 'Close',
+                    action: function (e, target) {
+                        console.log(target);
+                        console.log(this);
+                        alert(target);
+                    }
+                }, {
+                    icon: '☺',
+                    title: 'Close Others',
+                    action: function (e, target) {
+                        console.log(1);
+                    }
+                },
+                null,
+                {
+                    icon: '☺',
+                    title: 'Close All',
+                    action: function (e, target) {
+                        console.log(2);
+                        return false;
+                    }
+                }
+            ]
+        });
     </script>
 </body>
 

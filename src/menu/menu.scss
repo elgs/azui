@@ -1,0 +1,67 @@
+@import "../utilities/utilities.scss";
+
+.azui {
+    &.azMenu {
+        min-width: 100px;
+        outline: none;
+
+        & div.azMenuItem {
+            // height: 50px;
+            display: grid;
+            align-content: center;
+            grid-template-columns: 24px 1fr;
+            background-color: $bg-color;
+            width: 100%; // text-align: left;
+            padding: 5px 0; // border: none;
+            border-bottom: 1px solid #ccc;
+            border-top: 1px solid white;
+
+            transition: 0.5s;
+            transition-property: background-color;
+
+            @extend %hoveractive;
+
+            & span {
+                display: inline-block;
+
+                &.icon {
+                    grid-column: 1/2;
+                    text-align: center;
+                    width: 24px; // background-color: blue;
+
+                    & svg {
+                        margin-top: 3px;
+                        width: 10px;
+                        height: 10px;
+                    }
+                }
+
+                &.title {
+                    grid-column: 2/3;
+                    margin: 1px 10px 0 8px; // background-color: red;
+                }
+            }
+
+            &.disabled * {
+                color: gray;
+                fill: gray;
+                cursor: not-allowed;
+            }
+
+            &:not(.disabled).selected {
+                background-color: #498DD5;
+                color: $bg-color;
+                cursor: pointer;
+            }
+
+        }
+
+        & div.azMenuSeparator {
+            height: 2px;
+            border-top: solid 1px darken($color: $main-color, $amount: 7%);
+            background-color: white;
+            margin: 2px 0;
+            padding: 0;
+        }
+    }
+}

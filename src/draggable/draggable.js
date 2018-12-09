@@ -364,16 +364,18 @@ class Draggable extends Base {
                 return;
             }
 
-            me._initDiffParent = diffPosition(node, node.parentNode);
-            // console.log(draggable._initDiffParent);
+            if (settings.snapDistance > 0) {
+                me._initDiffParent = diffPosition(node, node.parentNode);
+                // console.log(draggable._initDiffParent);
 
-            me._initDiffSiblings = siblings(node, '.azui').filter(o => {
-                const bcr = o.getBoundingClientRect();
-                return bcr.height > 0 && bcr.width > 0;
-            }).map(o => {
-                return diffPosition(node, o);
-            });
-            // console.log(draggable._initDiffSiblings);
+                me._initDiffSiblings = siblings(node, '.azui').filter(o => {
+                    const bcr = o.getBoundingClientRect();
+                    return bcr.height > 0 && bcr.width > 0;
+                }).map(o => {
+                    return diffPosition(node, o);
+                });
+                // console.log(draggable._initDiffSiblings);
+            }
 
             const bcr = me.node.getBoundingClientRect();
             me.originalBpr = {
