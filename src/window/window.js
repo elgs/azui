@@ -297,7 +297,7 @@ class Window extends Base {
                 me.node.style.transition = '';
             }, 250);
         });
-        me.showSlideButton && me.replaceEventListener('sliddown', 'sliddown', e => {
+        settings.showSlideButton && me.replaceEventListener('sliddown', 'sliddown', e => {
             me.headerIcons['slideup'].style.display = 'inline-block';
             me.headerIcons['slidedown'].style.display = 'none';
         });
