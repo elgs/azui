@@ -10,8 +10,6 @@ import {
     remove,
     siblings,
     isTouchDevice,
-    diffPosition,
-    diffPositionOut
 } from '../utilities/utilities.js';
 
 azui.Window = function (el, options, init) {
@@ -33,8 +31,6 @@ class Window extends Base {
             showCloseButton: true,
             showSlideButton: true,
             showButtonInDocker: true,
-            snapDistance: 8,
-            snapGap: 3,
             title: 'Arizona',
         }, options);
 
@@ -148,100 +144,17 @@ class Window extends Base {
             },
         });
 
-        const DETACHED = 1;
-        const STICKY = 2;
-        const LATCHED = 3;
-        const snap = (initDiff, dir, gap = 0, sticky = false) => {
-            let coor0, coor1;
-            if (dir === 'top' || dir === 'bottom' || dir === 'topR' || dir === 'bottomR') {
-                coor0 = 'Y';
-                coor1 = 'X';
-            } else if (dir === 'left' || dir === 'right' || dir === 'leftR' || dir === 'rightR') {
-                coor0 = 'X';
-                coor1 = 'Y';
-            }
-            if (!coor0 || !coor1) {
-                throw 'Invalid direction: ' + dir;
-            }
-
-            if ((sticky || overlap(initDiff, coor1)) && Math.abs(initDiff[dir] + draggable[`mouseD${coor0}`]) < settings.snapDistance) {
-                if (draggable[`_snapped${coor0}`]) {
-                    if (Math.abs(draggable[`mouse${coor0}`] - draggable[`_mouseSnapped${coor0}`]) > settings.snapDistance * 2) {
-                        draggable[`_snapped${coor0}`] = false;
-                        return DETACHED;
-                    } else {
-                        draggable[`mouseD${coor0}`] = -initDiff[dir] + gap;
-                        return STICKY;
-                    }
-                } else {
-                    draggable[`mouseD${coor0}`] = -initDiff[dir] + gap;
-                    draggable[`_snapped${coor0}`] = true;
-                    draggable[`_mouseSnapped${coor0}`] = draggable[`mouse${coor0}`];
-                    return LATCHED;
-                }
-            }
-        };
-
-        const overlap = (initDiff, coor) => {
-            let dirs;
-            if (coor === 'Y') {
-                dirs = ['topR', 'bottomR']
-            } else if (coor === 'X') {
-                dirs = ['leftR', 'rightR']
-            }
-            if (!dirs) {
-                throw 'Invalid coordinate: ' + coor;
-            }
-
-            const d = draggable[`mouseD${coor}`];
-            const ret = (initDiff[dirs[0]] + d) * (initDiff[dirs[1]] + d) < 0;
-            // console.log(initDiff[dirs[0]] + d, initDiff[dirs[1]] + d, ret);
-            return ret;
-        };
-
-        const draggable = azui.Draggable(node, {
+        azui.Draggable(node, {
             handle: header,
+            snapDistance: 8,
             create: function (event, ui) {
                 const target = event.target;
                 pb = node.parentNode.getBoundingClientRect();
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
                     return false; // don't drag when clicking on icons
                 }
-                // else if (matches(target, '.azWindowHeader,.azWindowHeader *')) {
-                //     // get focus but prevent mobile view port from moving around
-                //     if (event.type === 'touchstart') {
-                //         // event.preventDefault();
-                //     }
-                // }
-                draggable._initDiffParent = diffPosition(ui, ui.parentNode);
-                // console.log(draggable._initDiffParent);
-
-                draggable._initDiffSiblings = siblings(ui, '.azui').filter(o => {
-                    const bcr = o.getBoundingClientRect();
-                    return bcr.height > 0 && bcr.width > 0;
-                }).map(o => {
-                    return diffPosition(ui, o);
-                });
-                // console.log(draggable._initDiffSiblings);
             },
             drag: function (event, ui) {
-
-                if (settings.snapDistance > 0) {
-                    // const diffParent = diffPosition(ui, ui.parentNode);
-                    snap(draggable._initDiffParent, 'top') || snap(draggable._initDiffParent, 'bottom');
-                    snap(draggable._initDiffParent, 'left') || snap(draggable._initDiffParent, 'right');
-
-                    draggable._initDiffSiblings.map(initDiffSibling => {
-                        if (snap(initDiffSibling, 'topR', settings.snapGap) || snap(initDiffSibling, 'bottomR', -settings.snapGap)) {
-                            snap(initDiffSibling, 'left', 0, true) || snap(initDiffSibling, 'right', 0, true);
-                        } else if (snap(initDiffSibling, 'leftR', settings.snapGap) || snap(initDiffSibling, 'rightR', -settings.snapGap)) {
-                            snap(initDiffSibling, 'top', 0, true) || snap(initDiffSibling, 'bottom', 0, true);
-                        }
-                    });
-                }
-
-                // console.log(dx, dy);
-
                 if (isOutside(event.touches ? event.touches[0].pageX : event.pageX, event.touches ? event.touches[0].pageY : event.pageY, pb)) {
                     return false;
                 }

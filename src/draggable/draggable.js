@@ -3,13 +3,15 @@ import {
     Base
 } from '../utilities/core.js';
 import {
+    diffPosition,
     getDocHeight,
     getDocScrollLeft,
     getDocScrollTop,
     getDocWidth,
     getPositionState,
     isOutside,
-    isTouchDevice
+    isTouchDevice,
+    siblings
 } from '../utilities/utilities.js';
 
 azui.Draggable = function (el, options, init) {
@@ -28,6 +30,8 @@ class Draggable extends Base {
             containment: false,
             resist: false,
             opacity: false,
+            snapDistance: 0,
+            snapGap: 3,
             // triggerDropEvents: false,
             create: function (event, ui, me) {
                 // console.log('create', ui);
@@ -111,6 +115,57 @@ class Draggable extends Base {
         let resisted = false;
         let started = false;
 
+        const DETACHED = 1;
+        const STICKY = 2;
+        const LATCHED = 3;
+        const snap = (initDiff, dir, gap = 0, sticky = false) => {
+            let coor0, coor1;
+            if (dir === 'top' || dir === 'bottom' || dir === 'topR' || dir === 'bottomR') {
+                coor0 = 'Y';
+                coor1 = 'X';
+            } else if (dir === 'left' || dir === 'right' || dir === 'leftR' || dir === 'rightR') {
+                coor0 = 'X';
+                coor1 = 'Y';
+            }
+            if (!coor0 || !coor1) {
+                throw 'Invalid direction: ' + dir;
+            }
+
+            if ((sticky || overlap(initDiff, coor1)) && Math.abs(initDiff[dir] + me[`mouseD${coor0}`]) < settings.snapDistance) {
+                if (me[`_snapped${coor0}`]) {
+                    if (Math.abs(me[`mouse${coor0}`] - me[`_mouseSnapped${coor0}`]) > settings.snapDistance * 2) {
+                        me[`_snapped${coor0}`] = false;
+                        return DETACHED;
+                    } else {
+                        me[`mouseD${coor0}`] = -initDiff[dir] + gap;
+                        return STICKY;
+                    }
+                } else {
+                    me[`mouseD${coor0}`] = -initDiff[dir] + gap;
+                    me[`_snapped${coor0}`] = true;
+                    me[`_mouseSnapped${coor0}`] = me[`mouse${coor0}`];
+                    return LATCHED;
+                }
+            }
+        };
+
+        const overlap = (initDiff, coor) => {
+            let dirs;
+            if (coor === 'Y') {
+                dirs = ['topR', 'bottomR']
+            } else if (coor === 'X') {
+                dirs = ['leftR', 'rightR']
+            }
+            if (!dirs) {
+                throw 'Invalid coordinate: ' + coor;
+            }
+
+            const d = me[`mouseD${coor}`];
+            const ret = (initDiff[dirs[0]] + d) * (initDiff[dirs[1]] + d) < 0;
+            // console.log(initDiff[dirs[0]] + d, initDiff[dirs[1]] + d, ret);
+            return ret;
+        };
+
         const onmousemove = function (e) {
             // console.log(e.type, e.currentTarget, me);
             // console.log(e.currentTarget);
@@ -156,6 +211,20 @@ class Draggable extends Base {
 
             if (settings.drag(e, me.selected, me) === false) {
                 return false;
+            }
+
+            if (settings.snapDistance > 0) {
+                // const diffParent = diffPosition(ui, ui.parentNode);
+                snap(me._initDiffParent, 'top') || snap(me._initDiffParent, 'bottom');
+                snap(me._initDiffParent, 'left') || snap(me._initDiffParent, 'right');
+
+                me._initDiffSiblings.map(initDiffSibling => {
+                    if (snap(initDiffSibling, 'topR', settings.snapGap) || snap(initDiffSibling, 'bottomR', -settings.snapGap)) {
+                        snap(initDiffSibling, 'left', 0, true) || snap(initDiffSibling, 'right', 0, true);
+                    } else if (snap(initDiffSibling, 'leftR', settings.snapGap) || snap(initDiffSibling, 'rightR', -settings.snapGap)) {
+                        snap(initDiffSibling, 'top', 0, true) || snap(initDiffSibling, 'bottom', 0, true);
+                    }
+                });
             }
 
             // console.log(dx, dy);
@@ -294,6 +363,17 @@ class Draggable extends Base {
             if (settings.create(e, node, me) === false) {
                 return;
             }
+
+            me._initDiffParent = diffPosition(node, node.parentNode);
+            // console.log(draggable._initDiffParent);
+
+            me._initDiffSiblings = siblings(node, '.azui').filter(o => {
+                const bcr = o.getBoundingClientRect();
+                return bcr.height > 0 && bcr.width > 0;
+            }).map(o => {
+                return diffPosition(node, o);
+            });
+            // console.log(draggable._initDiffSiblings);
 
             const bcr = me.node.getBoundingClientRect();
             me.originalBpr = {

@@ -218,6 +218,7 @@ class Tabs extends Base {
         if (settings.draggable) {
             azui.Draggable(node, {
                 handle: '.azTabHeader',
+                snapDistance: 8,
                 create: function (event, ui) {
                     me.node.style['z-index'] = ++Tabs.z;
                     // console.log(event.target.classList.contains('azTabHeader'));
