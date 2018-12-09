@@ -148,18 +148,36 @@ class Window extends Base {
             },
         });
 
-        const snap = (initDiff, dir, coor0, coor1, gap = 0) => {
-            if (overlap(initDiff, coor1) && Math.abs(initDiff[dir] + draggable[`mouseD${coor0}`]) < settings.snapDistance) {
+        const DETACHED = 1;
+        const STICKY = 2;
+        const LATCHED = 3;
+        const snap = (initDiff, dir, gap = 0, sticky = false) => {
+            let coor0, coor1;
+            if (dir === 'top' || dir === 'bottom' || dir === 'topR' || dir === 'bottomR') {
+                coor0 = 'Y';
+                coor1 = 'X';
+            } else if (dir === 'left' || dir === 'right' || dir === 'leftR' || dir === 'rightR') {
+                coor0 = 'X';
+                coor1 = 'Y';
+            }
+            if (!coor0 || !coor1) {
+                throw 'Invalid direction: ' + dir;
+            }
+
+            if ((sticky || overlap(initDiff, coor1)) && Math.abs(initDiff[dir] + draggable[`mouseD${coor0}`]) < settings.snapDistance) {
                 if (draggable[`_snapped${coor0}`]) {
                     if (Math.abs(draggable[`mouse${coor0}`] - draggable[`_mouseSnapped${coor0}`]) > settings.snapDistance * 2) {
                         draggable[`_snapped${coor0}`] = false;
+                        return DETACHED;
                     } else {
                         draggable[`mouseD${coor0}`] = -initDiff[dir] + gap;
+                        return STICKY;
                     }
                 } else {
                     draggable[`mouseD${coor0}`] = -initDiff[dir] + gap;
                     draggable[`_snapped${coor0}`] = true;
                     draggable[`_mouseSnapped${coor0}`] = draggable[`mouse${coor0}`];
+                    return LATCHED;
                 }
             }
         };
@@ -167,17 +185,18 @@ class Window extends Base {
         const overlap = (initDiff, coor) => {
             let dirs;
             if (coor === 'Y') {
-                dirs = ['top', 'bottom']
+                dirs = ['topR', 'bottomR']
             } else if (coor === 'X') {
-                dirs = ['left', 'right']
+                dirs = ['leftR', 'rightR']
             }
             if (!dirs) {
                 throw 'Invalid coordinate: ' + coor;
             }
 
             const d = draggable[`mouseD${coor}`];
-            return (initDiff[dirs[0]] + d) * (initDiff[dirs[1]] + d) < 0;
-
+            const ret = (initDiff[dirs[0]] + d) * (initDiff[dirs[1]] + d) < 0;
+            // console.log(initDiff[dirs[0]] + d, initDiff[dirs[1]] + d, ret);
+            return ret;
         };
 
         const draggable = azui.Draggable(node, {
@@ -201,7 +220,7 @@ class Window extends Base {
                     const bcr = o.getBoundingClientRect();
                     return bcr.height > 0 && bcr.width > 0;
                 }).map(o => {
-                    return diffPositionOut(ui, o);
+                    return diffPosition(ui, o);
                 });
                 // console.log(draggable._initDiffSiblings);
             },
@@ -209,16 +228,15 @@ class Window extends Base {
 
                 if (settings.snapDistance > 0) {
                     // const diffParent = diffPosition(ui, ui.parentNode);
-                    snap(draggable._initDiffParent, 'top', 'Y', 'X');
-                    snap(draggable._initDiffParent, 'bottom', 'Y', 'X');
-                    snap(draggable._initDiffParent, 'left', 'X', 'Y');
-                    snap(draggable._initDiffParent, 'right', 'X', 'Y');
+                    snap(draggable._initDiffParent, 'top') || snap(draggable._initDiffParent, 'bottom');
+                    snap(draggable._initDiffParent, 'left') || snap(draggable._initDiffParent, 'right');
 
                     draggable._initDiffSiblings.map(initDiffSibling => {
-                        snap(initDiffSibling, 'top', 'Y', 'X', settings.snapGap);
-                        snap(initDiffSibling, 'bottom', 'Y', 'X', -settings.snapGap);
-                        snap(initDiffSibling, 'left', 'X', 'Y', settings.snapGap);
-                        snap(initDiffSibling, 'right', 'X', 'Y', -settings.snapGap);
+                        if (snap(initDiffSibling, 'topR', settings.snapGap) || snap(initDiffSibling, 'bottomR', -settings.snapGap)) {
+                            snap(initDiffSibling, 'left', 0, true) || snap(initDiffSibling, 'right', 0, true);
+                        } else if (snap(initDiffSibling, 'leftR', settings.snapGap) || snap(initDiffSibling, 'rightR', -settings.snapGap)) {
+                            snap(initDiffSibling, 'top', 0, true) || snap(initDiffSibling, 'bottom', 0, true);
+                        }
                     });
                 }
 

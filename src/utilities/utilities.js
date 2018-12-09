@@ -347,19 +347,6 @@ export const position = function (el) {
     return ret;
 };
 
-export const diffPositionOut = function (el0, el1) {
-    const bcr0 = el0.getBoundingClientRect();
-    const bcr1 = el1.getBoundingClientRect();
-
-    const ret = {
-        top: bcr0.top - bcr1.bottom,
-        left: bcr0.left - bcr1.right,
-        bottom: bcr0.bottom - bcr1.top,
-        right: bcr0.right - bcr1.left,
-    };
-    return ret;
-};
-
 export const diffPosition = function (el0, el1) {
     const bcr0 = el0.getBoundingClientRect();
     const bcr1 = el1.getBoundingClientRect();
@@ -369,6 +356,11 @@ export const diffPosition = function (el0, el1) {
         left: bcr0.left - bcr1.left,
         bottom: bcr0.bottom - bcr1.bottom,
         right: bcr0.right - bcr1.right,
+        // reverse
+        topR: bcr0.top - bcr1.bottom,
+        leftR: bcr0.left - bcr1.right,
+        bottomR: bcr0.bottom - bcr1.top,
+        rightR: bcr0.right - bcr1.left,
     };
     return ret;
 };
