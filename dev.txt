@@ -5,7 +5,7 @@ DONE: active window
 DONE: minimize bar
 DONE: window manager/window ID
 DONE: option for minimize/show docker
-TODO: snap to container edge/grid/siblings
+DONE: snap to container edge/grid/siblings
 
 datatable:
 DONE: header right click menu

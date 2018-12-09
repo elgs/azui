@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>azTabs</title>
     <style>
+        #fout {
+            display: none;
+        }
+
         #tab0 {
             height: 400px;
             width: 600px;
@@ -13,7 +17,7 @@
     </style>
 </head>
 
-<body>
+<body id='fout'>
     <div id="tab0">
         <div class="azTabHeader">
             <div class="azTabLabel azSortableItem" id="azTabHeader-Home">
@@ -78,6 +82,8 @@
         newTabButton.click();
         newTabButton.click();
         newTabButton.click();
+
+        document.querySelector('#fout').style['display'] = 'block';
     </script>
 </body>
 
