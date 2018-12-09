@@ -354,6 +354,8 @@ export const diffPosition = function (el0, el1) {
     const ret = {
         top: bcr0.top - bcr1.top,
         left: bcr0.left - bcr1.left,
+        bottom: bcr0.bottom - bcr1.bottom,
+        right: bcr0.right - bcr1.right,
     };
     return ret;
 };
@@ -362,10 +364,14 @@ export const diffPositionInnerBorder = function (el0, el1) {
     const el0Styles = getComputedStyle(el0);
     const el0BorderTop = parseInt(el0Styles["border-top-width"]);
     const el0BorderLeft = parseInt(el0Styles["border-left-width"]);
+    const el0BorderBottom = parseInt(el0Styles["border-bottom-width"]);
+    const el0BorderRight = parseInt(el0Styles["border-right-width"]);
 
     const el1pStyles = getComputedStyle(el1);
     const el1BorderTop = parseInt(el1pStyles["border-top-width"]);
     const el1BorderLeft = parseInt(el1pStyles["border-left-width"]);
+    const el1BorderBottom = parseInt(el1pStyles["border-bottom-width"]);
+    const el1BorderRight = parseInt(el1pStyles["border-right-width"]);
 
     const bcr0 = el0.getBoundingClientRect();
     const bcr1 = el1.getBoundingClientRect();
@@ -373,6 +379,8 @@ export const diffPositionInnerBorder = function (el0, el1) {
     const ret = {
         top: bcr0.top + el0BorderTop - bcr1.top - el1BorderTop,
         left: bcr0.left + el0BorderLeft - bcr1.left - el1BorderLeft,
+        bottom: bcr0.bottom + el0BorderBottom - bcr1.bottom - el1BorderBottom,
+        right: bcr0.right + el0BorderRight - bcr1.right - el1BorderRight,
     };
     return ret;
 };

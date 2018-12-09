@@ -318,7 +318,7 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    const nmx = event.touches ? event.touches[0].clientX : event.clientX;
+                    // const nmx = event.touches ? event.touches[0].clientX : event.clientX;
                     const nmy = event.touches ? event.touches[0].clientY : event.clientY;
                     const by = {
                         dy: nmy - my
@@ -341,7 +341,7 @@ class Resizable extends Base {
                 start: onStart,
                 drag: function (event, elem) {
                     const nmx = event.touches ? event.touches[0].clientX : event.clientX;
-                    const nmy = event.touches ? event.touches[0].clientY : event.clientY;
+                    // const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
                     const by = {
                         dx: nmx - mx
@@ -362,7 +362,7 @@ class Resizable extends Base {
                 create: onCreate,
                 start: onStart,
                 drag: function (event, elem) {
-                    const nmx = event.touches ? event.touches[0].clientX : event.clientX;
+                    // const nmx = event.touches ? event.touches[0].clientX : event.clientX;
                     const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
                     const by = {
@@ -385,7 +385,7 @@ class Resizable extends Base {
                 start: onStart,
                 drag: function (event, elem) {
                     const nmx = event.touches ? event.touches[0].clientX : event.clientX;
-                    const nmy = event.touches ? event.touches[0].clientY : event.clientY;
+                    // const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
                     const by = {
                         dx: nmx - mx

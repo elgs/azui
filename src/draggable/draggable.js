@@ -66,6 +66,8 @@ class Draggable extends Base {
         me.containerBoundaries = null;
         me.mouseX = 0;
         me.mouseY = 0;
+        me.mouseDx = 0;
+        me.mouseDy = 0;
         me.meN = 0;
         me.meE = 0;
         me.meS = 0;
@@ -147,15 +149,17 @@ class Draggable extends Base {
                 });
             }
 
+            me.mouseX = e.touches ? e.touches[0].pageX : e.pageX;
+            me.mouseY = e.touches ? e.touches[0].pageY : e.pageY;
+            me.mouseDx = me.mouseX - me.mouseX0;
+            me.mouseDy = me.mouseY - me.mouseY0;
+
             if (settings.drag(e, me.selected, me) === false) {
                 return false;
             }
-            me.mouseX = e.touches ? e.touches[0].pageX : e.pageX;
-            me.mouseY = e.touches ? e.touches[0].pageY : e.pageY;
-            const dx = me.mouseX - me.mouseX0;
-            const dy = me.mouseY - me.mouseY0;
+
             // console.log(dx, dy);
-            if (!resisted && Math.abs(dx) < settings.resist && Math.abs(dy) < settings.resist) {
+            if (!resisted && Math.abs(me.mouseDx) < settings.resist && Math.abs(me.mouseDy) < settings.resist) {
                 return;
             }
             resisted = true;
@@ -198,12 +202,12 @@ class Draggable extends Base {
             // me.selected.style['background-color'] = 'red';
 
             if (settings.axis === 'x') {
-                me.moveX(dx);
+                me.moveX(me.mouseDx);
             } else if (settings.axis === 'y') {
-                me.moveY(dy);
+                me.moveY(me.mouseDy);
             } else {
-                me.moveX(dx);
-                me.moveY(dy);
+                me.moveX(me.mouseDx);
+                me.moveY(me.mouseDy);
             }
         };
 
@@ -281,14 +285,15 @@ class Draggable extends Base {
             if (e.target.closest('.azDraggable') !== node) {
                 return;
             }
-            if (settings.create(e, node, me) === false) {
-                return;
-            }
 
             me.selected = node;
 
             me.mouseX = me.mouseX0 = e.touches ? e.touches[0].pageX : e.pageX;
             me.mouseY = me.mouseY0 = e.touches ? e.touches[0].pageY : e.pageY;
+
+            if (settings.create(e, node, me) === false) {
+                return;
+            }
 
             const bcr = me.node.getBoundingClientRect();
             me.originalBpr = {
