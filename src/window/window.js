@@ -10,7 +10,8 @@ import {
     remove,
     siblings,
     isTouchDevice,
-    diffPosition
+    diffPosition,
+    diffPositionOut
 } from '../utilities/utilities.js';
 
 azui.Window = function (el, options, init) {
@@ -33,6 +34,7 @@ class Window extends Base {
             showSlideButton: true,
             showButtonInDocker: true,
             snapDistance: 8,
+            snapGap: 3,
             title: 'Arizona',
         }, options);
 
@@ -146,6 +148,38 @@ class Window extends Base {
             },
         });
 
+        const snap = (initDiff, dir, coor0, coor1, gap = 0) => {
+            if (overlap(initDiff, coor1) && Math.abs(initDiff[dir] + draggable[`mouseD${coor0}`]) < settings.snapDistance) {
+                if (draggable[`_snapped${coor0}`]) {
+                    if (Math.abs(draggable[`mouse${coor0}`] - draggable[`_mouseSnapped${coor0}`]) > settings.snapDistance * 2) {
+                        draggable[`_snapped${coor0}`] = false;
+                    } else {
+                        draggable[`mouseD${coor0}`] = -initDiff[dir] + gap;
+                    }
+                } else {
+                    draggable[`mouseD${coor0}`] = -initDiff[dir] + gap;
+                    draggable[`_snapped${coor0}`] = true;
+                    draggable[`_mouseSnapped${coor0}`] = draggable[`mouse${coor0}`];
+                }
+            }
+        };
+
+        const overlap = (initDiff, coor) => {
+            let dirs;
+            if (coor === 'Y') {
+                dirs = ['top', 'bottom']
+            } else if (coor === 'X') {
+                dirs = ['left', 'right']
+            }
+            if (!dirs) {
+                throw 'Invalid coordinate: ' + coor;
+            }
+
+            const d = draggable[`mouseD${coor}`];
+            return (initDiff[dirs[0]] + d) * (initDiff[dirs[1]] + d) < 0;
+
+        };
+
         const draggable = azui.Draggable(node, {
             handle: header,
             create: function (event, ui) {
@@ -162,66 +196,30 @@ class Window extends Base {
                 // }
                 draggable._initDiffParent = diffPosition(ui, ui.parentNode);
                 // console.log(draggable._initDiffParent);
+
+                draggable._initDiffSiblings = siblings(ui, '.azui').filter(o => {
+                    const bcr = o.getBoundingClientRect();
+                    return bcr.height > 0 && bcr.width > 0;
+                }).map(o => {
+                    return diffPositionOut(ui, o);
+                });
+                // console.log(draggable._initDiffSiblings);
             },
             drag: function (event, ui) {
 
                 if (settings.snapDistance > 0) {
-                    const diffParent = diffPosition(ui, ui.parentNode);
-                    if (Math.abs(diffParent.top) < settings.snapDistance) {
-                        if (draggable._snappedY) {
-                            if (Math.abs(draggable.mouseY - draggable._mouseSnappedY) > settings.snapDistance * 2) {
-                                draggable._snappedY = false;
-                            } else {
-                                draggable.mouseDy = -draggable._initDiffParent.top;
-                            }
-                        } else {
-                            draggable.mouseDy = -draggable._initDiffParent.top;
-                            draggable._snappedY = true;
-                            draggable._mouseSnappedY = draggable.mouseY;
-                        }
-                    }
+                    // const diffParent = diffPosition(ui, ui.parentNode);
+                    snap(draggable._initDiffParent, 'top', 'Y', 'X');
+                    snap(draggable._initDiffParent, 'bottom', 'Y', 'X');
+                    snap(draggable._initDiffParent, 'left', 'X', 'Y');
+                    snap(draggable._initDiffParent, 'right', 'X', 'Y');
 
-                    if (Math.abs(diffParent.bottom) < settings.snapDistance) {
-                        if (draggable._snappedY) {
-                            if (Math.abs(draggable.mouseY - draggable._mouseSnappedY) > settings.snapDistance * 2) {
-                                draggable._snappedY = false;
-                            } else {
-                                draggable.mouseDy = -draggable._initDiffParent.bottom;
-                            }
-                        } else {
-                            draggable.mouseDy = -draggable._initDiffParent.bottom;
-                            draggable._snappedY = true;
-                            draggable._mouseSnappedY = draggable.mouseY;
-                        }
-                    }
-
-                    if (Math.abs(diffParent.left) < settings.snapDistance) {
-                        if (draggable._snappedX) {
-                            if (Math.abs(draggable.mouseX - draggable._mouseSnappedX) > settings.snapDistance * 2) {
-                                draggable._snappedX = false;
-                            } else {
-                                draggable.mouseDx = -draggable._initDiffParent.left;
-                            }
-                        } else {
-                            draggable.mouseDx = -draggable._initDiffParent.left;
-                            draggable._snappedX = true;
-                            draggable._mouseSnappedX = draggable.mouseX;
-                        }
-                    }
-
-                    if (Math.abs(diffParent.right) < settings.snapDistance) {
-                        if (draggable._snappedX) {
-                            if (Math.abs(draggable.mouseX - draggable._mouseSnappedX) > settings.snapDistance * 2) {
-                                draggable._snappedX = false;
-                            } else {
-                                draggable.mouseDx = -draggable._initDiffParent.right;
-                            }
-                        } else {
-                            draggable.mouseDx = -draggable._initDiffParent.right;
-                            draggable._snappedX = true;
-                            draggable._mouseSnappedX = draggable.mouseX;
-                        }
-                    }
+                    draggable._initDiffSiblings.map(initDiffSibling => {
+                        snap(initDiffSibling, 'top', 'Y', 'X', settings.snapGap);
+                        snap(initDiffSibling, 'bottom', 'Y', 'X', -settings.snapGap);
+                        snap(initDiffSibling, 'left', 'X', 'Y', settings.snapGap);
+                        snap(initDiffSibling, 'right', 'X', 'Y', -settings.snapGap);
+                    });
                 }
 
                 // console.log(dx, dy);

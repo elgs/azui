@@ -66,8 +66,8 @@ class Draggable extends Base {
         me.containerBoundaries = null;
         me.mouseX = 0;
         me.mouseY = 0;
-        me.mouseDx = 0;
-        me.mouseDy = 0;
+        me.mouseDX = 0;
+        me.mouseDY = 0;
         me.meN = 0;
         me.meE = 0;
         me.meS = 0;
@@ -151,15 +151,15 @@ class Draggable extends Base {
 
             me.mouseX = e.touches ? e.touches[0].pageX : e.pageX;
             me.mouseY = e.touches ? e.touches[0].pageY : e.pageY;
-            me.mouseDx = me.mouseX - me.mouseX0;
-            me.mouseDy = me.mouseY - me.mouseY0;
+            me.mouseDX = me.mouseX - me.mouseX0;
+            me.mouseDY = me.mouseY - me.mouseY0;
 
             if (settings.drag(e, me.selected, me) === false) {
                 return false;
             }
 
             // console.log(dx, dy);
-            if (!resisted && Math.abs(me.mouseDx) < settings.resist && Math.abs(me.mouseDy) < settings.resist) {
+            if (!resisted && Math.abs(me.mouseDX) < settings.resist && Math.abs(me.mouseDY) < settings.resist) {
                 return;
             }
             resisted = true;
@@ -202,12 +202,12 @@ class Draggable extends Base {
             // me.selected.style['background-color'] = 'red';
 
             if (settings.axis === 'x') {
-                me.moveX(me.mouseDx);
+                me.moveX(me.mouseDX);
             } else if (settings.axis === 'y') {
-                me.moveY(me.mouseDy);
+                me.moveY(me.mouseDY);
             } else {
-                me.moveX(me.mouseDx);
-                me.moveY(me.mouseDy);
+                me.moveX(me.mouseDX);
+                me.moveY(me.mouseDY);
             }
         };
 
