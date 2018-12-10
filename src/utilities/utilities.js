@@ -413,6 +413,22 @@ export const normalizeIcon = function (i) {
     }
 };
 
+export const nextElem = (el, selector) => {
+    while (el = el.nextSibling) {
+        if (el.nodeType === 1 && (!selector || matches(el, selector))) {
+            return el;
+        }
+    }
+};
+
+export const prevElem = (el, selector) => {
+    while (el = el.previousSibling) {
+        if (el.nodeType === 1 && (!selector || matches(el, selector))) {
+            return el;
+        }
+    }
+};
+
 export const nextAll = (el, selector) => {
     const siblings = [];
     while (el = el.nextSibling) {

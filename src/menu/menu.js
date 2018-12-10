@@ -7,7 +7,10 @@ import {
     normalizeIcon,
     parseDOMElement,
     resolveFunction,
-    siblings
+    siblings,
+    prevElem,
+    nextElem,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 
@@ -24,19 +27,6 @@ class Menu extends Base {
 
         const me = this;
         const node = me.node;
-
-        const navigateMenu = function () {
-            const selected = Array.prototype.filter.call(node.children, n => matches(n, '.azMenuItem'))[highlightIndex];
-            // console.log(selected.innerHTML);
-            // const selected = menu.children('.azMenuItem').eq(highlightIndex);
-            Array.prototype.filter
-                .call(node.children, n => matches(n, '.azMenuItem'))
-                .forEach(el => {
-                    el.classList.remove('selected');
-                });
-            // menu.children('.azMenuItem').removeClass('selected');
-            selected.classList.add('selected');
-        };
 
         const createMenuItem = function (item) {
             if (!item) {
@@ -69,13 +59,22 @@ class Menu extends Base {
             // iconDiv.innerHTML = icon;
             // titleDiv.innerHTML = title;
             if (!disabled) {
-                menuItem.addEventListener('click', e => {
-                    item.action.call(menuItem, e, settings.target || node);
+                const select = e => {
+                    if (e.type === 'touchend') {
+                        e.preventDefault();
+                    }
+                    if (me.activeMenuItem) {
+                        me.activeMenuItem.classList.remove('active');
+                    }
                     menuItem.classList.add('active');
-                    siblings(menuItem, '.azMenuItem').map(o => {
-                        o.classList.remove('active');
-                    });
-                });
+                    me.activeMenuItem = menuItem;
+
+                    item.action.call(menuItem, e, settings.target || node);
+                }
+                if (isTouchDevice()) {
+                    menuItem.addEventListener('touchend', select);
+                }
+                menuItem.addEventListener('mouseup', select);
             }
 
             return menuItem;
@@ -86,12 +85,27 @@ class Menu extends Base {
 
             if (e.keyCode === 38) {
                 // up
+                if (me.activeMenuItem) {
+                    const prev = prevElem(me.activeMenuItem, ':not(.disabled).azMenuItem');
+                    if (prev) {
+                        me.activeMenuItem.classList.remove('active');
+                        me.activeMenuItem = prev;
+                        me.activeMenuItem.classList.add('active');
+                    }
+                }
             } else if (e.keyCode === 40) {
                 // down
-            } else if (e.keyCode === 13 || e.keyCode === 32) {
+                if (me.activeMenuItem) {
+                    const next = nextElem(me.activeMenuItem, ':not(.disabled).azMenuItem');
+                    if (next) {
+                        me.activeMenuItem.classList.remove('active');
+                        me.activeMenuItem = next;
+                        me.activeMenuItem.classList.add('active');
+                    }
+                }
+            } else if (e.keyCode === 13) {
                 // enter
-                const selected = Array.prototype.filter.call(node.children, n => matches(n, '.azMenuItem'))[highlightIndex];
-                selected.click();
+                me.activeMenuItem.dispatchEvent(new CustomEvent('mouseup'));
             }
         };
 
