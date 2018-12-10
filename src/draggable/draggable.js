@@ -118,7 +118,7 @@ class Draggable extends Base {
         const DETACHED = 1;
         const STICKY = 2;
         const LATCHED = 3;
-        const snap = (initDiff, dir, gap = 0, sticky = false) => {
+        const snap = (initDiff, dir, allowSelfOverlap = false, gap = 0, sticky = false) => {
             let coor0, coor1;
             if (dir === 'top' || dir === 'bottom' || dir === 'topR' || dir === 'bottomR') {
                 coor0 = 'Y';
@@ -131,7 +131,10 @@ class Draggable extends Base {
                 throw 'Invalid direction: ' + dir;
             }
 
-            if ((sticky || overlap(initDiff, coor1)) && !overlap(initDiff, coor0) && Math.abs(initDiff[dir] + me[`mouseD${coor0}`]) < settings.snapDistance) {
+            const otherOverlap = sticky || overlap(initDiff, coor1);
+            const selfNotOverlap = sticky || !overlap(initDiff, coor0) || allowSelfOverlap;
+
+            if (otherOverlap && selfNotOverlap && Math.abs(initDiff[dir] + me[`mouseD${coor0}`]) < settings.snapDistance) {
                 if (me[`_snapped${coor0}`]) {
                     if (Math.abs(me[`mouse${coor0}`] - me[`_mouseSnapped${coor0}`]) > settings.snapDistance * 2) {
                         me[`_snapped${coor0}`] = false;
@@ -215,14 +218,14 @@ class Draggable extends Base {
 
             if (settings.snapDistance > 0) {
                 // const diffParent = diffPosition(ui, ui.parentNode);
-                snap(me._initDiffParent, 'top') || snap(me._initDiffParent, 'bottom');
-                snap(me._initDiffParent, 'left') || snap(me._initDiffParent, 'right');
+                snap(me._initDiffParent, 'top', true) || snap(me._initDiffParent, 'bottom', true);
+                snap(me._initDiffParent, 'left', true) || snap(me._initDiffParent, 'right', true);
 
                 me._initDiffSiblings.map(initDiffSibling => {
-                    if (snap(initDiffSibling, 'topR', settings.snapGap) || snap(initDiffSibling, 'bottomR', -settings.snapGap)) {
-                        snap(initDiffSibling, 'left', 0, true) || snap(initDiffSibling, 'right', 0, true);
-                    } else if (snap(initDiffSibling, 'leftR', settings.snapGap) || snap(initDiffSibling, 'rightR', -settings.snapGap)) {
-                        snap(initDiffSibling, 'top', 0, true) || snap(initDiffSibling, 'bottom', 0, true);
+                    if (snap(initDiffSibling, 'topR', false, settings.snapGap) || snap(initDiffSibling, 'bottomR', false, -settings.snapGap)) {
+                        snap(initDiffSibling, 'left', false, 0, true) || snap(initDiffSibling, 'right', false, 0, true);
+                    } else if (snap(initDiffSibling, 'leftR', false, settings.snapGap) || snap(initDiffSibling, 'rightR', false, -settings.snapGap)) {
+                        snap(initDiffSibling, 'top', false, 0, true) || snap(initDiffSibling, 'bottom', false, 0, true);
                     }
                 });
             }

@@ -5,7 +5,8 @@
     "scripts": {
         "start": "webpack-dev-server --mode=development",
         "build": "webpack --mode=development",
-        "dist": "webpack --mode=production"
+        "dist": "webpack --mode=production",
+        "doc": "node doc.js"
     },
     "author": "Qian Chen",
     "license": "MIT",
