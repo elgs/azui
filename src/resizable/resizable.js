@@ -276,6 +276,7 @@ class Resizable extends Base {
                 }
 
                 elem.classList.add('active');
+                event.preventDefault();
             };
 
             const onStop = function (event, elem) {
@@ -330,7 +331,8 @@ class Resizable extends Base {
 
                     me.moveN(by.dy);
                     checkAll();
-
+                    // console.log(event.type);
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,
@@ -353,6 +355,7 @@ class Resizable extends Base {
 
                     me.moveE(by.dx);
                     checkAll();
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,
@@ -375,6 +378,7 @@ class Resizable extends Base {
 
                     me.moveS(by.dy);
                     checkAll();
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,
@@ -397,6 +401,7 @@ class Resizable extends Base {
 
                     me.moveW(by.dx);
                     checkAll();
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,
@@ -424,6 +429,7 @@ class Resizable extends Base {
                     me.moveN(by.dy);
                     me.moveE(by.dx);
                     checkAll();
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,
@@ -450,6 +456,7 @@ class Resizable extends Base {
                     me.moveS(by.dy);
                     me.moveE(by.dx);
                     checkAll();
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,
@@ -476,6 +483,7 @@ class Resizable extends Base {
                     me.moveS(by.dy);
                     me.moveW(by.dx);
                     checkAll();
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,
@@ -502,6 +510,7 @@ class Resizable extends Base {
                     me.moveN(by.dy);
                     me.moveW(by.dx);
                     checkAll();
+                    event.preventDefault();
                     return false;
                 },
                 stop: onStop,

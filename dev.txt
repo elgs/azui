@@ -73,7 +73,6 @@ DONE: append/remove/insert/move APIs
 DONE: toggle API
 DONE: context menu to toggle
 DONE: alert/dismissAlert APIs
-TODO: add item list to content panel via API
 
 layout:
 DONE: options for width/height

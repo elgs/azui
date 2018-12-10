@@ -38,7 +38,7 @@ window.onload = () => {
             const items = m.pages.map(page => {
                 return {
                     icon: svgApps,
-                    title: page,
+                    title: page.replace(/\.[^/.]+$/, ''),
                     action: function (e, target) {
                         window.open(page, 'content');
                         menus.filter(m => m !== menu).map(m => m.clearActive());

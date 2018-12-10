@@ -76,6 +76,7 @@ class Layout extends Base {
             me.east = east;
             azui.Resizable(me.east, {
                 handles: 'w',
+                handleSize,
                 hideCollapseButton: settings.hideCollapseButton,
                 moveOnResize: false,
                 create: function (e, h) {
@@ -101,6 +102,7 @@ class Layout extends Base {
             me.south = south;
             azui.Resizable(me.south, {
                 handles: 'n',
+                handleSize,
                 hideCollapseButton: settings.hideCollapseButton,
                 moveOnResize: false,
                 create: function (e, h) {
@@ -126,6 +128,7 @@ class Layout extends Base {
             me.west = west;
             azui.Resizable(me.west, {
                 handles: 'e',
+                handleSize,
                 hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
