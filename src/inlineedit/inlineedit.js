@@ -17,7 +17,7 @@ class InlineEdit extends Base {
 
     static className = 'InlineEdit';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             type: 'text', // number, select
             allowNewItems: true,

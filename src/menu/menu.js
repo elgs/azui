@@ -22,7 +22,7 @@ class Menu extends Base {
 
     static className = 'Menu';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({}, options);
 
         const me = this;
@@ -128,6 +128,9 @@ class Menu extends Base {
                 node.appendChild(menuItem);
             }
         });
+    }
 
+    clearActive() {
+        this.activeMenuItem && this.activeMenuItem.classList.remove('active');
     }
 };

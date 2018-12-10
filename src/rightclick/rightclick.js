@@ -14,7 +14,7 @@ class RightClick extends Base {
 
     static className = 'RightClick';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},
             preventDefault: function (e) {

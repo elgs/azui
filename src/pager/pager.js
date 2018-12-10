@@ -15,7 +15,7 @@ class Pager extends Base {
 
     static className = 'Pager';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             onPageChange: function (pageNumber, pageSize, totalSize) {},
             pageNumber: 1,

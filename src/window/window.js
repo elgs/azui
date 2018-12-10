@@ -20,7 +20,7 @@ class Window extends Base {
 
     static className = 'Window';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             width: 400,
             height: 300,

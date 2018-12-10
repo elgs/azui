@@ -20,7 +20,7 @@ azui.Select = function (el, options, init) {
 class Select extends Base {
     static className = 'Select';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
                 items: [],
                 allowNewItems: true,

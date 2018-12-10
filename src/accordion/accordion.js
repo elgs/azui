@@ -16,7 +16,7 @@ class Accordion extends Base {
 
     static className = 'Accordion';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             collapseOthers: false,
         }, options);

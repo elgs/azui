@@ -19,7 +19,7 @@ class Docker extends Base {
 
     static className = 'Docker';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             // height: 30,
             // width: 30,
@@ -133,6 +133,14 @@ class Docker extends Base {
     };
 
     dock(el, winSettings, notify) {
+
+        if (typeof winSettings === 'string') {
+            winSettings = {
+                title: winSettings,
+                showButtonInDocker: true,
+            };
+        }
+
         const me = this;
         const id = randGen(8);
         me.winSettingsCache[id] = winSettings;
@@ -145,7 +153,7 @@ class Docker extends Base {
 
         const iconSpan = document.createElement('span');
         iconSpan.classList.add('icon');
-        iconSpan.innerHTML = winSettings.icon;
+        iconSpan.innerHTML = winSettings.icon || '';
         docked.appendChild(iconSpan);
 
         const titleSpan = document.createElement('span');

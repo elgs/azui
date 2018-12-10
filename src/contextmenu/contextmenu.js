@@ -23,7 +23,7 @@ azui.ContextMenu = function (el, options, init) {
 class ContextMenu extends Base {
     static className = 'ContextMenu';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
                 onContextMenu: function (e) {},
                 start: function (e) {},

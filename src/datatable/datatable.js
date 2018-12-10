@@ -40,7 +40,7 @@ class DataTable extends Base {
 
     static className = 'DataTable';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             pageNumber: 1,
             pageSize: 25,

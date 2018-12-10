@@ -15,7 +15,7 @@ class DoubleClick extends Base {
 
     static className = 'DoubleClick';
 
-    azInit(options) {
+    _init(options) {
         const me = this;
         const settings = Object.assign({
             delay: 500,

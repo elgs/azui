@@ -21,7 +21,7 @@ class Resizable extends Base {
 
     static className = 'Resizable';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             minWidth: 0,
             maxWidth: Number.MAX_SAFE_INTEGER,

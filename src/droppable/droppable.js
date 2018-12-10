@@ -16,7 +16,7 @@ class Droppable extends Base {
 
     static className = 'Droppable';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             // key: '',
             // source_all_in: function (e) {},

@@ -115,7 +115,7 @@ class Tabs extends Base {
 
     static z = 0;
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
                 headerHeight: 40,
                 draggable: true,

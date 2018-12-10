@@ -5,7 +5,8 @@ import {
 import {
     getHeight,
     getWidth,
-    resolveDOM
+    resolveDOM,
+    isTouchDevice
 } from '../utilities/utilities.js';
 
 azui.Layout = function (el, options, init) {
@@ -16,7 +17,7 @@ class Layout extends Base {
 
     static className = 'Layout';
 
-    azInit(options) {
+    _init(options) {
         const settings = Object.assign({
             north: '.azLayoutNorth',
             east: '.azLayoutEast',
@@ -33,6 +34,8 @@ class Layout extends Base {
         const node = this.node;
         const me = this;
 
+        const handleSize = isTouchDevice() ? 8 : 4;
+
         const northContent = resolveDOM(settings.north);
         const eastContent = resolveDOM(settings.east);
         const southContent = resolveDOM(settings.south);
@@ -48,6 +51,7 @@ class Layout extends Base {
             me.north = north;
             azui.Resizable(me.north, {
                 handles: 's',
+                handleSize,
                 hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);

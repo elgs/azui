@@ -10,11 +10,19 @@
             display: grid;
             align-content: center;
             grid-template-columns: 24px 1fr;
-            background-color: $bg-color;
+            background-color: $main-color;
             width: 100%; // text-align: left;
             padding: 5px 0; // border: none;
             border-bottom: 1px solid #ccc;
             border-top: 1px solid white;
+
+            &:first-of-type {
+                border-top: none;
+            }
+
+            &:last-of-type {
+                border-bottom: none;
+            }
 
             transition: 0.5s;
             transition-property: background-color;
@@ -41,19 +49,6 @@
                     margin: 1px 10px 0 8px; // background-color: red;
                 }
             }
-
-            // &.disabled * {
-            //     color: gray;
-            //     fill: gray;
-            //     cursor: not-allowed;
-            // }
-
-            // &:not(.disabled).selected {
-            //     background-color: #498DD5;
-            //     color: $bg-color;
-            //     cursor: pointer;
-            // }
-
         }
 
         & div.azMenuSeparator {

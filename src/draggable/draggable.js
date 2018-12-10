@@ -22,7 +22,7 @@ class Draggable extends Base {
 
     static className = 'Draggable';
 
-    azInit(options) {
+    _init(options) {
         const me = this;
         const settings = Object.assign({
             handle: false,

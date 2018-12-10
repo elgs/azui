@@ -1,10 +1,16 @@
 import '../layout/index.js';
 import '../accordion/index.js';
+import '../menu/index.js';
 
 import './index.scss';
 import {
     parseDOMElement,
 } from '../utilities/utilities.js';
+
+import {
+    svgApps
+} from '../utilities/icons.js';
+
 import modules from './modules.json';
 
 window.onload = () => {
@@ -22,22 +28,33 @@ window.onload = () => {
         collapseOthers: false,
     });
 
+    const menus = [];
+
     [modules.modules3, modules.modules2, modules.modules1, ].map(m => {
         m.map(m => {
             const k = acc.append(m.name);
             const c = acc.getContentDiv(k);
 
-            const ul = parseDOMElement(`<ul></ul>`)[0];
-            m.pages.map(page => {
-                const pageLiTpl = `<li><a href='${page}' target='content'>${page}</a></li>`
-                const pageLi = parseDOMElement(pageLiTpl)[0];
-                ul.appendChild(pageLi);
+            const items = m.pages.map(page => {
+                return {
+                    icon: svgApps,
+                    title: page,
+                    action: function (e, target) {
+                        window.open(page, 'content');
+                        menus.filter(m => m !== menu).map(m => m.clearActive());
+                    }
+                }
             });
 
-            c.append(ul);
+            const menuEl = parseDOMElement(`<div></div>`)[0];
+            const menu = azui.Menu(menuEl, {
+                items,
+            });
+            menus.push(menu);
+
+            c.append(menuEl);
         });
     });
-
 
     // console.log(modules);
 };

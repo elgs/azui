@@ -28,7 +28,7 @@ class Sortable extends Base {
 
     static className = 'Sortable';
 
-    azInit(options) {
+    _init(options) {
         const me = this;
         const settings = Object.assign({
             placeholder: true,

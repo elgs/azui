@@ -70,7 +70,7 @@ export const azObj = function (cls, el, options, init) {
     if (objId) {
         const obj = azui.objCache[objId];
         if (obj) {
-            init && obj.azInit(options);
+            init && obj._init(options);
             return obj;
         }
     }
@@ -78,7 +78,7 @@ export const azObj = function (cls, el, options, init) {
     obj.node = node;
     objId = randGen(8);
     obj.node.setAttribute('az-obj-id-' + cls.className.toLowerCase(), objId);
-    obj.azInit(options);
+    obj._init(options);
     azui.objCache[objId] = obj;
     return obj;
 };
