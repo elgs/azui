@@ -131,7 +131,7 @@ class Draggable extends Base {
                 throw 'Invalid direction: ' + dir;
             }
 
-            if ((sticky || overlap(initDiff, coor1)) && Math.abs(initDiff[dir] + me[`mouseD${coor0}`]) < settings.snapDistance) {
+            if ((sticky || overlap(initDiff, coor1)) && overlap(initDiff, coor1) && Math.abs(initDiff[dir] + me[`mouseD${coor0}`]) < settings.snapDistance) {
                 if (me[`_snapped${coor0}`]) {
                     if (Math.abs(me[`mouse${coor0}`] - me[`_mouseSnapped${coor0}`]) > settings.snapDistance * 2) {
                         me[`_snapped${coor0}`] = false;
