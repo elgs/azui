@@ -42,17 +42,17 @@
                 }
             }
 
-            &.disabled * {
-                color: gray;
-                fill: gray;
-                cursor: not-allowed;
-            }
+            // &.disabled * {
+            //     color: gray;
+            //     fill: gray;
+            //     cursor: not-allowed;
+            // }
 
-            &:not(.disabled).selected {
-                background-color: #498DD5;
-                color: $bg-color;
-                cursor: pointer;
-            }
+            // &:not(.disabled).selected {
+            //     background-color: #498DD5;
+            //     color: $bg-color;
+            //     cursor: pointer;
+            // }
 
         }
 

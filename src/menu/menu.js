@@ -6,7 +6,8 @@ import {
     matches,
     normalizeIcon,
     parseDOMElement,
-    resolveFunction
+    resolveFunction,
+    siblings
 } from '../utilities/utilities.js';
 
 
@@ -23,8 +24,6 @@ class Menu extends Base {
 
         const me = this;
         const node = me.node;
-
-        let highlightIndex = -1;
 
         const navigateMenu = function () {
             const selected = Array.prototype.filter.call(node.children, n => matches(n, '.azMenuItem'))[highlightIndex];
@@ -72,6 +71,10 @@ class Menu extends Base {
             if (!disabled) {
                 menuItem.addEventListener('click', e => {
                     item.action.call(menuItem, e, settings.target || node);
+                    menuItem.classList.add('active');
+                    siblings(menuItem, '.azMenuItem').map(o => {
+                        o.classList.remove('active');
+                    });
                 });
             }
 
@@ -83,21 +86,11 @@ class Menu extends Base {
 
             if (e.keyCode === 38) {
                 // up
-                --highlightIndex;
-                highlightIndex = highlightIndex < 0 ? 0 : highlightIndex;
-                navigateMenu();
             } else if (e.keyCode === 40) {
                 // down
-                const menuLength = node.querySelectorAll('.azMenuItem').length;
-                // console.log(menuLength);
-                ++highlightIndex;
-                highlightIndex = highlightIndex >= menuLength - 1 ? menuLength - 1 : highlightIndex;
-                // console.log(highlightIndex);
-                navigateMenu();
             } else if (e.keyCode === 13 || e.keyCode === 32) {
                 // enter
                 const selected = Array.prototype.filter.call(node.children, n => matches(n, '.azMenuItem'))[highlightIndex];
-                // console.log(selected.innerHTML);
                 selected.click();
             }
         };

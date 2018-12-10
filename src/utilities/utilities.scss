@@ -28,13 +28,19 @@ $collapseIconSize: 4px;
 
 %hoveractive {
     @media (hover: hover) {
-        &:hover {
+        &:not(.disabled):hover {
             background-color: $less-active;
         }
     }
 
-    &.active {
+    &:not(.disabled).active {
         background-color: $more-active;
+    }
+
+    &.disabled * {
+        color: gray;
+        fill: gray;
+        cursor: not-allowed;
     }
 
     & * {
