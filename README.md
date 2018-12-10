@@ -52,8 +52,8 @@ These two lines of code are what you want to put in your html file:
         }
     </style>
 
-    <link href="./node_modules/azui/dist/azui.all.0.0.7.css" rel="stylesheet">
-    <script src="./node_modules/azui/dist/azui.all.0.0.7.js"></script>
+    <link href="./node_modules/azui/dist/azui.all.0.0.8.css" rel="stylesheet">
+    <script src="./node_modules/azui/dist/azui.all.0.0.8.js"></script>
 </head>
 <body>
     <div id='win0'></div>
