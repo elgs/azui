@@ -34,8 +34,8 @@ will create `build/` or `dist/` which contain debug or release/minified js/css f
 `npm install azui`  
 
 These two lines of code are what you want to put in your html file:  
-`<link rel="stylesheet" type="text/css" href="./node_modules/azui/dist/azui.all.0.0.7.css">`  
-`<script src="./node_modules/azui/dist/azui.all.0.0.7.js"></script>`
+`<link rel="stylesheet" type="text/css" href="./node_modules/azui/dist/azui.all.0.0.8.css">`  
+`<script src="./node_modules/azui/dist/azui.all.0.0.8.js"></script>`
 
 ## Quick start
 ```html
