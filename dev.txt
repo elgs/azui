@@ -80,3 +80,6 @@ DONE: options for width/height
 menu:
 TODO: separate menu from contextmenu, accordion, datatable, tabs, select
 TODO: submenu
+
+docs:
+TODO: doc generator

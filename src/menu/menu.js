@@ -3,14 +3,13 @@ import {
     Base
 } from '../utilities/core.js';
 import {
+    isTouchDevice,
     matches,
+    nextElem,
     normalizeIcon,
     parseDOMElement,
-    resolveFunction,
-    siblings,
     prevElem,
-    nextElem,
-    isTouchDevice
+    resolveFunction
 } from '../utilities/utilities.js';
 
 
@@ -70,7 +69,7 @@ class Menu extends Base {
                     me.activeMenuItem = menuItem;
 
                     item.action.call(menuItem, e, settings.target || node);
-                }
+                };
                 if (isTouchDevice()) {
                     menuItem.addEventListener('touchend', select);
                 }
