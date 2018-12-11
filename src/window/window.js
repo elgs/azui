@@ -161,17 +161,19 @@ class Window extends Base {
                 ghost.style.margin = 0;
                 ghost.style.padding = 0;
                 ghost.style['z-index'] = Number.MAX_SAFE_INTEGER;
+                ghost.style.transition = 'all .1s ease-in';
+
                 node.parentNode.appendChild(ghost);
                 me.ghost = ghost;
                 me.ghostPos = pos;
-                ghost.style.transition = 'all .1s ease-in';
+
                 setTimeout(() => {
                     ghost.style.left = left;
                     ghost.style.top = top;
                     ghost.style.right = right;
                     ghost.style.bottom = bottom;
-                    ghost.style.height = height;
-                    ghost.style.width = width;
+                    ghost.style.height = `calc(${height} - 2px)`;
+                    ghost.style.width = `calc(${width} - 2px)`;
                 });
             } else if (me.ghostPos !== pos) {
                 removeGhost();
@@ -246,6 +248,7 @@ class Window extends Base {
                     } else {
                         removeGhost();
                     }
+                    event.preventDefault();
                 }
                 if (isOutside(cursorX, cursorY, pb)) {
                     return false;
