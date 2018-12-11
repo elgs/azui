@@ -32,6 +32,7 @@ class Window extends Base {
             showSlideButton: true,
             showButtonInDocker: true,
             title: 'Arizona',
+            snapToEdge: true,
         }, options);
 
         const me = this;
@@ -144,6 +145,62 @@ class Window extends Base {
             },
         });
 
+        const createGhost = (pos, top, left, bottom, right, width, height) => {
+            if (!me.ghost) {
+                const styles = getComputedStyle(me.node);
+
+                const ghost = document.createElement(`div`);
+                ghost.style.position = 'absolute';
+                ghost.style.left = styles.left;
+                ghost.style.top = styles.top;
+                ghost.style.height = styles.height;
+                ghost.style.width = styles.width;
+                ghost.style.border = '1px solid red';
+                ghost.style['background-color'] = 'tomato';
+                ghost.style.opacity = 0.2;
+                ghost.style.margin = 0;
+                ghost.style.padding = 0;
+                ghost.style['z-index'] = Number.MAX_SAFE_INTEGER;
+                node.parentNode.appendChild(ghost);
+                me.ghost = ghost;
+                me.ghostPos = pos;
+                ghost.style.transition = 'all .1s ease-in';
+                setTimeout(() => {
+                    ghost.style.left = left;
+                    ghost.style.top = top;
+                    ghost.style.right = right;
+                    ghost.style.bottom = bottom;
+                    ghost.style.height = height;
+                    ghost.style.width = width;
+                });
+            } else if (me.ghostPos !== pos) {
+                removeGhost();
+                createGhost(pos, top, left, bottom, right, width, height);
+            }
+        };
+
+        const removeGhost = (app = false) => {
+            if (me.ghost) {
+                if (app) {
+                    // record ghost position
+                    me.docker.snap(me.dockId, true);
+                    const ghostStyle = getComputedStyle(me.ghost);
+                    me.node.style.left = ghostStyle.left;
+                    me.node.style.top = ghostStyle.top;
+                    me.node.style.right = '';
+                    me.node.style.bottom = '';
+                    me.node.style.height = ghostStyle.height;
+                    me.node.style.width = ghostStyle.width;
+                    me.ghost.remove();
+                    // resize window to ghost position
+                } else {
+                    me.ghost.remove();
+                }
+                me.ghostPos = null;
+                me.ghost = null;
+            }
+        };
+
         azui.Draggable(node, {
             handle: header,
             snapDistance: 8,
@@ -153,19 +210,58 @@ class Window extends Base {
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
                     return false; // don't drag when clicking on icons
                 }
+                me.docker.storeState(me.dockId);
             },
             drag: function (event, ui) {
-                if (isOutside(event.touches ? event.touches[0].pageX : event.pageX, event.touches ? event.touches[0].pageY : event.pageY, pb)) {
+                const cursorX = event.touches ? event.touches[0].pageX : event.pageX;
+                const cursorY = event.touches ? event.touches[0].pageY : event.pageY;
+                // console.log(cursorX, cursorY, pb);
+                if (settings.snapToEdge) {
+                    const triggerDistanceCorner = 20;
+                    const triggerDistanceSide = 15;
+                    if (Math.abs(cursorX - pb.left) < triggerDistanceCorner && Math.abs(cursorY - pb.top) < triggerDistanceCorner) {
+                        // console.log('nw');
+                        createGhost('nw', 0, 0, '', '', '50%', '50%');
+                    } else if (Math.abs(cursorX - pb.left) < triggerDistanceCorner && Math.abs(cursorY - pb.bottom) < triggerDistanceCorner) {
+                        // console.log('sw');
+                        createGhost('sw', '', 0, 0, '', '50%', '50%');
+                    } else if (Math.abs(cursorX - pb.right) < triggerDistanceCorner && Math.abs(cursorY - pb.bottom) < triggerDistanceCorner) {
+                        // console.log('se');
+                        createGhost('se', '', '', 0, 0, '50%', '50%');
+                    } else if (Math.abs(cursorX - pb.right) < triggerDistanceCorner && Math.abs(cursorY - pb.top) < triggerDistanceCorner) {
+                        // console.log('ne');
+                        createGhost('ne', 0, '', '', 0, '50%', '50%');
+                    } else if (Math.abs(cursorX - pb.left) < triggerDistanceSide) {
+                        // console.log('w');
+                        createGhost('w', 0, 0, '', '', '50%', '100%');
+                    } else if (Math.abs(cursorY - pb.bottom) < triggerDistanceSide) {
+                        // console.log('s');
+                        createGhost('s', '', 0, 0, '', '100%', '50%');
+                    } else if (Math.abs(cursorX - pb.right) < triggerDistanceSide) {
+                        // console.log('e');
+                        createGhost('e', 0, '', '', 0, '50%', '100%');
+                    } else if (Math.abs(cursorY - pb.top) < triggerDistanceSide) {
+                        // console.log('n');
+                        createGhost('n', 0, 0, '', '', '100%', '50%');
+                    } else {
+                        removeGhost();
+                    }
+                }
+                if (isOutside(cursorX, cursorY, pb)) {
                     return false;
                 }
+            },
+            stop: function (event, ui) {
+                removeGhost(!!me.ghost);
             },
         });
 
         azui.DoubleClick(header, {
             onDoubleClick: function (event) {
-                // if (!matches(event.target, 'div.azWindowHeader')) {
-                // return;
-                // }
+                // console.log(event.target);
+                if (matches(event.target, 'span.azHeaderIcon,span.azHeaderIcon *')) {
+                    return;
+                }
                 const state = me.docked.getAttribute('state');
                 if (state === 'normal') {
                     me.maximize();

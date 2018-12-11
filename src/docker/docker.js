@@ -267,7 +267,7 @@ class Docker extends Base {
             docked.style['display'] = 'none';
         }
 
-        dockedRef.style.transition = 'all .3s ease-in';
+        dockedRef.style.transition = 'all .25s ease-in';
         dockedRef.style.left = 0;
         dockedRef.style.top = 0;
         dockedRef.style.height = '100%';
@@ -280,7 +280,7 @@ class Docker extends Base {
 
         setTimeout(() => {
             dockedRef.style.transition = '';
-        }, 300);
+        }, 250);
     }
 
     minimize(dockId, notify) {
@@ -370,6 +370,18 @@ class Docker extends Base {
         setTimeout(() => {
             dockedRef.style.transition = '';
         }, 250);
+    }
+
+    snap(dockId, notify) {
+        // always docker notifies window
+
+        const docked = this.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
+        const dockedRef = document.querySelector(`[az-dock-ref='${dockId}']`);
+        docked.setAttribute('state', 'maximized');
+
+        if (notify) {
+            dockedRef.dispatchEvent(new CustomEvent('maximized'));
+        }
     }
 
     storeState(dockId) {

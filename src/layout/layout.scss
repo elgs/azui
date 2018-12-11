@@ -19,6 +19,10 @@
                 position: absolute;
             }
 
+            // & .azDraggable.handle {
+            //     background: #36383f;
+            // }
+
             &.azLayoutAreaNorth {
                 grid-area: n;
                 height: 50px;
