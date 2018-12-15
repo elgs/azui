@@ -172,6 +172,9 @@ class Docker extends Base {
         const clicked = e => {
             if (e.type === 'touchend') {
                 e.preventDefault();
+                if (cm.rightClick.triggered) {
+                    return;
+                }
             }
             if (e.button === 2 || cm.on || me.dragging) {
                 return;

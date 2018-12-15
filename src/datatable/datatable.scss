@@ -134,11 +134,11 @@
                     opacity: .5;
                 }
 
-                &.azSortableDeny {
+                &:not(.disabled).azSortableDeny {
                     background-color: $deny;
                 }
 
-                &.azSortableAllow {
+                &:not(.disabled).azSortableAllow {
                     background-color: $allow;
                 }
 
