@@ -1,19 +1,32 @@
-const path = require('path');
-const fs = require('fs');
-
-const srcDir = path.join(__dirname, '/src/');
-const docDir = path.join(__dirname, '/doc/');
-
-const listModules = (...excludes) => fs.readdirSync(srcDir).filter(item => !excludes.includes(item) && fs.statSync(path.join(srcDir, item)).isDirectory());
-const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile());
-const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
-const loadModule = mod => {
-    const m = fs.readdirSync(path.join(srcDir, mod)).filter(item => item === 'module.json' && fs.statSync(path.join(srcDir, mod, item)).isFile());
-    if (m && m.length === 1) {
-        const moduleJson = m[0];
-        const mj = fs.readFileSync(path.join(srcDir, mod, moduleJson), 'utf8');
-        return JSON.parse(mj);
+const replacer = (key, value) => {
+    if (typeof value === 'function') {
+        return value.toString();
     }
-    return null;
-}
-const pkgJson = require('./package.json');
+    return value;
+};
+
+const parse = (o) => {
+    const ret = {};
+    for (const name of Object.getOwnPropertyNames(o)) {
+        const v = o[name];
+        if (typeof v === 'object') {
+            ret[name] = parse(v);
+        } else {
+            ret[name] = JSON.parse(JSON.stringify(v, replacer));
+        }
+    }
+
+    for (const name of Object.getOwnPropertyNames(Object.getPrototypeOf(o))) {
+        const method = o[name];
+        if (name === 'constructor') continue;
+        if (typeof method === 'function' && !name.startsWith('__') && !method.toString().includes('[native code]')) {
+            ret[name] = method.toString();
+        }
+    }
+    return ret;
+};
+
+import './src/all/index.js';
+const w0 = azui.Window('.win0');
+const p = parse(w0);
+console.log(p);

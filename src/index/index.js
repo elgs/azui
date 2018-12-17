@@ -2,7 +2,6 @@ import '../layout/index.js';
 import '../accordion/index.js';
 import '../menu/index.js';
 
-import './index.scss';
 import {
     parseDOMElement,
 } from '../utilities/utilities.js';

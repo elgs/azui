@@ -7,5 +7,4 @@ import '../resizable/index.js';
 import '../inlineedit/index.js';
 import '../contextmenu/index.js';
 import '../pager/index.js';
-import './datatable.scss';
 import './datatable.js';

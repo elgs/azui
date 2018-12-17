@@ -1,4 +1,3 @@
 import '../utilities/index.js';
-import '../rightclick/rightclick.js';
-import './contextmenu.scss';
+import '../rightclick/index.js';
 import './contextmenu.js';
