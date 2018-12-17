@@ -64,7 +64,7 @@ class ContextMenu extends Base {
             selected.classList.add('selected');
         };
 
-        me.dismissMenu = e => {
+        const dismissMenu = e => {
             if (e.type === 'touchstart') {
                 const pb = me.menu.getBoundingClientRect();
                 if (isOutside(
@@ -74,7 +74,7 @@ class ContextMenu extends Base {
                     me.menu.remove();
                     settings.onDismiss(e);
                 } else {
-                    document.addEventListener('touchstart', me.dismissMenu, {
+                    document.addEventListener('touchstart', dismissMenu, {
                         once: true
                     });
                 }
@@ -172,7 +172,7 @@ class ContextMenu extends Base {
             menu.setAttribute('tabindex', 0);
             document.documentElement.appendChild(menu);
             menu.addEventListener('blur', e => {
-                me.dismissMenu(e);
+                dismissMenu(e);
             });
             menu.addEventListener('keyup', onKeyUp);
             menu.focus({
@@ -207,7 +207,7 @@ class ContextMenu extends Base {
             menu.style['top'] = menuPosition.y + 'px';
 
             if (isTouchDevice()) {
-                document.addEventListener('touchstart', me.dismissMenu, {
+                document.addEventListener('touchstart', dismissMenu, {
                     once: true
                 });
             }
