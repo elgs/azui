@@ -1,32 +1,74 @@
-const replacer = (key, value) => {
-    if (typeof value === 'function') {
-        return value.toString();
+class A {
+    constructor(options) {
+        const settings = Object.assign({
+            // azDoc:settings:start
+            width: 400, // azDoc: width of the div
+            height: 300, // azDoc: height of the div
+            // azDoc:settings:end
+        }, options);
+        this.settings = settings;
     }
-    return value;
+
+    // azDoc:method:start
+    f0() {
+        // azDoc: f0 does some crazy things
+        // azDoc:method:end
+
+    }
+
+    // azDoc:method:start
+    f1(a = 1, b) {
+        // azDoc: f1 does some cool things
+        // azDoc:a: description of a
+        // azDoc:b: description of b
+        // azDoc:method:end
+
+        // azDoc:event:start
+        // azDoc: this happens before something happens
+        // azDoc:eventName: beforeSomething
+        // azDoc:prop1: description of prop1
+        // azDoc:prop2: description of prop2
+        // azDoc:event:end
+        this.dispatchEvent(new CustomEvent('beforeSomething', {
+            detail: {
+                prop1: true,
+                prop2: false,
+            }
+        }));
+    }
+    f2(c) {}
+}
+
+const classStr = A.toString();
+const getRe = type => `\\/\\/\\s*azDoc\\:${type}\\:start([\\s\\S]*?)\\/\\/\\s*azDoc\\:${type}\\:end`;
+
+const parseMethods = str => {
+    const re = new RegExp(getRe('method'), "g");
+    let match = re.exec(str);
+    while (match !== null) {
+        console.log(match[1]);
+        match = re.exec(str);
+    }
 };
 
-const parse = (o) => {
-    const ret = {};
-    for (const name of Object.getOwnPropertyNames(o)) {
-        const v = o[name];
-        if (typeof v === 'object') {
-            ret[name] = parse(v);
-        } else {
-            ret[name] = JSON.parse(JSON.stringify(v, replacer));
-        }
+const parseSettings = str => {
+    const re = new RegExp(getRe('settings'), "g");
+    let match = re.exec(str);
+    while (match !== null) {
+        console.log(match[1]);
+        match = re.exec(str);
     }
-
-    for (const name of Object.getOwnPropertyNames(Object.getPrototypeOf(o))) {
-        const method = o[name];
-        if (name === 'constructor') continue;
-        if (typeof method === 'function' && !name.startsWith('__') && !method.toString().includes('[native code]')) {
-            ret[name] = method.toString();
-        }
-    }
-    return ret;
 };
 
-import './src/all/index.js';
-const w0 = azui.Window('.win0');
-const p = parse(w0);
-console.log(p);
+const parseEvents = str => {
+    const re = new RegExp(getRe('event'), "g");
+    let match = re.exec(str);
+    while (match !== null) {
+        console.log(match[1]);
+        match = re.exec(str);
+    }
+};
+
+parseSettings(classStr);
+parseMethods(classStr);
+parseEvents(classStr);

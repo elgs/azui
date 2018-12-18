@@ -82,4 +82,4 @@ TODO: separate menu from contextmenu, accordion, datatable, tabs, select
 TODO: submenu
 
 docs:
-TODO: doc generator
+TODO: doc generator: settings, methods, events
