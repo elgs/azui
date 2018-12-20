@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>azWindow Events</title>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='win0'></div>
+    <div id='win1'></div>
+
+    <script>
+        const win0 = azui.Window('#win0', {
+            width: 400,
+            height: 300,
+            showButtonInDocker: false,
+            title: 'Win 0',
+        });
+
+        win0.node.addEventListener('beforeslideup', e => {
+            console.log('beforeslideup', e.detail);
+        });
+        win0.node.addEventListener('afterslideup', e => {
+            console.log('afterslideup', e.detail);
+        });
+        win0.node.addEventListener('beforeslidedown', e => {
+            console.log('beforeslidedown', e.detail);
+        });
+        win0.node.addEventListener('afterslidedown', e => {
+            console.log('afterslidedown', e.detail);
+        });
+
+        azui.Window('#win1', {
+            width: 400,
+            height: 300,
+            showButtonInDocker: false,
+            title: 'Win 1',
+        });
+    </script>
+</body>
+
+</html>

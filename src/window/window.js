@@ -22,17 +22,19 @@ class Window extends Base {
 
     _init(options) {
         const settings = Object.assign({
-            width: 400,
-            height: 300,
-            headerHeight: 36,
-            icon: icons.svgApps,
-            showMinimizeButton: true,
-            showMaximizeButton: true,
-            showCloseButton: true,
-            showSlideButton: true,
-            showButtonInDocker: true,
-            title: 'Arizona',
-            snapToEdge: true,
+            //  @doc:settings:start
+            width: 400, // @doc:width: Width of window.
+            height: 300, // @doc:height: Height of window.
+            headerHeight: 36, // @doc:headerHeight: Header height of window.
+            icon: '&#x2615;', // @doc:icon: An icon place at the top left corner of the window and the docker bar. It supports unicode icons or svg strings.
+            showMinimizeButton: true, // @doc:showMinimizeButton: Whether to show the minimize button or not.
+            showMaximizeButton: true, // @doc:showMaximizeButton: Whether to show the maximize button or not.
+            showCloseButton: true, // @doc:showCloseButton: Whether to show close button or not.
+            showSlideButton: true, // @doc:showSlideButton: Whether to show slide button or not.
+            showButtonInDocker: true, // @doc:showButtonInDocker: Whether to show button in docker or not.
+            title: 'AZ', // @doc:title: Title of the window.
+            snapToEdge: true, // @doc:snapToEdge: Whether to snap to container or not when dragging cursor is close to the container border.
+            //  @doc:settings:end
         }, options);
 
         const me = this;
@@ -331,16 +333,34 @@ class Window extends Base {
         });
     }
 
+    // @doc:method:start
     children() {
+        // @doc: Get child windows.
+        // @doc:method:end
         const children = this.node.querySelectorAll('.azWindowContent>.azWindow');
         return [...children].map(el => {
             return azui.Window(el);
         });
     }
 
+    // @doc:method:start
     activate(notify) {
+        // @doc: Activate the window.
+        // @doc:notify: Whether notify the docker or not.
+        // @doc:method:end
         // two way notification
         const me = this;
+
+        // @doc:event:start
+        // @doc:beforeactivate: Fires before the window is activated.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforeactivate', {
+            detail: {
+                elem: me.node,
+            }
+        }));
+
         siblings(me.node, '.azWindow').forEach(el => {
             el.classList.remove('active');
             el.classList.add('inactive');
@@ -354,21 +374,71 @@ class Window extends Base {
         if (notify) {
             me.docker.activate(this.dockId, false);
         }
+
+        // @doc:event:start
+        // @doc:afteractivate: Fires after the window is activated.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('afteractivate', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 
+    // @doc:method:start
     inactivate(notify) {
+        // @doc: Inactivate the window.
+        // @doc:notify: Whether notify the docker or not.
+        // @doc:method:end
         // two way notification
         const me = this;
+
+        // @doc:event:start
+        // @doc:beforeinactivate: Fires before the window is inactivated.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforeinactivate', {
+            detail: {
+                elem: me.node,
+            }
+        }));
+
         this.node.classList.remove('active');
         this.node.classList.add('inactive');
         if (notify) {
             me.docker.inactivate(this.dockId, false);
         }
+
+        // @doc:event:start
+        // @doc:afterinactivate: Fires after the window is inactivated.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('afterinactivate', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 
-    close(notify) {
+    // @doc:method:start
+    close(notify = false) {
+        // @doc: Close the window.
+        // @doc:notify: Whether notify the docker or not.
+        // @doc:method:end
         // two way notification
         const me = this;
+
+        // @doc:event:start
+        // @doc:beforeclose: Fires before the window is closed.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforeclose', {
+            detail: {
+                elem: me.node,
+            }
+        }));
+
         this.children().forEach(child => {
             child.docker.undock(child.dockId, true);
         });
@@ -376,25 +446,155 @@ class Window extends Base {
         if (notify) {
             me.docker.undock(this.dockId, false);
         }
+
+        // @doc:event:start
+        // @doc:afterclose: Fires after the window is closed.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('afterclose', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 
+    // @doc:method:start
     slideup() {
+        // @doc: Slide up the window.
+        // @doc:method:end
+        const me = this;
+
+        // @doc:event:start
+        // @doc:beforeslideup: Fires before the window is slid up.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforeslideup', {
+            detail: {
+                elem: me.node,
+            }
+        }));
         this.docker.slideup(this.dockId, true);
+
+        // @doc:event:start
+        // @doc:afterslideup: Fires after the window is slid up.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('afterslideup', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 
+    // @doc:method:start
     slidedown() {
+        // @doc: Slide down the window.
+        // @doc:method:end
+        const me = this;
+
+        // @doc:event:start
+        // @doc:beforeslidedown: Fires before the window is slid down.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforeslidedown', {
+            detail: {
+                elem: me.node,
+            }
+        }));
         this.docker.slidedown(this.dockId, true);
+
+        // @doc:event:start
+        // @doc:afterslidedown: Fires after the window is slid down.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('afterslidedown', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 
+    // @doc:method:start
     minimize() {
+        // @doc: Minimize the window.
+        // @doc:method:end
+        const me = this;
+
+        // @doc:event:start
+        // @doc:beforeminimize: Fires before the window is minimized.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforeminimize', {
+            detail: {
+                elem: me.node,
+            }
+        }));
         this.docker.minimize(this.dockId, true);
+
+        // @doc:event:start
+        // @doc:afterminimize: Fires after the window is minimized.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('afterminimize', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 
+    // @doc:method:start
     maximize() {
+        // @doc: Maximize the window.
+        // @doc:method:end
+        const me = this;
+
+        // @doc:event:start
+        // @doc:beforemaximize: Fires before the window is maximized.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforemaximize', {
+            detail: {
+                elem: me.node,
+            }
+        }));
         this.docker.maximize(this.dockId, true);
+
+        // @doc:event:start
+        // @doc:aftermaximize: Fires after the window is maximized.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('aftermaximize', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 
+    // @doc:method:start
     restore() {
+        // @doc: Restore the window.
+        // @doc:method:end
+        const me = this;
+
+        // @doc:event:start
+        // @doc:beforerestore: Fires before the window is restored.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('beforerestore', {
+            detail: {
+                elem: me.node,
+            }
+        }));
         this.docker.normalize(this.dockId, true);
+
+        // @doc:event:start
+        // @doc:afterrestore: Fires after the window is restored.
+        // @doc:elem: The DOM of the window, event.detail.elem.
+        // @doc:event:end
+        me.node.dispatchEvent(new CustomEvent('afterrestore', {
+            detail: {
+                elem: me.node,
+            }
+        }));
     }
 };

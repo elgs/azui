@@ -7,6 +7,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
+const docgen = require('./docgen.js');
+
 const srcDir = path.join(__dirname, '/src/');
 const buildDir = path.join(__dirname, '/build/');
 const distDir = path.join(__dirname, '/dist/');
@@ -64,14 +66,26 @@ const generateAll = () => {
     fs.writeFileSync(srcDir + '/index/modules.json', JSON.stringify(moduleContent, null, 2), 'utf8');
 };
 
+const generateDocs = (mods) => {
+    mods.map(mod => {
+        const m = loadModule(mod);
+        if (m.type > 0 && m.type < 4) {
+            const classStr = fs.readFileSync(path.join(srcDir, mod, mod + '.js'), 'utf8');
+            const docJson = docgen.parse(classStr);
+            fs.writeFileSync(path.join(srcDir, mod, 'doc.json'), JSON.stringify(docJson, null, 2), 'utf8');
+        }
+    });
+};
+
 module.exports = (env, argv) => {
     const isDev = argv.mode !== 'production';
-
-    generateAll();
 
     const mods = argv._.length > 0 ? argv._ : listModules();
     argv._ = [];
     // console.log(mods);
+
+    generateDocs(mods);
+    generateAll();
 
     const entries = {};
     mods.map(mod => {
