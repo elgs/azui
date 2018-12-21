@@ -117,9 +117,12 @@ class Tabs extends Base {
 
     _init(options) {
         const settings = Object.assign({
-                headerHeight: 40,
-                draggable: true,
-                resizable: true,
+                // @doc:settings:start
+                headerHeight: 40, // @doc:headerHeight: Header height.
+                draggable: true, // @doc:draggable: Whether the tab window should be draggable or not.
+                resizable: true, // @doc:resizable: Whether the tab window should be resizable or not.
+                closeOnEmpty: true, // @doc:closeOnEmpty: Whether the tab window should be close or not when the last tab is closed.
+                // @doc:settings:end
             },
             options);
 
@@ -192,7 +195,7 @@ class Tabs extends Base {
                         }
                         // me.showHideScrollers();
                         me.fitTabWidth();
-                    } else {
+                    } else if (settings.closeOnEmpty) {
                         remove(me.node);
                     }
                 }
@@ -316,7 +319,7 @@ class Tabs extends Base {
             }
             // me.showHideScrollers();
             me.fitTabWidth();
-        } else {
+        } else if (settings.closeOnEmpty) {
             remove(node);
         }
     }
@@ -387,7 +390,7 @@ class Tabs extends Base {
                 me.activateTabByIndex(0);
             }
             me.fitTabWidth();
-        } else {
+        } else if (settings.closeOnEmpty) {
             remove(node);
         }
     }

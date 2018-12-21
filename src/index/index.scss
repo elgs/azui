@@ -2,10 +2,26 @@
 
 .azui {
     &.azIndex {
-        color: #444;
+        width: 100%;
+        height: 100%;
 
-        & a {
-            text-decoration: none;
+        & #accordionMenu {
+            /* height: 400px; */
+            width: 100%;
         }
+
+        & .azLayoutCenter {
+            &>.mainTab {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        /* .azLayoutCenter>iframe {
+            width: 100%;
+            height: 100%;
+        } */
     }
 }

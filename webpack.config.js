@@ -14,7 +14,7 @@ const buildDir = path.join(__dirname, '/build/');
 const distDir = path.join(__dirname, '/dist/');
 
 const listModules = (...excludes) => fs.readdirSync(srcDir).filter(item => !excludes.includes(item) && fs.statSync(path.join(srcDir, item)).isDirectory());
-const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile());
+const listHtmls = mod => fs.readdirSync(path.join(srcDir, mod)).filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile()).sort();
 const flattenDeep = arr => arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
 const loadModule = mod => {
     const m = fs.readdirSync(path.join(srcDir, mod)).filter(item => item === 'module.json' && fs.statSync(path.join(srcDir, mod, item)).isFile());
@@ -96,7 +96,7 @@ module.exports = (env, argv) => {
         const tpls = listHtmls(mod);
         return tpls.map(tpl => {
             return new HtmlWebpackPlugin({
-                filename: tpl,
+                filename: mod === 'index' ? tpl : mod + '/' + tpl,
                 template: `${srcDir+mod}/${tpl}`,
                 inject: 'head',
                 chunks: [mod]
@@ -109,7 +109,7 @@ module.exports = (env, argv) => {
         entry: entries,
         output: {
             path: path.resolve(__dirname, isDev ? buildDir : distDir),
-            filename: `${pkgJson.name}.[name].${pkgJson.version}.js`,
+            filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.js`,
         },
         devtool: 'source-map',
         module: {
@@ -141,8 +141,8 @@ module.exports = (env, argv) => {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: `${pkgJson.name}.[name].${pkgJson.version}.css`,
-                chunkFilename: `${pkgJson.name}.[id].${pkgJson.version}.css`,
+                filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.css`,
+                chunkFilename: `[name]/${pkgJson.name}.[id].${pkgJson.version}.css`,
             }),
             ...(isDev ? [new webpack.HotModuleReplacementPlugin()] : []),
             ...flattenDeep(htmls),

@@ -1,6 +1,7 @@
 import '../layout/index.js';
 import '../accordion/index.js';
 import '../menu/index.js';
+import '../tabs/index.js';
 
 import {
     parseDOMElement,
@@ -35,12 +36,14 @@ window.onload = () => {
             const c = acc.getContentDiv(k);
 
             const items = m.pages.map(page => {
+                const title = page.replace(/^\d+_/, '').replace(/\.[^/.]+$/, '');
                 return {
                     icon: svgApps,
-                    title: page.replace(/\.[^/.]+$/, ''),
+                    title,
                     action: function (e, target) {
-                        window.open(page, 'content');
+                        // window.open(m.name + '/' + page, 'content');
                         menus.filter(m => m !== menu).map(m => m.clearActive());
+                        tabs.addTab('X', `New Tab`, `New Tab`, true, false);
                     }
                 }
             });
@@ -55,5 +58,11 @@ window.onload = () => {
         });
     });
 
+    const elem = document.querySelector('.azLayoutCenter>.mainTab');
+    const tabs = azui.Tabs(elem, {
+        draggable: false,
+        resizable: false,
+        closeOnEmpty: false,
+    });
     // console.log(modules);
 };
