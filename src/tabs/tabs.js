@@ -121,6 +121,7 @@ class Tabs extends Base {
                 headerHeight: 40, // @doc:headerHeight: Header height.
                 draggable: true, // @doc:draggable: Whether the tab window should be draggable or not.
                 resizable: true, // @doc:resizable: Whether the tab window should be resizable or not.
+                detachable: true, // @doc:detachable: Whether the tabs could be detached by dragging out or not.
                 closeOnEmpty: true, // @doc:closeOnEmpty: Whether the tab window should be close or not when the last tab is closed.
                 // @doc:settings:end
             },
@@ -157,7 +158,7 @@ class Tabs extends Base {
 
         me.dragging = false;
         me.sortable = azui.Sortable(tabLabels, {
-            escapable: true,
+            detachable: settings.detachable,
             create: (e, target) => {
                 if (matches(e.target, '.close,.close *')) {
                     return false; // don't drag when clicking on icons
@@ -172,7 +173,7 @@ class Tabs extends Base {
             stop: (e, data) => {
                 me.dragging = false;
                 const tabId = _getTabId(data.source.id);
-                if (data.escaped) {
+                if (data.detached) {
                     const x = data.boundingClientRect.left + getDocScrollLeft();
                     const y = data.boundingClientRect.top + getDocScrollTop();
                     me.spawn(tabId, x, y);
@@ -202,8 +203,8 @@ class Tabs extends Base {
             },
             add: (e, elem) => {
                 const draggable = azui.Draggable(elem);
-                draggable.escapeX = false;
-                draggable.escapeY = false;
+                draggable.detachedX = false;
+                draggable.detachedY = false;
 
                 draggable.stopHook = function () {
                     // draggable and droppable need to be in the same sortable in order to
@@ -319,7 +320,7 @@ class Tabs extends Base {
             }
             // me.showHideScrollers();
             me.fitTabWidth();
-        } else if (settings.closeOnEmpty) {
+        } else if (me.settings.closeOnEmpty) {
             remove(node);
         }
     }
@@ -357,7 +358,7 @@ class Tabs extends Base {
         const me = this;
         const iconDiv = document.createElement('div');
         iconDiv.classList.add('icon');
-        iconDiv.appendChild(normalizeIcon(icon));
+        iconDiv.appendChild(normalizeIcon(icon || ''));
         const titleDiv = document.createElement('div');
         titleDiv.classList.add('title');
         titleDiv.appendChild(normalizeIcon(title));
@@ -390,7 +391,7 @@ class Tabs extends Base {
                 me.activateTabByIndex(0);
             }
             me.fitTabWidth();
-        } else if (settings.closeOnEmpty) {
+        } else if (me.settings.closeOnEmpty) {
             remove(node);
         }
     }

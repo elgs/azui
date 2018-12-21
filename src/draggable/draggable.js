@@ -60,8 +60,8 @@ class Draggable extends Base {
         // console.log(me.style['position'));
         let savedZIndex;
 
-        me.escapeX = false;
-        me.escapeY = false;
+        me.detachedX = false;
+        me.detachedY = false;
 
         me.dropTargets = null;
         me.selected = null;
@@ -237,7 +237,7 @@ class Draggable extends Base {
             resisted = true;
             // console.log(dx, dy);
 
-            // console.log(me.escapeX, me.escapeY);
+            // console.log(me.detachedX, me.detachedY);
 
             const dts = me.dropTargets;
             for (const dt of dts) {
@@ -593,7 +593,7 @@ class Draggable extends Base {
 
     moveAbsoluteX(dx) {
         const me = this;
-        if (me.cScrW === undefined || me.escapeX) {
+        if (me.cScrW === undefined || me.detachedX) {
             me.selected.style.right = 'auto';
             me.selected.style.left = (me.meW + dx) + 'px';
         } else {
@@ -616,7 +616,7 @@ class Draggable extends Base {
 
     moveAbsoluteY(dy) {
         const me = this;
-        if (me.cScrW === undefined || me.escapeY) {
+        if (me.cScrW === undefined || me.detachedY) {
             me.selected.style.bottom = 'auto';
             me.selected.style.top = (me.meN + dy) + 'px';
         } else {
@@ -639,7 +639,7 @@ class Draggable extends Base {
 
     moveFixedX(dx) {
         const me = this;
-        if (me.cScrW === undefined || me.escapeX) {
+        if (me.cScrW === undefined || me.detachedX) {
             me.selected.style.right = 'auto';
             me.selected.style.left = (me.meW + dx) + 'px';
         } else {
@@ -660,7 +660,7 @@ class Draggable extends Base {
 
     moveFixedY(dy) {
         const me = this;
-        if (me.cScrW === undefined || me.escapeY) {
+        if (me.cScrW === undefined || me.detachedY) {
             me.selected.style.bottom = 'auto';
             me.selected.style.top = (me.meN + dy) + 'px';
         } else {
@@ -681,7 +681,7 @@ class Draggable extends Base {
 
     moveRelativeX(dx) {
         const me = this;
-        if (me.cScrW === undefined || me.escapeX) {
+        if (me.cScrW === undefined || me.detachedX) {
             me.selected.style.right = 'auto';
             me.selected.style.left = (me.meW + dx) + 'px';
         } else {
@@ -701,7 +701,7 @@ class Draggable extends Base {
     };
     moveRelativeY(dy) {
         const me = this;
-        if (me.cScrW === undefined || me.escapeY) {
+        if (me.cScrW === undefined || me.detachedY) {
             me.selected.style.bottom = 'auto';
             me.selected.style.top = (me.meN + dy) + 'px';
         } else {

@@ -119,7 +119,7 @@
             azui.Sortable(el, {
                 placeholder: true,
                 showPlaceHolder: false,
-                escapable: true,
+                detachable: true,
                 alighn: 'x',
                 create: function (e, target) {
                     e.preventDefault();
@@ -131,7 +131,7 @@
         elem1.forEach(el => {
             azui.Sortable(el, {
                 placeholder: false,
-                escapable: true,
+                detachable: true,
                 align: 'y',
                 create: function (e, target) {
                     e.preventDefault();

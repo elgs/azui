@@ -1,5 +1,30 @@
 {
-  "settings": [],
+  "settings": [
+    {
+      "key": "headerHeight",
+      "desc": "Header height.",
+      "defaultValue": 40,
+      "type": "number"
+    },
+    {
+      "key": "draggable",
+      "desc": "Whether the tab window should be draggable or not.",
+      "defaultValue": true,
+      "type": "boolean"
+    },
+    {
+      "key": "resizable",
+      "desc": "Whether the tab window should be resizable or not.",
+      "defaultValue": true,
+      "type": "boolean"
+    },
+    {
+      "key": "closeOnEmpty",
+      "desc": "Whether the tab window should be close or not when the last tab is closed.",
+      "defaultValue": true,
+      "type": "boolean"
+    }
+  ],
   "methods": [],
   "events": []
 }

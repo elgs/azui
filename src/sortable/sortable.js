@@ -33,7 +33,7 @@ class Sortable extends Base {
         const settings = Object.assign({
             placeholder: true,
             showPlaceHolder: false,
-            escapable: false,
+            detachable: false,
             align: 'x', // or y
             create: function (event, ui, me) {
                 // console.log('create', ui);
@@ -158,7 +158,7 @@ class Sortable extends Base {
                 source: selected,
                 target: ph,
                 boundingClientRect: target.getBoundingClientRect(),
-                escaped: draggable.escapeX || draggable.escapeY,
+                detached: draggable.detachedX || draggable.detachedY,
             };
             delete draggable['pointer_in'];
             if (selected) {
@@ -201,7 +201,7 @@ class Sortable extends Base {
             }
         };
 
-        if (settings.escapable) {
+        if (settings.detachable) {
             azui.Droppable(node, {
                 interestedDropEvents: azui.constants.dndEventConsts.pointer_in |
                     azui.constants.dndEventConsts.pointer_out,
@@ -265,8 +265,8 @@ class Sortable extends Base {
                         draggable.originalBpr = bpr;
                     }
 
-                    draggable.escapeX = false;
-                    draggable.escapeY = false;
+                    draggable.detachedX = false;
+                    draggable.detachedY = false;
 
                     draggable['pointer_in'] = true;
 
@@ -301,8 +301,8 @@ class Sortable extends Base {
                     }
                     // console.log(selected);
                     const draggable = azui.Draggable(selected);
-                    draggable.escapeX = true;
-                    draggable.escapeY = true;
+                    draggable.detachedX = true;
+                    draggable.detachedY = true;
 
                     draggable.detachedContainer = me;
 
