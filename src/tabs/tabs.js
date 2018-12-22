@@ -352,6 +352,7 @@ class Tabs extends Base {
         if (activate === true) {
             me.activateTab(tabId)
         }
+        return tabId;
     }
 
     addTab(icon, title, content, closable = true, activate = true) {
@@ -374,7 +375,7 @@ class Tabs extends Base {
         }
 
         const contentNode = document.createElement('div');
-        contentNode.innerHTML = content;
+        contentNode.innerHTML = content || '';
 
         me.addTabNode(headerNode, contentNode, activate);
     }

@@ -19,6 +19,12 @@
       "type": "boolean"
     },
     {
+      "key": "detachable",
+      "desc": "Whether the tabs could be detached by dragging out or not.",
+      "defaultValue": true,
+      "type": "boolean"
+    },
+    {
       "key": "closeOnEmpty",
       "desc": "Whether the tab window should be close or not when the last tab is closed.",
       "defaultValue": true,

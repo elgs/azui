@@ -161,6 +161,7 @@ module.exports = (env, argv) => {
             children: false
         },
         devServer: {
+            disableHostCheck: true,
             contentBase: path.join(__dirname, isDev ? buildDir : distDir),
             stats: {
                 children: false,

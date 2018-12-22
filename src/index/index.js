@@ -43,7 +43,7 @@ window.onload = () => {
                     action: function (e, target) {
                         // window.open(m.name + '/' + page, 'content');
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        tabs.addTab(null, `New Tab`, `New Tab`, true, false);
+                        tabs.addTab(null, title, null, true, true);
                     }
                 }
             });
