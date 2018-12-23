@@ -310,7 +310,7 @@ class Tabs extends Base {
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
         tabContent.style['display'] = 'block';
-        newTabs.addTabNode(tabHeader, tabContent, true);
+        newTabs.addTab(null, tabHeader, tabContent);
         // remove(tabHeader);
 
         const headers = node.querySelectorAll('.azTabLabel');
@@ -325,10 +325,45 @@ class Tabs extends Base {
         }
     }
 
-    addTabNode(headerNode, contentNode, activate = true) {
+    addTab(icon, title, contentNode, closable = true, activate = true, tabId = null) {
         const me = this;
-        const node = me.node;
-        const tabId = randGen(8);
+
+        if (tabId) {
+            const labels = [...me.node.querySelectorAll('div.azTabLabel')]
+            for (const el of labels) {
+                const elId = _getTabId(el.id);
+                if (elId === tabId) {
+                    me.activateTab(tabId);
+                    return;
+                }
+            }
+        }
+
+        tabId = tabId || randGen(8);
+
+        const iconDiv = document.createElement('div');
+        iconDiv.classList.add('icon');
+        iconDiv.appendChild(normalizeIcon(icon || ''));
+
+        let headerNode;
+        if (typeof title === 'string') {
+            const titleDiv = document.createElement('div');
+            titleDiv.classList.add('title');
+            titleDiv.appendChild(normalizeIcon(title));
+            headerNode = document.createElement('div');
+            // headerNode.classList.add('azTabLabel');
+            headerNode.appendChild(iconDiv)
+            headerNode.appendChild(titleDiv);
+
+            if (closable) {
+                const closeDiv = document.createElement('div');
+                closeDiv.classList.add('close');
+                closeDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
+                headerNode.appendChild(closeDiv);
+            }
+        } else {
+            headerNode = title;
+        }
 
         headerNode.classList.add('azTabLabel');
         headerNode.setAttribute('id', 'azTabHeader-' + tabId)
@@ -340,10 +375,13 @@ class Tabs extends Base {
 
         me.sortable.add(headerNode);
 
+        if (contentNode && typeof contentNode === 'string') {
+            contentNode = document.createElement('div');
+        }
         contentNode.setAttribute('id', 'azTabContent-' + tabId);
         contentNode.classList.add('azTabContent');
         contentNode.style['display'] = 'none';
-        node.appendChild(contentNode);
+        me.node.appendChild(contentNode);
 
         applyEvents(headerNode);
 
@@ -355,30 +393,6 @@ class Tabs extends Base {
         return tabId;
     }
 
-    addTab(icon, title, content, closable = true, activate = true) {
-        const me = this;
-        const iconDiv = document.createElement('div');
-        iconDiv.classList.add('icon');
-        iconDiv.appendChild(normalizeIcon(icon || ''));
-        const titleDiv = document.createElement('div');
-        titleDiv.classList.add('title');
-        titleDiv.appendChild(normalizeIcon(title));
-        const headerNode = document.createElement('div');
-        // headerNode.classList.add('azTabLabel');
-        headerNode.appendChild(iconDiv)
-        headerNode.appendChild(titleDiv);
-        if (closable) {
-            const closeDiv = document.createElement('div');
-            closeDiv.classList.add('close');
-            closeDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
-            headerNode.appendChild(closeDiv);
-        }
-
-        const contentNode = document.createElement('div');
-        contentNode.innerHTML = content || '';
-
-        me.addTabNode(headerNode, contentNode, activate);
-    }
     removeTab(tabId) {
         const me = this;
         const node = me.node;
