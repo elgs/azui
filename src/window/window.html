@@ -6,7 +6,7 @@
     <title>azWindow</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        #fout {
+        .fout {
             display: none;
         }
 
@@ -22,7 +22,7 @@
     </style>
 </head>
 
-<body id='fout'>
+<body class='fout'>
     <div id='myWindow0'>
         <div style="border:1px solid tomato;box-sizing: border-box;height:100%;width:100%;overflow:auto">
             <div>
@@ -135,7 +135,7 @@
             title: 'Try me!',
         });
 
-        document.querySelector('#fout').style['display'] = 'block';
+        document.querySelector('.fout').classList.remove('fout');
     </script>
 </body>
 

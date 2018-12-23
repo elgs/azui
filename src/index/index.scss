@@ -11,7 +11,7 @@
         }
 
         & .azLayoutCenter {
-            &>.mainTab {
+            &>.mainTabs {
                 width: 100%;
                 height: 100%;
                 margin: 0;
@@ -19,9 +19,9 @@
             }
         }
 
-        /* .azLayoutCenter>iframe {
+        & .azLayoutCenter iframe {
             width: 100%;
             height: 100%;
-        } */
+        }
     }
 }

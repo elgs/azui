@@ -181,23 +181,26 @@ class Tabs extends Base {
                     const contentNode = me.node.querySelector('#azTabContent-' + tabId);
 
                     const targetTabsNode = data.source.closest('.azTabs');
-                    targetTabsNode.appendChild(contentNode);
 
-                    const targetTabs = azui.Tabs(targetTabsNode);
-                    targetTabs.activateTab(tabId);
+                    if (targetTabsNode !== me.node) {
+                        targetTabsNode.appendChild(contentNode);
 
-                    const tabHeader = data.source; //.closest('.azTabLabel#azTabHeader-' + tabId);
-                    // const isActive = matches(tabHeader, '.active');
-                    const active = tabHeader.parentNode.querySelector('.active');
-                    const headers = me.node.querySelectorAll('.azTabLabel');
-                    if (headers.length) {
-                        if (!active) {
-                            me.activateTabByIndex(0);
+                        const targetTabs = azui.Tabs(targetTabsNode);
+                        targetTabs.activateTab(tabId);
+
+                        const tabHeader = data.source; //.closest('.azTabLabel#azTabHeader-' + tabId);
+                        // const isActive = matches(tabHeader, '.active');
+                        const headers = me.node.querySelectorAll('.azTabLabel');
+                        if (headers.length) {
+                            const active = tabHeader.parentNode.querySelector('.active');
+                            if (!active) {
+                                me.activateTabByIndex(0);
+                            }
+                            // me.showHideScrollers();
+                            me.fitTabWidth();
+                        } else if (settings.closeOnEmpty) {
+                            remove(me.node);
                         }
-                        // me.showHideScrollers();
-                        me.fitTabWidth();
-                    } else if (settings.closeOnEmpty) {
-                        remove(me.node);
                     }
                 }
             },
@@ -334,7 +337,7 @@ class Tabs extends Base {
                 const elId = _getTabId(el.id);
                 if (elId === tabId) {
                     me.activateTab(tabId);
-                    return;
+                    return true;
                 }
             }
         }

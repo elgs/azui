@@ -41,9 +41,14 @@ window.onload = () => {
                     icon: svgApps,
                     title,
                     action: function (e, target) {
-                        // window.open(m.name + '/' + page, 'content');
+                        const tabId = m.name + title;
+                        const iframeMarkup = `<div><iframe name="${tabId}" frameBorder="0"></iframe></div>`;
+                        const iframe = parseDOMElement(iframeMarkup)[0];
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        tabs.addTab(null, title, null, true, true, m.name + title);
+                        const activated = tabs.addTab(null, title, iframe, true, true, tabId);
+                        if (activated !== true) {
+                            window.open(m.name + '/' + page, tabId);
+                        }
                     }
                 }
             });
@@ -58,7 +63,7 @@ window.onload = () => {
         });
     });
 
-    const elem = document.querySelector('.azLayoutCenter>.mainTab');
+    const elem = document.querySelector('.azLayoutCenter>.mainTabs');
     const tabs = azui.Tabs(elem, {
         draggable: false,
         resizable: false,

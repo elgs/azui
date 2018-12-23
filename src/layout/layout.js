@@ -55,15 +55,17 @@ class Layout extends Base {
                 hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = 'none');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = 'none');
+                    });
                 },
                 resize: function (e, h, by) {
                     by.dy = Math.min(by.dy, centerHeight);
                 },
                 stop: function (e, el) {
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = '');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
                 },
             });
             north.appendChild(northContent);
@@ -81,15 +83,17 @@ class Layout extends Base {
                 moveOnResize: false,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = 'none');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = 'none');
+                    });
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.max(by.dx, -centerWidth);
                 },
                 stop: function (e, el) {
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = '');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
                 },
             });
             east.appendChild(eastContent);
@@ -107,15 +111,17 @@ class Layout extends Base {
                 moveOnResize: false,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = 'none');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = 'none');
+                    });
                 },
                 resize: function (e, h, by) {
                     by.dy = Math.max(by.dy, -centerHeight);
                 },
                 stop: function (e, el) {
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = '');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
                 },
             });
             south.appendChild(southContent);
@@ -132,15 +138,17 @@ class Layout extends Base {
                 hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = 'none');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = 'none');
+                    });
                 },
                 resize: function (e, h, by) {
                     by.dx = Math.min(by.dx, centerWidth);
                 },
                 stop: function (e, el) {
-                    const iframe = centerContent.querySelector('iframe');
-                    iframe && (iframe.style['pointer-events'] = '');
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
                 },
             });
             west.appendChild(westContent);
