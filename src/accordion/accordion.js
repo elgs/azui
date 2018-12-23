@@ -119,7 +119,7 @@ class Accordion extends Base {
 
         for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
             a.closest('.azAccordionComponent').setAttribute('acc-key', randGen(8));
-            applyEvents(a);
+            me.applyEvents(a);
         }
     }
 
@@ -183,7 +183,7 @@ class Accordion extends Base {
         const comp = parseDOMElement(markup)[0];
 
         const header = comp.querySelector('.azAccordionHeader');
-        applyEvents(header);
+        me.applyEvents(header);
         node.insertBefore(comp, node.children[pos]);
 
         return key;
