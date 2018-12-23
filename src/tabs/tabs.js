@@ -82,7 +82,7 @@ const createHeaderClicked = function (cm) {
 
         const currentTabNode = event.target.closest('.azTabs');
         const currentTabs = azui.Tabs(currentTabNode);
-        if (event.button === 2 || currentTabs.dragging || cm.on) {
+        if (event.button === 2 || cm.on) {
             return;
         }
         // console.log(event.button);
@@ -156,7 +156,7 @@ class Tabs extends Base {
         });
         me.activateTabByIndex(0);
 
-        me.dragging = false;
+        // me.dragging = false;
         me.sortable = azui.Sortable(tabLabels, {
             detachable: settings.detachable,
             create: (e, target) => {
@@ -167,11 +167,11 @@ class Tabs extends Base {
                 //     e.preventDefault();
                 // }
             },
-            start: (e, data) => {
-                me.dragging = true;
-            },
+            // start: (e, data) => {
+            //     me.dragging = true;
+            // },
             stop: (e, data) => {
-                me.dragging = false;
+                // me.dragging = false;
                 const tabId = _getTabId(data.source.id);
                 if (data.detached) {
                     const x = data.boundingClientRect.left + getDocScrollLeft();
