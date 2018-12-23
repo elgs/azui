@@ -24,34 +24,43 @@ const _getTabId = (elemId) => {
     return elemId.split('-').splice(1, Number.MAX_SAFE_INTEGER).join('-');
 };
 
-const tabContextMenu = [{
+const getTabContextMenu = closable => [{
         // icon: icons.svgClose,
         title: 'Close tab',
+        disabled: !closable,
         action: function (e, target) {
             const currentTabNode = target.closest('.azTabs');
             const currentTabs = azui.Tabs(currentTabNode);
             currentTabs.removeTab(_getTabId(target.id));
             return false;
         }
-    }, {
+    },
+    {
         // icon: icons.svgClose,
         title: 'Close other tabs',
+        disabled: !closable,
         action: function (e, target) {
             const currentTabNode = target.closest('.azTabs');
             const currentTabs = azui.Tabs(currentTabNode);
             siblings(target, '.azTabLabel').forEach(function (element) {
-                currentTabs.removeTab(_getTabId(element.id));
+                if (matches(element, '.azClosable')) {
+                    currentTabs.removeTab(_getTabId(element.id));
+                }
             });
             return false;
         }
-    }, {
+    },
+    {
         // icon: icons.svgClose,
         title: 'Close tabs to the right',
+        disabled: !closable,
         action: function (e, target) {
             const currentTabNode = target.closest('.azTabs');
             const currentTabs = azui.Tabs(currentTabNode);
             nextAll(target, '.azTabLabel').forEach(function (element) {
-                currentTabs.removeTab(_getTabId(element.id));
+                if (matches(element, '.azClosable')) {
+                    currentTabs.removeTab(_getTabId(element.id));
+                }
             });
             return false;
         }
@@ -60,11 +69,14 @@ const tabContextMenu = [{
     {
         // icon: icons.svgClose,
         title: 'Close All',
+        disabled: !closable,
         action: function (e, target) {
             const currentTabNode = target.closest('.azTabs');
             const currentTabs = azui.Tabs(currentTabNode);
             siblings(target, '.azTabLabel').forEach(function (element) {
-                currentTabs.removeTab(_getTabId(element.id));
+                if (matches(element, '.azClosable')) {
+                    currentTabs.removeTab(_getTabId(element.id));
+                }
             });
             currentTabs.removeTab(_getTabId(target.id));
             return false;
@@ -87,7 +99,8 @@ const createHeaderClicked = function (cm) {
         }
         // console.log(event.button);
         const tabId = _getTabId(event.currentTarget.id);
-        if (!event.target.classList.contains('close') && !event.target.parentNode.classList.contains('close')) {
+        if (!event.target.classList.contains('close') &&
+            !event.target.parentNode.classList.contains('close')) {
             currentTabs.activateTab(tabId);
         }
     };
@@ -101,13 +114,14 @@ const closeClicked = function (event) {
 };
 
 
-const applyEvents = a => {
-    const cm = azui.ContextMenu(a, {
-        items: tabContextMenu
+const applyEvents = el => {
+    const closable = matches(el, '.azClosable');
+    const cm = azui.ContextMenu(el, {
+        items: getTabContextMenu(closable),
     });
     const headerClicked = createHeaderClicked(cm);
-    a.addEventListener('mouseup', headerClicked);
-    a.addEventListener('touchend', headerClicked);
+    el.addEventListener('mouseup', headerClicked);
+    el.addEventListener('touchend', headerClicked);
 };
 
 class Tabs extends Base {
@@ -363,6 +377,7 @@ class Tabs extends Base {
                 closeDiv.classList.add('close');
                 closeDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
                 headerNode.appendChild(closeDiv);
+                headerNode.classList.add('azClosable');
             }
         } else {
             headerNode = title;
@@ -402,7 +417,7 @@ class Tabs extends Base {
         const tab = node.querySelector('.azTabLabel#azTabHeader-' + tabId);
         const isActive = matches(tab, '.active');
         remove(tab);
-        remove(node.querySelector("#azTabContent-" + tabId));
+        remove(node.querySelector('#azTabContent-' + tabId));
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
             if (isActive) {
