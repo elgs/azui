@@ -56,9 +56,8 @@ const generateAll = () => {
         moduleContent[moduleType].push(moduleData);
     });
 
-    const sortFunction = (a, b) => a.seq - b.seq;
     Object.keys(moduleContent).filter(m => m.startsWith('modules')).map(m => {
-        moduleContent[m].sort(sortFunction)
+        moduleContent[m].sort((a, b) => a.seq - b.seq)
     });
 
     fs.writeFileSync(srcDir + '/all/index.js', jsContent, 'utf8');
@@ -67,14 +66,18 @@ const generateAll = () => {
 };
 
 const generateDocs = (mods) => {
+    let docContent = '';
     mods.map(mod => {
         const m = loadModule(mod);
         if (m.type > 0 && m.type < 4) {
             const classStr = fs.readFileSync(path.join(srcDir, mod, mod + '.js'), 'utf8');
             const docJson = docgen.parse(classStr);
             fs.writeFileSync(path.join(srcDir, mod, 'doc.json'), JSON.stringify(docJson, null, 2), 'utf8');
+
+            docContent += `export {default as ${mod}Doc} from '../${mod}/doc.json';\n`;
         }
     });
+    fs.writeFileSync(srcDir + '/docs/docimport.js', docContent, 'utf8');
 };
 
 module.exports = (env, argv) => {

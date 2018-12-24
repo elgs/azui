@@ -1,52 +1,52 @@
-class A {
-    constructor(options) {
-        const settings = Object.assign({
-            //  @doc:settings:start
-            width: 400, // @doc:width: width of the div
-            height: 300, // @doc:height: height of the div
-            x: _ => {}, //@doc:x: x value
-            y: (a, b, c) => {}, //@doc:y: y value
-            z: function (x, y, z) {}, //@doc:z: z value
-            // @doc:settings:end
-        }, options);
-        this.settings = settings;
-    }
+// class A {
+//     constructor(options) {
+//         const settings = Object.assign({
+//             //  @doc:settings:start
+//             width: 400, // @doc:width: width of the div
+//             height: 300, // @doc:height: height of the div
+//             x: _ => {}, //@doc:x: x value
+//             y: (a, b, c) => {}, //@doc:y: y value
+//             z: function (x, y, z) {}, //@doc:z: z value
+//             // @doc:settings:end
+//         }, options);
+//         this.settings = settings;
+//     }
 
-    // @doc:method:start
-    f0() {
-        // @doc: f0 does some crazy things
-        // @doc:method:end
+//     // @doc:method:start
+//     f0() {
+//         // @doc: f0 does some crazy things
+//         // @doc:method:end
 
-    }
+//     }
 
-    // @doc:method:start
-    f1(a = 1, b) {
-        // @doc: f1 does some cool things
-        // @doc:a: description of a
-        // @doc:b: description of b
-        // @doc:method:end
+//     // @doc:method:start
+//     f1(a = 1, b) {
+//         // @doc: f1 does some cool things
+//         // @doc:a: description of a
+//         // @doc:b: description of b
+//         // @doc:method:end
 
-        // @doc:event:start
-        // @doc:beforeSomething: this happens before something happens
-        // @doc:prop1: description of prop1
-        // @doc:prop2: description of prop2
-        // @doc:event:end
-        this.dispatchEvent(new CustomEvent('beforeSomething', {
-            detail: {
-                prop1: true,
-                prop2: false,
-            }
-        }));
-    }
-    // @doc:method:start
-    f2(x = 'abc') {
-        // @doc: f2 does some cneaky things
-        // @doc:x: description of x
-        // @doc:method:end
-    }
-}
+//         // @doc:event:start
+//         // @doc:beforeSomething: this happens before something happens
+//         // @doc:prop1: description of prop1
+//         // @doc:prop2: description of prop2
+//         // @doc:event:end
+//         this.dispatchEvent(new CustomEvent('beforeSomething', {
+//             detail: {
+//                 prop1: true,
+//                 prop2: false,
+//             }
+//         }));
+//     }
+//     // @doc:method:start
+//     f2(x = 'abc') {
+//         // @doc: f2 does some cneaky things
+//         // @doc:x: description of x
+//         // @doc:method:end
+//     }
+// }
 
-const classStr = A.toString();
+// const classStr = A.toString();
 
 const getRe = type => `\\/\\/\\s*@doc\\:${type}\\:start([\\s\\S]*?)\\/\\/\\s*@doc\\:${type}\\:end`;
 

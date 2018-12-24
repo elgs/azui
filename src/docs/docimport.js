@@ -1,0 +1,17 @@
+export {default as accordionDoc} from '../accordion/doc.json';
+export {default as contextmenuDoc} from '../contextmenu/doc.json';
+export {default as datatableDoc} from '../datatable/doc.json';
+export {default as dockerDoc} from '../docker/doc.json';
+export {default as doubleclickDoc} from '../doubleclick/doc.json';
+export {default as draggableDoc} from '../draggable/doc.json';
+export {default as droppableDoc} from '../droppable/doc.json';
+export {default as inlineeditDoc} from '../inlineedit/doc.json';
+export {default as layoutDoc} from '../layout/doc.json';
+export {default as menuDoc} from '../menu/doc.json';
+export {default as pagerDoc} from '../pager/doc.json';
+export {default as resizableDoc} from '../resizable/doc.json';
+export {default as rightclickDoc} from '../rightclick/doc.json';
+export {default as selectDoc} from '../select/doc.json';
+export {default as sortableDoc} from '../sortable/doc.json';
+export {default as tabsDoc} from '../tabs/doc.json';
+export {default as windowDoc} from '../window/doc.json';
