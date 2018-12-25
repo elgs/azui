@@ -6,5 +6,6 @@ window.onload = _ => {
     const doc = docs[`${m}Doc`];
 
     const el = document.querySelector('.azDocs');
-    el.innerHTML = '<pre><code>' + JSON.stringify(doc, null, 2) + '</pre></code>';
+    el.innerHTML = '<pre class="line-numbers"><code class="language-js">' + JSON.stringify(doc, null, 2) + '</pre></code>';
+    Prism.highlightAll();
 };
