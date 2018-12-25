@@ -103,7 +103,7 @@ class Window extends Base {
 
         const content = document.createElement('div');
         content.classList.add('azWindowContent');
-        [...node.children].forEach(el => {
+        Array.prototype.slice.call(node.children).map(el => {
             content.appendChild(el);
         });
         node.appendChild(content);

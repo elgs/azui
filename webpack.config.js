@@ -112,7 +112,8 @@ module.exports = (env, argv) => {
         entry: entries,
         output: {
             path: path.resolve(__dirname, isDev ? buildDir : distDir),
-            filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.js`,
+            // filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.js`,
+            filename: `[name]/${pkgJson.name}.[name].js`,
         },
         devtool: 'source-map',
         module: {
@@ -124,7 +125,7 @@ module.exports = (env, argv) => {
                     options: {
                         presets: [
                             ['@babel/preset-env', {
-                                useBuiltIns: 'usage'
+                                // useBuiltIns: 'usage'
                             }, ]
                         ],
                         plugins: ["transform-class-properties"]
@@ -140,12 +141,22 @@ module.exports = (env, argv) => {
             }]
         },
         plugins: [
+            new webpack.BannerPlugin({
+                banner: `azUI ${pkgJson.version}
+https://github.com/elgs/azui
+@author Elgs Qian Chen
+MIT License
+Copyright (c) 2018 Elgs Qian Chen
+                `,
+            }),
             new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.css`,
-                chunkFilename: `[name]/${pkgJson.name}.[id].${pkgJson.version}.css`,
+                // filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.css`,
+                // chunkFilename: `[name]/${pkgJson.name}.[id].${pkgJson.version}.css`,
+                filename: `[name]/${pkgJson.name}.[name].css`,
+                chunkFilename: `[name]/${pkgJson.name}.[id].css`,
             }),
             ...(isDev ? [new webpack.HotModuleReplacementPlugin()] : []),
             ...flattenDeep(htmls),
