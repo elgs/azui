@@ -34,13 +34,13 @@ window.onload = () => {
                 const title = page.replace(/^\d+_/, '').replace(/\.[^/.]+$/, '');
                 return {
                     icon: svgApps,
-                    title,
+                    title: title.replace(/_/g, ' '),
                     action: function (e, target) {
                         const tabId = m.name + title;
                         const iframeMarkup = `<div><iframe name='${tabId}' frameBorder='0'></iframe></div>`;
                         const iframe = parseDOMElement(iframeMarkup)[0];
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        const activated = tabs.addTab(null, title, iframe, true, true, tabId);
+                        const activated = tabs.addTab(null, title.replace(/_/g, ' '), iframe, true, true, tabId);
                         if (activated !== true) {
                             window.open(m.name + '/' + page, tabId);
                         }
@@ -52,7 +52,7 @@ window.onload = () => {
                 icon: svgApps,
                 title: 'api',
                 action: function (e, target) {
-                    const tabId = m.name + ' api';
+                    const tabId = m.name + '_api';
                     const iframeMarkup = `<div><iframe name='${tabId}' frameBorder='0'></iframe></div>`;
                     const iframe = parseDOMElement(iframeMarkup)[0];
                     menus.filter(m => m !== menu).map(m => m.clearActive());
