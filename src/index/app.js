@@ -8,6 +8,11 @@ import {
 
 import modules from './modules.json';
 
+const exampleTabMarkup = `<div style='height:100%;width:100%;'>
+    <div class='azLayoutEast'></div>
+    <div class='azLayoutCenter'></div>
+</div>`;
+
 window.onload = () => {
     const buildTime = document.querySelector('.azui span.buildTime');
     buildTime.innerHTML = modules.buildTime;
@@ -37,12 +42,29 @@ window.onload = () => {
                     title: title.replace(/_/g, ' '),
                     action: function (e, target) {
                         const tabId = m.name + title;
-                        const iframeMarkup = `<div><iframe name='${tabId}' frameBorder='0'></iframe></div>`;
-                        const iframe = parseDOMElement(iframeMarkup)[0];
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        const activated = tabs.addTab(null, title.replace(/_/g, ' '), iframe, true, true, tabId);
-                        if (activated !== true) {
-                            window.open(m.name + '/' + page, tabId);
+                        if (!tabs.activateTab(tabId)) {
+                            const exampleTab = parseDOMElement(exampleTabMarkup)[0];
+                            const exampleTabLayout = azui.Layout(exampleTab, {
+                                eastWidth: '400px',
+                            });
+
+                            const iframeExampleMarkup = `<iframe name='example_${tabId}' frameBorder='0'></iframe>`;
+                            const iframeExample = parseDOMElement(iframeExampleMarkup)[0];
+                            exampleTabLayout.centerContent.appendChild(iframeExample);
+
+                            const exampleTabContent = document.createElement('div');
+                            exampleTabContent.appendChild(exampleTab);
+                            tabs.addTab(null, title.replace(/_/g, ' '), exampleTabContent, true, true, tabId);
+                            window.open(m.name + '/' + page, 'example_' + tabId);
+
+                            fetch(m.name + '/' + page).then(res => res.text()).then(text => {
+                                text = text.replace(/<\/script>/g, '&lt;/script&gt;');
+                                const codeDiv = document.createElement('div');
+                                codeDiv.innerHTML = '<script type="text/plain" class="language-markup line-numbers">' + text + '</script>';
+                                exampleTabLayout.eastContent.appendChild(codeDiv);
+                                Prism.highlightAll();
+                            });
                         }
                     }
                 };

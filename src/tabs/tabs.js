@@ -431,6 +431,7 @@ class Tabs extends Base {
     activateTab(tabId) {
         const me = this;
         const node = me.node;
+        let activated = false;
         node.querySelectorAll('div.azTabContent').forEach(el => {
             const elId = _getTabId(el.id);
             if (elId === tabId) {
@@ -443,10 +444,12 @@ class Tabs extends Base {
             const elId = _getTabId(el.id);
             if (elId === tabId) {
                 el.classList.add('active');
+                activated = true;
             } else {
                 el.classList.remove('active');
             }
         });
+        return activated;
     }
     activateTabByIndex(tabIndex) {
         const me = this;

@@ -19,11 +19,11 @@ class Layout extends Base {
 
     _init(options) {
         const settings = Object.assign({
-            north: '.azLayoutNorth',
-            east: '.azLayoutEast',
-            south: '.azLayoutSouth',
-            west: '.azLayoutWest',
-            center: '.azLayoutCenter',
+            north: 'azLayoutNorth',
+            east: 'azLayoutEast',
+            south: 'azLayoutSouth',
+            west: 'azLayoutWest',
+            center: 'azLayoutCenter',
             northHeight: '50px',
             southHeight: '50px',
             westWidth: '100px',
@@ -36,11 +36,11 @@ class Layout extends Base {
 
         const handleSize = isTouchDevice() ? 8 : 4;
 
-        const northContent = resolveDOM(settings.north);
-        const eastContent = resolveDOM(settings.east);
-        const southContent = resolveDOM(settings.south);
-        const westContent = resolveDOM(settings.west);
-        const centerContent = resolveDOM(settings.center);
+        const northContent = resolveDOM(node, '*>.' + settings.north);
+        const eastContent = resolveDOM(node, '*>.' + settings.east);
+        const southContent = resolveDOM(node, '*>.' + settings.south);
+        const westContent = resolveDOM(node, '*>.' + settings.west);
+        const centerContent = resolveDOM(node, '*>.' + settings.center);
 
         let centerWidth, centerHeight;
         if (northContent) {
@@ -69,6 +69,7 @@ class Layout extends Base {
                 },
             });
             north.appendChild(northContent);
+            me.northContent = northContent;
         }
         if (eastContent) {
             const east = document.createElement('div');
@@ -97,6 +98,7 @@ class Layout extends Base {
                 },
             });
             east.appendChild(eastContent);
+            me.eastContent = eastContent;
         }
         if (southContent) {
             const south = document.createElement('div');
@@ -125,6 +127,7 @@ class Layout extends Base {
                 },
             });
             south.appendChild(southContent);
+            me.southContent = southContent;
         }
         if (westContent) {
             const west = document.createElement('div');
@@ -152,6 +155,7 @@ class Layout extends Base {
                 },
             });
             west.appendChild(westContent);
+            me.westContent = westContent;
         }
         if (centerContent) {
             const center = document.createElement('div');
@@ -159,6 +163,7 @@ class Layout extends Base {
             me.node.appendChild(center);
             me.center = center;
             center.appendChild(centerContent);
+            me.centerContent = centerContent;
         }
 
         // console.log(me.north, me.east, me.south, me.west, me.center);

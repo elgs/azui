@@ -10,18 +10,27 @@
             width: 100%;
         }
 
-        & .azLayoutCenter {
+        &>.azLayoutAreaCenter>.azLayoutCenter {
             &>.mainTabs {
                 width: 100%;
                 height: 100%;
                 margin: 0;
                 padding: 0;
             }
-        }
 
-        & .azLayoutCenter iframe {
-            width: 100%;
-            height: 100%;
+            & iframe {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    pre {
+        margin: 0 !important;
+
+        & code,
+        code * {
+            font-family: monospace !important;
         }
     }
 }

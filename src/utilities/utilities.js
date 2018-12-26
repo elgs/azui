@@ -449,12 +449,12 @@ export const prevAll = (el, selector) => {
     return siblings;
 };
 
-export const resolveDOM = dom => {
+export const resolveDOM = (parent, dom) => {
     dom = resolveFunction(dom);
     if (dom instanceof Node) {
         return dom;
     } else if (typeof dom === 'string') {
-        return document.querySelector(dom);
+        return (parent || document).querySelector(dom);
     }
 };
 

@@ -26,24 +26,28 @@
             &.azLayoutAreaNorth {
                 grid-area: n;
                 height: 50px;
+                width: 100%;
                 padding-bottom: $collapseIconSize;
             }
 
             &.azLayoutAreaEast {
                 grid-area: e;
                 width: 100px;
+                height: 100%;
                 padding-left: $collapseIconSize;
             }
 
             &.azLayoutAreaSouth {
                 grid-area: s;
                 height: 50px;
+                width: 100%;
                 padding-top: $collapseIconSize;
             }
 
             &.azLayoutAreaWest {
                 grid-area: w;
                 width: 100px;
+                height: 100%;
                 padding-right: $collapseIconSize;
             }
 

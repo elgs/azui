@@ -46,8 +46,11 @@ $collapseIconSize: 4px;
 .azui * {
     box-sizing: border-box;
     font-size: 12px;
-    color: $default-text;
-    font-family: tahoma, arial, verdana, sans-serif;
+
+    & code:not(*) {
+        color: $default-text;
+        font-family: tahoma, arial, verdana, sans-serif;
+    }
 
     & a {
         text-decoration: none;

@@ -1,13 +1,18 @@
+@import '../utilities/utilities.scss';
+
 html,
 body {
     margin: 0;
     padding: 0;
 }
 
-pre {
-    margin: 0 !important;
+.azui {
+    pre {
+        margin: 0 !important;
 
-    & code {
-        font-family: monospace !important;
+        & code,
+        code * {
+            font-family: monospace !important;
+        }
     }
 }

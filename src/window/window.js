@@ -26,13 +26,13 @@ class Window extends Base {
             width: 400, // @doc:width: Width of window.
             height: 300, // @doc:height: Height of window.
             headerHeight: 36, // @doc:headerHeight: Header height of window.
-            icon: '&#x2615;', // @doc:icon: An icon place at the top left corner of the window and the docker bar. It supports unicode icons or svg strings.
+            icon: '', // @doc:icon: An icon place at the top left corner of the window and the docker bar. It supports unicode icons or svg strings.
             showMinimizeButton: true, // @doc:showMinimizeButton: Whether to show the minimize button or not.
             showMaximizeButton: true, // @doc:showMaximizeButton: Whether to show the maximize button or not.
             showCloseButton: true, // @doc:showCloseButton: Whether to show close button or not.
             showSlideButton: true, // @doc:showSlideButton: Whether to show slide button or not.
             showButtonInDocker: true, // @doc:showButtonInDocker: Whether to show button in docker or not.
-            title: 'AZ', // @doc:title: Title of the window.
+            title: 'azUI', // @doc:title: Title of the window.
             snapToEdge: true, // @doc:snapToEdge: Whether to snap to container or not when dragging cursor is close to the container border.
             //  @doc:settings:end
         }, options);

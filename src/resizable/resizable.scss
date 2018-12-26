@@ -4,7 +4,7 @@
     &.azResizable>.handle {
         background-color: $main-color;
         box-sizing: border-box;
-        position: absolute;
+        position: absolute !important;
         display: flex;
         justify-content: center;
         align-items: center;
