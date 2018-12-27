@@ -60,7 +60,12 @@ class Menu extends Base {
             if (!disabled) {
                 const select = e => {
                     if (e.type === 'touchend') {
+                        // prevent mouseup from being triggered on touch device
                         e.preventDefault();
+                        if (me.dragged) {
+                            me.dragged = false;
+                            return;
+                        }
                     }
                     if (me.activeMenuItem) {
                         me.activeMenuItem.classList.remove('active');
@@ -72,6 +77,9 @@ class Menu extends Base {
                 };
                 if (isTouchDevice()) {
                     menuItem.addEventListener('touchend', select);
+                    menuItem.addEventListener("touchmove", e => {
+                        me.dragged = true;
+                    });
                 }
                 menuItem.addEventListener('mouseup', select);
             }

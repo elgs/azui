@@ -20,7 +20,7 @@ window.onload = () => {
     const container = document.querySelector('.azui.azIndex');
     azui.Layout(container, {
         hideCollapseButton: true,
-        westWidth: '150px',
+        westWidth: '180px',
     });
 
     const accDOM = document.querySelector('#accordionMenu');
@@ -44,9 +44,11 @@ window.onload = () => {
                         const tabId = m.name + title;
                         menus.filter(m => m !== menu).map(m => m.clearActive());
                         if (!tabs.activateTab(tabId)) {
+                            const w = parseInt(getComputedStyle(tabs.node).width);
                             const exampleTab = parseDOMElement(exampleTabMarkup)[0];
                             const exampleTabLayout = azui.Layout(exampleTab, {
-                                eastWidth: '400px',
+                                eastWidth: w / 2 + 'px',
+                                hideCollapseButton: false,
                             });
 
                             const iframeExampleMarkup = `<iframe name='example_${tabId}' frameBorder='0'></iframe>`;
@@ -60,10 +62,12 @@ window.onload = () => {
 
                             fetch(m.name + '/' + page).then(res => res.text()).then(text => {
                                 text = text.replace(/<\/script>/g, '&lt;/script&gt;');
-                                const codeDiv = document.createElement('div');
-                                codeDiv.innerHTML = '<script type="text/plain" class="language-markup line-numbers">' + text + '</script>';
-                                exampleTabLayout.eastContent.appendChild(codeDiv);
+                                exampleTabLayout.eastContent.innerHTML = '<script type="text/plain" class="language-markup line-numbers">' + text + '</script>';
                                 Prism.highlightAll();
+                                // exampleTabLayout.eastContent.querySelector('pre').addEventListener('touchstart', e => {
+                                //     console.log(e.target);
+                                //     e.stopPropagation();
+                                // });
                             });
                         }
                     }

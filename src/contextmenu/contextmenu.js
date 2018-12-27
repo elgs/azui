@@ -27,9 +27,6 @@ class ContextMenu extends Base {
         const settings = Object.assign({
                 onContextMenu: function (e) {},
                 start: function (e) {},
-                preventDefault: function (e) {
-                    return true;
-                },
                 onDismiss: function (e) {},
                 items: null,
                 target: null,
@@ -117,7 +114,8 @@ class ContextMenu extends Base {
             if (!disabled) {
                 menuItem.addEventListener('click', e => {
                     if (item.action.call(menuItem, e, settings.target || node) === false) {
-                        menu.blur();
+                        // menu.blur();
+                        dismissMenu(e);
                     }
                     e.stopPropagation();
                 });
@@ -142,6 +140,7 @@ class ContextMenu extends Base {
             menu.style['z-index'] = Number.MAX_SAFE_INTEGER;
 
             const onKeyUp = e => {
+                // prevent browser scroll
                 e.preventDefault();
                 // console.log(e.keyCode);
 
@@ -171,9 +170,11 @@ class ContextMenu extends Base {
 
             menu.setAttribute('tabindex', 0);
             document.documentElement.appendChild(menu);
-            menu.addEventListener('blur', e => {
-                dismissMenu(e);
-            });
+            if (!isTouchDevice()) {
+                menu.addEventListener('blur', e => {
+                    dismissMenu(e);
+                });
+            }
             menu.addEventListener('keyup', onKeyUp);
             menu.focus({
                 preventScroll: true
@@ -212,7 +213,9 @@ class ContextMenu extends Base {
                 });
             }
 
-            e.preventDefault(); // prevent browser context menu
+            if (!isTouchDevice()) {
+                e.preventDefault(); // prevent browser context menu
+            }
         }
 
         me.rightClick = azui.RightClick(node, {
@@ -223,7 +226,6 @@ class ContextMenu extends Base {
                 onContextMenu(e);
                 settings.onContextMenu(e);
             },
-            preventDefault: settings.preventDefault,
         });
     }
 };

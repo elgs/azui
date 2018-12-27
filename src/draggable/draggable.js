@@ -336,9 +336,9 @@ class Draggable extends Base {
         const onmousedown = function (e) {
             // console.log(e.type, e.button, e.target, me, e);
 
-            if (e.type === 'touchstart') {
-                e.preventDefault();
-            }
+            // if (e.type === 'touchstart') {
+            //     // e.preventDefault();
+            // }
             if (e.type === 'mousedown' && e.button !== 0) {
                 return;
             }

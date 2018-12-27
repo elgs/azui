@@ -28,8 +28,10 @@ class Accordion extends Base {
         const createHeaderSelected = cm => {
             return e => {
                 if (e.type === 'touchend') {
+                    // prevent mouseup from triggered on touch device
                     e.preventDefault();
-                    if (cm.rightClick.triggered) {
+                    if (cm.rightClick.triggered || me.dragged) {
+                        me.dragged = false;
                         return;
                     }
                 }
@@ -113,6 +115,9 @@ class Accordion extends Base {
 
             if (isTouchDevice()) {
                 a.addEventListener("touchend", createHeaderSelected(cm));
+                a.addEventListener("touchmove", e => {
+                    me.dragged = true;
+                });
             }
             a.addEventListener("mouseup", createHeaderSelected(cm));
         };

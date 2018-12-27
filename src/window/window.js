@@ -210,7 +210,11 @@ class Window extends Base {
             snapDistance: 8,
             create: function (event, ui) {
                 const target = event.target;
+                // console.log(target, event.currentTarget);
                 pb = node.parentNode.getBoundingClientRect();
+                if (isTouchDevice() && matches(target, '.azWindowHeader,.azWindowHeader *')) {
+                    event.preventDefault();
+                }
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
                     return false; // don't drag when clicking on icons
                 }
@@ -250,6 +254,7 @@ class Window extends Base {
                     } else {
                         removeGhost();
                     }
+                    // prevent text selection on snap.
                     event.preventDefault();
                 }
                 if (isOutside(cursorX, cursorY, pb)) {

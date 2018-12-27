@@ -191,6 +191,7 @@ class Select extends Base {
                 return;
             }
             if (e.type === 'touchstart') {
+                // prevent mouse event to trigger on touch device
                 e.preventDefault();
             }
             if (!dropdownShown) {

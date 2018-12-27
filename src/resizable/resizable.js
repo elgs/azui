@@ -518,7 +518,9 @@ class Resizable extends Base {
         };
 
         createDraggingHandles();
-        me._resetCollapseIconStyle();
+        setTimeout(() => {
+            me._resetCollapseIconStyle();
+        });
     }
 
     moveN(by) {

@@ -17,9 +17,9 @@ class RightClick extends Base {
     _init(options) {
         const settings = Object.assign({
             onRightClick: function (e) {},
-            preventDefault: function (e) {
-                return true;
-            },
+            // preventDefault: function (e) {
+            //     return true;
+            // },
             resumeDefaultEvent: function (e) {
                 e.target.dispatchEvent(new CustomEvent('click'));
             },
@@ -57,9 +57,9 @@ class RightClick extends Base {
                     }
                 }, 500);
                 // console.log(settings.preventDefault(event));
-                if (settings.preventDefault(event)) {
-                    event.preventDefault(); // prevent long press browser menu;
-                }
+                // if (settings.preventDefault(event)) {
+                //     event.preventDefault(); // prevent long press browser menu;
+                // }
             });
         }
     }

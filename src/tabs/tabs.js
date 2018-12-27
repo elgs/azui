@@ -86,7 +86,7 @@ const getTabContextMenu = closable => [{
 const createHeaderClicked = function (cm) {
     return function (event) {
         if (event.type === 'touchend') {
-            event.preventDefault();
+            // event.preventDefault();
             if (cm.rightClick.triggered) {
                 return;
             }
