@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>azDroppable</title>
     <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+        }
+
         div {
             border: 1px solid gray;
             box-sizing: border-box;
@@ -31,6 +40,7 @@
         div#source0 {
             width: 200px;
             height: 200px;
+            z-index: 10;
         }
 
         div.message {

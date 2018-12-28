@@ -93,7 +93,7 @@ class Tabs extends Base {
     _init(options) {
         const settings = Object.assign({
                 // @doc:settings:start
-                headerHeight: 40, // @doc:headerHeight: Header height.
+                headerHeight: 36, // @doc:headerHeight: Header height.
                 draggable: true, // @doc:draggable: Whether the tab window should be draggable or not.
                 resizable: true, // @doc:resizable: Whether the tab window should be resizable or not.
                 detachable: true, // @doc:detachable: Whether the tabs could be detached by dragging out or not.
@@ -106,31 +106,7 @@ class Tabs extends Base {
         const node = me.node;
         me.settings = settings;
 
-        let tabHeaderContainer = node.querySelector('div.azTabHeader');
-        if (!tabHeaderContainer) {
-            tabHeaderContainer = document.createElement('div');
-            tabHeaderContainer.classList.add('azTabHeader');
-            node.appendChild(tabHeaderContainer);
-        }
-        const tabLabelList = node.querySelectorAll('div.azTabLabel'); // a list
-        const tabLabels = document.createElement('div');
-        tabLabels.classList.add('azTabLabels');
-        tabHeaderContainer.appendChild(tabLabels);
-
-        tabLabelList.forEach(el => {
-            me.applyEvents(el);
-
-            if (matches(el, '.azClosable')) {
-                const iconDiv = document.createElement('div');
-                iconDiv.classList.add('close');
-                iconDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
-                iconDiv.addEventListener('click', me.closeClicked);
-                el.appendChild(iconDiv);
-            }
-            tabLabels.appendChild(el);
-        });
-        me.activateTabByIndex(0);
-
+        node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
 
         me.createHeaderClicked = function (cm) {
             return function (event) {
@@ -171,6 +147,31 @@ class Tabs extends Base {
             el.addEventListener('mouseup', headerClicked);
             el.addEventListener('touchend', headerClicked);
         };
+
+        let tabHeaderContainer = node.querySelector('div.azTabHeader');
+        if (!tabHeaderContainer) {
+            tabHeaderContainer = document.createElement('div');
+            tabHeaderContainer.classList.add('azTabHeader');
+            node.appendChild(tabHeaderContainer);
+        }
+        const tabLabelList = node.querySelectorAll('div.azTabLabel'); // a list
+        const tabLabels = document.createElement('div');
+        tabLabels.classList.add('azTabLabels');
+        tabHeaderContainer.appendChild(tabLabels);
+
+        tabLabelList.forEach(el => {
+            me.applyEvents(el);
+
+            if (matches(el, '.azClosable')) {
+                const iconDiv = document.createElement('div');
+                iconDiv.classList.add('close');
+                iconDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
+                iconDiv.addEventListener('click', me.closeClicked);
+                el.appendChild(iconDiv);
+            }
+            tabLabels.appendChild(el);
+        });
+        me.activateTabByIndex(0);
 
         // me.dragging = false;
         me.sortable = azui.Sortable(tabLabels, {

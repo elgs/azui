@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>azTabs</title>
     <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+        }
+
         #fout {
             display: none;
         }
@@ -43,7 +52,7 @@
         </div>
 
         <div id="azTabContent-Home" class="azTabContent">
-            <div>
+            <div style="border:1px solid tomato;box-sizing: border-box;height:100%;width:100%;overflow:auto">
                 <p style="text-align: center;">
                     <button id='newTabButton'>New Tab</button>
                 </p>
@@ -78,7 +87,6 @@
             ++count;
         };
         newTabButton.addEventListener('click', onClick);
-        newTabButton.addEventListener('touchstart', onClick);
         newTabButton.click();
         newTabButton.click();
         newTabButton.click();

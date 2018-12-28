@@ -43,10 +43,10 @@
             }
         }
 
-        & .azWindowHeader {
+        &>.azWindowHeader {
             box-sizing: border-box;
             width: 100%; // display: inline-block;
-            align-items: center;
+            // align-items: center;
             grid-row: 1/2;
             padding: 6px;
 
@@ -61,7 +61,7 @@
                 }
             }
 
-            & span.azHeaderIcon {
+            span.azHeaderIcon {
                 cursor: pointer;
                 display: inline-block;
                 text-align: center;
@@ -85,7 +85,7 @@
                 }
             }
 
-            & .left {
+            .left {
                 white-space: nowrap;
                 float: left;
                 height: 100%;
@@ -117,13 +117,13 @@
                 }
             }
 
-            & .center {
+            .center {
                 display: inline-block;
                 height: 100%;
                 text-align: center;
             }
 
-            & .right {
+            .right {
                 &::before {
                     content: "";
                     display: inline-block;
@@ -137,7 +137,7 @@
             }
         }
 
-        & .azWindowContent {
+        &>.azWindowContent {
             position: relative;
             width: 100%;
             grid-row: 2/3;
