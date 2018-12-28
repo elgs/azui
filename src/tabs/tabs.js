@@ -179,9 +179,10 @@ class Tabs extends Base {
                 if (matches(e.target, '.close,.close *')) {
                     return false; // don't drag when clicking on icons
                 }
-                // if (e.type === 'touchstart') {
-                //     e.preventDefault();
-                // }
+                if (e.type === 'touchstart') {
+                    // prevent text from being selected on context menu.
+                    e.preventDefault();
+                }
             },
             // start: (e, data) => {
             //     me.dragging = true;

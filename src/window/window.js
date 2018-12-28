@@ -212,7 +212,8 @@ class Window extends Base {
                 const target = event.target;
                 // console.log(target, event.currentTarget);
                 pb = node.parentNode.getBoundingClientRect();
-                if (isTouchDevice() && matches(target, '.azWindowHeader,.azWindowHeader *')) {
+                if (isTouchDevice() && matches(target, '.azWindowHeader,.azWindowHeader *:not(.azHeaderIcon,.azHeaderIcon *)')) {
+                    // prevent title from being selected on context menu, the :not() select is to allow icons to be correctly touched.
                     event.preventDefault();
                 }
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
