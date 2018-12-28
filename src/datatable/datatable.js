@@ -489,6 +489,7 @@ class DataTable extends Base {
 
         const thSelected = e => {
             if (e.type === 'touchend') {
+                // prevent mouseup from being triggered on touch device.
                 e.preventDefault();
             }
 

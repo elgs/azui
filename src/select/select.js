@@ -53,6 +53,10 @@ class Select extends Base {
                 menuItem.appendChild(titleDiv);
                 titleDiv.textContent = title;
                 const onSelect = function (e) {
+                    if (e.type === 'touchstart') {
+                        // prevent mousedown from being triggered on touch device.
+                        e.preventDefault();
+                    }
                     me.selectInput.value = title;
                     node.dispatchEvent(
                         new CustomEvent('done', {

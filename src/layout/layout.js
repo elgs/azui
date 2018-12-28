@@ -67,6 +67,11 @@ class Layout extends Base {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },
+                collapse: function (e, el) {
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
+                },
             });
             north.appendChild(northContent);
             me.northContent = northContent;
@@ -92,6 +97,11 @@ class Layout extends Base {
                     by.dx = Math.max(by.dx, -centerWidth);
                 },
                 stop: function (e, el) {
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
+                },
+                collapse: function (e, el) {
                     centerContent.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
@@ -125,6 +135,11 @@ class Layout extends Base {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },
+                collapse: function (e, el) {
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
+                },
             });
             south.appendChild(southContent);
             me.southContent = southContent;
@@ -149,6 +164,11 @@ class Layout extends Base {
                     by.dx = Math.min(by.dx, centerWidth);
                 },
                 stop: function (e, el) {
+                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                        iframe && (iframe.style['pointer-events'] = '');
+                    });
+                },
+                collapse: function (e, el) {
                     centerContent.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
