@@ -83,46 +83,7 @@ const getTabContextMenu = closable => [{
         }
     }
 ];
-const createHeaderClicked = function (cm) {
-    return function (event) {
-        if (event.type === 'touchend') {
-            // event.preventDefault();
-            if (cm.rightClick.triggered) {
-                return;
-            }
-        }
 
-        const currentTabNode = event.target.closest('.azTabs');
-        const currentTabs = azui.Tabs(currentTabNode);
-        if (event.button === 2 || cm.on) {
-            return;
-        }
-        // console.log(event.button);
-        const tabId = _getTabId(event.currentTarget.id);
-        if (!event.target.classList.contains('close') &&
-            !event.target.parentNode.classList.contains('close')) {
-            currentTabs.activateTab(tabId);
-        }
-    };
-};
-const closeClicked = function (event) {
-    const currentTabNode = event.target.closest('.azTabs');
-    const currentTabs = azui.Tabs(currentTabNode);
-    const tabId = _getTabId(event.currentTarget.parentNode.id);
-    currentTabs.removeTab(tabId);
-    event.stopPropagation();
-};
-
-
-const applyEvents = el => {
-    const closable = matches(el, '.azClosable');
-    const cm = azui.ContextMenu(el, {
-        items: getTabContextMenu(closable),
-    });
-    const headerClicked = createHeaderClicked(cm);
-    el.addEventListener('mouseup', headerClicked);
-    el.addEventListener('touchend', headerClicked);
-};
 
 class Tabs extends Base {
     static className = 'Tabs';
@@ -157,18 +118,59 @@ class Tabs extends Base {
         tabHeaderContainer.appendChild(tabLabels);
 
         tabLabelList.forEach(el => {
-            applyEvents(el);
+            me.applyEvents(el);
 
             if (matches(el, '.azClosable')) {
                 const iconDiv = document.createElement('div');
                 iconDiv.classList.add('close');
                 iconDiv.appendChild(parseDOMElement(icons.svgClose)[0]);
-                iconDiv.addEventListener('click', closeClicked);
+                iconDiv.addEventListener('click', me.closeClicked);
                 el.appendChild(iconDiv);
             }
             tabLabels.appendChild(el);
         });
         me.activateTabByIndex(0);
+
+
+        me.createHeaderClicked = function (cm) {
+            return function (event) {
+                if (event.type === 'touchend') {
+                    // event.preventDefault();
+                    if (cm.rightClick.triggered) {
+                        return;
+                    }
+                }
+
+                const currentTabNode = event.target.closest('.azTabs');
+                const currentTabs = azui.Tabs(currentTabNode);
+                if (event.button === 2 || cm.on || me.sorted) {
+                    return;
+                }
+                // console.log(event.button);
+                const tabId = _getTabId(event.currentTarget.id);
+                if (!event.target.classList.contains('close') &&
+                    !event.target.parentNode.classList.contains('close')) {
+                    currentTabs.activateTab(tabId);
+                }
+            };
+        };
+        me.closeClicked = function (event) {
+            const currentTabNode = event.target.closest('.azTabs');
+            const currentTabs = azui.Tabs(currentTabNode);
+            const tabId = _getTabId(event.currentTarget.parentNode.id);
+            currentTabs.removeTab(tabId);
+            event.stopPropagation();
+        };
+
+        me.applyEvents = el => {
+            const closable = matches(el, '.azClosable');
+            const cm = azui.ContextMenu(el, {
+                items: getTabContextMenu(closable),
+            });
+            const headerClicked = me.createHeaderClicked(cm);
+            el.addEventListener('mouseup', headerClicked);
+            el.addEventListener('touchend', headerClicked);
+        };
 
         // me.dragging = false;
         me.sortable = azui.Sortable(tabLabels, {
@@ -184,8 +186,11 @@ class Tabs extends Base {
             // start: (e, data) => {
             //     me.dragging = true;
             // },
+            sort: (e, data) => {
+                me.sorted = true;
+            },
             stop: (e, data) => {
-                // me.dragging = false;
+                me.sorted = false;
                 const tabId = _getTabId(data.source.id);
                 if (data.detached) {
                     const x = data.boundingClientRect.left + getDocScrollLeft();
@@ -388,7 +393,7 @@ class Tabs extends Base {
 
         const closeDiv = headerNode.querySelector('.close');
         if (closeDiv) {
-            closeDiv.addEventListener('click', closeClicked);
+            closeDiv.addEventListener('click', me.closeClicked);
         }
 
         me.sortable.add(headerNode);
@@ -401,7 +406,7 @@ class Tabs extends Base {
         contentNode.style['display'] = 'none';
         me.node.appendChild(contentNode);
 
-        applyEvents(headerNode);
+        me.applyEvents(headerNode);
 
         // me.showHideScrollers();
         me.fitTabWidth();

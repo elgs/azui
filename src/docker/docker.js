@@ -40,7 +40,6 @@ class Docker extends Base {
         this.x = 30;
         this.y = 30;
         this.z = 0;
-        // this.dragging = false;
         this.sortable = azui.Sortable(this.node, {
             // placeholder: true,
             // create: (e, target) => {
@@ -48,14 +47,14 @@ class Docker extends Base {
             //         e.preventDefault();
             //     }
             // },
-            // start: (e, data) => {
-            //     // console.log('start dragging');
-            //     me.dragging = true;
-            // },
-            // stop: (e, data) => {
-            //     // console.log('stop dragging');
-            //     me.dragging = false;
-            // }
+            sort: (e, data) => {
+                // console.log('start dragging');
+                me.sorted = true;
+            },
+            stop: (e, data) => {
+                // console.log('stop dragging');
+                me.sorted = false;
+            },
         });
     }
 
@@ -177,7 +176,7 @@ class Docker extends Base {
                     return;
                 }
             }
-            if (e.button === 2 || cm.on) {
+            if (e.button === 2 || cm.on || me.sorted) {
                 return;
             }
             const docked = me.node.querySelector(`[az-dock-id='${id}']:not(.az-placeholder)`);
