@@ -106,7 +106,7 @@ class Tabs extends Base {
         const node = me.node;
         me.settings = settings;
 
-        node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
+        // node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
 
         me.createHeaderClicked = function (cm) {
             return function (event) {
@@ -181,7 +181,7 @@ class Tabs extends Base {
                     return false; // don't drag when clicking on icons
                 }
                 if (e.type === 'touchstart') {
-                    // prevent text from being selected on context menu.
+                    // prevent tab window from moving around while being dragged.
                     e.preventDefault();
                 }
             },
@@ -251,18 +251,15 @@ class Tabs extends Base {
                     me.node.style['z-index'] = ++Tabs.z;
                     // console.log(event.target.classList.contains('azTabHeader'));
                     // console.log(event.target.classList);
-                    if (event.type === 'touchstart' &&
-                        event.target.classList.contains('azTabLabels')) {
-                        // event.preventDefault();
-                    }
                 },
             });
         }
         if (settings.resizable) {
             azui.Resizable(node, {
                 hideHandles: true,
+                minHeight: settings.headerHeight * 2,
+                minWidth: 240,
                 resize: e => {
-                    // me.showHideScrollers();
                     me.fitTabWidth();
                 },
             });

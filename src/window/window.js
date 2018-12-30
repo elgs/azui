@@ -287,7 +287,7 @@ class Window extends Base {
         node.style['height'] = settings.height + 'px';
         node.style['width'] = settings.width + 'px';
         node.style['z-index'] = me.docker.z;
-        node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
+        // node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
         me.docker.x += settings.headerHeight;
         me.docker.y += settings.headerHeight;
 

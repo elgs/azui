@@ -3,15 +3,15 @@
 .azui {
     &.azTabs {
         box-shadow: $shadow;
-        display: grid;
-        // grid-template-areas: "headers""contents";
+        display: flex;
+        flex-direction: column;
         // grid-template-rows: auto 1fr;
         background-color: white;
         // overflow: hidden;
 
         &>.azTabHeader {
             width: 100%;
-            grid-row: 1/2;
+            // grid-row: 1/2;
             border-bottom: 1px solid darken($color: $main-color, $amount: 10%);
             background-color: lighten($color: $main-color, $amount: 5%);
 
@@ -117,10 +117,10 @@
         }
 
         &>.azTabContent {
-            grid-row: 2/3;
+            // grid-row: 2/3;
+            height: 100%;
             display: none;
             width: 100%;
-            height: 100%;
             position: relative;
             overflow: hidden;
         }

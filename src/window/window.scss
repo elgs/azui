@@ -4,7 +4,9 @@
     &.azWindow {
         box-sizing: border-box;
         background-color: white;
-        display: grid;
+        // display: grid;
+        display: flex;
+        flex-direction: column;
         box-shadow: $shadow;
 
         &:hover {
@@ -47,7 +49,7 @@
             box-sizing: border-box;
             width: 100%; // display: inline-block;
             // align-items: center;
-            grid-row: 1/2;
+            // grid-row: 1/2;
             padding: 6px;
 
             transition: 0.5s;
@@ -140,7 +142,8 @@
         &>.azWindowContent {
             position: relative;
             width: 100%;
-            grid-row: 2/3;
+            height: 100%;
+            // grid-row: 2/3;
             overflow: hidden; // box-sizing: border-box;
         }
     }

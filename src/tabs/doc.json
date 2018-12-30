@@ -3,7 +3,7 @@
     {
       "key": "headerHeight",
       "desc": "Header height.",
-      "defaultValue": 40,
+      "defaultValue": 36,
       "type": "number"
     },
     {
