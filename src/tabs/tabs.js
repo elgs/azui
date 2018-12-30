@@ -161,6 +161,7 @@ class Tabs extends Base {
 
         tabLabelList.forEach(el => {
             me.applyEvents(el);
+            el.style.height = settings.headerHeight + 'px';
 
             if (matches(el, '.azClosable')) {
                 const iconDiv = document.createElement('div');
@@ -388,6 +389,7 @@ class Tabs extends Base {
         }
 
         headerNode.classList.add('azTabLabel');
+        headerNode.style.height = me.settings.headerHeight + 'px';
         headerNode.setAttribute('id', 'azTabHeader-' + tabId)
 
         const closeDiv = headerNode.querySelector('.close');

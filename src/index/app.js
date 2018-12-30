@@ -64,10 +64,6 @@ window.onload = () => {
                                 text = text.replace(/<\/script>/g, '&lt;/script&gt;');
                                 exampleTabLayout.eastContent.innerHTML = '<script type="text/plain" class="language-markup line-numbers">' + text + '</script>';
                                 Prism.highlightAll();
-                                // exampleTabLayout.eastContent.querySelector('pre').addEventListener('touchstart', e => {
-                                //     console.log(e.target);
-                                //     e.stopPropagation();
-                                // });
                             });
                         }
                     }
