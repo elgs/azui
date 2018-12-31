@@ -40,8 +40,9 @@
 //     }
 //     // @doc:method:start
 //     f2(x = 'abc') {
-//         // @doc: f2 does some cneaky things
+//         // @doc: f2 does some sneaky things
 //         // @doc:x: description of x
+//         // @doc:return: this function returns some fancy value.
 //         // @doc:method:end
 //     }
 // }
@@ -104,12 +105,16 @@ const parseMethods = str => {
                 const parts = s2.split(/\:(.*)/);
                 const key = parts[0].trim();
                 const desc = parts[1].trim();
-                method.params.push({
-                    key,
-                    desc,
-                    defaultValue: global[key],
-                    type: typeof global[key],
-                });
+                if (key === 'return') {
+                    method.returns = desc;
+                } else {
+                    method.params.push({
+                        key,
+                        desc,
+                        defaultValue: global[key],
+                        type: typeof global[key],
+                    });
+                }
             }
             firstLine = false;
         }

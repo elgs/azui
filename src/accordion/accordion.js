@@ -18,7 +18,9 @@ class Accordion extends Base {
 
     _init(options) {
         const settings = Object.assign({
+            //  @doc:settings:start
             collapseOthers: false,
+            //  @doc:settings:end
         }, options);
 
         const me = this;
