@@ -147,7 +147,15 @@ class Window extends Base {
             },
         });
 
+        let _top, _left, _bottom, _right, _width, _height;
         const createGhost = (pos, top, left, bottom, right, width, height) => {
+            _top = top;
+            _left = left;
+            _bottom = bottom;
+            _right = right;
+            _width = width;
+            _height = height;
+
             if (!me.ghost) {
                 const styles = getComputedStyle(me.node);
 
@@ -174,8 +182,8 @@ class Window extends Base {
                     ghost.style.top = top;
                     ghost.style.right = right;
                     ghost.style.bottom = bottom;
-                    ghost.style.height = `calc(${height} - 2px)`;
-                    ghost.style.width = `calc(${width} - 2px)`;
+                    ghost.style.height = height;
+                    ghost.style.width = width;
                 });
             } else if (me.ghostPos !== pos) {
                 removeGhost();
@@ -188,13 +196,12 @@ class Window extends Base {
                 if (app) {
                     // record ghost position
                     me.docker.snap(me.dockId, true);
-                    const ghostStyle = getComputedStyle(me.ghost);
-                    me.node.style.left = ghostStyle.left;
-                    me.node.style.top = ghostStyle.top;
-                    me.node.style.right = '';
-                    me.node.style.bottom = '';
-                    me.node.style.height = ghostStyle.height;
-                    me.node.style.width = ghostStyle.width;
+                    me.node.style.left = _left;
+                    me.node.style.top = _top;
+                    me.node.style.right = _right;
+                    me.node.style.bottom = _bottom;
+                    me.node.style.height = _height;
+                    me.node.style.width = _width;
                     me.ghost.remove();
                     // resize window to ghost position
                 } else {
