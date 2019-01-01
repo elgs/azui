@@ -131,7 +131,7 @@ module.exports = (env, argv) => {
                         plugins: ["transform-class-properties",
                             ["babel-plugin-inline-import", {
                                 "extensions": [
-                                    ".tpl",
+                                    ".tplhtml",
                                     ".md",
                                 ]
                             }]

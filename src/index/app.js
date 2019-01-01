@@ -8,7 +8,7 @@ import {
 
 import modules from './modules.json';
 
-import exampleTabMarkup from './exampletab.tpl';
+import exampleTabMarkup from './exampletab.tplhtml';
 
 window.onload = () => {
     const buildTime = document.querySelector('.azui span.buildTime');

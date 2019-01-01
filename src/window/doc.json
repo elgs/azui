@@ -2,19 +2,19 @@
   "settings": [
     {
       "key": "width",
-      "desc": "Width of window.",
+      "desc": "Width of `window`.",
       "defaultValue": 400,
       "type": "number"
     },
     {
       "key": "height",
-      "desc": "Height of window.",
+      "desc": "Height of `window`.",
       "defaultValue": 300,
       "type": "number"
     },
     {
       "key": "headerHeight",
-      "desc": "Header height of window.",
+      "desc": "Header height of `window`.",
       "defaultValue": 36,
       "type": "number"
     },

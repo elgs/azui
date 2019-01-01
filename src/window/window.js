@@ -23,9 +23,9 @@ class Window extends Base {
     _init(options) {
         const settings = Object.assign({
             //  @doc:settings:start
-            width: 400, // @doc:width: Width of window.
-            height: 300, // @doc:height: Height of window.
-            headerHeight: 36, // @doc:headerHeight: Header height of window.
+            width: 400, // @doc:width: Width of `window`.
+            height: 300, // @doc:height: Height of `window`.
+            headerHeight: 36, // @doc:headerHeight: Header height of `window`.
             icon: '', // @doc:icon: An icon place at the top left corner of the window and the docker bar. It supports unicode icons or svg strings.
             showMinimizeButton: true, // @doc:showMinimizeButton: Whether to show the minimize button or not.
             showMaximizeButton: true, // @doc:showMaximizeButton: Whether to show the maximize button or not.

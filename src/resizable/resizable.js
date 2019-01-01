@@ -276,7 +276,7 @@ class Resizable extends Base {
                 }
 
                 elem.classList.add('active');
-                event.preventDefault();
+                // event.preventDefault();
             };
 
             const onStop = function (event, elem) {
