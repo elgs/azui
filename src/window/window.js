@@ -349,6 +349,7 @@ class Window extends Base {
     // @doc:method:start
     children() {
         // @doc: Get child windows.
+        // @doc:return: Returns an array of child windows with class '.azWindowContent>.azWindow'.
         // @doc:method:end
         const children = this.node.querySelectorAll('.azWindowContent>.azWindow');
         return [...children].map(el => {
@@ -361,6 +362,7 @@ class Window extends Base {
         // @doc: Activate the window.
         // @doc:notify: Whether notify the docker or not.
         // @doc:method:end
+
         // two way notification
         const me = this;
 

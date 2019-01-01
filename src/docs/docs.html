@@ -3,77 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-tomorrow.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/unescaped-markup/prism-unescaped-markup.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github-gist.min.css" />
     <title>azDoc</title>
 </head>
 
 <body>
     <div class="azui">
-        <div class="azDocs"></div>
-
-        <!-- <script type="text/plain" class="language-markup line-numbers">
-            <!DOCTYPE html>
-<html>
-
-<head>
-    <title>azWindow Events</title>
-    <style>
-        html,
-        body {
-            overflow: hidden;
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-</head>
-
-<body>
-    <div id='win0'></div>
-    <div id='win1'></div>
-
-    <script>
-        const win0 = azui.Window('#win0', {
-            width: 400,
-            height: 300,
-            showButtonInDocker: false,
-            title: 'Win 0',
-        });
-
-        win0.node.addEventListener('beforeslideup', e => {
-            console.log('beforeslideup', e.detail);
-            return;
-        });
-        win0.node.addEventListener('afterslideup', e => {
-            console.log('afterslideup', e.detail);
-        });
-        win0.node.addEventListener('beforeslidedown', e => {
-            console.log('beforeslidedown', e.detail);
-        });
-        win0.node.addEventListener('afterslidedown', e => {
-            console.log('afterslidedown', e.detail);
-        });
-
-        azui.Window('#win1', {
-            width: 400,
-            height: 300,
-            showButtonInDocker: false,
-            title: 'Win 1',
-        });
-    &lt;/script&gt;
-</body>
-
-</html>
-</script> -->
-
+        <div class="azDocs markdown-body"></div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/unescaped-markup/prism-unescaped-markup.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 </body>
 
 </html>

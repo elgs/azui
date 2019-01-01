@@ -19,7 +19,7 @@ class Accordion extends Base {
     _init(options) {
         const settings = Object.assign({
             //  @doc:settings:start
-            collapseOthers: false,
+            collapseOthers: false, // @doc:collapseOthers: True to collapse others when one is expanded.
             //  @doc:settings:end
         }, options);
 

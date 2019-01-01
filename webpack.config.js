@@ -128,7 +128,14 @@ module.exports = (env, argv) => {
                                 // useBuiltIns: 'usage'
                             }, ]
                         ],
-                        plugins: ["transform-class-properties"]
+                        plugins: ["transform-class-properties",
+                            ["babel-plugin-inline-import", {
+                                "extensions": [
+                                    ".tpl",
+                                    ".md",
+                                ]
+                            }]
+                        ]
                     }
                 },
             }, {
@@ -143,10 +150,10 @@ module.exports = (env, argv) => {
         plugins: [
             new webpack.BannerPlugin({
                 banner: `azUI ${pkgJson.version}
-https://github.com/elgs/azui
-@author Elgs Qian Chen
-MIT License
-Copyright (c) 2018 Elgs Qian Chen
+${pkgJson.homepage}
+@author ${pkgJson.author}
+${pkgJson.license} License
+Copyright (c) ${new Date().getFullYear()} ${pkgJson.author}
                 `,
             }),
             new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),

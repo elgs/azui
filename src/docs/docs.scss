@@ -1,20 +1,16 @@
-@import '../utilities/utilities.scss';
-
 html,
 body {
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
+    overflow: auto;
 }
 
 .azui {
-    pre {
-        margin: 0 !important;
-        width: 100%;
+    .azDocs {
         height: 100%;
-
-        & code,
-        code * {
-            font-family: monospace !important;
-        }
+        width: 100%;
+        padding: 40px;
     }
 }

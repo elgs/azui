@@ -8,10 +8,7 @@ import {
 
 import modules from './modules.json';
 
-const exampleTabMarkup = `<div style='height:100%;width:100%;'>
-    <div class='azLayoutEast'></div>
-    <div class='azLayoutCenter'></div>
-</div>`;
+import exampleTabMarkup from './exampletab.tpl';
 
 window.onload = () => {
     const buildTime = document.querySelector('.azui span.buildTime');
@@ -47,7 +44,7 @@ window.onload = () => {
                             const w = parseInt(getComputedStyle(tabs.node).width);
                             const exampleTab = parseDOMElement(exampleTabMarkup)[0];
                             const exampleTabLayout = azui.Layout(exampleTab, {
-                                eastWidth: w / 2 + 'px',
+                                eastWidth: w * .382 + 'px',
                                 hideCollapseButton: false,
                             });
 

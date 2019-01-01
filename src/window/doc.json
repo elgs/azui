@@ -71,7 +71,8 @@
     {
       "params": [],
       "key": "children",
-      "desc": "Get child windows."
+      "desc": "Get child windows.",
+      "returns": "Returns an array of child windows with class '.azWindowContent>.azWindow'."
     },
     {
       "params": [
