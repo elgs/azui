@@ -358,7 +358,7 @@ class Window extends Base {
     }
 
     // @doc:method:start
-    activate(notify) {
+    activate(notify = false) {
         // @doc: Activate the window.
         // @doc:notify: Whether notify the docker or not.
         // @doc:method:end
@@ -402,7 +402,7 @@ class Window extends Base {
     }
 
     // @doc:method:start
-    inactivate(notify) {
+    inactivate(notify = false) {
         // @doc: Inactivate the window.
         // @doc:notify: Whether notify the docker or not.
         // @doc:method:end

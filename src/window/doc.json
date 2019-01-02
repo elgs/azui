@@ -79,7 +79,8 @@
         {
           "key": "notify",
           "desc": "Whether notify the docker or not.",
-          "type": "undefined"
+          "defaultValue": false,
+          "type": "boolean"
         }
       ],
       "key": "activate",
@@ -90,7 +91,8 @@
         {
           "key": "notify",
           "desc": "Whether notify the docker or not.",
-          "type": "undefined"
+          "defaultValue": false,
+          "type": "boolean"
         }
       ],
       "key": "inactivate",

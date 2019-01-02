@@ -1,0 +1,13 @@
+<details>
+    <summary>${key} ${param_list} ${desc}</summary>
+    <ui>
+        <li>
+            Parameter:
+            ${param_details}
+        </li>
+        <li>
+            Returns: ${returns}
+        </li>
+        <li>${desc}</li>
+    </ui>
+</details>

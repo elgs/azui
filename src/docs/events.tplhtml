@@ -1,0 +1,10 @@
+<details>
+    <summary>${key} ${desc}</summary>
+    <ui>
+        <li>
+            Parameter:
+            ${param_details}
+        </li>
+        <li>${desc}</li>
+    </ui>
+</details>

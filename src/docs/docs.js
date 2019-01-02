@@ -24,13 +24,23 @@ window.onload = _ => {
 
     let methods = ''
     doc.methods.map(m => {
-        methods += '* ' + m.key + '  \n';
+        let pd = '<ul>';
+        const pl = m.params.map(p => {
+            pd += '<li>' + p.key + ' `' + p.type + '`' + ' default: `' + p.defaultValue + '` ' + p.desc + '</li>';
+            return p.key + '`' + p.type + '`';
+        }).join(', ');
+        const item = methodsTpl.replace('${key}', m.key).replace('${returns}', m.returns).replace(/\$\{desc\}/g, m.desc).replace('${param_list}', '(' + pl + ')').replace('${param_details}', pd + '</ul>');
+        methods += item + '  \n';
     });
     md = md.replace('${methods}', methods);
 
     let events = ''
-    doc.methods.map(e => {
-        events += '* ' + e.key + '  \n';
+    doc.events.map(e => {
+        const pd = e.params.map(p => {
+            return '<li>' + p.key + ' ' + p.desc + '</li>';
+        }).join(', ');
+        const item = eventsTpl.replace('${key}', e.key).replace(/\$\{desc\}/g, e.desc).replace('${param_details}', '<ul>' + pd + '</ul>');
+        events += item + '  \n';
     });
     md = md.replace('${events}', events);
 
