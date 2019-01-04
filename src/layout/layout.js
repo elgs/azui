@@ -89,7 +89,7 @@ class Layout extends Base {
                 moveOnResize: false,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = 'none');
                     });
                 },
@@ -97,12 +97,12 @@ class Layout extends Base {
                     by.dx = Math.max(by.dx, -centerWidth);
                 },
                 stop: function (e, el) {
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },
                 collapse: function (e, el) {
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },
@@ -123,7 +123,7 @@ class Layout extends Base {
                 moveOnResize: false,
                 create: function (e, h) {
                     centerHeight = getHeight(me.center);
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = 'none');
                     });
                 },
@@ -131,12 +131,12 @@ class Layout extends Base {
                     by.dy = Math.max(by.dy, -centerHeight);
                 },
                 stop: function (e, el) {
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },
                 collapse: function (e, el) {
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },
@@ -156,7 +156,7 @@ class Layout extends Base {
                 hideCollapseButton: settings.hideCollapseButton,
                 create: function (e, h) {
                     centerWidth = getWidth(me.center);
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = 'none');
                     });
                 },
@@ -164,12 +164,12 @@ class Layout extends Base {
                     by.dx = Math.min(by.dx, centerWidth);
                 },
                 stop: function (e, el) {
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },
                 collapse: function (e, el) {
-                    centerContent.querySelectorAll('iframe').forEach(iframe => {
+                    node.querySelectorAll('iframe').forEach(iframe => {
                         iframe && (iframe.style['pointer-events'] = '');
                     });
                 },

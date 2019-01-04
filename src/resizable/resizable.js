@@ -569,8 +569,8 @@ class Resizable extends Base {
     collapseX(event, ui) {
         const me = this;
         const w = getWidth(me.node);
-        setWidth(me.node, w);
-
+        // setWidth(me.node, w);???
+        me.node.style.transition = 'all .2s ease-in';
         if (w > 0) {
             me.node.setAttribute('azCollapseWidth', w);
             setWidth(me.node, 0);
@@ -580,15 +580,17 @@ class Resizable extends Base {
             setWidth(me.node, storedW);
             me.settings.collapse.call(me.node, event, ui, -storedW);
         }
-
-        me._resetCollapseIconStyle();
+        setTimeout(() => {
+            me.node.style.transition = '';
+            me._resetCollapseIconStyle();
+        }, 200);
     }
 
     collapseY(event, ui) {
         const me = this;
         const h = getHeight(me.node);
-        setHeight(me.node, h);
-
+        // setHeight(me.node, h);???
+        me.node.style.transition = 'all .2s ease-in';
         if (h > 0) {
             me.node.setAttribute('azCollapseHeight', h);
             setHeight(me.node, 0);
@@ -598,8 +600,10 @@ class Resizable extends Base {
             setHeight(me.node, storedH);
             me.settings.collapse.call(me.node, event, ui, -storedH);
         }
-
-        me._resetCollapseIconStyle();
+        setTimeout(() => {
+            me.node.style.transition = '';
+            me._resetCollapseIconStyle();
+        }, 200);
     }
 
     _resetCollapseIconStyle() {

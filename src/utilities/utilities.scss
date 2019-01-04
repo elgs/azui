@@ -47,12 +47,12 @@ $collapseIconSize: 4px;
     box-sizing: border-box;
     font-size: 12px;
 
-    & code:not(*) {
+    code:not(*) {
         color: $default-text;
         font-family: tahoma, arial, verdana, sans-serif;
     }
 
-    & a {
+    a {
         text-decoration: none;
     }
 }

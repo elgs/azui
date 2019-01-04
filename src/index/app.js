@@ -12,7 +12,7 @@ import exampleTabMarkup from './exampletab.tplhtml';
 
 window.onload = () => {
     const buildTime = document.querySelector('.azui span.buildTime');
-    buildTime.innerHTML = modules.buildTime;
+    buildTime && (buildTime.innerHTML = modules.buildTime);
 
     const container = document.querySelector('.azui.azIndex');
     azui.Layout(container, {
@@ -44,23 +44,44 @@ window.onload = () => {
                             const w = parseInt(getComputedStyle(tabs.node).width);
                             const exampleTab = parseDOMElement(exampleTabMarkup)[0];
                             const exampleTabLayout = azui.Layout(exampleTab, {
-                                eastWidth: w * .382 + 'px',
+                                eastWidth: w / 2 + 'px',
                                 hideCollapseButton: false,
                             });
-
-                            const iframeExampleMarkup = `<iframe name='example_${tabId}' frameBorder='0'></iframe>`;
-                            const iframeExample = parseDOMElement(iframeExampleMarkup)[0];
-                            exampleTabLayout.centerContent.appendChild(iframeExample);
 
                             const exampleTabContent = document.createElement('div');
                             exampleTabContent.appendChild(exampleTab);
                             tabs.addTab(null, title.replace(/_/g, ' '), exampleTabContent, true, true, tabId);
-                            window.open(m.name + '/' + page, 'example_' + tabId);
+                            // window.open(m.name + '/' + page, 'example_' + tabId);
+
+                            const refreshIframe = src => {
+                                const iframeExampleMarkup = `<iframe name='example_${tabId}' frameBorder='0'></iframe>`;
+                                const iframeExample = parseDOMElement(iframeExampleMarkup)[0];
+                                exampleTabLayout.eastContent.appendChild(iframeExample);
+                                const doc = iframeExample.contentDocument || iframeExample.contentWindow.document;
+                                doc.open();
+                                doc.write(src);
+                                doc.close();
+                            };
 
                             fetch(m.name + '/' + page).then(res => res.text()).then(text => {
-                                text = text.replace(/<\/script>/g, '&lt;/script&gt;');
-                                exampleTabLayout.eastContent.innerHTML = '<script type="text/plain" class="language-markup line-numbers">' + text + '</script>';
-                                Prism.highlightAll();
+                                refreshIframe(text);
+                                ace.require("ace/ext/language_tools");
+                                const editor = ace.edit(exampleTabLayout.centerContent, {
+                                    mode: "ace/mode/html",
+                                    enableBasicAutocompletion: true,
+                                    enableLiveAutocompletion: true,
+                                });
+                                editor.on('blur', function () {
+                                    const src = editor.getValue();
+                                    const oldIframe = exampleTabLayout.eastContent.querySelector('iframe');
+                                    oldIframe && oldIframe.remove();
+                                    refreshIframe(src);
+                                });
+                                editor.setValue(html_beautify(text), -1);
+
+                                // text = text.replace(/<\/script>/g, '&lt;/script&gt;');
+                                // exampleTabLayout.eastContent.innerHTML = '<script type="text/plain" class="language-markup line-numbers">' + text + '</script>';
+                                // Prism.highlightAll();
                             });
                         }
                     }
