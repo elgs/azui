@@ -63,13 +63,25 @@ window.onload = () => {
                                 doc.close();
                             };
 
-                            fetch(m.name + '/' + page).then(res => res.text()).then(text => {
+                            fetch('../' + m.name + '/' + page).then(res => res.text()).then(text => {
                                 refreshIframe(text);
                                 ace.require("ace/ext/language_tools");
                                 const editor = ace.edit(exampleTabLayout.centerContent, {
                                     mode: "ace/mode/html",
                                     enableBasicAutocompletion: true,
                                     enableLiveAutocompletion: true,
+                                });
+                                editor.commands.addCommand({
+                                    name: "format",
+                                    bindKey: {
+                                        win: "Ctrl-Shift-F",
+                                        mac: "Command-Shift-F"
+                                    },
+                                    exec: function (a) {
+                                        const pos = editor.getCursorPosition();
+                                        editor.getSession().doc.setValue(html_beautify(editor.getSession().getValue()));
+                                        editor.getSelection().moveCursorToPosition(pos);
+                                    }
                                 });
                                 editor.on('blur', function () {
                                     const src = editor.getValue();
@@ -98,7 +110,7 @@ window.onload = () => {
                     menus.filter(m => m !== menu).map(m => m.clearActive());
                     const activated = tabs.addTab(null, m.name + ' api', iframe, true, true, tabId);
                     if (activated !== true) {
-                        window.open(`docs/docs.html?m=${m.name}`, tabId);
+                        window.open(`../docs/docs.html?m=${m.name}`, tabId);
                     }
                 }
             });

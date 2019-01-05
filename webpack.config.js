@@ -99,20 +99,25 @@ module.exports = (env, argv) => {
         const tpls = listHtmls(mod);
         return tpls.map(tpl => {
             return new HtmlWebpackPlugin({
-                filename: mod === 'index' ? tpl : mod + '/' + tpl,
+                filename: mod + '/' + tpl,
                 template: `${srcDir+mod}/${tpl}`,
                 inject: 'head',
                 chunks: [mod]
             });
         });
     });
+    htmls.push(new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: srcDir + '/index.html',
+        inject: false,
+    }));
     // console.log(flattenDeep(htmls));
 
     return ({
         entry: entries,
         output: {
             path: path.resolve(__dirname, isDev ? buildDir : distDir),
-            filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.js`,
+            filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}${isDev?'':'.min'}.js`,
         },
         devtool: 'source-map',
         module: {
@@ -159,8 +164,8 @@ Copyright (c) ${new Date().getFullYear()} ${pkgJson.author}
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}.css`,
-                chunkFilename: `[name]/${pkgJson.name}.[id].${pkgJson.version}.css`,
+                filename: `[name]/${pkgJson.name}.[name].${pkgJson.version}${isDev?'':'.min'}.css`,
+                chunkFilename: `[name]/${pkgJson.name}.[id].${pkgJson.version}${isDev?'':'.min'}.css`,
             }),
             ...(isDev ? [new webpack.HotModuleReplacementPlugin()] : []),
             ...flattenDeep(htmls),
