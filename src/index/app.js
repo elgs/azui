@@ -64,6 +64,7 @@ window.onload = () => {
                             };
 
                             fetch('../' + m.name + '/' + page).then(res => res.text()).then(text => {
+                                text = text.replace(/<script\s+type=(\"|')text\/javascript(\"|')/g, '<script ');
                                 refreshIframe(text);
                                 ace.require("ace/ext/language_tools");
                                 const editor = ace.edit(exampleTabLayout.centerContent, {
@@ -77,10 +78,11 @@ window.onload = () => {
                                         win: "Ctrl-Shift-F",
                                         mac: "Command-Shift-F"
                                     },
-                                    exec: function (a) {
+                                    exec: function () {
                                         const pos = editor.getCursorPosition();
-                                        editor.getSession().doc.setValue(html_beautify(editor.getSession().getValue()));
-                                        editor.getSelection().moveCursorToPosition(pos);
+                                        editor.session.doc.setValue(html_beautify(editor.session.getValue()));
+                                        editor.clearSelection();
+                                        editor.selection.moveCursorToPosition(pos);
                                     }
                                 });
                                 editor.on('blur', function () {
