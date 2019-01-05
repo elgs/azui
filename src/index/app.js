@@ -85,17 +85,18 @@ window.onload = () => {
                                         editor.selection.moveCursorToPosition(pos);
                                     }
                                 });
+                                let _src = html_beautify(text);
                                 editor.on('blur', function () {
                                     const src = editor.getValue();
+                                    if (src === _src) {
+                                        return;
+                                    }
+                                    _src = src;
                                     const oldIframe = exampleTabLayout.eastContent.querySelector('iframe');
                                     oldIframe && oldIframe.remove();
                                     refreshIframe(src);
                                 });
-                                editor.setValue(html_beautify(text), -1);
-
-                                // text = text.replace(/<\/script>/g, '&lt;/script&gt;');
-                                // exampleTabLayout.eastContent.innerHTML = '<script type="text/plain" class="language-markup line-numbers">' + text + '</script>';
-                                // Prism.highlightAll();
+                                editor.setValue(_src, -1);
                             });
                         }
                     }

@@ -77,7 +77,7 @@ DONE: alert/dismissAlert APIs
 
 layout:
 DONE: options for width/height
-TODO: child layout in east of parent layout, collapsing child east causes handle to disappear
+DONE: child layout in east of parent layout, collapsing child east causes handle to disappear
 
 menu:
 TODO: separate menu from contextmenu, accordion, datatable, tabs, select
