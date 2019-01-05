@@ -569,7 +569,6 @@ class Resizable extends Base {
     collapseX(event, ui) {
         const me = this;
         const w = getWidth(me.node);
-        // setWidth(me.node, w);???
         me.node.style.transition = 'all .2s ease-in';
         if (w > 0) {
             me.node.setAttribute('azCollapseWidth', w);
@@ -589,7 +588,6 @@ class Resizable extends Base {
     collapseY(event, ui) {
         const me = this;
         const h = getHeight(me.node);
-        // setHeight(me.node, h);???
         me.node.style.transition = 'all .2s ease-in';
         if (h > 0) {
             me.node.setAttribute('azCollapseHeight', h);
@@ -619,44 +617,44 @@ class Resizable extends Base {
             const up = me.handles.n.querySelector('span.collapseIconUp');
             const down = me.handles.n.querySelector('span.collapseIconDown');
             if (h > 0) {
-                up.classList.add('azHide');
-                down.classList.remove('azHide');
+                up.style.display = 'none';
+                down.style.display = 'flex';
             } else {
-                up.classList.remove('azHide');
-                down.classList.add('azHide');
+                up.style.display = 'flex';
+                down.style.display = 'none';
             }
         }
         if (me.handles.e) {
             const left = me.handles.e.querySelector('span.collapseIconLeft');
             const right = me.handles.e.querySelector('span.collapseIconRight');
             if (w > 0) {
-                left.classList.remove('azHide');
-                right.classList.add('azHide');
+                left.style.display = 'flex';
+                right.style.display = 'none';
             } else {
-                left.classList.add('azHide');
-                right.classList.remove('azHide');
+                left.style.display = 'none';
+                right.style.display = 'flex';
             }
         }
         if (me.handles.s) {
             const up = me.handles.s.querySelector('span.collapseIconUp');
             const down = me.handles.s.querySelector('span.collapseIconDown');
             if (h > 0) {
-                up.classList.remove('azHide');
-                down.classList.add('azHide');
+                up.style.display = 'flex';
+                down.style.display = 'none';
             } else {
-                up.classList.add('azHide');
-                down.classList.remove('azHide');
+                up.style.display = 'none';
+                down.style.display = 'flex';
             }
         }
         if (me.handles.w) {
             const left = me.handles.w.querySelector('span.collapseIconLeft');
             const right = me.handles.w.querySelector('span.collapseIconRight');
             if (w > 0) {
-                left.classList.add('azHide');
-                right.classList.remove('azHide');
+                left.style.display = 'none';
+                right.style.display = 'flex';
             } else {
-                left.classList.remove('azHide');
-                right.classList.add('azHide');
+                left.style.display = 'flex';
+                right.style.display = 'none';
             }
         }
     }

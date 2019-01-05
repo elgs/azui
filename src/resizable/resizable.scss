@@ -13,11 +13,7 @@
             background-color: $active;
         }
 
-        & .azHide {
-            display: none;
-        }
-
-        &>div.collapseButton {
+        >div.collapseButton {
             background-color: lighten($color: $main-color, $amount: 10%);
             display: flex;
             justify-content: center;
@@ -29,22 +25,38 @@
             }
 
             &.collapseButtonH {
-                height: 100%;
                 width: 30px;
 
-                &>span.collapseIcon>svg {
+                >span.collapseIcon {
                     height: $collapseIconSize;
-                    fill: $main-color;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    >svg {
+                        fill: $main-color;
+                        width: $collapseIconSize * 2;
+                        height: $collapseIconSize;
+                        display: block;
+                    }
                 }
             }
 
             &.collapseButtonV {
                 height: 30px;
-                width: 100%;
 
-                &>span.collapseIcon>svg {
+                >span.collapseIcon {
                     width: $collapseIconSize;
-                    fill: $main-color;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    >svg {
+                        fill: $main-color;
+                        width: $collapseIconSize;
+                        height: $collapseIconSize * 2;
+                        display: block;
+                    }
                 }
             }
         }
