@@ -49,7 +49,22 @@
 
 // const classStr = A.toString();
 
+const beautify = require('js-beautify').js;
+
+const reOneLineDoc = /\/\/\s*@doc\:(.*?)$/gm;
+const reMultiLineDoc = /\/\*\s*@doc\:([\s\S]*?)\*\//g;
+
 const getRe = type => `\\/\\/\\s*@doc\\:${type}\\:start([\\s\\S]*?)\\/\\/\\s*@doc\\:${type}\\:end`;
+
+const formatCode = code => {
+    const re = /(<pre.*?><code.*?>)([\s\S]*?)(<\/code><\/pre>)/gi;
+    const e = re.exec(code);
+    if (e && e.length >= 3) {
+        const c = beautify(e[2]);
+        return code.replace(re, `$1${c}$3`);
+    }
+    return code;
+};
 
 const parseFunction = f => {
     const re = /(\(.*?\))/gm;
@@ -73,7 +88,7 @@ const parseMethods = str => {
         const s = match[1].trim();
         match = re.exec(str);
 
-        // parse method name and parameters
+        // parse method name and parameters, ?! not followed by
         const re1 = /^(?!\s*\/\/\s*@doc\:).*/gm;
         let match1 = re1.exec(s);
         if (match1 !== null) {
@@ -87,24 +102,23 @@ const parseMethods = str => {
                 // method.dict = s2[2];
                 if (dict.length > 0) {
                     eval.call(global, 'var ' + dict + ';');
-
                 }
             }
         }
 
         // parse method docs
         let firstLine = true;
-        const re2 = /\/\/\s*@doc\:(.*?)$/gm;
+        const re2 = reOneLineDoc;
         let match2 = re2.exec(s);
         while (match2 !== null) {
             const s2 = match2[1].trim();
             match2 = re2.exec(s);
             if (firstLine) {
-                method.desc = s2;
+                method.desc = formatCode(s2);
             } else {
-                const parts = s2.split(/\:(.*)/);
+                const parts = s2.split(/\:/);
                 const key = parts[0].trim();
-                const desc = parts[1].trim();
+                const desc = formatCode(parts[1].trim());
                 if (key === 'return') {
                     method.returns = desc;
                 } else {
@@ -133,7 +147,7 @@ const parseSettings = str => {
         json += s;
         match = re.exec(str);
 
-        const re1 = /\/\/\s*@doc\:(.*?)$/gm;
+        const re1 = reOneLineDoc;
         let match1 = re1.exec(s);
         while (match1 !== null) {
             const s1 = match1[1].trim();
@@ -147,9 +161,9 @@ const parseSettings = str => {
     // console.log(dict);
     // console.log(ret);
     ret = ret.map(line => {
-        const parts = line.split(/\:(.*)/);
+        const parts = line.split(/\:/);
         const key = parts[0].trim();
-        const desc = parts[1].trim();
+        const desc = formatCode(parts[1].trim());
         const defaultValue = dict[key];
         const type = typeof dict[key];
         return {
@@ -176,15 +190,15 @@ const parseEvents = str => {
 
         // parse method docs
         let firstLine = true;
-        const re1 = /\/\/\s*@doc\:(.*?)$/gm;
+        const re1 = reOneLineDoc;
         let match1 = re1.exec(s);
         while (match1 !== null) {
             const s1 = match1[1].trim();
             match1 = re1.exec(s);
 
-            const parts = s1.split(/\:(.*)/);
+            const parts = s1.split(/\:/);
             const key = parts[0].trim();
-            const desc = parts[1].trim();
+            const desc = formatCode(parts[1].trim());
             if (firstLine) {
                 event.key = key;
                 event.desc = desc;
