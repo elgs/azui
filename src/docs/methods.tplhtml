@@ -1,12 +1,12 @@
 <details>
-    <summary>${key} ${param_list} ${desc}</summary>
+    <summary>`${key}` ${param_list} ${desc}</summary>
     <ui>
         <li>
-            Parameter:
+            `Parameters`
             ${param_details}
         </li>
         <li>
-            Returns: ${returns}
+            `Returns` ${returns}
         </li>
         <li>${desc}</li>
     </ui>

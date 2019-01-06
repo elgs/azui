@@ -16,7 +16,7 @@ window.onload = () => {
 
     const container = document.querySelector('.azui.azIndex');
     azui.Layout(container, {
-        hideCollapseButton: true,
+        hideCollapseButton: false,
         westWidth: '180px',
     });
 

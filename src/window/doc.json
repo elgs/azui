@@ -108,7 +108,7 @@
         }
       ],
       "key": "close",
-      "desc": "Close the window."
+      "desc": "Close the window. ```javascript \\n const abc = 123; \\n ```"
     },
     {
       "params": [],

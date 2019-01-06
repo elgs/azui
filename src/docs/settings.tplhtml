@@ -1,4 +1,4 @@
 <details>
-    <summary>${key} `${type}` default: `${defaultValue}`</summary>
+    <summary>`${key}` type: `${type}` default: `${defaultValue}` ${desc}</summary>
     ${desc}
 </details>

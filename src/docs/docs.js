@@ -17,7 +17,7 @@ window.onload = _ => {
         if (s.type === 'string') {
             defaultValue = '"' + defaultValue + '"';
         }
-        const item = settingsTpl.replace('${key}', s.key).replace('${type}', s.type).replace('${defaultValue}', defaultValue).replace('${desc}', s.desc);
+        const item = settingsTpl.replace('${key}', s.key).replace('${type}', s.type).replace('${defaultValue}', defaultValue).replace(/\$\{desc\}/g, s.desc);
         settings += item + '  \n';
     });
     md = md.replace('${settings}', settings);
@@ -26,8 +26,8 @@ window.onload = _ => {
     doc.methods.map(m => {
         let pd = '<ul>';
         const pl = m.params.map(p => {
-            pd += '<li>' + p.key + ' `' + p.type + '`' + ' default: `' + p.defaultValue + '` ' + p.desc + '</li>';
-            return p.key + '`' + p.type + '`';
+            pd += '<li>`' + p.key + '`: `' + p.type + '`' + ' default: `' + p.defaultValue + '` ' + p.desc + '</li>';
+            return '`' + p.key + '`: `' + p.type + '`';
         }).join(', ');
         const item = methodsTpl.replace('${key}', m.key).replace('${returns}', m.returns).replace(/\$\{desc\}/g, m.desc).replace('${param_list}', '(' + pl + ')').replace('${param_details}', pd + '</ul>');
         methods += item + '  \n';
@@ -44,7 +44,6 @@ window.onload = _ => {
     });
     md = md.replace('${events}', events);
 
-
     const converter = new showdown.Converter({
         tables: true,
         tasklists: true,
@@ -53,10 +52,9 @@ window.onload = _ => {
     const html = converter.makeHtml(md);
 
     const el = document.querySelector('.azDocs');
-    // el.innerHTML = '<pre><code class="json">' + JSON.stringify(doc, null, 2) + '</code></pre>';
     el.innerHTML = html;
-    const codeBlock = el.querySelector('pre>code');
-    if (codeBlock) {
+    const codeBlocks = el.querySelectorAll('pre>code');
+    codeBlocks.forEach(codeBlock => {
         hljs.highlightBlock(codeBlock);
-    }
+    });
 };

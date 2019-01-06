@@ -330,20 +330,28 @@ class Docker extends Base {
             docked.style['display'] = 'none';
         }
 
-        dockedRef.style.transition = 'all .25s ease-in';
-        dockedRef.style.left = docked.getAttribute('x') + 'px';
-        dockedRef.style.top = docked.getAttribute('y') + 'px';
-        dockedRef.style.height = docked.getAttribute('height') + 'px';
-        dockedRef.style.width = docked.getAttribute('width') + 'px';
-        dockedRef.style.visibility = 'visible';
-
-        if (notify) {
-            dockedRef.dispatchEvent(new CustomEvent('normalized'));
-        }
+        const dockedRefStyle = getComputedStyle(dockedRef);
+        dockedRef.style.top = dockedRefStyle.top;
+        dockedRef.style.left = dockedRefStyle.left;
+        dockedRef.style.right = '';
+        dockedRef.style.bottom = '';
 
         setTimeout(() => {
-            dockedRef.style.transition = '';
-        }, 250);
+            dockedRef.style.transition = 'all .25s ease-in';
+            dockedRef.style.left = docked.getAttribute('x') + 'px';
+            dockedRef.style.top = docked.getAttribute('y') + 'px';
+            dockedRef.style.height = docked.getAttribute('height') + 'px';
+            dockedRef.style.width = docked.getAttribute('width') + 'px';
+            dockedRef.style.visibility = 'visible';
+
+            if (notify) {
+                dockedRef.dispatchEvent(new CustomEvent('normalized'));
+            }
+
+            setTimeout(() => {
+                dockedRef.style.transition = '';
+            }, 250);
+        });
     }
 
     slideup(dockId, notify) {

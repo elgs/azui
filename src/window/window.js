@@ -438,7 +438,7 @@ class Window extends Base {
 
     // @doc:method:start
     close(notify = false) {
-        // @doc: Close the window.
+        // @doc: Close the window. ```javascript \n const abc = 123; \n ```
         // @doc:notify: Whether notify the docker or not.
         // @doc:method:end
         // two way notification
