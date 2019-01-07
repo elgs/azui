@@ -21,7 +21,12 @@
 
 //     // @doc:method:start
 //     f1(a = 1, b) {
-//         // @doc: f1 does some cool things
+//         /* @doc: f1 does some cool things
+//             <pre><code>
+//             const a = 1;
+//             const b=2;
+//             </code></pre>
+//         */
 //         // @doc:a: description of a
 //         // @doc:b: description of b
 //         // @doc:method:end
@@ -51,8 +56,8 @@
 
 const beautify = require('js-beautify').js;
 
-const reOneLineDoc = /\/\/\s*@doc\:(.*?)$/gm;
-const reMultiLineDoc = /\/\*\s*@doc\:([\s\S]*?)\*\//g;
+// one line | multiline
+const reDoc = /\/\/\s*@doc\:(.*?)\n|\/\*\s*@doc\:([\s\S]*?)\*\//g;
 
 const getRe = type => `\\/\\/\\s*@doc\\:${type}\\:start([\\s\\S]*?)\\/\\/\\s*@doc\\:${type}\\:end`;
 
@@ -85,7 +90,7 @@ const parseMethods = str => {
         const method = {
             params: []
         };
-        const s = match[1].trim();
+        const s = match[1].trim() + '\n';
         match = re.exec(str);
 
         // parse method name and parameters, ?! not followed by
@@ -108,11 +113,10 @@ const parseMethods = str => {
 
         // parse method docs
         let firstLine = true;
-        const re2 = reOneLineDoc;
-        let match2 = re2.exec(s);
+        let match2 = reDoc.exec(s);
         while (match2 !== null) {
-            const s2 = match2[1].trim();
-            match2 = re2.exec(s);
+            const s2 = (match2[1] || match2[2]).trim();
+            match2 = reDoc.exec(s);
             if (firstLine) {
                 method.desc = formatCode(s2);
             } else {
@@ -143,15 +147,14 @@ const parseSettings = str => {
     const re = new RegExp(getRe('settings'), 'g');
     let match = re.exec(str);
     while (match !== null) {
-        const s = match[1].trim();
+        const s = match[1].trim() + '\n';
         json += s;
         match = re.exec(str);
 
-        const re1 = reOneLineDoc;
-        let match1 = re1.exec(s);
+        let match1 = reDoc.exec(s);
         while (match1 !== null) {
-            const s1 = match1[1].trim();
-            match1 = re1.exec(s);
+            const s1 = (match1[1] || match1[2]).trim();
+            match1 = reDoc.exec(s);
             ret.push(s1);
         }
     }
@@ -185,16 +188,15 @@ const parseEvents = str => {
         const event = {
             params: []
         };
-        const s = match[1].trim();
+        const s = match[1].trim() + '\n';
         match = re.exec(str);
 
         // parse method docs
         let firstLine = true;
-        const re1 = reOneLineDoc;
-        let match1 = re1.exec(s);
+        let match1 = reDoc.exec(s);
         while (match1 !== null) {
-            const s1 = match1[1].trim();
-            match1 = re1.exec(s);
+            const s1 = (match1[1] || match1[2]).trim();
+            match1 = reDoc.exec(s);
 
             const parts = s1.split(/\:/);
             const key = parts[0].trim();

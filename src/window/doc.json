@@ -108,7 +108,7 @@
         }
       ],
       "key": "close",
-      "desc": "Close the window. <pre><code> const abc = '123';\n const def = function() {};</code></pre>"
+      "desc": "Close the window. \n        <pre><code> const abc = '123';\n const def = function() {};</code></pre>"
     },
     {
       "params": [],
