@@ -36,7 +36,7 @@ window.onload = () => {
 
             const items = m.pages.map(page => {
                 const title = page.replace(/^\d+_/, '').replace(/\.[^/.]+$/, '');
-                const url = '/' + m.name + '/' + page;
+                const url = m.name + '/' + page;
                 const urlNoExt = url.replace('.html', '');
                 const tabId = m.name + title;
                 const menuItem = {
@@ -44,10 +44,10 @@ window.onload = () => {
                     icon: svgApps,
                     title: title.replace(/_/g, ' '),
                     action: function (e, target) {
-                        console.log(e);
+                        // console.log(e);
                         menus.filter(m => m !== menu).map(m => m.clearActive());
                         if (e.isTrusted) {
-                            history.pushState(tabId, '', urlNoExt);
+                            history.pushState(tabId, '', '../' + urlNoExt);
                         }
                         if (!tabs.activate(tabId)) {
                             const w = parseInt(getComputedStyle(tabs.node).width);
@@ -72,7 +72,7 @@ window.onload = () => {
                                 doc.close();
                             };
 
-                            fetch('..' + url).then(res => res.text()).then(text => {
+                            fetch('../' + url).then(res => res.text()).then(text => {
                                 text = text.trim();
                                 text = text.replace(/<script\s+type=(\"|')text\/javascript(\"|')/g, '<script ');
                                 text = text.replace(/<html>\s+<head>/, '<html>\n<head>');
@@ -122,7 +122,7 @@ window.onload = () => {
                 return menuItem;
             });
 
-            const url = `/docs/docs.html?m=${m.name}`;
+            const url = `docs/docs.html?m=${m.name}`;
             const urlNoExt = url.replace('.html', '');
             const tabId = m.name + '_api';
             const menuItem = {
@@ -135,12 +135,11 @@ window.onload = () => {
                     const iframe = parseDOMElement(iframeMarkup)[0];
                     menus.filter(m => m !== menu).map(m => m.clearActive());
                     const activated = tabs.add(null, m.name + ' api', iframe, true, true, tabId);
-                    url2TabId[url] = tabId;
                     if (e.isTrusted) {
-                        history.pushState(tabId, '', urlNoExt);
+                        history.pushState(tabId, '', '../' + urlNoExt);
                     }
                     if (activated !== true) {
-                        window.open('..' + url, tabId);
+                        window.open('../' + url, tabId);
                     }
                 }
             };
@@ -168,7 +167,10 @@ window.onload = () => {
 
 
     const urlObj = new URL(location.href);
-    const tabId = url2TabId[urlObj.pathname + urlObj.search];
+    // console.log(urlObj);
+    const tabId = url2TabId[urlObj.pathname.split('/').slice(-2).join('/') + urlObj.search];
+
+    // console.log(url2TabId);
 
     const simOpenTab = tabId => {
         if (tabId) {
