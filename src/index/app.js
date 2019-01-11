@@ -25,6 +25,8 @@ window.onload = () => {
         collapseOthers: false,
     });
 
+    const url2TabId = {};
+
     const menus = [];
 
     [modules.modules3, modules.modules2, modules.modules1].map(m => {
@@ -34,13 +36,20 @@ window.onload = () => {
 
             const items = m.pages.map(page => {
                 const title = page.replace(/^\d+_/, '').replace(/\.[^/.]+$/, '');
-                return {
+                const url = '/' + m.name + '/' + page;
+                const urlNoExt = url.replace('.html', '');
+                const tabId = m.name + title;
+                const menuItem = {
+                    id: tabId,
                     icon: svgApps,
                     title: title.replace(/_/g, ' '),
                     action: function (e, target) {
-                        const tabId = m.name + title;
+                        console.log(e);
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        if (!tabs.activateTab(tabId)) {
+                        if (e.isTrusted) {
+                            history.pushState(tabId, '', urlNoExt);
+                        }
+                        if (!tabs.activate(tabId)) {
                             const w = parseInt(getComputedStyle(tabs.node).width);
                             const exampleTab = parseDOMElement(exampleTabMarkup)[0];
                             const exampleTabLayout = azui.Layout(exampleTab, {
@@ -50,7 +59,7 @@ window.onload = () => {
 
                             const exampleTabContent = document.createElement('div');
                             exampleTabContent.appendChild(exampleTab);
-                            tabs.addTab(null, title.replace(/_/g, ' '), exampleTabContent, true, true, tabId);
+                            tabs.add(null, title.replace(/_/g, ' '), exampleTabContent, true, true, tabId);
                             // window.open(m.name + '/' + page, 'example_' + tabId);
 
                             const refreshIframe = src => {
@@ -63,8 +72,11 @@ window.onload = () => {
                                 doc.close();
                             };
 
-                            fetch('../' + m.name + '/' + page).then(res => res.text()).then(text => {
+                            fetch('..' + url).then(res => res.text()).then(text => {
+                                text = text.trim();
                                 text = text.replace(/<script\s+type=(\"|')text\/javascript(\"|')/g, '<script ');
+                                text = text.replace(/<html>\s+<head>/, '<html>\n<head>');
+                                text = text.replace(/<\/body>\s+<\/html>$/, '</body>\n</html>');
                                 refreshIframe(text);
                                 ace.require("ace/ext/language_tools");
                                 const editor = ace.edit(exampleTabLayout.centerContent, {
@@ -80,12 +92,17 @@ window.onload = () => {
                                     },
                                     exec: function () {
                                         const pos = editor.getCursorPosition();
-                                        editor.session.doc.setValue(html_beautify(editor.session.getValue()));
+                                        editor.session.doc.setValue(html_beautify(editor.session.getValue(), fmtOpt));
                                         editor.clearSelection();
                                         editor.selection.moveCursorToPosition(pos);
                                     }
                                 });
-                                let _src = html_beautify(text);
+                                const fmtOpt = {
+                                    html: {
+                                        extra_liners: []
+                                    }
+                                };
+                                let _src = html_beautify(text, fmtOpt);
                                 editor.on('blur', function () {
                                     const src = editor.getValue();
                                     if (src === _src) {
@@ -101,22 +118,34 @@ window.onload = () => {
                         }
                     }
                 };
+                url2TabId[url.replace('.html', '')] = tabId;
+                return menuItem;
             });
 
-            items.unshift({
+            const url = `/docs/docs.html?m=${m.name}`;
+            const urlNoExt = url.replace('.html', '');
+            const tabId = m.name + '_api';
+            const menuItem = {
+                id: tabId,
                 icon: svgApps,
                 title: 'api',
                 action: function (e, target) {
-                    const tabId = m.name + '_api';
+                    // console.log(e);
                     const iframeMarkup = `<div><iframe name='${tabId}' frameBorder='0'></iframe></div>`;
                     const iframe = parseDOMElement(iframeMarkup)[0];
                     menus.filter(m => m !== menu).map(m => m.clearActive());
-                    const activated = tabs.addTab(null, m.name + ' api', iframe, true, true, tabId);
+                    const activated = tabs.add(null, m.name + ' api', iframe, true, true, tabId);
+                    url2TabId[url] = tabId;
+                    if (e.isTrusted) {
+                        history.pushState(tabId, '', urlNoExt);
+                    }
                     if (activated !== true) {
-                        window.open(`../docs/docs.html?m=${m.name}`, tabId);
+                        window.open('..' + url, tabId);
                     }
                 }
-            });
+            };
+            url2TabId[urlNoExt] = tabId;
+            items.unshift(menuItem);
 
             const menuEl = parseDOMElement(`<div></div>`)[0];
             const menu = azui.Menu(menuEl, {
@@ -136,4 +165,34 @@ window.onload = () => {
         detachable: false,
     });
     // console.log(modules);
+
+
+    const urlObj = new URL(location.href);
+    const tabId = url2TabId[urlObj.pathname + urlObj.search];
+
+    const simOpenTab = tabId => {
+        if (tabId) {
+            const miEl = acc.node.querySelector('.azAccordionContent [menu-item-id=' + tabId + ']');
+            // console.log(miEl);
+            if (miEl) {
+                const header = miEl.closest('.azAccordionComponent').querySelector('.azAccordionHeader');
+                // console.log(header);
+                acc._toggle(header, true);
+
+                const menuEl = miEl.closest('.azMenu');
+                const menu = azui.Menu(menuEl);
+                menu.activate(tabId);
+            }
+        }
+    };
+
+    simOpenTab(tabId);
+
+    window.onpopstate = function (e) {
+        // console.log('onpopstate');
+        if (e.state) {
+            const tabId = e.state;
+            simOpenTab(tabId);
+        }
+    };
 };

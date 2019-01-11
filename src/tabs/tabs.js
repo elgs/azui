@@ -31,7 +31,7 @@ const getTabContextMenu = closable => [{
         action: function (e, target) {
             const currentTabNode = target.closest('.azTabs');
             const currentTabs = azui.Tabs(currentTabNode);
-            currentTabs.removeTab(_getTabId(target.id));
+            currentTabs.remove(_getTabId(target.getAttribute('tab-id')));
             return false;
         }
     },
@@ -44,7 +44,7 @@ const getTabContextMenu = closable => [{
             const currentTabs = azui.Tabs(currentTabNode);
             siblings(target, '.azTabLabel').forEach(function (element) {
                 if (matches(element, '.azClosable')) {
-                    currentTabs.removeTab(_getTabId(element.id));
+                    currentTabs.remove(_getTabId(element.getAttribute('tab-id')));
                 }
             });
             return false;
@@ -59,7 +59,7 @@ const getTabContextMenu = closable => [{
             const currentTabs = azui.Tabs(currentTabNode);
             nextAll(target, '.azTabLabel').forEach(function (element) {
                 if (matches(element, '.azClosable')) {
-                    currentTabs.removeTab(_getTabId(element.id));
+                    currentTabs.remove(_getTabId(element.getAttribute('tab-id')));
                 }
             });
             return false;
@@ -75,10 +75,10 @@ const getTabContextMenu = closable => [{
             const currentTabs = azui.Tabs(currentTabNode);
             siblings(target, '.azTabLabel').forEach(function (element) {
                 if (matches(element, '.azClosable')) {
-                    currentTabs.removeTab(_getTabId(element.id));
+                    currentTabs.remove(_getTabId(element.getAttribute('tab-id')));
                 }
             });
-            currentTabs.removeTab(_getTabId(target.id));
+            currentTabs.remove(_getTabId(target.getAttribute('tab-id')));
             return false;
         }
     }
@@ -123,18 +123,19 @@ class Tabs extends Base {
                     return;
                 }
                 // console.log(event.button);
-                const tabId = _getTabId(event.currentTarget.id);
+                const tabId = _getTabId(event.currentTarget.getAttribute('tab-id'));
                 if (!event.target.classList.contains('close') &&
                     !event.target.parentNode.classList.contains('close')) {
-                    currentTabs.activateTab(tabId);
+                    currentTabs.activate(tabId);
                 }
             };
         };
         me.closeClicked = function (event) {
             const currentTabNode = event.target.closest('.azTabs');
             const currentTabs = azui.Tabs(currentTabNode);
-            const tabId = _getTabId(event.currentTarget.parentNode.id);
-            currentTabs.removeTab(tabId);
+            console.log(event.currentTarget.parentNode.getAttribute('tab-id'));
+            const tabId = _getTabId(event.currentTarget.parentNode.getAttribute('tab-id'));
+            currentTabs.remove(tabId);
             event.stopPropagation();
         };
 
@@ -172,7 +173,7 @@ class Tabs extends Base {
             }
             tabLabels.appendChild(el);
         });
-        me.activateTabByIndex(0);
+        me.activateByIndex(0);
 
         // me.dragging = false;
         me.sortable = azui.Sortable(tabLabels, {
@@ -194,13 +195,13 @@ class Tabs extends Base {
             },
             stop: (e, data) => {
                 me.sorted = false;
-                const tabId = _getTabId(data.source.id);
+                const tabId = _getTabId(data.source.getAttribute('tab-id'));
                 if (data.detached) {
                     const x = data.boundingClientRect.left + getDocScrollLeft();
                     const y = data.boundingClientRect.top + getDocScrollTop();
                     me.spawn(tabId, x, y);
                 } else {
-                    const contentNode = me.node.querySelector('#azTabContent-' + tabId);
+                    const contentNode = me.node.querySelector('[tab-id=azTabContent-' + tabId + ']');
 
                     const targetTabsNode = data.source.closest('.azTabs');
 
@@ -208,7 +209,7 @@ class Tabs extends Base {
                         targetTabsNode.appendChild(contentNode);
 
                         const targetTabs = azui.Tabs(targetTabsNode);
-                        targetTabs.activateTab(tabId);
+                        targetTabs.activate(tabId);
 
                         const tabHeader = data.source; //.closest('.azTabLabel#azTabHeader-' + tabId);
                         // const isActive = matches(tabHeader, '.active');
@@ -216,7 +217,7 @@ class Tabs extends Base {
                         if (headers.length) {
                             const active = tabHeader.parentNode.querySelector('.active');
                             if (!active) {
-                                me.activateTabByIndex(0);
+                                me.activateByIndex(0);
                             }
                             // me.showHideScrollers();
                             me.fitTabWidth();
@@ -301,8 +302,8 @@ class Tabs extends Base {
     spawn(tabId, x = 10, y = 10) {
         const me = this;
         const node = me.node;
-        const tabHeader = document.querySelector('.azTabLabel#azTabHeader-' + tabId);
-        const tabContent = document.querySelector('#azTabContent-' + tabId);
+        const tabHeader = document.querySelector('.azTabLabel[tab-id=azTabHeader-' + tabId + ']');
+        const tabContent = document.querySelector('[tab-id=azTabContent-' + tabId + ']');
         const isActive = matches(tabHeader, '.active');
 
         const parentBcr = node.parentNode.getBoundingClientRect();
@@ -332,13 +333,13 @@ class Tabs extends Base {
         // console.log(tabHeader, newLabels);
         // newLabels.appendChild(tabHeader);
         tabContent.style['display'] = 'block';
-        newTabs.addTab(null, tabHeader, tabContent);
+        newTabs.add(null, tabHeader, tabContent);
         // remove(tabHeader);
 
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
             if (isActive) {
-                me.activateTabByIndex(0);
+                me.activateByIndex(0);
             }
             // me.showHideScrollers();
             me.fitTabWidth();
@@ -347,15 +348,15 @@ class Tabs extends Base {
         }
     }
 
-    addTab(icon, title, contentNode, closable = true, activate = true, tabId = null) {
+    add(icon, title, contentNode, closable = true, activate = true, tabId = null) {
         const me = this;
 
         if (tabId) {
             const labels = [...me.node.querySelectorAll('div.azTabLabel')]
             for (const el of labels) {
-                const elId = _getTabId(el.id);
+                const elId = _getTabId(el.getAttribute('tab-id'));
                 if (elId === tabId) {
-                    me.activateTab(tabId);
+                    me.activate(tabId);
                     return true;
                 }
             }
@@ -390,7 +391,7 @@ class Tabs extends Base {
 
         headerNode.classList.add('azTabLabel');
         headerNode.style.height = me.settings.headerHeight + 'px';
-        headerNode.setAttribute('id', 'azTabHeader-' + tabId)
+        headerNode.setAttribute('tab-id', 'azTabHeader-' + tabId)
 
         const closeDiv = headerNode.querySelector('.close');
         if (closeDiv) {
@@ -402,7 +403,7 @@ class Tabs extends Base {
         if (contentNode && typeof contentNode === 'string') {
             contentNode = document.createElement('div');
         }
-        contentNode.setAttribute('id', 'azTabContent-' + tabId);
+        contentNode.setAttribute('tab-id', 'azTabContent-' + tabId);
         contentNode.classList.add('azTabContent');
         contentNode.style['display'] = 'none';
         me.node.appendChild(contentNode);
@@ -412,34 +413,34 @@ class Tabs extends Base {
         // me.showHideScrollers();
         me.fitTabWidth();
         if (activate === true) {
-            me.activateTab(tabId)
+            me.activate(tabId)
         }
         return tabId;
     }
 
-    removeTab(tabId) {
+    remove(tabId) {
         const me = this;
         const node = me.node;
-        const tab = node.querySelector('.azTabLabel#azTabHeader-' + tabId);
+        const tab = node.querySelector('.azTabLabel[tab-id=azTabHeader-' + tabId + ']');
         const isActive = matches(tab, '.active');
         remove(tab);
-        remove(node.querySelector('#azTabContent-' + tabId));
+        remove(node.querySelector('[tab-id=azTabContent-' + tabId + ']'));
         const headers = node.querySelectorAll('.azTabLabel');
         if (headers.length) {
             if (isActive) {
-                me.activateTabByIndex(0);
+                me.activateByIndex(0);
             }
             me.fitTabWidth();
         } else if (me.settings.closeOnEmpty) {
             remove(node);
         }
     }
-    activateTab(tabId) {
+    activate(tabId) {
         const me = this;
         const node = me.node;
         let activated = false;
         node.querySelectorAll('div.azTabContent').forEach(el => {
-            const elId = _getTabId(el.id);
+            const elId = _getTabId(el.getAttribute('tab-id'));
             if (elId === tabId) {
                 el.style['display'] = 'block';
             } else {
@@ -447,7 +448,7 @@ class Tabs extends Base {
             }
         });
         node.querySelectorAll('div.azTabLabel').forEach(el => {
-            const elId = _getTabId(el.id);
+            const elId = _getTabId(el.getAttribute('tab-id'));
             if (elId === tabId) {
                 el.classList.add('active');
                 activated = true;
@@ -457,7 +458,7 @@ class Tabs extends Base {
         });
         return activated;
     }
-    activateTabByIndex(tabIndex) {
+    activateByIndex(tabIndex) {
         const me = this;
         const node = me.node;
 

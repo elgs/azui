@@ -68,16 +68,20 @@ class ContextMenu extends Base {
                         e.touches ? e.touches[0].pageX : e.pageX,
                         e.touches ? e.touches[0].pageY : e.pageY,
                         pb)) {
-                    me.menu.remove();
-                    settings.onDismiss(e);
+                    setTimeout(() => {
+                        me.menu.remove();
+                        settings.onDismiss(e);
+                    });
                 } else {
                     document.addEventListener('touchstart', dismissMenu, {
                         once: true
                     });
                 }
             } else {
-                me.menu.remove();
-                settings.onDismiss(e);
+                setTimeout(() => {
+                    me.menu.remove();
+                    settings.onDismiss(e);
+                });
             }
         };
 
@@ -173,6 +177,8 @@ class ContextMenu extends Base {
             if (!isTouchDevice()) {
                 menu.addEventListener('blur', e => {
                     dismissMenu(e);
+                }, {
+                    once: true
                 });
             }
             menu.addEventListener('keyup', onKeyUp);

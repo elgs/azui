@@ -9,7 +9,8 @@ import {
     normalizeIcon,
     parseDOMElement,
     prevElem,
-    resolveFunction
+    resolveFunction,
+    randGen
 } from '../utilities/utilities.js';
 
 
@@ -22,7 +23,10 @@ class Menu extends Base {
     static className = 'Menu';
 
     _init(options) {
-        const settings = Object.assign({}, options);
+        const settings = Object.assign({
+            items: null,
+            target: null,
+        }, options);
 
         const me = this;
         const node = me.node;
@@ -40,6 +44,7 @@ class Menu extends Base {
             }
 
             const menuItem = document.createElement('div');
+            menuItem.setAttribute('menu-item-id', item.id || randGen(8));
             menuItem.classList.add('azMenuItem');
             const disabled = resolveFunction(item.disabled);
             if (disabled) {
@@ -139,5 +144,16 @@ class Menu extends Base {
 
     clearActive() {
         this.activeMenuItem && this.activeMenuItem.classList.remove('active');
+    }
+
+    activate(menuItemId) {
+        const menuItem = this.node.querySelector('.azMenuItem[menu-item-id=' + menuItemId + ']');
+        if (menuItem) {
+            if (isTouchDevice()) {
+                menuItem.dispatchEvent(new CustomEvent('touchend'));
+            } else {
+                menuItem.dispatchEvent(new CustomEvent('mouseup'));
+            }
+        }
     }
 };

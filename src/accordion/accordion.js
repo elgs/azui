@@ -45,13 +45,13 @@ class Accordion extends Base {
                 if (settings.collapseOthers) {
                     for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
                         if (a === e.currentTarget) {
-                            me.toggle(a);
+                            me._toggle(a);
                         } else {
-                            me.toggle(a, false);
+                            me._toggle(a, false);
                         }
                     }
                 } else {
-                    me.toggle(e.currentTarget);
+                    me._toggle(e.currentTarget);
                 }
             };
         }
@@ -94,9 +94,9 @@ class Accordion extends Base {
                 // console.log(target);
                 for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
                     if (a === target) {
-                        me.toggle(a, true);
+                        me._toggle(a, true);
                     } else {
-                        me.toggle(a, false);
+                        me._toggle(a, false);
                     }
                 }
                 return false;
@@ -105,7 +105,7 @@ class Accordion extends Base {
             title: 'Collpase',
             action: function (e, target) {
                 // console.log(target);
-                me.toggle(target, false);
+                me._toggle(target, false);
                 return false;
             }
         }];
@@ -130,7 +130,7 @@ class Accordion extends Base {
         }
     }
 
-    toggle(header, state) {
+    _toggle(header, state) {
         const content = header.nextElementSibling;
         if (state === undefined || state === null) {
             state = header.getAttribute('state') || (content.style.maxHeight ? '1' : '0');
@@ -218,7 +218,7 @@ class Accordion extends Base {
         const me = this;
         const node = me.node;
         for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
-            me.toggle(a, state);
+            me._toggle(a, state);
         }
     }
 
@@ -230,7 +230,7 @@ class Accordion extends Base {
             if (a === header) {
                 continue;
             }
-            me.toggle(a, state);
+            me._toggle(a, state);
         }
     }
 

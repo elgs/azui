@@ -17,9 +17,11 @@ body {
         width: 100%;
         padding: 40px;
 
-        summary {
-            outline: none;
-            cursor: pointer;
+        div * {
+            line-height: 150%;
+            // margin: 1em 0;
+            font-family: Arial, sans-serif;
+            // font-size: 18px;
         }
     }
 }

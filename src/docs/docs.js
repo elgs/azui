@@ -44,15 +44,8 @@ window.onload = _ => {
     });
     md = md.replace('${events}', events);
 
-    const converter = new showdown.Converter({
-        tables: true,
-        tasklists: true,
-    });
-    converter.setFlavor('github');
-    const html = converter.makeHtml(md);
-
     const el = document.querySelector('.azDocs');
-    el.innerHTML = html;
+    el.innerHTML = md;
     const codeBlocks = el.querySelectorAll('pre>code');
     codeBlocks.forEach(codeBlock => {
         hljs.highlightBlock(codeBlock);

@@ -1,5 +1,5 @@
-<details>
-    <summary>`${key}` ${desc}</summary>
+<div>
+    <div>`${key}`</div>
     <ui>
         <li>
             `Parameters`
@@ -7,4 +7,4 @@
         </li>
         <li>${desc}</li>
     </ui>
-</details>
+</div>

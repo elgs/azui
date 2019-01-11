@@ -37,23 +37,25 @@ const generateAll = () => {
 
     listModules().map(mod => {
         const m = loadModule(mod);
-        if (m.type < 4) {
-            jsContent += `import '../${mod}/index.js';\n`;
-            cssContent += `import '../${mod}/css.js';\n`;
+        if (m) {
+            if (m.type < 4) {
+                jsContent += `import '../${mod}/index.js';\n`;
+                cssContent += `import '../${mod}/css.js';\n`;
+            }
+
+            const moduleData = {
+                name: mod,
+                ...m,
+                pages: [],
+            };
+            listHtmls(mod).map(html => {
+                moduleData.pages.push(html);
+            });
+
+            const moduleType = `modules${m.type}`;
+            moduleContent[moduleType] = moduleContent[moduleType] || [];
+            moduleContent[moduleType].push(moduleData);
         }
-
-        const moduleData = {
-            name: mod,
-            ...m,
-            pages: [],
-        };
-        listHtmls(mod).map(html => {
-            moduleData.pages.push(html);
-        });
-
-        const moduleType = `modules${m.type}`;
-        moduleContent[moduleType] = moduleContent[moduleType] || [];
-        moduleContent[moduleType].push(moduleData);
     });
 
     Object.keys(moduleContent).filter(m => m.startsWith('modules')).map(m => {
@@ -69,7 +71,7 @@ const generateDocs = (mods) => {
     let docContent = '';
     mods.map(mod => {
         const m = loadModule(mod);
-        if (m.type > 0 && m.type < 4) {
+        if (m && m.type > 0 && m.type < 4) {
             const classStr = fs.readFileSync(path.join(srcDir, mod, mod + '.js'), 'utf8');
             const docJson = docgen.parse(classStr);
             fs.writeFileSync(path.join(srcDir, mod, 'doc.json'), JSON.stringify(docJson, null, 2), 'utf8');
@@ -106,11 +108,11 @@ module.exports = (env, argv) => {
             });
         });
     });
-    htmls.push(new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: srcDir + '/index.html',
-        inject: false,
-    }));
+    // htmls.push(new HtmlWebpackPlugin({
+    //     filename: 'index.html',
+    //     template: srcDir + '/index.html',
+    //     inject: false,
+    // }));
     // console.log(flattenDeep(htmls));
 
     return ({
@@ -185,7 +187,13 @@ Copyright (c) ${new Date().getFullYear()} ${pkgJson.author}
         },
         devServer: {
             disableHostCheck: true,
-            contentBase: path.join(__dirname, isDev ? buildDir : distDir),
+            contentBase: buildDir, //path.join(__dirname, isDev ? buildDir : distDir),
+            historyApiFallback: {
+                rewrites: [{
+                    from: /./,
+                    to: '/index/'
+                }]
+            },
             stats: {
                 children: false,
             },
