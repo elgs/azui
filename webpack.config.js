@@ -64,7 +64,7 @@ const generateAll = () => {
 
     fs.writeFileSync(srcDir + '/all/index.js', jsContent, 'utf8');
     fs.writeFileSync(srcDir + '/all/css.js', cssContent, 'utf8');
-    fs.writeFileSync(srcDir + '/index/modules.json', JSON.stringify(moduleContent, null, 2), 'utf8');
+    fs.writeFileSync(srcDir + '/app/modules.json', JSON.stringify(moduleContent, null, 2), 'utf8');
 };
 
 const generateDocs = (mods) => {
@@ -108,11 +108,10 @@ module.exports = (env, argv) => {
             });
         });
     });
-    // htmls.push(new HtmlWebpackPlugin({
-    //     filename: 'index.html',
-    //     template: srcDir + '/index.html',
-    //     inject: false,
-    // }));
+    htmls.push(new HtmlWebpackPlugin({
+        template: srcDir + '/app/index.tplhtml',
+        inject: false,
+    }));
     // console.log(flattenDeep(htmls));
 
     return ({
@@ -189,10 +188,7 @@ Copyright (c) ${new Date().getFullYear()} ${pkgJson.author}
             disableHostCheck: true,
             contentBase: buildDir, //path.join(__dirname, isDev ? buildDir : distDir),
             historyApiFallback: {
-                rewrites: [{
-                    from: /./,
-                    to: '/index/'
-                }]
+                index: '/app/app.html'
             },
             stats: {
                 children: false,
