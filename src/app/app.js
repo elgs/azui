@@ -123,7 +123,8 @@ window.onload = () => {
             });
 
             const url = `docs/docs.html?m=${m.name}`;
-            const urlNoExt = url.replace('.html', '');
+            // const urlNoExt = url.replace('.html', '');
+            const urlNoExt = `docs/${m.name}`;
             const tabId = m.name + '_api';
             const menuItem = {
                 id: tabId,

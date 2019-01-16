@@ -133,7 +133,7 @@ class Tabs extends Base {
         me.closeClicked = function (event) {
             const currentTabNode = event.target.closest('.azTabs');
             const currentTabs = azui.Tabs(currentTabNode);
-            console.log(event.currentTarget.parentNode.getAttribute('tab-id'));
+            // console.log(event.currentTarget.parentNode.getAttribute('tab-id'));
             const tabId = _getTabId(event.currentTarget.parentNode.getAttribute('tab-id'));
             currentTabs.remove(tabId);
             event.stopPropagation();

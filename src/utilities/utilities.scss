@@ -37,22 +37,21 @@ $collapseIconSize: 4px;
         cursor: not-allowed;
     }
 
-    & * {
+    * {
         user-select: none;
     }
 }
 
-.azui,
-.azui * {
-    box-sizing: border-box;
-    font-size: 12px;
+.azui {
 
-    code:not(*) {
-        color: $default-text;
-        font-family: arial, sans-serif;
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
     }
-
-    a {
-        text-decoration: none;
-    }
+// * {
+//     a {
+//         text-decoration: none;
+//     }
+// }
 }

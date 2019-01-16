@@ -134,9 +134,10 @@ class Select extends Base {
                 }
 
                 const meBcr = node.getBoundingClientRect();
-                me.menu.style['left'] = meBcr.left + getDocScrollLeft();
-                me.menu.style['top'] = meBcr.bottom + getDocScrollTop();
-                me.menu.style['width'] = meBcr.width;
+                console.log(meBcr);
+                me.menu.style['left'] = meBcr.left + getDocScrollLeft() + 'px';
+                me.menu.style['top'] = meBcr.bottom + getDocScrollTop() + 'px';
+                me.menu.style['width'] = meBcr.width + 'px';
                 me.menu.style['display'] = 'block';
             }
 

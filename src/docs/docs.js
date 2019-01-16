@@ -1,5 +1,5 @@
 import * as docs from './docimport.js';
-import md from './docs.md';
+import docstpl from './docs.tplhtml';
 
 import settingsTpl from './settings.tplhtml';
 import methodsTpl from './methods.tplhtml';
@@ -7,10 +7,11 @@ import eventsTpl from './events.tplhtml';
 
 window.onload = _ => {
     const url = new URL(location.href);
+    console.log(url);
     const m = url.searchParams.get('m');
     const doc = docs[`${m}Doc`];
 
-    md = md.replace('${module_name}', m);
+    docstpl = docstpl.replace('${module_name}', m);
     let settings = ''
     doc.settings.map(s => {
         let defaultValue = s.defaultValue;
@@ -20,7 +21,7 @@ window.onload = _ => {
         const item = settingsTpl.replace('${key}', s.key).replace('${type}', s.type).replace('${defaultValue}', defaultValue).replace(/\$\{desc\}/g, s.desc);
         settings += item + '  \n';
     });
-    md = md.replace('${settings}', settings);
+    docstpl = docstpl.replace('${settings}', settings);
 
     let methods = ''
     doc.methods.map(m => {
@@ -32,7 +33,7 @@ window.onload = _ => {
         const item = methodsTpl.replace('${key}', m.key).replace('${returns}', m.returns).replace(/\$\{desc\}/g, m.desc).replace('${param_list}', '(' + pl + ')').replace('${param_details}', pd + '</ul>');
         methods += item + '  \n';
     });
-    md = md.replace('${methods}', methods);
+    docstpl = docstpl.replace('${methods}', methods);
 
     let events = ''
     doc.events.map(e => {
@@ -42,10 +43,10 @@ window.onload = _ => {
         const item = eventsTpl.replace('${key}', e.key).replace(/\$\{desc\}/g, e.desc).replace('${param_details}', '<ul>' + pd + '</ul>');
         events += item + '  \n';
     });
-    md = md.replace('${events}', events);
+    docstpl = docstpl.replace('${events}', events);
 
     const el = document.querySelector('.azDocs');
-    el.innerHTML = md;
+    el.innerHTML = docstpl;
     const codeBlocks = el.querySelectorAll('pre>code');
     codeBlocks.forEach(codeBlock => {
         hljs.highlightBlock(codeBlock);

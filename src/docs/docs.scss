@@ -1,3 +1,7 @@
+// @import url('https://fonts.googleapis.com/css?family=Lato:300,400');
+// @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400');
+// @import url('https://fonts.googleapis.com/css?family=Muli:300,400');
+
 div {
     box-sizing: border-box;
 }
@@ -16,12 +20,16 @@ body {
         height: 100%;
         width: 100%;
         padding: 40px;
+        line-height: 1.5;
+        font-size: 16px;
+        font-family: arial, sans-serif;
+        // font-family: 'Lato', sans-serif;
+        // font-family: 'Open Sans', sans-serif;
+        // font-family: 'Muli', sans-serif;
+        // font-weight: 300;
 
-        div * {
-            line-height: 150%;
-            // margin: 1em 0;
-            font-family: Arial, sans-serif;
-            // font-size: 18px;
+        code:not(*) {
+            font-size: 13px;
         }
     }
 }
