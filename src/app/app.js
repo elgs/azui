@@ -81,6 +81,7 @@ window.onload = () => {
                                 ace.require("ace/ext/language_tools");
                                 const editor = ace.edit(exampleTabLayout.centerContent, {
                                     mode: "ace/mode/html",
+                                    theme: 'ace/theme/tomorrow_night',
                                     enableBasicAutocompletion: true,
                                     enableLiveAutocompletion: true,
                                 });

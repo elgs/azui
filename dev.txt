@@ -24,6 +24,7 @@ DONE: inline edit doesn't edit on touch device
 DONE: tbody events should be masked when cell is in active edit mode
 DONE: when multiple rows are selected, right click will deselect rows
 TODO: filters
+TODO: navigate with gray selection, enter to turn blue
 
 pager:
 DONE: add rows in page in ui
@@ -64,6 +65,7 @@ DONE: if current value is not in the list, show all with none selected
 DONE: option to allow value not in the list
 DONE: mouse hover to select ???
 HOLD: pageable dropdown
+TODO: navigate with gray selection, enter to turn blue
 
 sortable:
 DONE: escape/capture
@@ -82,6 +84,7 @@ DONE: child layout in east of parent layout, collapsing child east causes handle
 menu:
 TODO: separate menu from contextmenu, accordion, datatable, tabs, select
 TODO: submenu
+TODO: navigate with gray selection, enter to turn blue
 
 docs:
 DONE: doc generator: settings, methods, events

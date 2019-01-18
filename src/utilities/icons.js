@@ -16,3 +16,4 @@ export const svgWindowMax = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 
 export const svgWindowMin = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 4"><path d="M28 4H0V0h28v4z"/></svg>`;
 export const svgWindowNormal = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 20"><path d="M32 0H4C1.79 0 0 1.79 0 4v12c0 2.21 1.79 4 4 4h28c2.21 0 4-1.79 4-4V4c0-2.21-1.79-4-4-4zm0 16H4V4h28v12z"/></svg>`;
 export const svgApps = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;
+export const svgTriangle = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M15 10c0 .3-.305.515-.305.515l-8.56 5.303c-.625.41-1.135.106-1.135-.67V4.853c0-.777.51-1.078 1.135-.67l8.56 5.305S15 9.702 15 10z"></path></svg>`;

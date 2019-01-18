@@ -14,4 +14,5 @@ export {default as rightclickDoc} from '../rightclick/doc.json';
 export {default as selectDoc} from '../select/doc.json';
 export {default as sortableDoc} from '../sortable/doc.json';
 export {default as tabsDoc} from '../tabs/doc.json';
+export {default as treeDoc} from '../tree/doc.json';
 export {default as windowDoc} from '../window/doc.json';

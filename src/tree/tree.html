@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>azTree</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="myTree">
+        <div class='item'>Beverages</div>
+        <div class='item'>Water</div>
+        <div class='item'>Coffee</div>
+        <div class="folder">
+            <div class='item'>Tea</div>
+            <div class='item'>Black Tea</div>
+            <div class='item'>White Tea</div>
+            <div class="folder">
+                <div class='item'>Green Tea</div>
+                <div class='item'>Sencha</div>
+                <div class='item'>Gyokuro</div>
+                <div class='item'>Matcha</div>
+                <div class='item'>Pi Lo Chun</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        azui.Tree('#myTree');
+    </script>
+</body>
+
+</html>

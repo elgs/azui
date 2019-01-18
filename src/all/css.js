@@ -14,5 +14,6 @@ import '../rightclick/css.js';
 import '../select/css.js';
 import '../sortable/css.js';
 import '../tabs/css.js';
+import '../tree/css.js';
 import '../utilities/css.js';
 import '../window/css.js';
