@@ -3,28 +3,28 @@
 .azui {
     &.azTree {
         font-size: 14px;
-        line-height: 1.5;
         color: #333;
         cursor: pointer;
 
         svg {
-            width: 15px;
+            width: 18px;
             fill: #333;
             position: relative;
-            top: 2px;
-            margin-right: 4px;
+            top: 3px;
+            left: -3px;
 
-            &.caret-down {
+            &.active {
                 transform: rotate(90deg);
             }
         }
 
-        .item {
+        .azTreeNode {
             @extend %hoveractive;
+            line-height: 1.5;
         }
 
 
-        .folder {
+        .azTreeBranch {
             display: none;
 
             &.active {

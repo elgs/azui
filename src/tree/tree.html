@@ -8,30 +8,39 @@
         body {
             background-color: #f9f9f9;
         }
+
+        #myTree {
+            width: 200px;
+        }
     </style>
 </head>
 
 <body>
-
     <div id="myTree">
-        <div class='item'>Beverages</div>
-        <div class='item'>Water</div>
-        <div class='item'>Coffee</div>
-        <div class="folder">
-            <div class='item'>Tea</div>
-            <div class='item'>Black Tea</div>
-            <div class='item'>White Tea</div>
-            <div class="folder">
-                <div class='item'>Green Tea</div>
-                <div class='item'>Sencha</div>
-                <div class='item'>Gyokuro</div>
-                <div class='item'>Matcha</div>
-                <div class='item'>Pi Lo Chun</div>
+        <div class='azTreeNode'>Beverages</div>
+        <div class='azTreeNode'>Water</div>
+        <div class='azTreeNode'>Coffee</div>
+        <div class='azTreeNode'>Tea</div>
+        <div class="azTreeBranch" tree-key='tea'>
+            <div class='azTreeNode'>Black Tea</div>
+            <div class='azTreeNode'>White Tea</div>
+            <div class='azTreeNode'>Green Tea</div>
+            <div class="azTreeBranch" tree-key='green_tea'>
+                <div class='azTreeNode'>Sencha</div>
+                <div class='azTreeNode'>Gyokuro</div>
+                <div class='azTreeNode'>Matcha</div>
+                <div class='azTreeNode'>Pi Lo Chun</div>
             </div>
         </div>
     </div>
     <script>
-        azui.Tree('#myTree');
+        const tree = azui.Tree('#myTree');
+        const lj = tree.append('Long Jin', 'green_tea');
+        const lj1 = tree.insert('Long Jin 1', 'green_tea', 1);
+        tree.remove(lj1);
+        tree.toggle('tea');
+        tree.toggle('green_tea');
+        tree.toggle('tea', false);
     </script>
 </body>
 
