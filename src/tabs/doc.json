@@ -32,5 +32,26 @@
     }
   ],
   "methods": [],
-  "events": []
+  "events": [
+    {
+      "params": [
+        {
+          "key": "tabId",
+          "desc": "tabId"
+        }
+      ],
+      "key": "willActivate",
+      "desc": "fires before a `tab` is activated."
+    },
+    {
+      "params": [
+        {
+          "key": "tabId",
+          "desc": "tabId"
+        }
+      ],
+      "key": "didActivate",
+      "desc": "fires after a `tab` is activated."
+    }
+  ]
 }

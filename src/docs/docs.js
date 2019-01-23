@@ -7,7 +7,6 @@ import eventsTpl from './events.tplhtml';
 
 window.onload = _ => {
     const url = new URL(location.href);
-    console.log(url);
     const m = url.searchParams.get('m');
     const doc = docs[`${m}Doc`];
 

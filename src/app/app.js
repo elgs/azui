@@ -29,6 +29,8 @@ window.onload = () => {
 
     const menus = [];
 
+    let activeUrl = '';
+
     [modules.modules3, modules.modules2, modules.modules1].map(m => {
         m.map(m => {
             const k = acc.append(m.name);
@@ -46,9 +48,9 @@ window.onload = () => {
                     action: function (e, target) {
                         // console.log(e);
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        if (e.isTrusted) {
-                            history.pushState(tabId, '', '../' + urlNoExt);
-                        }
+                        // if (e.isTrusted) {
+                        //     history.pushState(tabId, '', '../' + urlNoExt);
+                        // }
                         if (!tabs.activate(tabId)) {
                             const w = parseInt(getComputedStyle(tabs.node).width);
                             const exampleTab = parseDOMElement(exampleTabMarkup)[0];
@@ -119,7 +121,7 @@ window.onload = () => {
                         }
                     }
                 };
-                url2TabId[url.replace('.html', '')] = tabId;
+                url2TabId[urlNoExt] = tabId;
                 return menuItem;
             });
 
@@ -164,6 +166,11 @@ window.onload = () => {
         resizable: false,
         closeOnEmpty: false,
         detachable: false,
+    });
+    tabs.node.addEventListener('didActivate', e => {
+        // console.log(e.detail);
+        const tabId = e.detail.tabId;
+        history.pushState(tabId, '', '../' + activeUrl);
     });
     // console.log(modules);
 

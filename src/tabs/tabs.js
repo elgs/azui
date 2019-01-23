@@ -124,8 +124,7 @@ class Tabs extends Base {
                 }
                 // console.log(event.button);
                 const tabId = _getTabId(event.currentTarget.getAttribute('tab-id'));
-                if (!event.target.classList.contains('close') &&
-                    !event.target.parentNode.classList.contains('close')) {
+                if (!event.target.classList.contains('close') && !event.target.parentNode.classList.contains('close')) {
                     currentTabs.activate(tabId);
                 }
             };
@@ -439,6 +438,15 @@ class Tabs extends Base {
         const me = this;
         const node = me.node;
         let activated = false;
+        // @doc:event:start
+        // @doc:willActivate: fires before a `tab` is activated.
+        // @doc:tabId: tabId
+        // @doc:event:end
+        node.dispatchEvent(new CustomEvent('willActivate', {
+            detail: {
+                tabId,
+            }
+        }));
         node.querySelectorAll('div.azTabContent').forEach(el => {
             const elId = _getTabId(el.getAttribute('tab-id'));
             if (elId === tabId) {
@@ -456,6 +464,15 @@ class Tabs extends Base {
                 el.classList.remove('active');
             }
         });
+        // @doc:event:start
+        // @doc:didActivate: fires after a `tab` is activated.
+        // @doc:tabId: tabId
+        // @doc:event:end
+        node.dispatchEvent(new CustomEvent('didActivate', {
+            detail: {
+                tabId,
+            }
+        }));
         return activated;
     }
     activateByIndex(tabIndex) {
