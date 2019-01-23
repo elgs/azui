@@ -26,10 +26,9 @@ window.onload = () => {
     });
 
     const url2TabId = {};
+    const tabId2Url = {};
 
     const menus = [];
-
-    let activeUrl = '';
 
     [modules.modules3, modules.modules2, modules.modules1].map(m => {
         m.map(m => {
@@ -48,9 +47,6 @@ window.onload = () => {
                     action: function (e, target) {
                         // console.log(e);
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        // if (e.isTrusted) {
-                        //     history.pushState(tabId, '', '../' + urlNoExt);
-                        // }
                         if (!tabs.activate(tabId)) {
                             const w = parseInt(getComputedStyle(tabs.node).width);
                             const exampleTab = parseDOMElement(exampleTabMarkup)[0];
@@ -122,6 +118,7 @@ window.onload = () => {
                     }
                 };
                 url2TabId[urlNoExt] = tabId;
+                tabId2Url[tabId] = urlNoExt;
                 return menuItem;
             });
 
@@ -139,15 +136,13 @@ window.onload = () => {
                     const iframe = parseDOMElement(iframeMarkup)[0];
                     menus.filter(m => m !== menu).map(m => m.clearActive());
                     const activated = tabs.add(null, m.name + ' api', iframe, true, true, tabId);
-                    if (e.isTrusted) {
-                        history.pushState(tabId, '', '../' + urlNoExt);
-                    }
                     if (activated !== true) {
                         window.open('../' + url, tabId);
                     }
                 }
             };
             url2TabId[urlNoExt] = tabId;
+            tabId2Url[tabId] = urlNoExt;
             items.unshift(menuItem);
 
             const menuEl = parseDOMElement(`<div></div>`)[0];
@@ -170,7 +165,7 @@ window.onload = () => {
     tabs.node.addEventListener('didActivate', e => {
         // console.log(e.detail);
         const tabId = e.detail.tabId;
-        history.pushState(tabId, '', '../' + activeUrl);
+        history.pushState(tabId, '', '../' + tabId2Url[tabId]);
     });
     // console.log(modules);
 

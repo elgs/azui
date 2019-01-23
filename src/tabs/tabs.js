@@ -479,8 +479,15 @@ class Tabs extends Base {
         const me = this;
         const node = me.node;
 
+        let tabId;
         node.querySelectorAll('div.azTabContent').forEach((el, index) => {
             if (index === tabIndex) {
+                tabId = _getTabId(el.getAttribute('tab-id'));
+                node.dispatchEvent(new CustomEvent('willActivate', {
+                    detail: {
+                        tabId,
+                    }
+                }));
                 el.style['display'] = 'block';
             } else {
                 el.style['display'] = 'none';
@@ -493,5 +500,10 @@ class Tabs extends Base {
                 el.classList.remove('active');
             }
         });
+        node.dispatchEvent(new CustomEvent('didActivate', {
+            detail: {
+                tabId,
+            }
+        }));
     }
 };
