@@ -11,8 +11,8 @@ import modules from './modules.json';
 import exampleTabMarkup from './exampletab.tplhtml';
 
 window.onload = () => {
-    const buildTime = document.querySelector('.azui span.buildTime');
-    buildTime && (buildTime.innerHTML = modules.buildTime);
+    // const buildTime = document.querySelector('.azui span.buildTime');
+    // buildTime && (buildTime.innerHTML = modules.buildTime);
 
     const container = document.querySelector('.azui.azIndex');
     azui.Layout(container, {
@@ -47,7 +47,7 @@ window.onload = () => {
                     action: function (e, target) {
                         // console.log(e);
                         menus.filter(m => m !== menu).map(m => m.clearActive());
-                        if (!tabs.activate(tabId)) {
+                        if (!tabs.activate(tabId, e.isTrusted)) {
                             const w = parseInt(getComputedStyle(tabs.node).width);
                             const exampleTab = parseDOMElement(exampleTabMarkup)[0];
                             const exampleTabLayout = azui.Layout(exampleTab, {
@@ -132,12 +132,15 @@ window.onload = () => {
                 title: 'api',
                 action: function (e, target) {
                     // console.log(e);
-                    const iframeMarkup = `<div><iframe name='${tabId}' frameBorder='0'></iframe></div>`;
-                    const iframe = parseDOMElement(iframeMarkup)[0];
                     menus.filter(m => m !== menu).map(m => m.clearActive());
-                    const activated = tabs.add(null, m.name + ' api', iframe, true, true, tabId);
-                    if (activated !== true) {
-                        window.open('../' + url, tabId);
+                    if (!tabs.activate(tabId, e.isTrusted)) {
+                        const iframeMarkup = `<div><iframe name='${tabId}' frameBorder='0'></iframe></div>`;
+                        const iframe = parseDOMElement(iframeMarkup)[0];
+
+                        const activated = tabs.add(null, m.name + ' api', iframe, true, true, tabId, e.isTrusted);
+                        if (activated !== true) {
+                            window.open('../' + url, tabId);
+                        }
                     }
                 }
             };

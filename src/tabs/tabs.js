@@ -347,7 +347,7 @@ class Tabs extends Base {
         }
     }
 
-    add(icon, title, contentNode, closable = true, activate = true, tabId = null) {
+    add(icon, title, contentNode, closable = true, activate = true, tabId = null, trigger = false) {
         const me = this;
 
         if (tabId) {
@@ -434,19 +434,23 @@ class Tabs extends Base {
             remove(node);
         }
     }
-    activate(tabId) {
+    activate(tabId, trigger = false) {
         const me = this;
         const node = me.node;
         let activated = false;
-        // @doc:event:start
-        // @doc:willActivate: fires before a `tab` is activated.
-        // @doc:tabId: tabId
-        // @doc:event:end
-        node.dispatchEvent(new CustomEvent('willActivate', {
-            detail: {
-                tabId,
-            }
-        }));
+
+        if (trigger) {
+            // @doc:event:start
+            // @doc:willActivate: fires before a `tab` is activated.
+            // @doc:tabId: tabId
+            // @doc:event:end
+            node.dispatchEvent(new CustomEvent('willActivate', {
+                detail: {
+                    tabId,
+                }
+            }));
+        }
+
         node.querySelectorAll('div.azTabContent').forEach(el => {
             const elId = _getTabId(el.getAttribute('tab-id'));
             if (elId === tabId) {
@@ -464,30 +468,36 @@ class Tabs extends Base {
                 el.classList.remove('active');
             }
         });
-        // @doc:event:start
-        // @doc:didActivate: fires after a `tab` is activated.
-        // @doc:tabId: tabId
-        // @doc:event:end
-        node.dispatchEvent(new CustomEvent('didActivate', {
-            detail: {
-                tabId,
-            }
-        }));
+
+        if (trigger) {
+            // @doc:event:start
+            // @doc:didActivate: fires after a `tab` is activated.
+            // @doc:tabId: tabId
+            // @doc:event:end
+            node.dispatchEvent(new CustomEvent('didActivate', {
+                detail: {
+                    tabId,
+                }
+            }));
+        }
+
         return activated;
     }
-    activateByIndex(tabIndex) {
+    activateByIndex(tabIndex, trigger = false) {
         const me = this;
         const node = me.node;
 
         let tabId;
         node.querySelectorAll('div.azTabContent').forEach((el, index) => {
             if (index === tabIndex) {
-                tabId = _getTabId(el.getAttribute('tab-id'));
-                node.dispatchEvent(new CustomEvent('willActivate', {
-                    detail: {
-                        tabId,
-                    }
-                }));
+                if (trigger) {
+                    tabId = _getTabId(el.getAttribute('tab-id'));
+                    node.dispatchEvent(new CustomEvent('willActivate', {
+                        detail: {
+                            tabId,
+                        }
+                    }));
+                }
                 el.style['display'] = 'block';
             } else {
                 el.style['display'] = 'none';
@@ -500,10 +510,12 @@ class Tabs extends Base {
                 el.classList.remove('active');
             }
         });
-        node.dispatchEvent(new CustomEvent('didActivate', {
-            detail: {
-                tabId,
-            }
-        }));
+        if (trigger) {
+            node.dispatchEvent(new CustomEvent('didActivate', {
+                detail: {
+                    tabId,
+                }
+            }));
+        }
     }
 };
