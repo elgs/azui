@@ -153,7 +153,7 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new webpack.BannerPlugin({
-                banner: `azUI ${pkgJson.version}\n${pkgJson.homepage}\n@author ${pkgJson.author}\n${pkgJson.license} License\nCopyright (c) ${new Date().getFullYear()} ${pkgJson.author}`,
+                banner: `${pkgJson.name} ${pkgJson.version}\n${pkgJson.homepage}\n@author ${pkgJson.author}\n${pkgJson.license} License\nCopyright (c) ${new Date().getFullYear()} ${pkgJson.author}`,
             }),
             new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),
             new MiniCssExtractPlugin({

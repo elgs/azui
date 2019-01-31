@@ -335,7 +335,6 @@ class Docker extends Base {
         dockedRef.style.left = dockedRefStyle.left;
         dockedRef.style.right = '';
         dockedRef.style.bottom = '';
-
         setTimeout(() => {
             dockedRef.style.transition = 'all .25s ease-in';
             dockedRef.style.left = docked.getAttribute('x') + 'px';

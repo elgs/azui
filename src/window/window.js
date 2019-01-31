@@ -85,7 +85,7 @@ class Window extends Base {
             iconSpan.appendChild(parseDOMElement(icon)[0]);
             iconSpan.addEventListener('click', function (event) {
                 if (callback) {
-                    callback.call(me, true);
+                    callback.call(me);
                 }
             });
             me.headerIcons[key] = iconSpan;
@@ -226,6 +226,8 @@ class Window extends Base {
                 if (matches(target, '.azHeaderIcon,.azHeaderIcon *') || matches(target, 'input')) {
                     return false; // don't drag when clicking on icons
                 }
+            },
+            start: function (event, ui) {
                 me.docker.storeState(me.dockId);
             },
             drag: function (event, ui) {
@@ -284,6 +286,7 @@ class Window extends Base {
                 if (state === 'normal') {
                     me.maximize();
                 } else {
+                    console.log(me.node);
                     me.restore();
                 }
             }
