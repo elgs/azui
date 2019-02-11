@@ -345,7 +345,7 @@ class Tabs extends Base {
         }
     }
 
-    add(icon, title, contentNode, closable = true, activate = true, tabId = null, trigger = false) {
+    add(icon, title, content, closable = true, activate = true, tabId = null, trigger = false) {
         const me = this;
 
         if (tabId) {
@@ -397,8 +397,11 @@ class Tabs extends Base {
 
         me.sortable.add(headerNode);
 
-        if (contentNode && typeof contentNode === 'string') {
-            contentNode = document.createElement('div');
+        const contentNode = document.createElement('div');
+        if (content && typeof content === 'string') {
+            contentNode.innerHTML = content;
+        } else {
+            contentNode.appendChild(content);
         }
         contentNode.setAttribute('tab-id', 'azTabContent-' + tabId);
         contentNode.classList.add('azTabContent');
@@ -410,7 +413,7 @@ class Tabs extends Base {
         // me.showHideScrollers();
         me.fitTabWidth();
         if (activate === true) {
-            me.activate(tabId)
+            me.activate(tabId, trigger)
         }
         return tabId;
     }

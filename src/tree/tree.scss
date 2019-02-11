@@ -4,6 +4,7 @@
     &.azTree {
         font-size: 14px;
         color: #333;
+        // outline: none;
         cursor: pointer;
 
         svg {
@@ -21,7 +22,7 @@
 
         .azTreeNode {
             @extend %hoveractive;
-            line-height: 1.5;
+            line-height: 2;
         }
 
 

@@ -7,7 +7,7 @@ import eventsTpl from './events.tplhtml';
 
 window.onload = _ => {
     const url = new URL(location.href);
-    const m = url.searchParams.get('m');
+    const m = url.pathname.substr(1);
     const doc = docs[`${m}Doc`];
 
     docstpl = docstpl.replace('${module_name}', m);

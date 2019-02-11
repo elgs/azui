@@ -13,7 +13,8 @@ import {
     insertAfter,
     children,
     resolveFunction,
-    ancestors
+    ancestors,
+    nextElem
 } from '../utilities/utilities.js';
 
 
@@ -38,13 +39,57 @@ class Tree extends Base {
         treeNodes.forEach(treeNode => {
             me._applyEvents(treeNode);
         });
+
+        const onKeyDown = e => {
+            // console.log(e.keyCode);
+
+            if (e.keyCode === 38) {
+                // up
+                if (me.activeItem) {
+                    const prev = prevElem(me.activeItem, ':not(.disabled).azTreeNode');
+                    if (prev) {
+                        me.activeItem.classList.remove('active');
+                        me.activeItem = prev;
+                        me.activeItem.classList.add('active');
+                    }
+                }
+            } else if (e.keyCode === 40) {
+                // down
+                if (me.activeItem) {
+                    const next = nextElem(me.activeItem, ':not(.disabled).azTreeNode');
+                    if (next) {
+                        me.activeItem.classList.remove('active');
+                        me.activeItem = next;
+                        me.activeItem.classList.add('active');
+                    }
+                }
+            } else if (e.keyCode === 37) {
+                // left
+                if (me.activeItem) {
+                    const key = me.activeItem.getAttribute('tree-key');
+                    me.toggle(key, false);
+                }
+            } else if (e.keyCode === 39) {
+                // right
+                if (me.activeItem) {
+                    const key = me.activeItem.getAttribute('tree-key');
+                    me.toggle(key, true);
+                }
+            } else if (e.keyCode === 13) {
+                // enter
+                me.activeItem.dispatchEvent(new CustomEvent('mouseup'));
+            }
+        };
+
+        node.setAttribute('tabindex', 0);
+        node.addEventListener('keydown', onKeyDown);
     }
 
-    _applyEvents(node, action) {
+    _applyEvents(treeNode, action) {
         // console.log(node);
         const me = this;
-        if (node.classList.contains('azTreeBranch')) {
-            const prev = prevElem(node);
+        if (treeNode.classList.contains('azTreeBranch')) {
+            const prev = prevElem(treeNode);
             const caret = parseDOMElement(svgTriangle)[0];
             prev.insertBefore(caret, prev.firstChild);
             const itemSelected = e => {
@@ -56,14 +101,14 @@ class Tree extends Base {
                 if (e.type === 'mouseup' && e.button !== 0) {
                     return;
                 }
-                node.classList.toggle("active");
+                treeNode.classList.toggle("active");
                 caret.classList.toggle("active");
             };
             if (isTouchDevice()) {
                 prev.addEventListener("touchend", itemSelected);
             }
             prev.addEventListener("mouseup", itemSelected);
-        } else if (node.classList.contains('azTreeNode')) {
+        } else if (treeNode.classList.contains('azTreeNode')) {
             const select = e => {
                 if (e.type === 'touchend') {
                     // prevent mouseup from being triggered on touch device
@@ -76,17 +121,17 @@ class Tree extends Base {
                 if (me.activeItem) {
                     me.activeItem.classList.remove('active');
                 }
-                node.classList.add('active');
-                me.activeItem = node;
-                action && action.call(node, e);
+                treeNode.classList.add('active');
+                me.activeItem = treeNode;
+                action && action.call(treeNode, e);
             };
             if (isTouchDevice()) {
-                node.addEventListener('touchend', select);
-                node.addEventListener("touchmove", e => {
+                treeNode.addEventListener('touchend', select);
+                treeNode.addEventListener("touchmove", e => {
                     me.dragged = true;
                 });
             }
-            node.addEventListener('mouseup', select);
+            treeNode.addEventListener('mouseup', select);
         }
     }
 
