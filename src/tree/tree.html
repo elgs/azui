@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>azTree</title>
@@ -14,17 +13,16 @@
         }
     </style>
 </head>
-
 <body>
     <div id="myTree">
-        <div class='azTreeNode'>Beverages</div>
+        <div class='azTreeNode'>Alcohol</div>
         <div class='azTreeNode'>Water</div>
         <div class='azTreeNode'>Coffee</div>
-        <div class='azTreeNode'>Tea</div>
+        <div class='azTreeNode' tree-key='tea'>Tea</div>
         <div class="azTreeBranch" tree-key='tea'>
             <div class='azTreeNode'>Black Tea</div>
             <div class='azTreeNode'>White Tea</div>
-            <div class='azTreeNode'>Green Tea</div>
+            <div class='azTreeNode' tree-key='green_tea'>Green Tea</div>
             <div class="azTreeBranch" tree-key='green_tea'>
                 <div class='azTreeNode'>Sencha</div>
                 <div class='azTreeNode'>Gyokuro</div>
@@ -35,13 +33,16 @@
     </div>
     <script>
         const tree = azui.Tree('#myTree');
+        const soda = tree.append('Soda');
+        const soup = tree.insert('Soup', null, 2);
         const lj = tree.append('Long Jin', 'green_tea');
         const lj1 = tree.insert('Long Jin 1', 'green_tea', 1);
-        tree.remove(lj1);
-        tree.toggle('tea');
-        tree.toggle('green_tea');
-        tree.toggle('tea', false);
+        const coke = tree.append('Coke', soda);
+        tree.activate(lj1);
+        // tree.remove(lj1);
+        // tree.toggle('tea');
+        // tree.toggle('green_tea');
+        // tree.toggle('tea', false);
     </script>
 </body>
-
 </html>

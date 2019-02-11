@@ -86,5 +86,8 @@ TODO: separate menu from contextmenu, accordion, datatable, tabs, select
 TODO: submenu
 TODO: navigate with gray selection, enter to turn blue
 
+tree:
+TODO: key navigation
+
 docs:
 DONE: doc generator: settings, methods, events

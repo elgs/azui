@@ -16,9 +16,7 @@ import {
     siblings
 } from '../utilities/utilities.js';
 
-azui.Tabs = function (el, options, init) {
-    return azObj(Tabs, el, options, init);
-};
+azui.Tabs = (el, options, init) => azObj(Tabs, el, options, init);
 
 const _getTabId = (elemId) => {
     return elemId.split('-').splice(1, Number.MAX_SAFE_INTEGER).join('-');

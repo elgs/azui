@@ -7,11 +7,12 @@
         cursor: pointer;
 
         svg {
-            width: 18px;
-            fill: #333;
+            width: 15px;
+            fill: #666;
             position: relative;
-            top: 3px;
-            left: -3px;
+            top: 2px;
+            margin-right: 2px;
+            // left: -3px;
 
             &.active {
                 transform: rotate(90deg);

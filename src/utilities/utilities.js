@@ -136,11 +136,11 @@ export const getDocWidth = function () {
 
 export const getDocScrollLeft = function () {
     return Math.max(window.pageXOffset, document.documentElement.scrollLeft, document.body.scrollLeft);
-}
+};
 
 export const getDocScrollTop = function () {
     return Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
-}
+};
 
 export const textWidth = function (elem) {
     const s = parseDOMElement(`<span>${elem.innerHTML}</span>`)[0];
@@ -314,6 +314,18 @@ export const siblings = function (el, selector) {
     }
 };
 
+export const children = function (el, selector) {
+    if (selector) {
+        return Array.prototype.filter.call(el.children, function (child) {
+            return matches(child, selector) && child !== el;
+        });
+    } else {
+        return Array.prototype.filter.call(el.children, function (child) {
+            return child !== el;
+        });
+    }
+};
+
 export const index = function (node, selector) {
     let children = node.parentNode.children;
     if (selector) {
@@ -411,6 +423,16 @@ export const normalizeIcon = function (i) {
         sp.appendChild(i);
         return sp;
     }
+};
+
+export const ancestors = (el, selector) => {
+    const ancestors = [];
+    while (el = el.parentNode) {
+        if (el.nodeType === 1 && (!selector || matches(el, selector))) {
+            ancestors.push(el);
+        }
+    }
+    return ancestors;
 };
 
 export const nextElem = (el, selector) => {
