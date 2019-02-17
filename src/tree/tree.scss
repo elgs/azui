@@ -4,7 +4,7 @@
     &.azTree {
         font-size: 14px;
         color: #333;
-        // outline: none;
+        outline: none;
         cursor: pointer;
 
         svg {
@@ -13,10 +13,11 @@
             position: relative;
             top: 2px;
             margin-right: 2px;
+            transform: rotate(90deg);
             // left: -3px;
 
-            &.active {
-                transform: rotate(90deg);
+            &.collapsed {
+                transform: rotate(0deg);
             }
         }
 
@@ -27,10 +28,10 @@
 
 
         .azTreeBranch {
-            display: none;
+            display: block;
 
-            &.active {
-                display: block;
+            &.collapsed {
+                display: none;
             }
 
             padding-left: 20px;

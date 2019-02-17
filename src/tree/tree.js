@@ -40,23 +40,69 @@ class Tree extends Base {
             me._applyEvents(treeNode);
         });
 
+        const navUp = el => {
+            if (!el) {
+                return null;
+            }
+            const prev = prevElem(el);
+            if (prev) {
+                if (prev.classList.contains('azTreeNode')) {
+                    return prev;
+                } else if (prev.classList.contains('azTreeBranch') && !prev.classList.contains('collapsed')) {
+                    const elements = prev.querySelectorAll('.azTreeNode');
+                    for (let i = elements.length - 1; i >= 0; --i) {
+                        if (!elements[i].closest('.azTreeBranch.collapsed')) {
+                            return elements[i];
+                        }
+                    }
+                    return navUp(prev);
+                } else {
+                    return navUp(prev);
+                }
+            } else {
+                return navUp(el.parentNode);
+            }
+        };
+
+        const navDown = el => {
+            if (!el) {
+                return null;
+            }
+            const next = nextElem(el);
+            if (next) {
+                if (next.classList.contains('azTreeNode')) {
+                    return next;
+                } else if (next.classList.contains('azTreeBranch') && !next.classList.contains('collapsed')) {
+                    const firstChild = next.querySelector('*>.azTreeNode');
+                    if (firstChild) {
+                        return firstChild;
+                    } else {
+                        return navDown(next);
+                    }
+                } else {
+                    return navDown(next);
+                }
+            } else {
+                return navDown(el.parentNode);
+            }
+        };
+
         const onKeyDown = e => {
             // console.log(e.keyCode);
 
+            e.preventDefault();
             if (e.keyCode === 38) {
                 // up
-                if (me.activeItem) {
-                    const prev = prevElem(me.activeItem, ':not(.disabled).azTreeNode');
-                    if (prev) {
-                        me.activeItem.classList.remove('active');
-                        me.activeItem = prev;
-                        me.activeItem.classList.add('active');
-                    }
+                const prev = navUp(me.activeItem);
+                if (prev) {
+                    me.activeItem.classList.remove('active');
+                    me.activeItem = prev;
+                    me.activeItem.classList.add('active');
                 }
             } else if (e.keyCode === 40) {
                 // down
                 if (me.activeItem) {
-                    const next = nextElem(me.activeItem, ':not(.disabled).azTreeNode');
+                    const next = navDown(me.activeItem);
                     if (next) {
                         me.activeItem.classList.remove('active');
                         me.activeItem = next;
@@ -89,8 +135,12 @@ class Tree extends Base {
         // console.log(node);
         const me = this;
         if (treeNode.classList.contains('azTreeBranch')) {
+            const collapsed = treeNode.classList.contains('collapsed');
             const prev = prevElem(treeNode);
             const caret = parseDOMElement(svgTriangle)[0];
+            if (collapsed) {
+                caret.classList.add('collapsed');
+            }
             prev.insertBefore(caret, prev.firstChild);
             const itemSelected = e => {
                 if (e.type === 'touchend') {
@@ -101,8 +151,8 @@ class Tree extends Base {
                 if (e.type === 'mouseup' && e.button !== 0) {
                     return;
                 }
-                treeNode.classList.toggle("active");
-                caret.classList.toggle("active");
+                treeNode.classList.toggle("collapsed");
+                caret.classList.toggle("collapsed");
             };
             if (isTouchDevice()) {
                 prev.addEventListener("touchend", itemSelected);
@@ -135,23 +185,18 @@ class Tree extends Base {
         }
     }
 
-    append(title, parentKey, action, key = null, disabled = false) {
-        return this.insert(title, parentKey, Number.MAX_SAFE_INTEGER, action, key, disabled);
+    append(title, parentKey, action, key = null) {
+        return this.insert(title, parentKey, Number.MAX_SAFE_INTEGER, action, key);
     }
 
-    insert(title, parentKey, pos, action, key = null, disabled = false) {
+    insert(title, parentKey, pos, action, key = null) {
         const me = this;
         const node = me.node;
         key = key || randGen(8);
         const markup = `<div class="azTreeNode" tree-key="${key}"><span>${title}</span></div>`;
         const newNode = parseDOMElement(markup)[0];
 
-        disabled = resolveFunction(disabled);
-        if (disabled) {
-            newNode.classList.add('disabled');
-        } else {
-            me._applyEvents(newNode, action);
-        }
+        me._applyEvents(newNode, action);
 
         if (!parentKey) {
             const ch = children(node, '.azTreeNode');
@@ -199,17 +244,20 @@ class Tree extends Base {
         const me = this;
         const node = me.node;
         const branch = node.querySelector(`div.azTreeBranch[tree-key="${key}"]`);
+        if (!branch) {
+            return;
+        }
         const prev = prevElem(branch);
         const caret = prev.querySelector('svg');
         if (state === true) {
-            branch.classList.add("active");
-            caret.classList.add("active");
+            branch.classList.remove("collapsed");
+            caret.classList.remove("collapsed");
         } else if (state === false) {
-            branch.classList.remove("active");
-            caret.classList.remove("active");
+            branch.classList.add("collapsed");
+            caret.classList.add("collapsed");
         } else {
-            branch.classList.toggle("active");
-            caret.classList.toggle("active");
+            branch.classList.toggle("collapsed");
+            caret.classList.toggle("collapsed");
         }
     }
 
