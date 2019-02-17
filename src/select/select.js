@@ -13,20 +13,18 @@ import {
     remove
 } from '../utilities/utilities.js';
 
-azui.Select = function (el, options, init) {
-    return azObj(Select, el, options, init);
-};
+azui.Select = (el, options, init) => azObj(Select, el, options, init);
 
 class Select extends Base {
     static className = 'Select';
 
     _init(options) {
+        // console.log(options);
         const settings = Object.assign({
-                items: [],
-                allowNewItems: true,
-                select: (e) => {},
-            },
-            options);
+            items: [],
+            allowNewItems: true,
+            select: e => {},
+        }, options);
 
         const me = this;
         const node = me.node;

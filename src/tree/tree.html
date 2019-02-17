@@ -60,7 +60,12 @@
         </div>
     </div>
     <script>
-        const tree = azui.Tree('#myTree');
+        const tree = azui.Tree('#myTree', {
+            action: function (e) {
+                console.log(this);
+                console.log(e);
+            },
+        });
         const soda = tree.append('Soda');
         const soup = tree.insert('Soup', null, 2);
         const lj = tree.append('Long Jin', 'green_tea');

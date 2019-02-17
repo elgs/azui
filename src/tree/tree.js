@@ -6,17 +6,15 @@ import {
     svgTriangle
 } from '../utilities/icons.js';
 import {
+    ancestors,
+    children,
+    insertAfter,
     isTouchDevice,
+    nextElem,
     parseDOMElement,
     prevElem,
-    randGen,
-    insertAfter,
-    children,
-    resolveFunction,
-    ancestors,
-    nextElem
+    randGen
 } from '../utilities/utilities.js';
-
 
 
 azui.Tree = (el, options, init) => azObj(Tree, el, options, init);
@@ -26,9 +24,10 @@ class Tree extends Base {
     static className = 'Tree';
 
     _init(options) {
+        // console.log(options);
         const me = this;
         const settings = Object.assign({
-
+            action: e => {},
         }, options);
 
         this.settings = settings;
@@ -173,7 +172,12 @@ class Tree extends Base {
                 }
                 treeNode.classList.add('active');
                 me.activeItem = treeNode;
-                action && action.call(treeNode, e);
+                if (!action) {
+                    me.settings.action.call(treeNode, e);
+                } else if (action.call(treeNode, e) !== false) {
+                    me.settings.action.call(treeNode, e);
+                }
+
             };
             if (isTouchDevice()) {
                 treeNode.addEventListener('touchend', select);
