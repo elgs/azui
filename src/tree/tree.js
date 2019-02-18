@@ -13,7 +13,9 @@ import {
     nextElem,
     parseDOMElement,
     prevElem,
-    randGen
+    randGen,
+    getHeight,
+    diffPosition
 } from '../utilities/utilities.js';
 
 
@@ -92,37 +94,56 @@ class Tree extends Base {
             e.preventDefault();
             if (e.keyCode === 38) {
                 // up
-                const prev = navUp(me.activeItem);
+                const prev = navUp(me.keyonItem);
                 if (prev) {
-                    me.activeItem.classList.remove('active');
-                    me.activeItem = prev;
-                    me.activeItem.classList.add('active');
+                    me.keyonItem.classList.remove('keyon');
+                    me.keyonItem = prev;
+                    me.keyonItem.classList.add('keyon');
+                }
+
+                const itemHeight = me.keyonItem.offsetHeight;
+                const topDiff = diffPosition(me.keyonItem, me.node.parentNode).top;
+                if (topDiff < 0) {
+                    // scroll down rowHeight
+                    me.node.parentNode.scrollTop -= itemHeight;
                 }
             } else if (e.keyCode === 40) {
                 // down
-                if (me.activeItem) {
-                    const next = navDown(me.activeItem);
+                if (me.keyonItem) {
+                    const next = navDown(me.keyonItem);
                     if (next) {
-                        me.activeItem.classList.remove('active');
-                        me.activeItem = next;
-                        me.activeItem.classList.add('active');
+                        me.keyonItem.classList.remove('keyon');
+                        me.keyonItem = next;
+                        me.keyonItem.classList.add('keyon');
+                    }
+
+                    const containerHeight = getHeight(me.node.parentNode);
+                    const itemHeight = me.keyonItem.offsetHeight;
+                    const topDiff = diffPosition(me.keyonItem, me.node.parentNode).top;
+                    // console.log(containerHeight, itemHeight, topDiff);
+                    if (itemHeight + topDiff > containerHeight) {
+                        // scroll down rowHeight
+                        // console.log(me.node.parentNode);
+                        me.node.parentNode.scrollTop += itemHeight;
                     }
                 }
             } else if (e.keyCode === 37) {
                 // left
-                if (me.activeItem) {
-                    const key = me.activeItem.getAttribute('tree-key');
+                if (me.keyonItem) {
+                    const branch = nextElem(me.keyonItem, '.azTreeBranch') || me.keyonItem.closest('.azTreeBranch');
+                    const key = branch.getAttribute('tree-key');
                     me.toggle(key, false);
                 }
             } else if (e.keyCode === 39) {
                 // right
-                if (me.activeItem) {
-                    const key = me.activeItem.getAttribute('tree-key');
+                if (me.keyonItem) {
+                    const branch = nextElem(me.keyonItem, '.azTreeBranch') || me.keyonItem.closest('.azTreeBranch');
+                    const key = branch.getAttribute('tree-key');
                     me.toggle(key, true);
                 }
             } else if (e.keyCode === 13) {
                 // enter
-                me.activeItem.dispatchEvent(new CustomEvent('mouseup'));
+                me.keyonItem.dispatchEvent(new CustomEvent('mouseup'));
             }
         };
 
@@ -169,9 +190,11 @@ class Tree extends Base {
                 }
                 if (me.activeItem) {
                     me.activeItem.classList.remove('active');
+                    me.keyonItem.classList.remove('keyon');
                 }
                 treeNode.classList.add('active');
                 me.activeItem = treeNode;
+                me.keyonItem = treeNode;
                 if (!action) {
                     me.settings.action.call(treeNode, e);
                 } else if (action.call(treeNode, e) !== false) {

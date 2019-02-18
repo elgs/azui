@@ -90,8 +90,9 @@ tree:
 DONE: key navigation
 TODO: search
 TODO: default collapsed option
-TODO: secondary active state
-TODO: scroll on key navigation
+DONE: secondary active state
+DONE: scroll on key navigation
+DONE: left/right on tree node to collapse/expand parent branch
 
 docs:
 DONE: doc generator: settings, methods, events

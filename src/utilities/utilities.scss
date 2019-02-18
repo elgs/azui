@@ -43,15 +43,18 @@ $collapseIconSize: 4px;
 }
 
 .azui {
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
 
     *,
     *::before,
     *::after {
         box-sizing: border-box;
     }
-// * {
-//     a {
-//         text-decoration: none;
-//     }
-// }
+
+    // * {
+    //     a {
+    //         text-decoration: none;
+    //     }
+    // }
 }

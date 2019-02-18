@@ -21,11 +21,14 @@
             }
         }
 
+        .keyon {
+            background-color: $less-active;
+        }
+
         .azTreeNode {
             @extend %hoveractive;
             line-height: 2;
         }
-
 
         .azTreeBranch {
             display: block;

@@ -2,10 +2,6 @@ import {
     parseDOMElement,
 } from '../utilities/utilities.js';
 
-import {
-    svgApps
-} from '../utilities/icons.js';
-
 import modules from './modules.json';
 
 import exampleTabMarkup from './exampletab.tplhtml';
@@ -14,7 +10,7 @@ window.onload = () => {
     // const buildTime = document.querySelector('.azui span.buildTime');
     // buildTime && (buildTime.innerHTML = modules.buildTime);
 
-    const container = document.querySelector('.azui.azIndex');
+    const container = document.querySelector('.azui.azApp');
     azui.Layout(container, {
         hideCollapseButton: false,
         westWidth: '180px',
@@ -33,7 +29,7 @@ window.onload = () => {
     tabs.node.addEventListener('didActivate', e => {
         // console.log(e.detail);
         const tabId = e.detail.tabId;
-        console.log(tabId2Url[tabId]);
+        // console.log(tabId2Url[tabId]);
         history.pushState(tabId, '', '../' + tabId2Url[tabId]);
     });
     // console.log(modules);
