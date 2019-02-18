@@ -33,6 +33,7 @@ window.onload = () => {
     tabs.node.addEventListener('didActivate', e => {
         // console.log(e.detail);
         const tabId = e.detail.tabId;
+        console.log(tabId2Url[tabId]);
         history.pushState(tabId, '', '../' + tabId2Url[tabId]);
     });
     // console.log(modules);
@@ -53,24 +54,19 @@ window.onload = () => {
     [modules.modules3, modules.modules2, modules.modules1].map(m => {
         m.map(m => {
             const url = `docs/docs.html`;
-            const urlNoExt = m.name;
+            const urlNoExt = m.name + '/api';
             const tabId = m.name + '_api';
             const action = (e) => {
                 // console.log(e);
                 if (!tabs.activate(tabId, e.isTrusted)) {
-                    // const iframeMarkup = `<div><iframe name='${tabId}' frameBorder='0'></iframe></div>`;
-                    // const iframe = parseDOMElement(iframeMarkup)[0];
-
-                    // const activated = tabs.add(null, m.name + ' api', iframe, true, true, tabId, e.isTrusted);
-                    if (!tabs.activate(tabId, e.isTrusted)) {
-                        fetch('../' + url).then(res => res.text()).then(text => {
-                            text = text.trim();
-                            const content = document.createElement('div');
-                            tabs.add(null, m.name + ' api', content, true, true, tabId, e.isTrusted);
-                            refreshIframe(text, content);
-                        });
-                        // window.open('../' + url, tabId);
-                    }
+                    // console.log(url);
+                    fetch('../' + url).then(res => res.text()).then(text => {
+                        text = text.trim();
+                        const content = document.createElement('div');
+                        tabs.add(null, m.name + ' api', content, true, true, tabId, e.isTrusted);
+                        refreshIframe(text, content);
+                    });
+                    // window.open('../' + url, tabId);
                 }
             };
             url2TabId[urlNoExt] = tabId;
@@ -94,7 +90,7 @@ window.onload = () => {
 
                         tabs.add(null, title.replace(/_/g, ' '), exampleTab, true, true, tabId, e.isTrusted);
                         // window.open(m.name + '/' + page, 'example_' + tabId);
-
+                        // console.log(url);
                         fetch('../' + url).then(res => res.text()).then(text => {
                             text = text.trim();
                             refreshIframe(text, exampleTabLayout.eastContent);

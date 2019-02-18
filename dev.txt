@@ -87,7 +87,11 @@ TODO: submenu
 TODO: navigate with gray selection, enter to turn blue
 
 tree:
-TODO: key navigation
+DONE: key navigation
+TODO: search
+TODO: default collapsed option
+TODO: secondary active state
+TODO: scroll on key navigation
 
 docs:
 DONE: doc generator: settings, methods, events

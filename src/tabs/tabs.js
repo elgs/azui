@@ -413,7 +413,7 @@ class Tabs extends Base {
         // me.showHideScrollers();
         me.fitTabWidth();
         if (activate === true) {
-            me.activate(tabId, trigger)
+            me.activate(tabId, trigger);
         }
         return tabId;
     }
@@ -470,7 +470,7 @@ class Tabs extends Base {
             }
         });
 
-        if (trigger) {
+        if (trigger && activated) {
             // @doc:event:start
             // @doc:didActivate: fires after a `tab` is activated.
             // @doc:tabId: tabId
@@ -487,6 +487,7 @@ class Tabs extends Base {
     activateByIndex(tabIndex, trigger = false) {
         const me = this;
         const node = me.node;
+        let activated = false;
 
         let tabId;
         node.querySelectorAll('div.azTabContent').forEach((el, index) => {
@@ -507,16 +508,18 @@ class Tabs extends Base {
         node.querySelectorAll('div.azTabLabel').forEach((el, index) => {
             if (index === tabIndex) {
                 el.classList.add('active');
+                activated = true;
             } else {
                 el.classList.remove('active');
             }
         });
-        if (trigger) {
+        if (trigger && activated) {
             node.dispatchEvent(new CustomEvent('didActivate', {
                 detail: {
                     tabId,
                 }
             }));
         }
+        return activated;
     }
 };
