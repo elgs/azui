@@ -130,9 +130,16 @@ class Tree extends Base {
             } else if (e.keyCode === 37) {
                 // left
                 if (me.keyonItem) {
-                    const branch = nextElem(me.keyonItem, '.azTreeBranch') || me.keyonItem.closest('.azTreeBranch');
-                    const key = branch.getAttribute('tree-key');
-                    me.toggle(key, false);
+                    const branch = nextElem(me.keyonItem, '.azTreeBranch:not(.collapsed)');
+                    if (branch) {
+                        const key = branch.getAttribute('tree-key');
+                        me.toggle(key, false);
+                    } else {
+                        const parentNode = prevElem(me.keyonItem.closest('.azTreeBranch'), '.azTreeNode');
+                        me.keyonItem.classList.remove('keyon');
+                        me.keyonItem = parentNode;
+                        me.keyonItem.classList.add('keyon');
+                    }
                 }
             } else if (e.keyCode === 39) {
                 // right
@@ -159,6 +166,7 @@ class Tree extends Base {
             const prev = prevElem(treeNode);
             const caret = parseDOMElement(svgTriangle)[0];
             if (collapsed) {
+                treeNode.classList.add("collapsed");
                 caret.classList.add('collapsed');
             }
             prev.insertBefore(caret, prev.firstChild);
