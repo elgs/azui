@@ -485,3 +485,22 @@ export const empty = box => {
         box.removeChild(box.lastChild);
     }
 };
+
+export const normalizeTree = data => {
+    data = resolveFunction(data);
+    if (!data) {
+        return null;
+    }
+    return data.map(d => {
+        if (typeof d === 'string') {
+            d = {
+                title: d,
+            };
+        }
+        d.key = d.key || randGen(8);
+        if (d.children) {
+            d.children = normalizeTree(d.children);
+        }
+        return d;
+    });
+};

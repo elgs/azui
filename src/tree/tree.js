@@ -8,14 +8,15 @@ import {
 import {
     ancestors,
     children,
+    diffPosition,
+    getHeight,
     insertAfter,
     isTouchDevice,
     nextElem,
+    normalizeTree,
     parseDOMElement,
     prevElem,
-    randGen,
-    getHeight,
-    diffPosition
+    randGen
 } from '../utilities/utilities.js';
 
 
@@ -33,8 +34,31 @@ class Tree extends Base {
         }, options);
 
         this.settings = settings;
-
         const node = this.node;
+
+        const data = normalizeTree(settings.data);
+        // console.log(data);
+
+        const buildDOM = (data, branch) => {
+            data && data.map(d => {
+                const treeNode = document.createElement('div');
+                treeNode.classList.add('azTreeNode');
+                treeNode.setAttribute('tree-key', d.key);
+                treeNode.innerHTML = d.title;
+                branch.appendChild(treeNode);
+
+                if (d.children) {
+                    const treeBranch = document.createElement('div');
+                    treeBranch.classList.add('azTreeBranch');
+                    treeBranch.setAttribute('tree-key', d.key);
+                    d.collapsed && treeBranch.classList.add('collapsed');
+                    branch.appendChild(treeBranch);
+                    buildDOM(d.children, treeBranch);
+                }
+            });
+        };
+
+        buildDOM(data, node);
 
         const treeNodes = document.querySelectorAll(".azTreeBranch,.azTreeNode");
         treeNodes.forEach(treeNode => {

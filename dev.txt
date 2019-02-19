@@ -89,7 +89,7 @@ TODO: navigate with gray selection, enter to turn blue
 tree:
 DONE: key navigation
 TODO: search
-TODO: default collapsed option
+DONE: construction tree via options
 DONE: secondary active state
 DONE: scroll on key navigation
 DONE: left/right on tree node to collapse/expand parent branch
