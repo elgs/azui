@@ -87,6 +87,17 @@ class Tree extends Base {
             const term = searchInput.value.trim().toLowerCase();
             filterTree(term, [...treeScroller.children]);
         });
+        searchInput.addEventListener('keydown', e => {
+            if (e.keyCode === 40) {
+                e.preventDefault();
+                if (!me.keyonItem) {
+                    me.keyonItem = treeScroller.querySelector('.azTreeNode:not(.filtered)');
+                    me.keyonItem.classList.add('keyon');
+                }
+                searchInput.focus();
+                treeScroller.focus();
+            }
+        });
         searchDiv.appendChild(searchInput);
         node.prepend(searchDiv);
 
@@ -130,7 +141,7 @@ class Tree extends Base {
             if (prev) {
                 if (matches(prev, '.azTreeNode:not(.filtered)')) {
                     return prev;
-                } else if (matches(prev, '.azTreeBranch:not(.filtered)') && !prev.classList.contains('collapsed')) {
+                } else if (matches(prev, '.azTreeBranch:not(.filtered):not(.collapsed)')) {
                     const elements = prev.querySelectorAll('.azTreeNode:not(.filtered)');
                     for (let i = elements.length - 1; i >= 0; --i) {
                         if (!elements[i].closest('.azTreeBranch.collapsed')) {
@@ -154,7 +165,7 @@ class Tree extends Base {
             if (next) {
                 if (matches(next, '.azTreeNode:not(.filtered)')) {
                     return next;
-                } else if (matches(next, '.azTreeBranch:not(.filtered)') && !next.classList.contains('collapsed')) {
+                } else if (matches(next, '.azTreeBranch:not(.filtered):not(.collapsed)')) {
                     const firstChild = next.querySelector('*>.azTreeNode:not(.filtered)');
                     if (firstChild) {
                         return firstChild;
@@ -179,33 +190,35 @@ class Tree extends Base {
                     me.keyonItem.classList.remove('keyon');
                     me.keyonItem = prev;
                     me.keyonItem.classList.add('keyon');
-                }
-
-                const itemHeight = me.keyonItem.offsetHeight;
-                const topDiff = diffPosition(me.keyonItem, me.node.treeScroller).top;
-                // console.log(itemHeight, topDiff);
-                if (topDiff < 0) {
-                    // scroll down rowHeight
-                    me.node.treeScroller.scrollTop -= itemHeight;
+                    const itemHeight = me.keyonItem.offsetHeight;
+                    const topDiff = diffPosition(me.keyonItem, me.node.treeScroller).top;
+                    // console.log(itemHeight, topDiff);
+                    if (topDiff < 0) {
+                        // scroll down rowHeight
+                        me.node.treeScroller.scrollTop -= itemHeight;
+                    }
+                } else {
+                    searchInput.focus();
                 }
             } else if (e.keyCode === 40) {
                 // down
+                // console.log(me.keyonItem);
                 if (me.keyonItem) {
                     const next = navDown(me.keyonItem);
                     if (next) {
                         me.keyonItem.classList.remove('keyon');
                         me.keyonItem = next;
                         me.keyonItem.classList.add('keyon');
-                    }
 
-                    const containerHeight = getHeight(me.node);
-                    const itemHeight = me.keyonItem.offsetHeight;
-                    const topDiff = diffPosition(me.keyonItem, me.node).top;
-                    // console.log(containerHeight, itemHeight, topDiff);
-                    if (itemHeight + topDiff > containerHeight) {
-                        // scroll down rowHeight
-                        // console.log(me.node.parentNode);
-                        me.node.treeScroller.scrollTop += itemHeight;
+                        const containerHeight = getHeight(me.node);
+                        const itemHeight = me.keyonItem.offsetHeight;
+                        const topDiff = diffPosition(me.keyonItem, me.node).top;
+                        // console.log(containerHeight, itemHeight, topDiff);
+                        if (itemHeight + topDiff > containerHeight) {
+                            // scroll down rowHeight
+                            // console.log(me.node.parentNode);
+                            me.node.treeScroller.scrollTop += itemHeight;
+                        }
                     }
                 }
             } else if (e.keyCode === 37) {
