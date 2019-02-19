@@ -123,7 +123,7 @@ class Tabs extends Base {
                 // console.log(event.button);
                 const tabId = _getTabId(event.currentTarget.getAttribute('tab-id'));
                 if (!event.target.classList.contains('close') && !event.target.parentNode.classList.contains('close')) {
-                    currentTabs.activate(tabId);
+                    currentTabs.activate(tabId, true);
                 }
             };
         };

@@ -5,11 +5,6 @@
         width: 100%;
         height: 100%;
 
-        #accordionMenu {
-            /* height: 400px; */
-            width: 100%;
-        }
-
         >.azLayoutAreaCenter>.azLayoutCenter {
             >.mainTabs {
                 width: 100%;
@@ -26,7 +21,6 @@
 
         >.azLayoutAreaWest>.azLayoutWest {
             overflow: auto;
-            padding: 4px;
         }
     }
 }

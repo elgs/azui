@@ -36,6 +36,24 @@ class Tree extends Base {
         this.settings = settings;
         const node = this.node;
 
+        const treeScroller = document.createElement('div');
+        treeScroller.classList.add('treeScroller');
+        [...node.children].map(c => {
+            treeScroller.appendChild(c);
+        });
+        node.appendChild(treeScroller);
+        node.treeScroller = treeScroller;
+
+        // search box
+        const searchDiv = document.createElement('div');
+        searchDiv.classList.add('searchDiv');
+        const searchInput = document.createElement('input');
+        searchInput.setAttribute('type', 'search');
+        searchInput.classList.add('searchInput');
+        searchDiv.appendChild(searchInput);
+        node.prepend(searchDiv);
+
+        // tree
         const treeNodes = document.querySelectorAll(".azTreeBranch,.azTreeNode");
         treeNodes.forEach(treeNode => {
             me._applyEvents(treeNode);
@@ -65,7 +83,7 @@ class Tree extends Base {
             });
         };
 
-        buildDOM(data, node);
+        buildDOM(data, treeScroller);
 
         const navUp = el => {
             if (!el) {
@@ -116,7 +134,6 @@ class Tree extends Base {
 
         const onKeyDown = e => {
             // console.log(e.keyCode);
-
             e.preventDefault();
             if (e.keyCode === 38) {
                 // up
@@ -128,10 +145,11 @@ class Tree extends Base {
                 }
 
                 const itemHeight = me.keyonItem.offsetHeight;
-                const topDiff = diffPosition(me.keyonItem, me.node.parentNode).top;
+                const topDiff = diffPosition(me.keyonItem, me.node.treeScroller).top;
+                // console.log(itemHeight, topDiff);
                 if (topDiff < 0) {
                     // scroll down rowHeight
-                    me.node.parentNode.scrollTop -= itemHeight;
+                    me.node.treeScroller.scrollTop -= itemHeight;
                 }
             } else if (e.keyCode === 40) {
                 // down
@@ -143,14 +161,14 @@ class Tree extends Base {
                         me.keyonItem.classList.add('keyon');
                     }
 
-                    const containerHeight = getHeight(me.node.parentNode);
+                    const containerHeight = getHeight(me.node);
                     const itemHeight = me.keyonItem.offsetHeight;
-                    const topDiff = diffPosition(me.keyonItem, me.node.parentNode).top;
+                    const topDiff = diffPosition(me.keyonItem, me.node).top;
                     // console.log(containerHeight, itemHeight, topDiff);
                     if (itemHeight + topDiff > containerHeight) {
                         // scroll down rowHeight
                         // console.log(me.node.parentNode);
-                        me.node.parentNode.scrollTop += itemHeight;
+                        me.node.treeScroller.scrollTop += itemHeight;
                     }
                 }
             } else if (e.keyCode === 37) {
@@ -180,8 +198,8 @@ class Tree extends Base {
             }
         };
 
-        node.setAttribute('tabindex', 0);
-        node.addEventListener('keydown', onKeyDown);
+        treeScroller.setAttribute('tabindex', 0);
+        treeScroller.addEventListener('keydown', onKeyDown);
     }
 
     _applyEvents(treeNode, action) {
@@ -260,21 +278,21 @@ class Tree extends Base {
         me._applyEvents(newNode, action);
 
         if (!parentKey) {
-            const ch = children(node, '.azTreeNode');
+            const ch = children(node.treeScroller, '.azTreeNode');
             if (pos < ch.length) {
-                node.insertBefore(newNode, ch[pos]);
+                node.treeScroller.insertBefore(newNode, ch[pos]);
             } else {
-                node.appendChild(newNode);
+                node.treeScroller.appendChild(newNode);
             }
             return key;
         }
 
         // console.log(title, parentKey);
-        const treeNode = node.querySelector(`div.azTreeNode[tree-key="${parentKey}"]`);
+        const treeNode = node.treeScroller.querySelector(`div.azTreeNode[tree-key="${parentKey}"]`);
         if (!treeNode) {
             return null;
         }
-        let branch = node.querySelector(`div.azTreeBranch[tree-key="${parentKey}"]`);
+        let branch = node.treeScroller.querySelector(`div.azTreeBranch[tree-key="${parentKey}"]`);
         if (!branch) {
             branch = document.createElement('div');
             branch.classList.add('azTreeBranch');
@@ -295,7 +313,7 @@ class Tree extends Base {
     remove(key) {
         const me = this;
         const node = me.node;
-        const treeNode = node.querySelector(`[tree-key="${key}"]`);
+        const treeNode = node.treeScroller.querySelector(`[tree-key="${key}"]`);
         if (treeNode) {
             treeNode.remove();
         }
@@ -304,7 +322,7 @@ class Tree extends Base {
     toggle(key, state) {
         const me = this;
         const node = me.node;
-        const branch = node.querySelector(`div.azTreeBranch[tree-key="${key}"]`);
+        const branch = node.treeScroller.querySelector(`div.azTreeBranch[tree-key="${key}"]`);
         if (!branch) {
             return;
         }
@@ -325,7 +343,7 @@ class Tree extends Base {
     activate(key) {
         const me = this;
         const node = me.node;
-        const treeNode = node.querySelector(`[tree-key="${key}"]`);
+        const treeNode = node.treeScroller.querySelector(`[tree-key="${key}"]`);
         if (treeNode) {
             const ancestorBranches = ancestors(treeNode, 'div.azTreeBranch');
             ancestorBranches.map(ab => {
