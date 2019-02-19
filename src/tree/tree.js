@@ -36,6 +36,11 @@ class Tree extends Base {
         this.settings = settings;
         const node = this.node;
 
+        const treeNodes = document.querySelectorAll(".azTreeBranch,.azTreeNode");
+        treeNodes.forEach(treeNode => {
+            me._applyEvents(treeNode);
+        });
+
         const data = normalizeTree(settings.data);
         // console.log(data);
 
@@ -46,6 +51,7 @@ class Tree extends Base {
                 treeNode.setAttribute('tree-key', d.key);
                 treeNode.innerHTML = d.title;
                 branch.appendChild(treeNode);
+                me._applyEvents(treeNode, d.action);
 
                 if (d.children) {
                     const treeBranch = document.createElement('div');
@@ -53,17 +59,13 @@ class Tree extends Base {
                     treeBranch.setAttribute('tree-key', d.key);
                     d.collapsed && treeBranch.classList.add('collapsed');
                     branch.appendChild(treeBranch);
+                    me._applyEvents(treeBranch);
                     buildDOM(d.children, treeBranch);
                 }
             });
         };
 
         buildDOM(data, node);
-
-        const treeNodes = document.querySelectorAll(".azTreeBranch,.azTreeNode");
-        treeNodes.forEach(treeNode => {
-            me._applyEvents(treeNode);
-        });
 
         const navUp = el => {
             if (!el) {
