@@ -16,7 +16,8 @@ import {
     normalizeTree,
     parseDOMElement,
     prevElem,
-    randGen
+    randGen,
+    matches
 } from '../utilities/utilities.js';
 
 
@@ -31,6 +32,8 @@ class Tree extends Base {
         const me = this;
         const settings = Object.assign({
             action: e => {},
+            data: [],
+            searchPlaceholderText: 'Search...',
         }, options);
 
         this.settings = settings;
@@ -44,12 +47,39 @@ class Tree extends Base {
         node.appendChild(treeScroller);
         node.treeScroller = treeScroller;
 
+        const filterTree = (term, treeNodes) => {
+            treeNodes.map(treeNode => {
+                const text = treeNode.innerText.trim().toLowerCase();
+                if (treeNode.classList.contains('azTreeNode')) {
+                    if (!term) {
+                        treeNode.classList.remove('filtered');
+                    } else if (!text.includes(term)) {
+                        treeNode.classList.add('filtered');
+                    } else {
+                        treeNode.classList.remove('filtered');
+                    }
+                } else if (treeNode.classList.contains('azTreeBranch')) {
+                    filterTree(term, [...treeNode.children]);
+                }
+            });
+        };
+
         // search box
         const searchDiv = document.createElement('div');
         searchDiv.classList.add('searchDiv');
         const searchInput = document.createElement('input');
         searchInput.setAttribute('type', 'search');
+        searchInput.setAttribute('placeholder', settings.searchPlaceholderText);
+        searchInput.setAttribute('autocomplete', 'off');
+        searchInput.setAttribute('autocapitalize', 'off');
+        searchInput.setAttribute('autocorrect', 'off');
+        searchInput.setAttribute('spellcheck', 'off');
+        searchInput.setAttribute('maxlength', '30');
         searchInput.classList.add('searchInput');
+        searchInput.addEventListener('input', e => {
+            const term = searchInput.value.trim().toLowerCase();
+            filterTree(term, [...treeScroller.children]);
+        });
         searchDiv.appendChild(searchInput);
         node.prepend(searchDiv);
 
@@ -91,10 +121,10 @@ class Tree extends Base {
             }
             const prev = prevElem(el);
             if (prev) {
-                if (prev.classList.contains('azTreeNode')) {
+                if (matches(prev, '.azTreeNode:not(.filtered)')) {
                     return prev;
-                } else if (prev.classList.contains('azTreeBranch') && !prev.classList.contains('collapsed')) {
-                    const elements = prev.querySelectorAll('.azTreeNode');
+                } else if (matches(prev, '.azTreeBranch:not(.filtered)') && !prev.classList.contains('collapsed')) {
+                    const elements = prev.querySelectorAll('.azTreeNode:not(.filtered)');
                     for (let i = elements.length - 1; i >= 0; --i) {
                         if (!elements[i].closest('.azTreeBranch.collapsed')) {
                             return elements[i];
@@ -115,10 +145,10 @@ class Tree extends Base {
             }
             const next = nextElem(el);
             if (next) {
-                if (next.classList.contains('azTreeNode')) {
+                if (matches(next, '.azTreeNode:not(.filtered)')) {
                     return next;
-                } else if (next.classList.contains('azTreeBranch') && !next.classList.contains('collapsed')) {
-                    const firstChild = next.querySelector('*>.azTreeNode');
+                } else if (matches(next, '.azTreeBranch:not(.filtered)') && !next.classList.contains('collapsed')) {
+                    const firstChild = next.querySelector('*>.azTreeNode:not(.filtered)');
                     if (firstChild) {
                         return firstChild;
                     } else {
