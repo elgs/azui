@@ -88,7 +88,7 @@ TODO: navigate with gray selection, enter to turn blue
 
 tree:
 DONE: key navigation
-TODO: search
+DONE: search
 DONE: construct tree via options
 DONE: secondary active state
 DONE: scroll on key navigation

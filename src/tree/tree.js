@@ -49,14 +49,21 @@ class Tree extends Base {
 
         const filterTree = (term, treeNodes) => {
             treeNodes.map(treeNode => {
-                const text = treeNode.innerText.trim().toLowerCase();
                 if (treeNode.classList.contains('azTreeNode')) {
+                    const text = treeNode.innerText.trim().toLowerCase();
                     if (!term) {
                         treeNode.classList.remove('filtered');
                     } else if (!text.includes(term)) {
                         treeNode.classList.add('filtered');
                     } else {
                         treeNode.classList.remove('filtered');
+                        const bs = ancestors(treeNode, '.azTreeBranch');
+                        bs.map(b => {
+                            const previousNode = prevElem(b);
+                            if (matches(previousNode, '.azTreeNode.filtered')) {
+                                previousNode.classList.remove('filtered');
+                            }
+                        });
                     }
                 } else if (treeNode.classList.contains('azTreeBranch')) {
                     filterTree(term, [...treeNode.children]);
