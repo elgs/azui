@@ -12,12 +12,12 @@ import {
     getHeight,
     insertAfter,
     isTouchDevice,
+    matches,
     nextElem,
     normalizeTree,
     parseDOMElement,
     prevElem,
-    randGen,
-    matches
+    randGen
 } from '../utilities/utilities.js';
 
 
@@ -390,7 +390,7 @@ class Tree extends Base {
         }
     }
 
-    activate(key) {
+    activate(key, triiger = true) {
         const me = this;
         const node = me.node;
         const treeNode = node.treeScroller.querySelector(`[tree-key="${key}"]`);
@@ -401,10 +401,18 @@ class Tree extends Base {
                 me.toggle(abKey, true);
             });
 
-            if (isTouchDevice()) {
-                treeNode.dispatchEvent(new CustomEvent('touchend'));
+            if (triiger) {
+                if (isTouchDevice()) {
+                    treeNode.dispatchEvent(new CustomEvent('touchend'));
+                } else {
+                    treeNode.dispatchEvent(new CustomEvent('mouseup'));
+                }
             } else {
-                treeNode.dispatchEvent(new CustomEvent('mouseup'));
+                if (me.activeItem) {
+                    me.activeItem.classList.remove('active');
+                }
+                treeNode.classList.add('active');
+                me.activeItem = treeNode;
             }
         }
     }

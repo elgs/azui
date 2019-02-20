@@ -30,6 +30,7 @@ window.onload = () => {
         // console.log(e.detail);
         const tabId = e.detail.tabId;
         // console.log(tabId2Url[tabId]);
+        tree.activate(tabId, false);
         history.pushState(tabId, '', '../' + tabId2Url[tabId]);
     });
     // console.log(modules);
