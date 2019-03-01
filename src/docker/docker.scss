@@ -1,55 +1,55 @@
-@import "../utilities/utilities.scss";
+@import '../utilities/utilities.scss';
 
 .azui {
-    &.azDocker {
-        box-sizing: border-box;
-        // padding: 2px;
-        position: absolute;
-        bottom: 0;
-        width: 100%; // background-color: red;
-        display: grid;
-        grid-auto-flow: row;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        grid-gap: 2px;
+  &.azDocker {
+    box-sizing: border-box;
+    // padding: 2px;
+    position: absolute;
+    bottom: 0;
+    width: 100%; // background-color: red;
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 2px;
 
-        & .azSortableItem {
-            box-sizing: border-box;
-            cursor: pointer;
-            user-select: none;
-            background-color: $main-color;
+    & .azSortableItem {
+      box-sizing: border-box;
+      cursor: pointer;
+      user-select: none;
+      background-color: $main-color;
 
-            @media (hover: hover) {
-                &:hover {
-                    background-color: $less-active;
-                }
-            }
-
-            &.dock-active {
-                background: $more-active;
-
-                @media (hover: hover) {
-                    &:hover {
-                        background-color: $more-active;
-                    }
-                }
-            }
-
-            transition: 0.5s;
-            transition-property: background-color;
-
-            padding: 8px 0;
-            white-space: nowrap;
-
-            & span.icon {
-                padding: 8px;
-
-                & svg {
-                    width: 12px;
-                    height: 12px;
-                    position: relative;
-                    top: 2px;
-                }
-            }
+      @media (hover: hover) {
+        &:hover {
+          background-color: $less-active;
         }
+      }
+
+      &.dock-active {
+        background: $more-active;
+
+        @media (hover: hover) {
+          &:hover {
+            background-color: $more-active;
+          }
+        }
+      }
+
+      transition: 0.5s;
+      transition-property: background-color;
+
+      padding: 8px 0;
+      white-space: nowrap;
+
+      & span.icon {
+        padding: 8px;
+
+        & svg {
+          width: 12px;
+          height: 12px;
+          position: relative;
+          top: 2px;
+        }
+      }
     }
+  }
 }

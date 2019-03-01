@@ -1,46 +1,54 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>azTree</title>
     <style>
-        html,
-        body {
-            background-color: #f9f9f9;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-        }
+      html,
+      body {
+        background-color: #f9f9f9;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="myTree"></div>
     <script>
-        const data = ['Coffee', {
-            key: 'chocolate',
-            icon: '',
-            title: 'Chocolate',
-            action: function (e) {
-                console.log(e);
+      const data = [
+        'Coffee',
+        {
+          key: 'chocolate',
+          icon: '',
+          title: 'Chocolate',
+          action: function(e) {
+            console.log(e);
+          }
+        },
+        {
+          title: 'Grains',
+          collapsed: true,
+          children: ['Rice', 'Bread']
+        },
+        {
+          title: 'Protein',
+          children: [
+            'Beef',
+            {
+              title: 'Fish',
+              children: ['Salmon', 'Trout']
             }
-        }, {
-            title: 'Grains',
-            collapsed: true,
-            children: ['Rice', 'Bread'],
-        }, {
-            title: 'Protein',
-            children: ['Beef', {
-                title: 'Fish',
-                children: ['Salmon', 'Trout']
-            }],
-        }];
-        const tree = azui.Tree('#myTree', {
-            data,
-            action: function (e) {
-                // console.log(this);
-                // console.log(e);
-            },
-        });
+          ]
+        }
+      ];
+      const tree = azui.Tree('#myTree', {
+        data,
+        action: function(e) {
+          // console.log(this);
+          // console.log(e);
+        }
+      });
     </script>
-</body>
+  </body>
 </html>

@@ -1,145 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>azSortable</title>
     <style>
-        * {
-            font-family: 'Roboto', sans-serif;
-            font-size: 13px;
-        }
+      * {
+        font-family: 'Roboto', sans-serif;
+        font-size: 13px;
+      }
 
-        div.azSortable0 {
-            border: 1px solid gray;
-            box-sizing: border-box;
-            position: relative;
-            padding: 4px;
-            /* width: 100px; */
-            display: flex;
-            min-height: 40px;
-        }
+      div.azSortable0 {
+        border: 1px solid gray;
+        box-sizing: border-box;
+        position: relative;
+        padding: 4px;
+        /* width: 100px; */
+        display: flex;
+        min-height: 40px;
+      }
 
-        div.azSortable1 {
-            border: 1px solid gray;
-            box-sizing: border-box;
-            position: relative;
-            padding: 4px;
-            width: 100px;
-            height: 300px;
-            /* display: flex; */
-            min-width: 40px;
-            min-height: 100px;
-        }
+      div.azSortable1 {
+        border: 1px solid gray;
+        box-sizing: border-box;
+        position: relative;
+        padding: 4px;
+        width: 100px;
+        height: 300px;
+        /* display: flex; */
+        min-width: 40px;
+        min-height: 100px;
+      }
 
-        div.azSortable0 .azSortableItem {
-            height: 40px;
-            width: 40px;
-            /* flex-grow: 1; */
-            /* flex-basis: 0; */
-            border: 1px solid gray;
-            box-sizing: border-box;
-            margin: 2px 4px 6px 8px;
-            display: grid;
-            align-content: center;
-            justify-content: center;
-            /* background-color: white; */
-        }
+      div.azSortable0 .azSortableItem {
+        height: 40px;
+        width: 40px;
+        /* flex-grow: 1; */
+        /* flex-basis: 0; */
+        border: 1px solid gray;
+        box-sizing: border-box;
+        margin: 2px 4px 6px 8px;
+        display: grid;
+        align-content: center;
+        justify-content: center;
+        /* background-color: white; */
+      }
 
+      div.azSortable1 .azSortableItem {
+        height: 40px;
+        /* width: 100px; */
+        /* flex-grow: 1; */
+        /* flex-basis: 0; */
+        border: 1px solid gray;
+        box-sizing: border-box;
+        margin: 2px 4px 6px 8px;
+        display: grid;
+        align-content: center;
+        justify-content: center;
+        /* background-color: white; */
+      }
 
-        div.azSortable1 .azSortableItem {
-            height: 40px;
-            /* width: 100px; */
-            /* flex-grow: 1; */
-            /* flex-basis: 0; */
-            border: 1px solid gray;
-            box-sizing: border-box;
-            margin: 2px 4px 6px 8px;
-            display: grid;
-            align-content: center;
-            justify-content: center;
-            /* background-color: white; */
-        }
+      div.azSortableItem.azSortableDropBefore {
+        background-color: yellow;
+      }
 
-        div.azSortableItem.azSortableDropBefore {
-            background-color: yellow;
-        }
+      div.azSortableItem.azSortableDropAfter {
+        background-color: blue;
+      }
 
-        div.azSortableItem.azSortableDropAfter {
-            background-color: blue;
-        }
+      .azSortableDeny {
+        background-color: red;
+      }
 
-        .azSortableDeny {
-            background-color: red;
-        }
+      .azSortableAllow {
+        background-color: green;
+      }
 
-        .azSortableAllow {
-            background-color: green;
-        }
-
-        div.azSortableSelected {
-            opacity: .5;
-        }
+      div.azSortableSelected {
+        opacity: 0.5;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="azSortable0">
-        <div class="azSortableItem">0</div>
-        <div class="azSortableItem">1</div>
-        <div class="azSortableItem">2</div>
-        <div class="azSortableItem">3</div>
-        <div class="azSortableItem">4</div>
-        <div class="azSortableItem">5</div>
+      <div class="azSortableItem">0</div>
+      <div class="azSortableItem">1</div>
+      <div class="azSortableItem">2</div>
+      <div class="azSortableItem">3</div>
+      <div class="azSortableItem">4</div>
+      <div class="azSortableItem">5</div>
     </div>
-    <br>
+    <br />
     <div class="azSortable0" style="left: 20px;">
-        <div class="azSortableItem">a</div>
-        <div class="azSortableItem">b</div>
+      <div class="azSortableItem">a</div>
+      <div class="azSortableItem">b</div>
     </div>
-    <br>
+    <br />
     <div class="azSortable1">
-        <div class="azSortableItem">0</div>
-        <div class="azSortableItem">1</div>
-        <div class="azSortableItem">2</div>
-        <div class="azSortableItem">3</div>
-        <div class="azSortableItem">4</div>
-        <div class="azSortableItem">5</div>
+      <div class="azSortableItem">0</div>
+      <div class="azSortableItem">1</div>
+      <div class="azSortableItem">2</div>
+      <div class="azSortableItem">3</div>
+      <div class="azSortableItem">4</div>
+      <div class="azSortableItem">5</div>
     </div>
-    <br>
+    <br />
     <div class="azSortable1" style="left: 20px;">
-        <div class="azSortableItem">0</div>
-        <div class="azSortableItem">1</div>
+      <div class="azSortableItem">0</div>
+      <div class="azSortableItem">1</div>
     </div>
     <script>
-        // $('<div/>').azDebugDiv();
-        const elem0 = document.querySelectorAll('.azSortable0');
-        elem0.forEach(el => {
-            azui.Sortable(el, {
-                placeholder: true,
-                showPlaceHolder: false,
-                detachable: true,
-                alighn: 'x',
-                create: function (e, target) {
-                    e.preventDefault();
-                }
-            });
+      // $('<div/>').azDebugDiv();
+      const elem0 = document.querySelectorAll('.azSortable0');
+      elem0.forEach(el => {
+        azui.Sortable(el, {
+          placeholder: true,
+          showPlaceHolder: false,
+          detachable: true,
+          alighn: 'x',
+          create: function(e, target) {
+            e.preventDefault();
+          }
         });
+      });
 
-        const elem1 = document.querySelectorAll('.azSortable1');
-        elem1.forEach(el => {
-            azui.Sortable(el, {
-                placeholder: false,
-                detachable: true,
-                align: 'y',
-                create: function (e, target) {
-                    e.preventDefault();
-                }
-            });
+      const elem1 = document.querySelectorAll('.azSortable1');
+      elem1.forEach(el => {
+        azui.Sortable(el, {
+          placeholder: false,
+          detachable: true,
+          align: 'y',
+          create: function(e, target) {
+            e.preventDefault();
+          }
         });
+      });
     </script>
-</body>
-
+  </body>
 </html>

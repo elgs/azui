@@ -1,126 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>azDroppable</title>
     <style>
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
-        }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+      }
 
-        div {
-            border: 1px solid gray;
-            box-sizing: border-box;
-            margin: 5px;
-            display: grid;
-            align-content: center;
-            justify-content: center;
-            float: left;
-            user-select: none;
-        }
+      div {
+        border: 1px solid gray;
+        box-sizing: border-box;
+        margin: 5px;
+        display: grid;
+        align-content: center;
+        justify-content: center;
+        float: left;
+        user-select: none;
+      }
 
-        div#target0 {
-            width: 300px;
-            height: 300px;
-            position: relative;
-        }
+      div#target0 {
+        width: 300px;
+        height: 300px;
+        position: relative;
+      }
 
-        div#target1 {
-            width: 150px;
-            height: 150px;
-            position: relative;
-        }
+      div#target1 {
+        width: 150px;
+        height: 150px;
+        position: relative;
+      }
 
-        div#source0 {
-            width: 200px;
-            height: 200px;
-            z-index: 10;
-        }
+      div#source0 {
+        width: 200px;
+        height: 200px;
+        z-index: 10;
+      }
 
-        div.message {
-            position: absolute;
-            bottom: 0;
-            border: 0;
-        }
+      div.message {
+        position: absolute;
+        bottom: 0;
+        border: 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div id="source0">+
-        <div class="message">Drag me!</div>
+  <body>
+    <div id="source0">
+      +
+      <div class="message">Drag me!</div>
     </div>
-    <div class="target" id="target0">+
-        <div class="message"></div>
+    <div class="target" id="target0">
+      +
+      <div class="message"></div>
     </div>
-    <div class="target" id="target1">+
-        <div class="message"></div>
+    <div class="target" id="target1">
+      +
+      <div class="message"></div>
     </div>
     <script>
-        const source0 = document.querySelector('div#source0');
-        azui.Draggable(source0, {
-            create: function (e) {
-                if (e.type === 'touchstart') {
-                    e.preventDefault();
-                }
-            }
-        });
+      const source0 = document.querySelector('div#source0');
+      azui.Draggable(source0, {
+        create: function(e) {
+          if (e.type === 'touchstart') {
+            e.preventDefault();
+          }
+        }
+      });
 
-        const targets = document.querySelectorAll('div.target');
-        targets.forEach(target => {
-            azui.Droppable(target, {
-                interestedDropEvents: azui.constants.dndEventConsts.all,
-                source_all_in: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                source_all_out: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                target_all_in: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                target_all_out: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                source_center_in: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                source_center_out: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                target_center_in: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                target_center_out: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                touch_in: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                touch_out: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                pointer_in: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                pointer_out: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                dragged: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-                dropped: function (e) {
-                    e.detail.target.querySelector('.message').textContent = e.type;
-                },
-            });
+      const targets = document.querySelectorAll('div.target');
+      targets.forEach(target => {
+        azui.Droppable(target, {
+          interestedDropEvents: azui.constants.dndEventConsts.all,
+          source_all_in: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          source_all_out: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          target_all_in: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          target_all_out: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          source_center_in: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          source_center_out: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          target_center_in: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          target_center_out: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          touch_in: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          touch_out: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          pointer_in: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          pointer_out: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          dragged: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          },
+          dropped: function(e) {
+            e.detail.target.querySelector('.message').textContent = e.type;
+          }
         });
+      });
     </script>
-</body>
-
+  </body>
 </html>

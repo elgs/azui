@@ -1,73 +1,73 @@
-@import "../utilities/utilities.scss";
+@import '../utilities/utilities.scss';
 
 .azui {
-    &.azTree {
-        font-size: 14px;
+  &.azTree {
+    font-size: 14px;
+    height: 100%;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: 40px 1fr;
+
+    .searchDiv {
+      width: 100%;
+      padding: 5px;
+      background-color: $main-color;
+
+      .searchInput {
+        display: block;
+        border: 1px solid $active;
+        border-radius: 3px;
+        width: 100%;
         height: 100%;
-        overflow: hidden;
-        display: grid;
-        grid-template-rows: 40px 1fr;
-
-        .searchDiv {
-            width: 100%;
-            padding: 5px;
-            background-color: $main-color;
-
-            .searchInput {
-                display: block;
-                border: 1px solid $active;
-                border-radius: 3px;
-                width: 100%;
-                height: 100%;
-                padding: 5px;
-            }
-        }
-
-        .treeScroller {
-            color: #333;
-            outline: none;
-            cursor: pointer;
-            overflow: auto;
-
-            .keyon {
-                background-color: $less-active;
-            }
-
-            .azTreeNode {
-                transition: 0.2s;
-                transition-property: background-color;
-                @extend %hoveractive;
-                line-height: 2;
-                padding: 0 4px;
-
-                svg {
-                    width: 15px;
-                    fill: #666;
-                    position: relative;
-                    top: 2px;
-                    margin-right: 2px;
-                    transform: rotate(90deg);
-                    // left: -3px;
-
-                    &.collapsed {
-                        transform: rotate(0deg);
-                    }
-                }
-            }
-
-            .azTreeBranch {
-                display: block;
-
-                &.collapsed {
-                    display: none;
-                }
-
-                padding-left: 20px;
-            }
-
-            .filtered {
-                display: none;
-            }
-        }
+        padding: 5px;
+      }
     }
+
+    .treeScroller {
+      color: #333;
+      outline: none;
+      cursor: pointer;
+      overflow: auto;
+
+      .keyon {
+        background-color: $less-active;
+      }
+
+      .azTreeNode {
+        transition: 0.2s;
+        transition-property: background-color;
+        @extend %hoveractive;
+        line-height: 2;
+        padding: 0 4px;
+
+        svg {
+          width: 15px;
+          fill: #666;
+          position: relative;
+          top: 2px;
+          margin-right: 2px;
+          transform: rotate(90deg);
+          // left: -3px;
+
+          &.collapsed {
+            transform: rotate(0deg);
+          }
+        }
+      }
+
+      .azTreeBranch {
+        display: block;
+
+        &.collapsed {
+          display: none;
+        }
+
+        padding-left: 20px;
+      }
+
+      .filtered {
+        display: none;
+      }
+    }
+  }
 }

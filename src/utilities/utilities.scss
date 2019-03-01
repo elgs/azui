@@ -1,60 +1,58 @@
-$main-color:#E8E8E8;
-$more-active:darken($main-color, 12%);
-$active:darken($main-color, 8%);
-$less-active:darken($main-color, 4%);
+$main-color: #e8e8e8;
+$more-active: darken($main-color, 12%);
+$active: darken($main-color, 8%);
+$less-active: darken($main-color, 4%);
 
-$bg-color:#E8E8E8;
-$gray-text:#666666;
+$bg-color: #e8e8e8;
+$gray-text: #666666;
 $default-text: #444;
-$allow:#A4D666;
-$deny:#D95244;
+$allow: #a4d666;
+$deny: #d95244;
 // $shadow:0 0 5px rgba(0, 0, 0, .12),
 // 0 5px 5px rgba(0, 0, 0, .12),
 // 0 10px 30px rgba(0, 0, 0, .1);
-$shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16),
-0 0 0 1px rgba(0, 0, 0, 0.08);
-$shadow-hovered:0 3px 8px 0 rgba(0, 0, 0, 0.2),
-0 0 0 1px rgba(0, 0, 0, 0.08);
-$shadow-inset: inset 0 2px 2px 0 rgba(0, 0, 0, 0.16),
-inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+$shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+$shadow-hovered: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
+$shadow-inset: inset 0 2px 2px 0 rgba(0, 0, 0, 0.16), inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 
 $collapseIconSize: 4px;
 
 %hoveractive {
-    @media (hover: hover) {
-        &:not(.disabled):hover {
-            background-color: $less-active;
-        }
+  @media (hover: hover) {
+    &:not(.disabled):hover {
+      background-color: $less-active;
     }
+  }
 
-    &:not(.disabled).active {
-        background-color: $more-active;
-    }
+  &:not(.disabled).active {
+    background-color: $more-active;
+  }
 
-    &.disabled * {
-        color: gray;
-        fill: gray;
-        cursor: not-allowed;
-    }
+  &.disabled * {
+    color: gray;
+    fill: gray;
+    cursor: not-allowed;
+  }
 
-    * {
-        user-select: none;
-    }
+  * {
+    user-select: none;
+  }
 }
 
 .azui {
-    font-size: 13px;
-    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Arial,
+    sans-serif;
 
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-    }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-    // * {
-    //     a {
-    //         text-decoration: none;
-    //     }
-    // }
+  // * {
+  //     a {
+  //         text-decoration: none;
+  //     }
+  // }
 }

@@ -1,52 +1,51 @@
 {
-    "name": "azui",
-    "version": "0.0.11",
-    "description": "A set of more desktop/mobile/touchscreen friendly web UI components.",
-    "scripts": {
-        "start": "webpack-dev-server --mode=development",
-        "build": "webpack --mode=development",
-        "dist": "webpack --mode=production"
-    },
-    "author": "Qian Chen",
-    "license": "MIT",
-    "devDependencies": {
-        "@babel/cli": "^7.2.3",
-        "@babel/core": "^7.3.4",
-        "@babel/polyfill": "^7.2.5",
-        "@babel/preset-env": "^7.3.4",
-        "babel-loader": "^8.0.5",
-        "babel-plugin-inline-import": "^3.0.0",
-        "babel-plugin-transform-class-properties": "^6.24.1",
-        "clean-webpack-plugin": "^0.1.19",
-        "css-loader": "^1.0.1",
-        "html-webpack-plugin": "^3.2.0",
-        "mini-css-extract-plugin": "^0.4.5",
-        "node-sass": "^4.11.0",
-        "optimize-css-assets-webpack-plugin": "^5.0.1",
-        "sass-loader": "^7.1.0",
-        "style-loader": "^0.23.1",
-        "uglifyjs-webpack-plugin": "^2.1.2",
-        "webpack": "^4.29.6",
-        "webpack-cli": "^3.2.3",
-        "webpack-dev-server": "^3.2.1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/elgs/azui.git"
-    },
-    "files": [
-        "src/",
-        "dist/",
-        "build/"
-    ],
-    "keywords": [
-        "azui",
-        "webui",
-        "ui",
-        "css"
-    ],
-    "bugs": {
-        "url": "https://github.com/elgs/azui/issues"
-    },
-    "homepage": "https://github.com/elgs/azui#readme"
+  "name": "azui",
+  "version": "0.0.11",
+  "description": "A set of more desktop/mobile/touchscreen friendly web UI components.",
+  "scripts": {
+    "start": "webpack-dev-server --mode=development",
+    "build": "webpack --mode=development",
+    "dist": "webpack --mode=production"
+  },
+  "author": "Qian Chen",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-inline-import": "^3.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.5",
+    "node-sass": "^4.11.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elgs/azui.git"
+  },
+  "files": [
+    "src/",
+    "dist/",
+    "build/"
+  ],
+  "keywords": [
+    "azui",
+    "webui",
+    "ui"
+  ],
+  "bugs": {
+    "url": "https://github.com/elgs/azui/issues"
+  },
+  "homepage": "https://github.com/elgs/azui#readme"
 }

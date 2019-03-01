@@ -1,81 +1,81 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>azTree</title>
     <style>
-        html,
-        body {
-            background-color: #f9f9f9;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-        }
+      html,
+      body {
+        background-color: #f9f9f9;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="myTree">
-        <div class='azTreeNode'>Alcohol</div>
-        <div class='azTreeNode'>Water</div>
-        <div class='azTreeNode'>Coffee</div>
-        <div class='azTreeNode' tree-key='tea'>Tea</div>
-        <div class="azTreeBranch" tree-key='tea'>
-            <div class='azTreeNode'>Black Tea</div>
-            <div class='azTreeNode'>White Tea</div>
-            <div class='azTreeNode' tree-key='green_tea1'>Green Tea 1</div>
-            <div class="azTreeBranch" tree-key='green_tea1'>
-                <div class='azTreeNode'>Sencha</div>
-                <div class='azTreeNode'>Gyokuro</div>
-                <div class='azTreeNode'>Matcha</div>
-                <div class='azTreeNode'>Pi Lo Chun</div>
-                <div class='azTreeNode' tree-key='green_tea11'>Green Tea 11</div>
-                <div class="azTreeBranch" tree-key='green_tea11'>
-                    <div class='azTreeNode'>Sencha</div>
-                    <div class='azTreeNode'>Gyokuro</div>
-                    <div class='azTreeNode'>Matcha</div>
-                    <div class='azTreeNode'>Pi Lo Chun</div>
-                </div>
-            </div>
-            <div class='azTreeNode' tree-key='green_tea'>Green Tea</div>
-            <div class="azTreeBranch" tree-key='green_tea'>
-                <div class='azTreeNode'>Sencha</div>
-                <div class='azTreeNode'>Gyokuro</div>
-                <div class='azTreeNode'>Matcha</div>
-                <div class='azTreeNode'>Pi Lo Chun</div>
-            </div>
-            <div class='azTreeNode' tree-key='green_tea2'>Green Tea 2</div>
-            <div class="azTreeBranch" tree-key='green_tea2'>
-                <div class='azTreeNode'>Sencha</div>
-                <div class='azTreeNode'>Gyokuro</div>
-                <div class='azTreeNode'>Matcha</div>
-                <div class='azTreeNode'>Pi Lo Chun</div>
-                <div class='azTreeNode' tree-key='green_tea22'>Green Tea 22</div>
-                <div class="azTreeBranch" tree-key='green_tea22'>
-                    <div class='azTreeNode'>Sencha</div>
-                    <div class='azTreeNode'>Gyokuro</div>
-                    <div class='azTreeNode'>Matcha</div>
-                    <div class='azTreeNode'>Pi Lo Chun</div>
-                </div>
-            </div>
+      <div class="azTreeNode">Alcohol</div>
+      <div class="azTreeNode">Water</div>
+      <div class="azTreeNode">Coffee</div>
+      <div class="azTreeNode" tree-key="tea">Tea</div>
+      <div class="azTreeBranch" tree-key="tea">
+        <div class="azTreeNode">Black Tea</div>
+        <div class="azTreeNode">White Tea</div>
+        <div class="azTreeNode" tree-key="green_tea1">Green Tea 1</div>
+        <div class="azTreeBranch" tree-key="green_tea1">
+          <div class="azTreeNode">Sencha</div>
+          <div class="azTreeNode">Gyokuro</div>
+          <div class="azTreeNode">Matcha</div>
+          <div class="azTreeNode">Pi Lo Chun</div>
+          <div class="azTreeNode" tree-key="green_tea11">Green Tea 11</div>
+          <div class="azTreeBranch" tree-key="green_tea11">
+            <div class="azTreeNode">Sencha</div>
+            <div class="azTreeNode">Gyokuro</div>
+            <div class="azTreeNode">Matcha</div>
+            <div class="azTreeNode">Pi Lo Chun</div>
+          </div>
         </div>
+        <div class="azTreeNode" tree-key="green_tea">Green Tea</div>
+        <div class="azTreeBranch" tree-key="green_tea">
+          <div class="azTreeNode">Sencha</div>
+          <div class="azTreeNode">Gyokuro</div>
+          <div class="azTreeNode">Matcha</div>
+          <div class="azTreeNode">Pi Lo Chun</div>
+        </div>
+        <div class="azTreeNode" tree-key="green_tea2">Green Tea 2</div>
+        <div class="azTreeBranch" tree-key="green_tea2">
+          <div class="azTreeNode">Sencha</div>
+          <div class="azTreeNode">Gyokuro</div>
+          <div class="azTreeNode">Matcha</div>
+          <div class="azTreeNode">Pi Lo Chun</div>
+          <div class="azTreeNode" tree-key="green_tea22">Green Tea 22</div>
+          <div class="azTreeBranch" tree-key="green_tea22">
+            <div class="azTreeNode">Sencha</div>
+            <div class="azTreeNode">Gyokuro</div>
+            <div class="azTreeNode">Matcha</div>
+            <div class="azTreeNode">Pi Lo Chun</div>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
-        const tree = azui.Tree('#myTree', {
-            action: function (e) {
-                // console.log(this);
-                // console.log(e);
-            },
-        });
-        const soda = tree.append('Soda');
-        const soup = tree.insert('Soup', null, 2);
-        const lj = tree.append('Long Jin', 'green_tea');
-        const lj1 = tree.insert('Long Jin 1', 'green_tea', 1);
-        const coke = tree.append('Coke', soda);
-        tree.activate(lj1);
-        // tree.remove(lj1);
-        // tree.toggle('tea');
-        // tree.toggle('green_tea');
-        // tree.toggle('tea', false);
+      const tree = azui.Tree('#myTree', {
+        action: function(e) {
+          // console.log(this);
+          // console.log(e);
+        }
+      });
+      const soda = tree.append('Soda');
+      const soup = tree.insert('Soup', null, 2);
+      const lj = tree.append('Long Jin', 'green_tea');
+      const lj1 = tree.insert('Long Jin 1', 'green_tea', 1);
+      const coke = tree.append('Coke', soda);
+      tree.activate(lj1);
+      // tree.remove(lj1);
+      // tree.toggle('tea');
+      // tree.toggle('green_tea');
+      // tree.toggle('tea', false);
     </script>
-</body>
+  </body>
 </html>

@@ -1,98 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>azTabs</title>
     <style>
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
-            font-size: 13px;
-        }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+        font-size: 13px;
+      }
 
-        #fout {
-            display: none;
-        }
+      #fout {
+        display: none;
+      }
 
-        #tab0 {
-            height: 400px;
-            width: 600px;
-            position: absolute;
-        }
+      #tab0 {
+        height: 400px;
+        width: 600px;
+        position: absolute;
+      }
     </style>
-</head>
+  </head>
 
-<body id='fout'>
+  <body id="fout">
     <div id="tab0">
-        <div class="azTabHeader">
-            <div class="azTabLabel azSortableItem" tab-id="azTabHeader-Home">
-                <div class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                        <path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z" />
-                    </svg>
-                </div>
-                <div class="title">
-                    <span>Home</span>
-                </div>
-            </div>
-            <div class="azTabLabel azSortableItem azClosable" tab-id="azTabHeader-Tempe">
-                <div class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                        <path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z" />
-                    </svg>
-                </div>
-                <div class="title">
-                    <span>Tempe Market Place Arizona</span>
-                </div>
-            </div>
+      <div class="azTabHeader">
+        <div class="azTabLabel azSortableItem" tab-id="azTabHeader-Home">
+          <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+              <path
+                d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"
+              />
+            </svg>
+          </div>
+          <div class="title">
+            <span>Home</span>
+          </div>
         </div>
+        <div class="azTabLabel azSortableItem azClosable" tab-id="azTabHeader-Tempe">
+          <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+              <path
+                d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"
+              />
+            </svg>
+          </div>
+          <div class="title">
+            <span>Tempe Market Place Arizona</span>
+          </div>
+        </div>
+      </div>
 
-        <div tab-id="azTabContent-Home" class="azTabContent">
-            <div style="border:1px solid tomato;box-sizing: border-box;height:100%;width:100%;overflow:auto">
-                <p style="text-align: center;">
-                    <button id='newTabButton'>New Tab</button>
-                </p>
-                <ul>
-                    <li>try reorder the tabs</li>
-                    <li>try drag a tab out</li>
-                    <li>try drag a tab out and drop into another tab window</li>
-                    <li>try right click on the tab for a menu</li>
-                    <li>try resize the tab window</li>
-                    <li>try drag the tab header area to move the tab window around</li>
-                </ul>
-            </div>
+      <div tab-id="azTabContent-Home" class="azTabContent">
+        <div style="border:1px solid tomato;box-sizing: border-box;height:100%;width:100%;overflow:auto">
+          <p style="text-align: center;">
+            <button id="newTabButton">New Tab</button>
+          </p>
+          <ul>
+            <li>try reorder the tabs</li>
+            <li>try drag a tab out</li>
+            <li>try drag a tab out and drop into another tab window</li>
+            <li>try right click on the tab for a menu</li>
+            <li>try resize the tab window</li>
+            <li>try drag the tab header area to move the tab window around</li>
+          </ul>
         </div>
-        <div tab-id="azTabContent-Tempe" class="azTabContent">
-            <h3>Tempe</h3>
-            <p>Tempe is the home of ASU.</p>
-        </div>
+      </div>
+      <div tab-id="azTabContent-Tempe" class="azTabContent">
+        <h3>Tempe</h3>
+        <p>Tempe is the home of ASU.</p>
+      </div>
     </div>
     <script>
-        const svgApps =
-            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;
-        const elem = document.querySelector('#tab0');
-        const tabs = azui.Tabs(elem, {});
+      const svgApps = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>`;
+      const elem = document.querySelector('#tab0');
+      const tabs = azui.Tabs(elem, {});
 
-        let count = 0;
-        const newTabButton = document.querySelector('#newTabButton');
-        const onClick = e => {
-            const myTabs = e.target.closest('.azTabs');
-            azui.Tabs(myTabs).add(svgApps, count + ` New Tab`, count + ` New Tab`, true, false);
-            ++count;
-        };
-        newTabButton.addEventListener('click', onClick);
-        // newTabButton.click();
-        // newTabButton.click();
-        // newTabButton.click();
+      let count = 0;
+      const newTabButton = document.querySelector('#newTabButton');
+      const onClick = e => {
+        const myTabs = e.target.closest('.azTabs');
+        azui.Tabs(myTabs).add(svgApps, count + ` New Tab`, count + ` New Tab`, true, false);
+        ++count;
+      };
+      newTabButton.addEventListener('click', onClick);
+      // newTabButton.click();
+      // newTabButton.click();
+      // newTabButton.click();
 
-        document.querySelector('#fout').style['display'] = 'block';
+      document.querySelector('#fout').style['display'] = 'block';
     </script>
-</body>
-
+  </body>
 </html>

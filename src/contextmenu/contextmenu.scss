@@ -1,75 +1,74 @@
-@import "../utilities/utilities.scss";
+@import '../utilities/utilities.scss';
 
 .azui {
-    &.azContextMenuPopup {
-        background-color: $bg-color;
-        position: absolute;
-        min-width: 100px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, .12), 0 5px 5px rgba(0, 0, 0, .12), 0 10px 30px rgba(0, 0, 0, .1);
-        outline: none;
-        font-size: 12px;
+  &.azContextMenuPopup {
+    background-color: $bg-color;
+    position: absolute;
+    min-width: 100px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.12), 0 5px 5px rgba(0, 0, 0, 0.12), 0 10px 30px rgba(0, 0, 0, 0.1);
+    outline: none;
+    font-size: 12px;
 
-        & div.azMenuItem {
-            // height: 50px;
-            display: grid;
-            align-content: center;
-            grid-template-columns: 24px 1fr;
-            background-color: $bg-color;
-            width: 100%; // text-align: left;
-            padding: 5px 0; // border: none;
+    & div.azMenuItem {
+      // height: 50px;
+      display: grid;
+      align-content: center;
+      grid-template-columns: 24px 1fr;
+      background-color: $bg-color;
+      width: 100%; // text-align: left;
+      padding: 5px 0; // border: none;
 
-            & span {
-                display: inline-block;
+      & span {
+        display: inline-block;
 
-                &.icon {
-                    grid-column: 1/2;
-                    text-align: center;
-                    width: 24px; // background-color: blue;
+        &.icon {
+          grid-column: 1/2;
+          text-align: center;
+          width: 24px; // background-color: blue;
 
-                    & svg {
-                        margin-top: 3px;
-                        width: 10px;
-                        height: 10px;
-                    }
-                }
-
-                &.title {
-                    grid-column: 2/3;
-                    margin: 1px 10px 0 8px; // background-color: red;
-                }
-            }
-
-            &.disabled * {
-                color: gray;
-                fill: gray;
-                cursor: not-allowed;
-            }
-
-            &:not(.disabled).selected {
-                background-color: #498DD5;
-                color: $bg-color;
-                cursor: pointer;
-            }
-
+          & svg {
+            margin-top: 3px;
+            width: 10px;
+            height: 10px;
+          }
         }
 
-        // & div.azMenuIconSeparator {
-        //     left: 24px;
-        //     border-left: solid 1px darken($color: $main-color, $amount: 7%);
-        //     background-color: white;
-        //     width: 2px;
-        //     position: absolute;
-        //     top: 0;
-        //     z-index: 0;
-        //     height: 100%;
-        //     overflow: hidden;
-        // }
-        & div.azMenuSeparator {
-            height: 2px;
-            border-top: solid 1px darken($color: $main-color, $amount: 7%);
-            background-color: white;
-            margin: 2px 0;
-            padding: 0;
+        &.title {
+          grid-column: 2/3;
+          margin: 1px 10px 0 8px; // background-color: red;
         }
+      }
+
+      &.disabled * {
+        color: gray;
+        fill: gray;
+        cursor: not-allowed;
+      }
+
+      &:not(.disabled).selected {
+        background-color: #498dd5;
+        color: $bg-color;
+        cursor: pointer;
+      }
     }
+
+    // & div.azMenuIconSeparator {
+    //     left: 24px;
+    //     border-left: solid 1px darken($color: $main-color, $amount: 7%);
+    //     background-color: white;
+    //     width: 2px;
+    //     position: absolute;
+    //     top: 0;
+    //     z-index: 0;
+    //     height: 100%;
+    //     overflow: hidden;
+    // }
+    & div.azMenuSeparator {
+      height: 2px;
+      border-top: solid 1px darken($color: $main-color, $amount: 7%);
+      background-color: white;
+      margin: 2px 0;
+      padding: 0;
+    }
+  }
 }

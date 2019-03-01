@@ -1,56 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>azContextMenu</title>
     <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
     </style>
     <style>
-        #div0 {
-            width: 200%;
-            height: 200%;
-            border: 1px solid gray;
-            box-sizing: border-box;
-        }
+      #div0 {
+        width: 200%;
+        height: 200%;
+        border: 1px solid gray;
+        box-sizing: border-box;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="div0"></div>
     <script>
-        const elem = document.querySelector('#div0');
-        azui.ContextMenu(elem, {
-            items: [{
-                    icon: '☺',
-                    title: 'Close',
-                    action: function (e, target) {
-                        console.log(target);
-                        console.log(this);
-                        alert(target);
-                    }
-                }, {
-                    icon: '☺',
-                    title: 'Close Others',
-                    action: function (e, target) {}
-                },
-                null,
-                {
-                    icon: '☺',
-                    title: 'Close All',
-                    action: function (e, target) {
-                        return false;
-                    }
-                }
-            ]
-        });
+      const elem = document.querySelector('#div0');
+      azui.ContextMenu(elem, {
+        items: [
+          {
+            icon: '☺',
+            title: 'Close',
+            action: function(e, target) {
+              console.log(target);
+              console.log(this);
+              alert(target);
+            }
+          },
+          {
+            icon: '☺',
+            title: 'Close Others',
+            action: function(e, target) {}
+          },
+          null,
+          {
+            icon: '☺',
+            title: 'Close All',
+            action: function(e, target) {
+              return false;
+            }
+          }
+        ]
+      });
     </script>
-</body>
-
+  </body>
 </html>

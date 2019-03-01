@@ -1,129 +1,129 @@
-@import "../utilities/utilities.scss";
+@import '../utilities/utilities.scss';
 
 .azui {
-    &.azTabs {
-        box-shadow: $shadow;
+  &.azTabs {
+    box-shadow: $shadow;
+    display: flex;
+    flex-direction: column;
+    // grid-template-rows: auto 1fr;
+    background-color: white;
+    // overflow: hidden;
+
+    > .azTabHeader {
+      // width: 100%;
+      // grid-row: 1/2;
+      border-bottom: 1px solid darken($color: $main-color, $amount: 10%);
+      background-color: lighten($color: $main-color, $amount: 5%);
+      font-size: 13px;
+      // display: grid;
+      // grid-template-areas: "scroller-left labels scroller-right";
+      // grid-template-columns: auto 1fr auto;
+      > div.azTabLabels {
+        // grid-area: labels;
+        position: relative;
         display: flex;
-        flex-direction: column;
-        // grid-template-rows: auto 1fr;
-        background-color: white;
+        height: 100%;
         // overflow: hidden;
 
-        >.azTabHeader {
-            // width: 100%;
-            // grid-row: 1/2;
-            border-bottom: 1px solid darken($color: $main-color, $amount: 10%);
-            background-color: lighten($color: $main-color, $amount: 5%);
-            font-size: 13px;
-            // display: grid;
-            // grid-template-areas: "scroller-left labels scroller-right";
-            // grid-template-columns: auto 1fr auto;
-            >div.azTabLabels {
-                // grid-area: labels;
-                position: relative;
-                display: flex;
-                height: 100%;
-                // overflow: hidden;
+        > div.azTabLabel {
+          // height: 100%;
+          // height: 36px;
+          padding: 6px;
+          max-width: 150px;
+          width: 150px;
+          border-right: solid 1px darken($color: $main-color, $amount: 7%);
+          border-left: solid 1px white;
 
-                >div.azTabLabel {
-                    // height: 100%;
-                    // height: 36px;
-                    padding: 6px;
-                    max-width: 150px;
-                    width: 150px;
-                    border-right: solid 1px darken($color: $main-color, $amount: 7%);
-                    border-left: solid 1px white;
+          transition: 0.5s;
+          transition-property: background-color;
+          @extend %hoveractive;
 
-                    transition: 0.5s;
-                    transition-property: background-color;
-                    @extend %hoveractive;
+          &:first-of-type {
+            border-left: none;
+          }
 
-                    &:first-of-type {
-                        border-left: none;
-                    }
+          &:last-of-type {
+            border-right: none;
+          }
 
-                    &:last-of-type {
-                        border-right: none;
-                    }
+          background-color: $main-color;
+          display: grid;
+          grid-template-columns: 30px 1fr 30px;
 
-                    background-color: $main-color;
-                    display: grid;
-                    grid-template-columns: 30px 1fr 30px;
+          > div {
+            height: 100%;
+            display: grid;
+            align-items: center; // border: 1px solid black;
 
-                    >div {
-                        height: 100%;
-                        display: grid;
-                        align-items: center; // border: 1px solid black;
+            &.icon {
+              grid-column: 1/2;
+              justify-content: center;
 
-                        &.icon {
-                            grid-column: 1/2;
-                            justify-content: center;
-
-                            svg {
-                                height: 12px;
-                                width: 12px;
-                                display: inline-block;
-                            }
-                        }
-
-                        &.title {
-                            grid-column: 2/3; // padding-left: 10px;
-
-                            span {
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                overflow: hidden;
-                            }
-                        }
-
-                        &.close {
-                            grid-column: 3/4;
-                            justify-content: center;
-
-                            svg {
-                                height: 8px;
-                                width: 8px;
-                                display: inline-block;
-                            }
-
-                            &:hover {
-                                fill: $deny;
-                            }
-                        }
-                    }
-                }
+              svg {
+                height: 12px;
+                width: 12px;
+                display: inline-block;
+              }
             }
 
-            // & .azTabScroller {
-            //     width: 30px;
-            //     height: 100%;
-            //     display: grid;
-            //     align-items: center;
-            //     justify-content: center;
-            //     cursor: pointer;
-            //     &.left {
-            //         grid-area: scroller-left;
-            //         display: none;
-            //     }
-            //     &.right {
-            //         grid-area: scroller-right;
-            //         visibility: hidden;
-            //     }
-            //     @extend %hoveractive;
-            //     & svg {
-            //         width: 10px;
-            //         height: 10px;
-            //     }
-            // }
-        }
+            &.title {
+              grid-column: 2/3; // padding-left: 10px;
 
-        &>.azTabContent {
-            // grid-row: 2/3;
-            height: 100%;
-            // display: none;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
+              span {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              }
+            }
+
+            &.close {
+              grid-column: 3/4;
+              justify-content: center;
+
+              svg {
+                height: 8px;
+                width: 8px;
+                display: inline-block;
+              }
+
+              &:hover {
+                fill: $deny;
+              }
+            }
+          }
         }
+      }
+
+      // & .azTabScroller {
+      //     width: 30px;
+      //     height: 100%;
+      //     display: grid;
+      //     align-items: center;
+      //     justify-content: center;
+      //     cursor: pointer;
+      //     &.left {
+      //         grid-area: scroller-left;
+      //         display: none;
+      //     }
+      //     &.right {
+      //         grid-area: scroller-right;
+      //         visibility: hidden;
+      //     }
+      //     @extend %hoveractive;
+      //     & svg {
+      //         width: 10px;
+      //         height: 10px;
+      //     }
+      // }
     }
+
+    & > .azTabContent {
+      // grid-row: 2/3;
+      height: 100%;
+      // display: none;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+  }
 }

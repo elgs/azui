@@ -1,64 +1,64 @@
 @import '../utilities/utilities.scss';
 
 .azui {
-    &.azResizable>.handle {
-        background-color: $main-color;
-        box-sizing: border-box;
-        position: absolute !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+  &.azResizable > .handle {
+    background-color: $main-color;
+    box-sizing: border-box;
+    position: absolute !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-        &.active {
-            background-color: $active;
-        }
-
-        >div.collapseButton {
-            background-color: lighten($color: $main-color, $amount: 10%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-
-            &.active svg {
-                fill: $allow !important;
-            }
-
-            &.collapseButtonH {
-                width: 30px;
-
-                >span.collapseIcon {
-                    height: $collapseIconSize;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    >svg {
-                        fill: $main-color;
-                        width: $collapseIconSize * 2;
-                        height: $collapseIconSize;
-                        display: block;
-                    }
-                }
-            }
-
-            &.collapseButtonV {
-                height: 30px;
-
-                >span.collapseIcon {
-                    width: $collapseIconSize;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    >svg {
-                        fill: $main-color;
-                        width: $collapseIconSize;
-                        height: $collapseIconSize * 2;
-                        display: block;
-                    }
-                }
-            }
-        }
+    &.active {
+      background-color: $active;
     }
+
+    > div.collapseButton {
+      background-color: lighten($color: $main-color, $amount: 10%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      &.active svg {
+        fill: $allow !important;
+      }
+
+      &.collapseButtonH {
+        width: 30px;
+
+        > span.collapseIcon {
+          height: $collapseIconSize;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          > svg {
+            fill: $main-color;
+            width: $collapseIconSize * 2;
+            height: $collapseIconSize;
+            display: block;
+          }
+        }
+      }
+
+      &.collapseButtonV {
+        height: 30px;
+
+        > span.collapseIcon {
+          width: $collapseIconSize;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          > svg {
+            fill: $main-color;
+            width: $collapseIconSize;
+            height: $collapseIconSize * 2;
+            display: block;
+          }
+        }
+      }
+    }
+  }
 }

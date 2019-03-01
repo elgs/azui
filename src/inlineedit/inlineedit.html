@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>azInlineEdit</title>
     <style>
-        #div0 {
-            width: 200px;
-            height: 20px;
-            border: 1px solid gray;
-        }
+      #div0 {
+        width: 200px;
+        height: 20px;
+        border: 1px solid gray;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="div0">
-        <span>123</span>
+      <span>123</span>
     </div>
     <script>
-        const elem = document.querySelectorAll('#div0 span');
-        azui.InlineEdit(elem, {
-            foo: 'bar',
-            type: 'select',
-            options: [{
-                    key: '0',
-                    title: 'Close'
-                },
-                'Close Others',
-                // null,
-                'Close All',
-            ],
-            edit: function (e, target) {
-                console.log(e, target);
-            },
-            done: function (e, target) {
-                console.log(e, target);
-            }
-        });
+      const elem = document.querySelectorAll('#div0 span');
+      azui.InlineEdit(elem, {
+        foo: 'bar',
+        type: 'select',
+        options: [
+          {
+            key: '0',
+            title: 'Close'
+          },
+          'Close Others',
+          // null,
+          'Close All'
+        ],
+        edit: function(e, target) {
+          console.log(e, target);
+        },
+        done: function(e, target) {
+          console.log(e, target);
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>

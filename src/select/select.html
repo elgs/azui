@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>azSelect</title>
-</head>
+  </head>
 
-<body>
-    <div id='select0'></div>
+  <body>
+    <div id="select0"></div>
     <script>
-        const elem = document.querySelector('#select0');
-        azui.Select(elem, {
-            items: [{
-                    key: '0',
-                    title: 'Close'
-                },
-                'Close Others',
-                // null,
-                'Close All',
-            ]
-        });
-        azui.Select(elem, {
-            items: [{
-                    key: '0',
-                    title: 'Close'
-                },
-                'Close Others',
-                // null,
-                'Close All',
-            ]
-        });
+      const elem = document.querySelector('#select0');
+      azui.Select(elem, {
+        items: [
+          {
+            key: '0',
+            title: 'Close'
+          },
+          'Close Others',
+          // null,
+          'Close All'
+        ]
+      });
+      azui.Select(elem, {
+        items: [
+          {
+            key: '0',
+            title: 'Close'
+          },
+          'Close Others',
+          // null,
+          'Close All'
+        ]
+      });
     </script>
-</body>
-
+  </body>
 </html>

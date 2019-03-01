@@ -1,72 +1,67 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>azAccordion</title>
     <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
 
-        #acc0 {
-            /* height: 400px; */
-            width: 100%;
-            max-width: 400px;
-            position: absolute;
-        }
+      #acc0 {
+        /* height: 400px; */
+        width: 100%;
+        max-width: 400px;
+        position: absolute;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div id='acc0'>
-        <div class="azAccordionComponent">
-            <div class="azAccordionHeader"><span>Try right click for a menu</span></div>
-            <div class="azAccordionContent">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip
-                    ex
-                    ea commodo consequat.</p>
-            </div>
+  <body>
+    <div id="acc0">
+      <div class="azAccordionComponent">
+        <div class="azAccordionHeader"><span>Try right click for a menu</span></div>
+        <div class="azAccordionContent">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
         </div>
+      </div>
 
-        <div class="azAccordionComponent">
-            <div class="azAccordionHeader"><span>Section 2</span></div>
-            <div class="azAccordionContent">
-            </div>
-        </div>
+      <div class="azAccordionComponent">
+        <div class="azAccordionHeader"><span>Section 2</span></div>
+        <div class="azAccordionContent"></div>
+      </div>
 
-        <div class="azAccordionComponent">
-            <div class="azAccordionHeader"><span>Section 3</span></div>
-            <div class="azAccordionContent">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip
-                    ex
-                    ea commodo consequat.</p>
-            </div>
+      <div class="azAccordionComponent">
+        <div class="azAccordionHeader"><span>Section 3</span></div>
+        <div class="azAccordionContent">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
         </div>
+      </div>
     </div>
 
     <script>
-        const accDOM = document.querySelector('#acc0');
-        const acc = azui.Accordion(accDOM, {
-            collapseOthers: false,
-        });
-        const key = acc.append('Added by append() API');
-        acc.alert(key, true);
-        // acc.alert(key, false);
+      const accDOM = document.querySelector('#acc0');
+      const acc = azui.Accordion(accDOM, {
+        collapseOthers: false
+      });
+      const key = acc.append('Added by append() API');
+      acc.alert(key, true);
+      // acc.alert(key, false);
 
-        acc.insert('Inserted by insert() API', 1);
+      acc.insert('Inserted by insert() API', 1);
     </script>
-</body>
-
+  </body>
 </html>

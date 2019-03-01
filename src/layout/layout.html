@@ -1,44 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>azLayout</title>
     <style>
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-        }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      }
 
-        div#container {
-            /* width: 800px; */
-            /* height: 600px; */
-            width: 100%;
-            height: 100%;
-            /* margin: auto; */
-            /* position: relative; */
-            /* border: 1px solid gray; */
-        }
+      div#container {
+        /* width: 800px; */
+        /* height: 600px; */
+        width: 100%;
+        height: 100%;
+        /* margin: auto; */
+        /* position: relative; */
+        /* border: 1px solid gray; */
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div id='container'>
-        <div class='azLayoutNorth'></div>
-        <div class='azLayoutSouth'></div>
-        <div class='azLayoutWest'></div>
-        <div class='azLayoutEast'></div>
-        <div class='azLayoutCenter'></div>
+  <body>
+    <div id="container">
+      <div class="azLayoutNorth"></div>
+      <div class="azLayoutSouth"></div>
+      <div class="azLayoutWest"></div>
+      <div class="azLayoutEast"></div>
+      <div class="azLayoutCenter"></div>
     </div>
     <script>
-        const container = document.querySelector('#container');
-        azui.Layout(container, {
-            hideCollapseButton: false,
-        });
+      const container = document.querySelector('#container');
+      azui.Layout(container, {
+        hideCollapseButton: false
+      });
     </script>
-</body>
-
+  </body>
 </html>

@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pager</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="pager0"></div>
     <script>
-        const elem = document.querySelector('#pager0');
-        azui.Pager(elem, {
-            pageSize: 25,
-            pageNumber: 1,
-            totalSize: 101,
-            onPageChange: function (pageNumber, pageSize) {
-                const _pageNumber = Math.max(1, Math.min(Math.ceil(this.settings.totalSize / pageSize),
-                    pageNumber));
-                this.settings.pageNumber = _pageNumber;
-                console.log(pageSize, _pageNumber);
-            },
-        });
+      const elem = document.querySelector('#pager0');
+      azui.Pager(elem, {
+        pageSize: 25,
+        pageNumber: 1,
+        totalSize: 101,
+        onPageChange: function(pageNumber, pageSize) {
+          const _pageNumber = Math.max(1, Math.min(Math.ceil(this.settings.totalSize / pageSize), pageNumber));
+          this.settings.pageNumber = _pageNumber;
+          console.log(pageSize, _pageNumber);
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>
