@@ -1,4 +1,5 @@
 import '../accordion/index.js';
+import '../all/index.js';
 import '../contextmenu/index.js';
 import '../datatable/index.js';
 import '../docker/index.js';

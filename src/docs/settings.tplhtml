@@ -1,4 +1,0 @@
-<div>
-    <div>`${key}` type: `${type}` default: `${defaultValue}`</div>
-    ${desc}
-</div>

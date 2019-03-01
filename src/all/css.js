@@ -1,4 +1,5 @@
 import '../accordion/css.js';
+import '../all/css.js';
 import '../contextmenu/css.js';
 import '../datatable/css.js';
 import '../docker/css.js';
