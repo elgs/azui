@@ -16,7 +16,12 @@ const listModules = (...excludes) =>
 const listHtmls = mod =>
   fs
     .readdirSync(path.join(srcDir, mod))
-    .filter(item => item.toLowerCase().endsWith('.html') && fs.statSync(path.join(srcDir, mod, item)).isFile())
+    .filter(
+      item =>
+        item.toLowerCase().endsWith('.html') &&
+        !item.toLowerCase().endsWith('.tpl.thml') &&
+        fs.statSync(path.join(srcDir, mod, item)).isFile()
+    )
     .sort();
 const flattenDeep = arr =>
   arr.reduce((acc, val) => (Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val)), []);
@@ -29,11 +34,11 @@ const generateAll = () => {
 
   listModules().map(mod => {
     jsContent += `import '../${mod}/index.js';\n`;
-    cssContent += `import '../${mod}/css.js';\n`;
+    cssContent += `import '../${mod}/index.css.js';\n`;
   });
 
   fs.writeFileSync(srcDir + '/all/index.js', jsContent, 'utf8');
-  fs.writeFileSync(srcDir + '/all/css.js', cssContent, 'utf8');
+  fs.writeFileSync(srcDir + '/all/index.css.js', cssContent, 'utf8');
 };
 
 module.exports = (env, argv) => {
@@ -47,7 +52,7 @@ module.exports = (env, argv) => {
 
   const entries = {};
   mods.map(mod => {
-    entries[mod] = [`${srcDir + mod}/css.js`, `${srcDir + mod}/index.js`];
+    entries[mod] = [`${srcDir + mod}/index.css.js`, `${srcDir + mod}/index.js`];
   });
   // console.log(entries);
   const htmls = mods.map(mod => {
