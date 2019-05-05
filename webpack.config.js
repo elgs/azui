@@ -75,28 +75,32 @@ module.exports = (env, argv) => {
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    // useBuiltIns: 'usage'
-                  }
-                ]
-              ],
-              plugins: [
-                'transform-class-properties',
-                [
-                  'babel-plugin-inline-import',
-                  {
-                    extensions: ['.tplhtml', '.md']
-                  }
-                ]
-              ]
+          use: [
+            'babel-inline-import-loader',
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  [
+                    '@babel/preset-env',
+                    {
+                      // useBuiltIns: 'usage'
+                    }
+                  ]
+                ],
+                plugins: [
+                  'transform-class-properties',
+                  [
+                    'babel-plugin-inline-import',
+                    {
+                      extensions: ['.tpl.html', '.md']
+                    }
+                  ]
+                ],
+                cacheDirectory: false
+              }
             }
-          }
+          ]
         },
         {
           test: /\.scss$/,
