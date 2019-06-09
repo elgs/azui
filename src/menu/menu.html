@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>azMenu</title>
-    <style>
-      div#div0 {
-        width: 200px;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>azMenu</title>
+  <style>
+    div#div0 {
+      width: 200px;
+    }
+  </style>
+</head>
 
-  <body>
-    <div id="div0"></div>
-    <script>
-      const elem = document.querySelectorAll('div#div0');
-      azui.Menu(elem, {
-        items: [
-          {
-            icon: '☺',
-            title: 'Close',
-            disabled: true,
-            action: function(e, target) {
-              console.log(target);
-              console.log(this);
-              alert(target);
-            }
-          },
-          {
-            icon: '☺',
-            title: 'Close Others',
-            action: function(e, target) {
-              console.log(1);
-            }
-          },
-          null,
-          {
-            icon: '☺',
-            title: 'Close All',
-            action: function(e, target) {
-              console.log(2);
-              return false;
-            }
+<body>
+  <div id="div0"></div>
+  <script>
+    const elem = document.querySelectorAll('div#div0');
+    azui.Menu(elem, {
+      items: [
+        {
+          icon: '☺',
+          title: 'Close',
+          disabled: true,
+          action: function (e, target) {
+            console.log(target);
+            console.log(this);
+            alert(target);
           }
-        ]
-      });
-    </script>
-  </body>
+        },
+        {
+          icon: '☺',
+          title: 'Close Others',
+          action: function (e, target) {
+            console.log(1);
+          }
+        },
+        null,
+        {
+          icon: '☺',
+          title: 'Close All',
+          action: function (e, target) {
+            console.log(2);
+            return false;
+          }
+        }
+      ]
+    });
+  </script>
+</body>
 </html>

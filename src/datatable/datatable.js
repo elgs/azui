@@ -16,7 +16,7 @@ import {
   siblings
 } from '../utilities/utilities.js';
 
-azui.DataTable = function(el, options, init) {
+azui.DataTable = function (el, options, init) {
   return azObj(DataTable, el, options, init);
 };
 
@@ -55,7 +55,7 @@ class DataTable extends Base {
 
     me.totalSize = 0;
 
-    const refresh = function(pageData, totalSize, pageNumber) {
+    const refresh = function (pageData, totalSize, pageNumber) {
       me.lastSelectedRowNum = 0;
       me.lastSelectedColKey = 0;
       me.totalSize = totalSize;
@@ -85,7 +85,7 @@ class DataTable extends Base {
             type: col.type,
             allowNewItems: col.allowNewItems,
             options: col.options,
-            start: function(event, ui) {
+            start: function (event, ui) {
               me.activeEditor = ie.editor;
             },
             cancel: (event, ui) => {
@@ -319,11 +319,11 @@ class DataTable extends Base {
         hideHandles: true,
         handleSize: 6,
         // maxWidth: 400,
-        create: function(e) {
+        create: function (e) {
           const target = this;
           target.setAttribute('widthOnCreate', getWidth(target));
         },
-        stop: function(e) {
+        stop: function (e) {
           const target = this;
           // console.log(index(target));
           const woc = target.getAttribute('widthOnCreate') * 1;
@@ -337,7 +337,7 @@ class DataTable extends Base {
           });
           settings.columns[index(target)].width = tds[0].offsetWidth;
         },
-        onDoubleClick: function(event) {
+        onDoubleClick: function (event) {
           const th = event.target.parentNode;
           const idx = index(th);
           const tds = tbody.querySelectorAll(`div.td:nth-of-type(${idx + 1})`);
@@ -364,7 +364,7 @@ class DataTable extends Base {
       {
         icon: icons.svgTriangleUp,
         title: 'Sort Ascending',
-        action: function(e, target) {
+        action: function (e, target) {
           settings.sortDirection = 'desc';
           sortAll(target.getAttribute('col-key'));
           return false;
@@ -373,7 +373,7 @@ class DataTable extends Base {
       {
         icon: icons.svgTriangleDown,
         title: 'Sort Descending',
-        action: function(e, target) {
+        action: function (e, target) {
           settings.sortDirection = 'asc';
           sortAll(target.getAttribute('col-key'));
           return false;
@@ -383,17 +383,17 @@ class DataTable extends Base {
     const colCmItems = () => {
       return settings.columns.map(col => {
         return {
-          icon: function() {
+          icon: function () {
             const cb = parseDOMElement(`<input type="checkbox" ${col.hidden ? '' : 'checked="checked"'}>`)[0];
-            cb.addEventListener('click', function(e) {
+            cb.addEventListener('click', function (e) {
               e.preventDefault();
             });
             return cb;
           },
-          title: function() {
+          title: function () {
             return col.text;
           },
-          action: function(e, target) {
+          action: function (e, target) {
             const cb = e.currentTarget.querySelector('span.icon>input[type=checkbox]');
             setTimeout(() => {
               // neglect the effect of e.preventDefault in the icon function;
@@ -434,7 +434,7 @@ class DataTable extends Base {
     // moving columns
     azui.Sortable(thead, {
       placeholder: false,
-      stop: function(e, data) {
+      stop: function (e, data) {
         if (!data.source || !data.target) {
           return;
         }
@@ -462,7 +462,7 @@ class DataTable extends Base {
       }
     });
 
-    const sortAll = function(colKey) {
+    const sortAll = function (colKey) {
       const column = settings.columns.find(column => column.key == colKey);
       const sortKey = column.key;
       if (sortKey !== settings.sortColumnKey || settings.sortDirection === 'desc') {
@@ -483,7 +483,7 @@ class DataTable extends Base {
 
     thead.querySelectorAll('.th').forEach(el => {
       azui.DoubleClick(el, {
-        onDoubleClick: function(e) {
+        onDoubleClick: function (e) {
           // console.log(this);
           sortAll(this.getAttribute('col-key'));
         }
@@ -530,7 +530,7 @@ class DataTable extends Base {
       pageSize: settings.pageSize,
       totalSize: me.totalSize,
       pageNumber: settings.pageNumber,
-      onPageChange: function(pageNumber, pageSize) {
+      onPageChange: function (pageNumber, pageSize) {
         settings.pageSize = pageSize;
         settings.pageNumber = pageNumber;
         settings.loadData(pageNumber, pageSize, settings.sortColumnKey, settings.sortDirection, refresh);

@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>azInlineEdit</title>
-    <style>
-      #div0 {
-        width: 200px;
-        height: 20px;
-        border: 1px solid gray;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>azInlineEdit</title>
+  <style>
+    #div0 {
+      width: 200px;
+      height: 20px;
+      border: 1px solid gray;
+    }
+  </style>
+</head>
 
-  <body>
-    <div id="div0">
-      <span>123</span>
-    </div>
-    <script>
-      const elem = document.querySelectorAll('#div0 span');
-      azui.InlineEdit(elem, {
-        foo: 'bar',
-        type: 'select',
-        options: [
-          {
-            key: '0',
-            title: 'Close'
-          },
-          'Close Others',
-          // null,
-          'Close All'
-        ],
-        edit: function(e, target) {
-          console.log(e, target);
+<body>
+  <div id="div0">
+    <span>123</span>
+  </div>
+  <script>
+    const elem = document.querySelectorAll('#div0 span');
+    azui.InlineEdit(elem, {
+      foo: 'bar',
+      type: 'select',
+      options: [
+        {
+          key: '0',
+          title: 'Close'
         },
-        done: function(e, target) {
-          console.log(e, target);
-        }
-      });
-    </script>
-  </body>
+        'Close Others',
+        // null,
+        'Close All'
+      ],
+      edit: function (e, target) {
+        console.log(e, target);
+      },
+      done: function (e, target) {
+        console.log(e, target);
+      }
+    });
+  </script>
+</body>
 </html>

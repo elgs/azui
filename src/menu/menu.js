@@ -10,7 +10,7 @@ import {
   randGen
 } from '../utilities/utilities.js';
 
-azui.Menu = function(el, options, init) {
+azui.Menu = function (el, options, init) {
   return azObj(Menu, el, options, init);
 };
 
@@ -29,7 +29,7 @@ class Menu extends Base {
     const me = this;
     const node = me.node;
 
-    const createMenuItem = function(item) {
+    const createMenuItem = function (item) {
       if (!item) {
         const separator = parseDOMElement('<div>&nbsp;</div>')[0];
         separator.classList.add('azMenuSeparator');

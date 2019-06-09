@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>azRightClick</title>
-    <style>
-      div {
-        width: 200px;
-        height: 200px;
-        border: 1px solid gray;
-        box-sizing: border-box;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>azRightClick</title>
+  <style>
+    div {
+      width: 200px;
+      height: 200px;
+      border: 1px solid gray;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
 
-  <body>
-    <div id="div0"></div>
-    <div id="div1"></div>
-    <div id="div2"></div>
-    <script>
-      const elems = document.querySelectorAll('div');
-      elems.forEach(el => {
-        const rc = azui.RightClick(el, {
-          onRightClick: function(e) {
-            console.log(e);
-            alert(e.type);
-            e.preventDefault();
-          }
-        });
-        el.addEventListener('touchend', e => {
-          alert(rc.triggered);
-        });
+<body>
+  <div id="div0"></div>
+  <div id="div1"></div>
+  <div id="div2"></div>
+  <script>
+    const elems = document.querySelectorAll('div');
+    elems.forEach(el => {
+      const rc = azui.RightClick(el, {
+        onRightClick: function (e) {
+          console.log(e);
+          alert(e.type);
+          e.preventDefault();
+        }
       });
-    </script>
-  </body>
+      el.addEventListener('touchend', e => {
+        alert(rc.triggered);
+      });
+    });
+  </script>
+</body>
 </html>

@@ -10,7 +10,7 @@ import {
   setWidth
 } from '../utilities/utilities.js';
 
-azui.Resizable = function(el, options, init) {
+azui.Resizable = function (el, options, init) {
   return azObj(Resizable, el, options, init);
 };
 
@@ -33,19 +33,19 @@ class Resizable extends Base {
         // onDoubleClick: function (event) {
         //     // console.log(event.target);
         // },
-        create: function(event, ui) {
+        create: function (event, ui) {
           // console.log('create', ui);
         },
-        start: function(event, ui) {
+        start: function (event, ui) {
           // console.log('start', ui);
         },
-        resize: function(event, ui) {
+        resize: function (event, ui) {
           // console.log('resize', ui);
         },
-        stop: function(event, ui) {
+        stop: function (event, ui) {
           // console.log('stop', ui);
         },
-        collapse: function(event, ui, wh) {
+        collapse: function (event, ui, wh) {
           // console.log(this, event, ui, wh);
         }
       },
@@ -63,7 +63,7 @@ class Resizable extends Base {
       node.style['position'] = position;
     }
 
-    const parseHandles = function() {
+    const parseHandles = function () {
       const h = {
         n: false,
         e: false,
@@ -134,18 +134,18 @@ class Resizable extends Base {
         return 'nwse-resize';
       }
     };
-    const createDraggingHandles = function() {
+    const createDraggingHandles = function () {
       let inHandle = false;
       let inButton = false;
 
-      const createCollapseButton = function(direction) {
+      const createCollapseButton = function (direction) {
         const collapseButton = document.createElement('div');
-        collapseButton.addEventListener('mouseenter', function(e) {
+        collapseButton.addEventListener('mouseenter', function (e) {
           inButton = true;
           e.currentTarget.parentNode.classList.remove('active');
           e.currentTarget.classList.add('active');
         });
-        collapseButton.addEventListener('mouseleave', function(e) {
+        collapseButton.addEventListener('mouseleave', function (e) {
           inButton = false;
           e.currentTarget.classList.remove('active');
           if (inHandle) {
@@ -157,7 +157,7 @@ class Resizable extends Base {
 
         if (direction === 'n' || direction === 's') {
           collapseButton.classList.add('collapseButtonH');
-          collapseButton.addEventListener('click', function(e) {
+          collapseButton.addEventListener('click', function (e) {
             me.collapseY(e, collapseButton);
           });
 
@@ -170,7 +170,7 @@ class Resizable extends Base {
           collapseButton.appendChild(collapseIconUp);
         } else if (direction === 'w' || direction === 'e') {
           collapseButton.classList.add('collapseButtonV');
-          collapseButton.addEventListener('click', function(e) {
+          collapseButton.addEventListener('click', function (e) {
             me.collapseX(e, collapseButton);
           });
 
@@ -199,7 +199,7 @@ class Resizable extends Base {
               const collapseButton = createCollapseButton(d);
               eld.appendChild(collapseButton);
             }
-            eld.addEventListener('mouseenter', function(e) {
+            eld.addEventListener('mouseenter', function (e) {
               inHandle = true;
               const ct = e.currentTarget;
               setTimeout(() => {
@@ -208,7 +208,7 @@ class Resizable extends Base {
                 }
               });
             });
-            eld.addEventListener('mouseleave', function(e) {
+            eld.addEventListener('mouseleave', function (e) {
               inHandle = false;
               e.currentTarget.classList.remove('active');
             });
@@ -227,7 +227,7 @@ class Resizable extends Base {
 
       me._resetHandles();
 
-      const onCreate = function(event, elem) {
+      const onCreate = function (event, elem) {
         if (settings.create.call(node, event, elem) === false) {
           return false;
         }
@@ -257,7 +257,7 @@ class Resizable extends Base {
         // console.log('create');
       };
 
-      const onStart = function(event, elem) {
+      const onStart = function (event, elem) {
         if (settings.start.call(node, event, elem) === false) {
           return false;
         }
@@ -278,7 +278,7 @@ class Resizable extends Base {
         // event.preventDefault();
       };
 
-      const onStop = function(event, elem) {
+      const onStop = function (event, elem) {
         if (settings.stop.call(node, event, elem) === false) {
           return false;
         }
@@ -291,7 +291,7 @@ class Resizable extends Base {
         // console.log('stop');
       };
 
-      const checkAspectRatio = function() {
+      const checkAspectRatio = function () {
         if (!settings.aspectRatio) {
           return;
         }
@@ -309,7 +309,7 @@ class Resizable extends Base {
           setOuterHeight(node, getOuterWidth(node) * ar);
         }
       };
-      const checkAll = function() {
+      const checkAll = function () {
         checkAspectRatio();
       };
 
@@ -318,7 +318,7 @@ class Resizable extends Base {
           axis: 'y',
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             // const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             const nmy = event.touches ? event.touches[0].clientY : event.clientY;
             const by = {
@@ -342,7 +342,7 @@ class Resizable extends Base {
           axis: 'x',
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             // const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
@@ -366,7 +366,7 @@ class Resizable extends Base {
           axis: 'y',
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             // const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
@@ -390,7 +390,7 @@ class Resizable extends Base {
           axis: 'x',
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             // const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
@@ -414,7 +414,7 @@ class Resizable extends Base {
         azui.Draggable(eh.ne, {
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
@@ -442,7 +442,7 @@ class Resizable extends Base {
         azui.Draggable(eh.se, {
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
@@ -470,7 +470,7 @@ class Resizable extends Base {
         azui.Draggable(eh.sw, {
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 
@@ -498,7 +498,7 @@ class Resizable extends Base {
         azui.Draggable(eh.nw, {
           create: onCreate,
           start: onStart,
-          drag: function(event, elem) {
+          drag: function (event, elem) {
             const nmx = event.touches ? event.touches[0].clientX : event.clientX;
             const nmy = event.touches ? event.touches[0].clientY : event.clientY;
 

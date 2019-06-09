@@ -2,7 +2,7 @@ import { azObj, Base } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import { insertAfter, remove } from '../utilities/utilities.js';
 
-azui.InlineEdit = function(el, options, init) {
+azui.InlineEdit = function (el, options, init) {
   // return new InlineEdit(el, options);
   return azObj(InlineEdit, el, options, init);
 };
@@ -17,19 +17,19 @@ class InlineEdit extends Base {
         allowNewItems: true,
         options: [],
         value: null,
-        create: function(event, ui) {
+        create: function (event, ui) {
           // console.log('create', ui);
         },
-        start: function(event, ui) {
+        start: function (event, ui) {
           // console.log('start', ui);
         },
-        edit: function(event, ui) {
+        edit: function (event, ui) {
           // console.log('edit', ui.value);
         },
-        cancel: function(event, ui) {
+        cancel: function (event, ui) {
           // console.log('cancel', ui);
         },
-        done: function(event, ui) {
+        done: function (event, ui) {
           // console.log('done', ui);
         }
       },
@@ -45,7 +45,7 @@ class InlineEdit extends Base {
       return false;
     }
 
-    me.cancel = function(e) {
+    me.cancel = function (e) {
       if (!me.active) {
         return;
       }
@@ -60,7 +60,7 @@ class InlineEdit extends Base {
       me.active = false;
     };
 
-    me.done = function(e) {
+    me.done = function (e) {
       if (!me.active) {
         return;
       }
@@ -80,7 +80,7 @@ class InlineEdit extends Base {
       me.active = false;
     };
 
-    me.edit = function(e) {
+    me.edit = function (e) {
       if (me.active) {
         return;
       }
@@ -96,7 +96,7 @@ class InlineEdit extends Base {
       dirtySign.style.display = 'none';
       // $editor.on('blur', cancel);
 
-      const _checkDirty = function(editor) {
+      const _checkDirty = function (editor) {
         // console.log(originalValue, editor.value);
         const dirty = originalValue !== editor.value;
         if (dirty) {
@@ -113,10 +113,10 @@ class InlineEdit extends Base {
           select: e => _checkDirty(select.selectInput)
         });
         editorWrapper.appendChild(dirtySign);
-        select.node.addEventListener('done', function(e) {
+        select.node.addEventListener('done', function (e) {
           me.done(e);
         });
-        select.node.addEventListener('cancel', function(e) {
+        select.node.addEventListener('cancel', function (e) {
           me.cancel(e);
         });
         select.selectInput.classList.add('azInlineEditorInput');
@@ -138,7 +138,7 @@ class InlineEdit extends Base {
         editor.value = originalValue;
         editorWrapper.appendChild(editor);
 
-        editor.addEventListener('keyup', function(event) {
+        editor.addEventListener('keyup', function (event) {
           // console.log('keyup');
           if (event.keyCode === 13) {
             me.done(event);
@@ -152,7 +152,7 @@ class InlineEdit extends Base {
           }
         });
 
-        editor.addEventListener('keydown', function(event) {
+        editor.addEventListener('keydown', function (event) {
           // console.log('keydown');
           if (settings.type === 'number') {
             if (event.keyCode === 38) {
@@ -181,19 +181,19 @@ class InlineEdit extends Base {
           downButton.classList.add('downButton');
           editorWrapper.appendChild(downButton);
 
-          upButton.addEventListener('click', function(event) {
+          upButton.addEventListener('click', function (event) {
             event.stopPropagation();
             editor.value = editor.value * 1 + 1;
             _checkDirty(editor);
           });
-          downButton.addEventListener('click', function(event) {
+          downButton.addEventListener('click', function (event) {
             event.stopPropagation();
             editor.value = editor.value * 1 - 1;
             _checkDirty(editor);
           });
         }
 
-        editor.addEventListener('touchmove', function(event) {
+        editor.addEventListener('touchmove', function (event) {
           // prevent view port from moving around while moving cursor on a mobile screen.
           event.stopPropagation();
         });

@@ -1,143 +1,130 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>azWindow</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      .fout {
-        display: none;
-      }
+<head>
+  <meta charset="utf-8" />
+  <title>azWindow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    .fout {
+      display: none;
+    }
 
-      html,
-      body {
-        overflow: hidden;
-        height: 100%;
-        width: 100%;
-        position: relative;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
-        font-size: 13px;
-      }
-    </style>
-  </head>
+    html,
+    body {
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      font-size: 13px;
+    }
+  </style>
+</head>
 
-  <body class="fout">
-    <div id="myWindow0">
-      <div style="border:1px solid tomato;box-sizing: border-box;height:100%;width:100%;overflow:auto">
-        <div>
-          <span
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
-            consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
-            iure blanditiis facere sunt provident vero?</span
-          >
-          <span
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
-            consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
-            iure blanditiis facere sunt provident vero?</span
-          >
-          <span
-            >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique cupiditate necessitatibus tempora
-            dolores tenetur perspiciatis deleniti animi deserunt odit ab, architecto dicta voluptas. Rem harum fugiat
-            doloremque sapiente, quibusdam fugit.</span
-          >
-          <span
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt maxime voluptas ratione ipsa accusamus.
-            Unde doloribus ratione facere, nulla nemo sapiente ab soluta quas. Sunt eos iusto nulla tempora
-            dignissimos.</span
-          >
-          <span
-            >Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum quaerat dignissimos alias quae cumque illum
-            provident autem laborum, nobis similique perspiciatis, ducimus esse velit adipisci! Exercitationem sapiente
-            beatae deserunt velit.</span
-          >
-        </div>
+<body class="fout">
+  <div id="myWindow0">
+    <div style="border:1px solid tomato;box-sizing: border-box;height:100%;width:100%;overflow:auto">
+      <div>
+        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
+          consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
+          iure blanditiis facere sunt provident vero?</span>
+        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
+          consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
+          iure blanditiis facere sunt provident vero?</span>
+        <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique cupiditate necessitatibus tempora
+          dolores tenetur perspiciatis deleniti animi deserunt odit ab, architecto dicta voluptas. Rem harum fugiat
+          doloremque sapiente, quibusdam fugit.</span>
+        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt maxime voluptas ratione ipsa accusamus.
+          Unde doloribus ratione facere, nulla nemo sapiente ab soluta quas. Sunt eos iusto nulla tempora
+          dignissimos.</span>
+        <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum quaerat dignissimos alias quae cumque
+          illum
+          provident autem laborum, nobis similique perspiciatis, ducimus esse velit adipisci! Exercitationem sapiente
+          beatae deserunt velit.</span>
       </div>
-      <div id="myWindow00">
-        <div style="height:100%;width:100%;overflow:auto">
-          <span
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
-            consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
-            iure blanditiis facere sunt provident vero?</span
-          >
-          <span
-            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
-            consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
-            iure blanditiis facere sunt provident vero?</span
-          >
-        </div>
+    </div>
+    <div id="myWindow00">
+      <div style="height:100%;width:100%;overflow:auto">
+        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
+          consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
+          iure blanditiis facere sunt provident vero?</span>
+        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta exercitationem cupiditate minus
+          consequuntur repellat sit nihil culpa itaque consequatur reprehenderit laudantium, nostrum corrupti atque
+          iure blanditiis facere sunt provident vero?</span>
       </div>
-      <div id="myWindow01"></div>
     </div>
-    <div id="myWindow1">
-      <div id="myWindow10"></div>
-      <div id="myWindow11"></div>
-    </div>
-    <div id="myWindow2">
-      <ul>
-        <li>drag the window around</li>
-        <li>drag the edges to resize the window</li>
-        <li>drag to reorder the items in the docker bar</li>
-        <li>right click on the window header for a menu</li>
-        <li>right click on the items in the docker bar for the same menu</li>
-        <li>double click on the window header to maximize/restore the window</li>
-        <li>try it on your computers, phones and tablets</li>
-        <li>try it on Chrome, Firefox, Safari and Edge</li>
-        <li>try it on Linux, Mac and Windows</li>
-      </ul>
-    </div>
-    <div id="docker0"></div>
-    <script>
-      // $('<div/>').azDebugDiv();
+    <div id="myWindow01"></div>
+  </div>
+  <div id="myWindow1">
+    <div id="myWindow10"></div>
+    <div id="myWindow11"></div>
+  </div>
+  <div id="myWindow2">
+    <ul>
+      <li>drag the window around</li>
+      <li>drag the edges to resize the window</li>
+      <li>drag to reorder the items in the docker bar</li>
+      <li>right click on the window header for a menu</li>
+      <li>right click on the items in the docker bar for the same menu</li>
+      <li>double click on the window header to maximize/restore the window</li>
+      <li>try it on your computers, phones and tablets</li>
+      <li>try it on Chrome, Firefox, Safari and Edge</li>
+      <li>try it on Linux, Mac and Windows</li>
+    </ul>
+  </div>
+  <div id="docker0"></div>
+  <script>
+    // $('<div/>').azDebugDiv();
 
-      const width0 = 400;
-      const height0 = 300;
-      const width1 = 240;
-      const height1 = 180;
-      azui.Window(document.querySelector('#myWindow0'), {
-        width: width0,
-        height: height0,
-        title: 'Arizona'
-      });
-      azui.Window(document.querySelector('#myWindow00'), {
-        width: width1,
-        height: height1,
-        showButtonInDocker: false,
-        title: 'Tempe'
-      });
-      azui.Window(document.querySelector('#myWindow01'), {
-        width: width1,
-        height: height1,
-        showButtonInDocker: false,
-        title: 'Mesa'
-      });
+    const width0 = 400;
+    const height0 = 300;
+    const width1 = 240;
+    const height1 = 180;
+    azui.Window(document.querySelector('#myWindow0'), {
+      width: width0,
+      height: height0,
+      title: 'Arizona'
+    });
+    azui.Window(document.querySelector('#myWindow00'), {
+      width: width1,
+      height: height1,
+      showButtonInDocker: false,
+      title: 'Tempe'
+    });
+    azui.Window(document.querySelector('#myWindow01'), {
+      width: width1,
+      height: height1,
+      showButtonInDocker: false,
+      title: 'Mesa'
+    });
 
-      azui.Window(document.querySelector('#myWindow1'), {
-        width: width0,
-        height: height0,
-        title: 'California'
-      });
-      azui.Window(document.querySelector('#myWindow10'), {
-        width: width1,
-        height: height1,
-        showMinimizeButton: false,
-        title: 'Los Angeles'
-      });
-      azui.Window(document.querySelector('#myWindow11'), {
-        width: width1,
-        height: height1,
-        showMinimizeButton: false,
-        title: 'San Francisco'
-      });
+    azui.Window(document.querySelector('#myWindow1'), {
+      width: width0,
+      height: height0,
+      title: 'California'
+    });
+    azui.Window(document.querySelector('#myWindow10'), {
+      width: width1,
+      height: height1,
+      showMinimizeButton: false,
+      title: 'Los Angeles'
+    });
+    azui.Window(document.querySelector('#myWindow11'), {
+      width: width1,
+      height: height1,
+      showMinimizeButton: false,
+      title: 'San Francisco'
+    });
 
-      azui.Window(document.querySelector('#myWindow2'), {
-        width: width0,
-        height: height0,
-        title: 'Try me!'
-      });
+    azui.Window(document.querySelector('#myWindow2'), {
+      width: width0,
+      height: height0,
+      title: 'Try me!'
+    });
 
-      document.querySelector('.fout').classList.remove('fout');
-    </script>
-  </body>
+    document.querySelector('.fout').classList.remove('fout');
+  </script>
+</body>
 </html>

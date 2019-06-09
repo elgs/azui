@@ -1,7 +1,7 @@
 import { azObj, Base } from '../utilities/core.js';
 import { isTouchDevice } from '../utilities/utilities.js';
 
-azui.RightClick = function(el, options, init) {
+azui.RightClick = function (el, options, init) {
   return azObj(RightClick, el, options, init);
 };
 
@@ -11,11 +11,11 @@ class RightClick extends Base {
   _init(options) {
     const settings = Object.assign(
       {
-        onRightClick: function(e) {},
+        onRightClick: function (e) { },
         // preventDefault: function (e) {
         //     return true;
         // },
-        resumeDefaultEvent: function(e) {
+        resumeDefaultEvent: function (e) {
           e.target.dispatchEvent(new CustomEvent('click'));
         }
       },
@@ -33,9 +33,9 @@ class RightClick extends Base {
     if (isTouchDevice()) {
       let timer;
       me.triggered = false;
-      me.replaceEventListener('touchstart', 'touchstart', function(event) {
+      me.replaceEventListener('touchstart', 'touchstart', function (event) {
         'touchmove touchend touchcancel'.split(' ').forEach(e =>
-          me.replaceEventListener(e, e, function(event) {
+          me.replaceEventListener(e, e, function (event) {
             clearTimeout(timer);
             // console.log(event);
             if (me.triggered) {
@@ -48,7 +48,7 @@ class RightClick extends Base {
             }
           })
         );
-        timer = setTimeout(function() {
+        timer = setTimeout(function () {
           me.triggered = true;
           if (node === document || node === window || node.parentNode) {
             // don't call if me is removed.

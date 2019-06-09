@@ -2,7 +2,7 @@ import { azObj, Base } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import { isOutside, matches, parseDOMElement, remove, siblings, isTouchDevice } from '../utilities/utilities.js';
 
-azui.Window = function(el, options, init) {
+azui.Window = function (el, options, init) {
   return azObj(Window, el, options, init);
 };
 
@@ -51,7 +51,7 @@ class Window extends Base {
 
     this.headerIcons = {};
 
-    const initHeader = function() {
+    const initHeader = function () {
       settings.showSlideButton && addHeaderIcon('slideup', icons.svgArrowUp, 'Hide', false, 'right', me.slideup);
       settings.showSlideButton && addHeaderIcon('slidedown', icons.svgArrowDown, 'Show', true, 'right', me.slidedown);
       settings.showMinimizeButton &&
@@ -63,22 +63,22 @@ class Window extends Base {
       settings.showCloseButton && addHeaderIcon('close', icons.svgClose, 'Close', false, 'right', me.close);
     };
 
-    const setHeaderIcon = function(icon) {
+    const setHeaderIcon = function (icon) {
       header.querySelector('.left span.icon').innerHTML = icon;
     };
 
-    const setHeaderTitle = function(title) {
+    const setHeaderTitle = function (title) {
       header.querySelector('.left span.title').innerHTML = title;
     };
 
-    const addHeaderIcon = function(key, icon, toolTip, hidden, position, callback) {
+    const addHeaderIcon = function (key, icon, toolTip, hidden, position, callback) {
       const iconSpan = document.createElement('span');
       iconSpan.classList.add('azHeaderIcon');
       if (hidden) {
         iconSpan.style.display = 'none';
       }
       iconSpan.appendChild(parseDOMElement(icon)[0]);
-      iconSpan.addEventListener('click', function(event) {
+      iconSpan.addEventListener('click', function (event) {
         if (callback) {
           callback.call(me);
         }
@@ -118,7 +118,7 @@ class Window extends Base {
     // header.prependTo(node);
     node.insertBefore(header, node.firstChild);
 
-    const mouseDownTouchStartEventListener = function(event) {
+    const mouseDownTouchStartEventListener = function (event) {
       // console.log(event.type);
       me.activate(true);
     };
@@ -134,10 +134,10 @@ class Window extends Base {
       minHeight: settings.headerHeight * 2,
       minWidth: 240,
       hideHandles: true,
-      start: function(event, ui) {
+      start: function (event, ui) {
         pb = node.parentNode.getBoundingClientRect();
       },
-      resize: function(event, ui) {
+      resize: function (event, ui) {
         if (isOutside(event.pageX || event.touches[0].pageX, event.pageY || event.touches[0].pageY, pb)) {
           return false;
         }
@@ -212,7 +212,7 @@ class Window extends Base {
     azui.Draggable(node, {
       handle: header,
       snapDistance: 8,
-      create: function(event, ui) {
+      create: function (event, ui) {
         const target = event.target;
         // console.log(target, event.currentTarget);
         pb = node.parentNode.getBoundingClientRect();
@@ -227,10 +227,10 @@ class Window extends Base {
           return false; // don't drag when clicking on icons
         }
       },
-      start: function(event, ui) {
+      start: function (event, ui) {
         me.docker.storeState(me.dockId);
       },
-      drag: function(event, ui) {
+      drag: function (event, ui) {
         const cursorX = event.touches ? event.touches[0].pageX : event.pageX;
         const cursorY = event.touches ? event.touches[0].pageY : event.pageY;
         // console.log(cursorX, cursorY, pb);
@@ -283,13 +283,13 @@ class Window extends Base {
           return false;
         }
       },
-      stop: function(event, ui) {
+      stop: function (event, ui) {
         removeGhost(!!me.ghost);
       }
     });
 
     azui.DoubleClick(header, {
-      onDoubleClick: function(event) {
+      onDoubleClick: function (event) {
         // console.log(event.target);
         if (matches(event.target, 'span.azHeaderIcon,span.azHeaderIcon *')) {
           return;

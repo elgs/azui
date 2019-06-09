@@ -1,75 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>azResizable</title>
-    <style>
-      body {
-        margin: 80px;
-        padding: 80px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>azResizable</title>
+  <style>
+    body {
+      margin: 80px;
+      padding: 80px;
+    }
 
-      #div0 {
-        width: 200px;
-        height: 200px;
-        border: 1px solid gray;
-        padding: 6px;
-        box-sizing: border-box;
-        position: relative;
-        overflow: hidden;
-      }
+    #div0 {
+      width: 200px;
+      height: 200px;
+      border: 1px solid gray;
+      padding: 6px;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
 
-      #div1 {
-        width: 200px;
-        height: 200px;
-        border: 1px solid gray;
-        padding: 6px;
-        box-sizing: border-box;
-        position: relative;
-        overflow: hidden;
-      }
+    #div1 {
+      width: 200px;
+      height: 200px;
+      border: 1px solid gray;
+      padding: 6px;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+    }
 
-      /* .azResizable>.handle {
+    /* .azResizable>.handle {
             opacity: 1;
             border: 1px solid black;
             box-sizing: border-box;
         } */
-    </style>
-  </head>
+  </style>
+</head>
 
-  <body>
-    <div style="border: 1px solid red; height: 500px;">
-      <div id="div0">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis repudiandae, voluptas sapiente pariatur
-          qui asperiores fugiat corporis reprehenderit delectus soluta officia nostrum eaque eius repellat perspiciatis
-          molestias accusamus ab maiores?
-        </p>
-      </div>
-      <div id="div1">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis repudiandae, voluptas sapiente pariatur
-          qui asperiores fugiat corporis reprehenderit delectus soluta officia nostrum eaque eius repellat perspiciatis
-          molestias accusamus ab maiores?
-        </p>
-      </div>
+<body>
+  <div style="border: 1px solid red; height: 500px;">
+    <div id="div0">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis repudiandae, voluptas sapiente pariatur
+        qui asperiores fugiat corporis reprehenderit delectus soluta officia nostrum eaque eius repellat perspiciatis
+        molestias accusamus ab maiores?
+      </p>
     </div>
-    <script>
-      const elems = document.querySelectorAll('#div0, #div1');
-      elems.forEach(el => {
-        const resizable = azui.Resizable(el, {
-          handles: 'all'
-          // minWidth: 100,
-          // maxWidth: 300,
-          // minHeight: 100,
-          // maxHeight: 300,
-        });
-        azui.Draggable(el);
+    <div id="div1">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis repudiandae, voluptas sapiente pariatur
+        qui asperiores fugiat corporis reprehenderit delectus soluta officia nostrum eaque eius repellat perspiciatis
+        molestias accusamus ab maiores?
+      </p>
+    </div>
+  </div>
+  <script>
+    const elems = document.querySelectorAll('#div0, #div1');
+    elems.forEach(el => {
+      const resizable = azui.Resizable(el, {
+        handles: 'all'
+        // minWidth: 100,
+        // maxWidth: 300,
+        // minHeight: 100,
+        // maxHeight: 300,
       });
+      azui.Draggable(el);
+    });
 
       // console.log($('#div1').width());
       // console.log($('#div1')[0].getBoundingClientRect().width);
-    </script>
-  </body>
+  </script>
+</body>
 </html>

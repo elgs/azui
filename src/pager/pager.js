@@ -2,7 +2,7 @@ import { azObj, Base } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import { parseDOMElement } from '../utilities/utilities.js';
 
-azui.Pager = function(el, options, init) {
+azui.Pager = function (el, options, init) {
   return azObj(Pager, el, options, init);
 };
 
@@ -12,7 +12,7 @@ class Pager extends Base {
   _init(options) {
     const settings = Object.assign(
       {
-        onPageChange: function(pageNumber, pageSize, totalSize) {},
+        onPageChange: function (pageNumber, pageSize, totalSize) { },
         pageNumber: 1,
         totalSize: 0,
         pageSize: 25
@@ -45,11 +45,11 @@ class Pager extends Base {
   _createPagerBar() {
     const me = this;
     const pagerBar = document.createElement('div');
-    this._createIcon(icons.svgFirstPage, pagerBar, function(e) {
+    this._createIcon(icons.svgFirstPage, pagerBar, function (e) {
       me.settings.pageNumber = 1;
       me.update();
     });
-    this._createIcon(icons.svgPreviousPage, pagerBar, function(e) {
+    this._createIcon(icons.svgPreviousPage, pagerBar, function (e) {
       --me.settings.pageNumber;
       me.update();
     });
@@ -61,7 +61,7 @@ class Pager extends Base {
     pn.classList.add('pagerInput', 'pageNumber');
     pagerBar.appendChild(pn);
 
-    pn.addEventListener('change', function() {
+    pn.addEventListener('change', function () {
       me.settings.pageNumber = this.value * 1;
       me.update();
     });
@@ -71,15 +71,15 @@ class Pager extends Base {
     totalPages.classList.add('azPageInfo');
     pagerBar.appendChild(totalPages);
 
-    this._createIcon(icons.svgNextPage, pagerBar, function(e) {
+    this._createIcon(icons.svgNextPage, pagerBar, function (e) {
       ++me.settings.pageNumber;
       me.update();
     });
-    this._createIcon(icons.svgLastPage, pagerBar, function(e) {
+    this._createIcon(icons.svgLastPage, pagerBar, function (e) {
       me.settings.pageNumber = Number.MAX_SAFE_INTEGER;
       me.update();
     });
-    this._createIcon(icons.svgRefresh, pagerBar, function(e) {
+    this._createIcon(icons.svgRefresh, pagerBar, function (e) {
       me.update();
     });
 
@@ -90,7 +90,7 @@ class Pager extends Base {
     ps.classList.add('pagerInput', 'pageSize', 'azWideScreen');
     pagerBar.appendChild(ps);
 
-    ps.addEventListener('change', function() {
+    ps.addEventListener('change', function () {
       me.settings.pageSize = this.value * 1;
       me.update();
     });

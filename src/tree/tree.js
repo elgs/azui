@@ -25,7 +25,7 @@ class Tree extends Base {
     const me = this;
     const settings = Object.assign(
       {
-        action: e => {},
+        action: e => { },
         data: [],
         searchPlaceholderText: 'Search...'
       },

@@ -1,216 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>azDataTable</title>
-    <style>
-      html,
-      body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: auto;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>azDataTable</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="table0"></div>
+  <script>
+    const data = [
+      ['0', 'double click header to sort', 'C0', 'D0', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['1', 'right click header for a menu', 'C1', 'D1', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      [
+        '2',
+        'double click between headers to fit header width',
+        'C2',
+        'D2',
+        'A0',
+        'A1',
+        'A2',
+        'A3',
+        'A0',
+        'A1',
+        'A2',
+        'A3'
+      ],
+      [
+        '3',
+        'try resize header',
+        'C3',
+        'D3',
+        'A0',
+        'A1',
+        'A2',
+        'A3',
+        'A0',
+        'A1',
+        'A2',
+        'Roses are red, Violets are purple, Sugar is sweet, And so is maple surple.'
+      ],
+      [
+        '4',
+        'try reorder columns by dragging header around',
+        'C4',
+        'D4',
+        'E0',
+        'F1',
+        'G2',
+        'A3',
+        'A0',
+        'A1',
+        'A2',
+        'A3'
+      ],
+      [
+        '5',
+        'Roses are red, Violets are purple, Sugar is sweet, And so is maple surple.',
+        'C5',
+        'D5',
+        'A0',
+        'A1',
+        'A2',
+        'A3',
+        'A0',
+        'A1',
+        'A2',
+        'A3'
+      ],
+      ['6', 'double click cell to edit', 'C6', 'D6', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['7', 'ctrl/cmd, shift for multi row selection', 'C7', 'D7', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['8', 'up/down key to nanvigate through rows', 'C8', 'D8', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['9', 'left/right key to navigate through pages', 'C9', 'D9', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['10', 'B10', 'C10', 'D10', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['11', 'B11', 'C11', 'D11', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['12', 'B12', 'C12', 'D12', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['13', 'B13', 'C13', 'D13', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['14', 'B14', 'C14', 'D14', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['15', 'B15', 'C15', 'D15', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['16', 'B16', 'C16', 'D16', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['17', 'B17', 'C17', 'D17', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['18', 'B18', 'C18', 'D18', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['19', 'B19', 'C19', 'D19', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['20', 'B20', 'C20', 'D20', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['21', 'B21', 'C21', 'D21', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['10', 'B10', 'C10', 'D10', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['11', 'B11', 'C11', 'D11', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['12', 'B12', 'C12', 'D12', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['13', 'B13', 'C13', 'D13', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['14', 'B14', 'C14', 'D14', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['15', 'B15', 'C15', 'D15', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['16', 'B16', 'C16', 'D16', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['17', 'B17', 'C17', 'D17', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['18', 'B18', 'C18', 'D18', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['19', 'B19', 'C19', 'D19', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['20', 'B20', 'C20', 'D20', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
+      ['21', 'B21', 'C21', 'D21', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3']
+    ];
+    const loadData = function (pageNumber, pageSize, sortColumnKey, sortDirection, refresh) {
+      if (sortDirection) {
+        const column = this.columns.find(function (col) {
+          return col.key === sortColumnKey;
+        });
+        data.sort(function (a, b) {
+          // minifier bug causing compile error when using let.
+          var av = a[column.key];
+          var bv = b[column.key];
+          if (column.type === 'number') {
+            av *= 1;
+            bv *= 1;
+          }
+          const r = sortDirection === 'asc' ? av > bv : av < bv;
+          return r ? 1 : -1;
+        });
       }
-    </style>
-  </head>
 
-  <body>
-    <div id="table0"></div>
-    <script>
-      const data = [
-        ['0', 'double click header to sort', 'C0', 'D0', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['1', 'right click header for a menu', 'C1', 'D1', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        [
-          '2',
-          'double click between headers to fit header width',
-          'C2',
-          'D2',
-          'A0',
-          'A1',
-          'A2',
-          'A3',
-          'A0',
-          'A1',
-          'A2',
-          'A3'
-        ],
-        [
-          '3',
-          'try resize header',
-          'C3',
-          'D3',
-          'A0',
-          'A1',
-          'A2',
-          'A3',
-          'A0',
-          'A1',
-          'A2',
-          'Roses are red, Violets are purple, Sugar is sweet, And so is maple surple.'
-        ],
-        [
-          '4',
-          'try reorder columns by dragging header around',
-          'C4',
-          'D4',
-          'E0',
-          'F1',
-          'G2',
-          'A3',
-          'A0',
-          'A1',
-          'A2',
-          'A3'
-        ],
-        [
-          '5',
-          'Roses are red, Violets are purple, Sugar is sweet, And so is maple surple.',
-          'C5',
-          'D5',
-          'A0',
-          'A1',
-          'A2',
-          'A3',
-          'A0',
-          'A1',
-          'A2',
-          'A3'
-        ],
-        ['6', 'double click cell to edit', 'C6', 'D6', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['7', 'ctrl/cmd, shift for multi row selection', 'C7', 'D7', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['8', 'up/down key to nanvigate through rows', 'C8', 'D8', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['9', 'left/right key to navigate through pages', 'C9', 'D9', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['10', 'B10', 'C10', 'D10', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['11', 'B11', 'C11', 'D11', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['12', 'B12', 'C12', 'D12', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['13', 'B13', 'C13', 'D13', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['14', 'B14', 'C14', 'D14', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['15', 'B15', 'C15', 'D15', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['16', 'B16', 'C16', 'D16', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['17', 'B17', 'C17', 'D17', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['18', 'B18', 'C18', 'D18', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['19', 'B19', 'C19', 'D19', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['20', 'B20', 'C20', 'D20', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['21', 'B21', 'C21', 'D21', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['10', 'B10', 'C10', 'D10', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['11', 'B11', 'C11', 'D11', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['12', 'B12', 'C12', 'D12', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['13', 'B13', 'C13', 'D13', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['14', 'B14', 'C14', 'D14', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['15', 'B15', 'C15', 'D15', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['16', 'B16', 'C16', 'D16', 'E0', 'F1', 'G2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['17', 'B17', 'C17', 'D17', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['18', 'B18', 'C18', 'D18', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['19', 'B19', 'C19', 'D19', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['20', 'B20', 'C20', 'D20', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3'],
-        ['21', 'B21', 'C21', 'D21', 'A0', 'A1', 'A2', 'A3', 'A0', 'A1', 'A2', 'A3']
-      ];
-      const loadData = function(pageNumber, pageSize, sortColumnKey, sortDirection, refresh) {
-        if (sortDirection) {
-          const column = this.columns.find(function(col) {
-            return col.key === sortColumnKey;
-          });
-          data.sort(function(a, b) {
-            // minifier bug causing compile error when using let.
-            var av = a[column.key];
-            var bv = b[column.key];
-            if (column.type === 'number') {
-              av *= 1;
-              bv *= 1;
-            }
-            const r = sortDirection === 'asc' ? av > bv : av < bv;
-            return r ? 1 : -1;
-          });
-        }
+      const _pageNumber = Math.max(1, Math.min(Math.ceil(data.length / pageSize), pageNumber));
 
-        const _pageNumber = Math.max(1, Math.min(Math.ceil(data.length / pageSize), pageNumber));
+      const pageData = data.slice((_pageNumber - 1) * pageSize, _pageNumber * pageSize);
+      const totalSize = data.length;
 
-        const pageData = data.slice((_pageNumber - 1) * pageSize, _pageNumber * pageSize);
-        const totalSize = data.length;
-
-        // the whole point of loadData is to call refresh;
-        refresh(pageData, totalSize, _pageNumber);
-      };
-      const columns = [
-        function() {
-          return {
-            text: '#',
-            type: 'number'
-          };
-        },
-        {
-          key: 2,
-          text: 'B',
-          type: 'select',
-          allowNewItems: true,
-          options: [
-            {
-              key: '0',
-              title: 'Close'
-            },
-            'Close Others',
-            // null,
-            'Close All'
-          ]
-        },
-        {
-          key: 1,
-          text: 'C',
-          width: 250
-        },
-        'D',
-        'E',
-        'F',
-        'G',
-        'H',
-        'I',
-        'J',
-        {
-          key: 0,
-          text: 'K',
-          hidden: true
-        },
-        'L'
-      ];
-      const rowContextMenu = [
-        {
-          icon:
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
-          title: 'Edit',
-          disabled: () => {
-            return !table.selectedCell;
+      // the whole point of loadData is to call refresh;
+      refresh(pageData, totalSize, _pageNumber);
+    };
+    const columns = [
+      function () {
+        return {
+          text: '#',
+          type: 'number'
+        };
+      },
+      {
+        key: 2,
+        text: 'B',
+        type: 'select',
+        allowNewItems: true,
+        options: [
+          {
+            key: '0',
+            title: 'Close'
           },
-          action: function(e, target) {
-            const inlineEditCell = azui.InlineEdit(table.selectedCell);
-            inlineEditCell.edit();
-            return false;
-          }
+          'Close Others',
+          // null,
+          'Close All'
+        ]
+      },
+      {
+        key: 1,
+        text: 'C',
+        width: 250
+      },
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      {
+        key: 0,
+        text: 'K',
+        hidden: true
+      },
+      'L'
+    ];
+    const rowContextMenu = [
+      {
+        icon:
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
+        title: 'Edit',
+        disabled: () => {
+          return !table.selectedCell;
         },
-        {
-          icon:
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
-          title: 'Print Row to Console',
-          disabled: () => {
-            return !table.selectedCell;
-          },
-          action: function(e, target) {
-            console.log(table.selectedCell);
-            return false;
-          }
+        action: function (e, target) {
+          const inlineEditCell = azui.InlineEdit(table.selectedCell);
+          inlineEditCell.edit();
+          return false;
         }
-      ];
+      },
+      {
+        icon:
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M0 8h8V0H0v8zm12 24h8v-8h-8v8zM0 32h8v-8H0v8zm0-12h8v-8H0v8zm12 0h8v-8h-8v8zM24 0v8h8V0h-8zM12 8h8V0h-8v8zm12 12h8v-8h-8v8zm0 12h8v-8h-8v8z"/></svg>',
+        title: 'Print Row to Console',
+        disabled: () => {
+          return !table.selectedCell;
+        },
+        action: function (e, target) {
+          console.log(table.selectedCell);
+          return false;
+        }
+      }
+    ];
 
-      const elem = document.querySelector('#table0');
-      const config = {
-        columns,
-        loadData,
-        rowContextMenu,
-        selectMode: 'volatile'
-      };
-      const table = azui.DataTable(elem, config);
+    const elem = document.querySelector('#table0');
+    const config = {
+      columns,
+      loadData,
+      rowContextMenu,
+      selectMode: 'volatile'
+    };
+    const table = azui.DataTable(elem, config);
       // azui.DataTable(elem, config);
-    </script>
-  </body>
+  </script>
+</body>
 </html>

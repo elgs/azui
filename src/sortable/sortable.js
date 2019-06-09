@@ -17,7 +17,7 @@ import {
   swapElement
 } from '../utilities/utilities.js';
 
-azui.Sortable = function(el, options, init) {
+azui.Sortable = function (el, options, init) {
   return azObj(Sortable, el, options, init);
 };
 
@@ -32,19 +32,19 @@ class Sortable extends Base {
         showPlaceHolder: false,
         detachable: false,
         align: 'x', // or y
-        create: function(event, ui, me) {
+        create: function (event, ui, me) {
           // console.log('create', ui);
         },
-        start: function(event, ui, me) {
+        start: function (event, ui, me) {
           // console.log('start', ui);
         },
-        sort: function(event, data, me) {
+        sort: function (event, data, me) {
           // console.log('sort', data);
         },
-        stop: function(event, data, me) {
+        stop: function (event, data, me) {
           // console.log('stop', data);
         },
-        add: function(event, data, me) {
+        add: function (event, data, me) {
           // console.log('add', data);
         }
       },
@@ -59,13 +59,13 @@ class Sortable extends Base {
     let ph;
     let z = 0;
 
-    const onDragCreate = function(e, target) {
+    const onDragCreate = function (e, target) {
       if (settings.create(e, target, me) === false) {
         return false;
       }
     };
 
-    const onDragStart = function(e, target) {
+    const onDragStart = function (e, target) {
       selected = target;
       if (settings.start(e, selected, me) === false) {
         return false;
@@ -101,7 +101,7 @@ class Sortable extends Base {
       }
     };
 
-    const onOverTargetCenter = function(e) {
+    const onOverTargetCenter = function (e) {
       // console.log('on over target center!');
       // console.log(e.target);
       const data = e.detail;
@@ -135,7 +135,7 @@ class Sortable extends Base {
       }
     };
 
-    const onLeaveTargetCenter = function(e) {
+    const onLeaveTargetCenter = function (e) {
       // console.log('on leave target center!');
       const data = e.detail;
       if (!data.source.classList.contains('azSortableItem')) {
@@ -152,7 +152,7 @@ class Sortable extends Base {
       }
     };
 
-    const onDragStop = function(e, target, draggable) {
+    const onDragStop = function (e, target, draggable) {
       // console.log(selected, target, ph);
       // console.log('on drag stop');
       const data = {
@@ -205,7 +205,7 @@ class Sortable extends Base {
     if (settings.detachable) {
       azui.Droppable(node, {
         interestedDropEvents: azui.constants.dndEventConsts.pointer_in | azui.constants.dndEventConsts.pointer_out,
-        pointer_in: function(e) {
+        pointer_in: function (e) {
           // console.log('pointer in fired');
           const source = e.detail.source;
           if (!source.classList.contains('azSortableItem')) {
@@ -270,7 +270,7 @@ class Sortable extends Base {
 
           draggable['pointer_in'] = true;
 
-          draggable.stopHook = function() {
+          draggable.stopHook = function () {
             if (ph) {
               if (!settings.placeholder) {
                 ph.classList.remove('azSortableDropBefore');
@@ -293,7 +293,7 @@ class Sortable extends Base {
             source.style.visibility = 'visible';
           });
         },
-        pointer_out: function(e) {
+        pointer_out: function (e) {
           // console.log('pointer out fired');
           const source = e.detail.source;
           if (!source.classList.contains('azSortableItem')) {
@@ -324,11 +324,11 @@ class Sortable extends Base {
     this.dropConfig = {
       interestedDropEvents:
         azui.constants.dndEventConsts.target_center_in | azui.constants.dndEventConsts.target_center_out,
-      target_center_in: function(e) {
+      target_center_in: function (e) {
         // console.log(e);
         onOverTargetCenter(e);
       },
-      target_center_out: function(e) {
+      target_center_out: function (e) {
         // console.log(e);
         onLeaveTargetCenter(e);
       }

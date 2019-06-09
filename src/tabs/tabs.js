@@ -27,7 +27,7 @@ const getTabContextMenu = closable => [
     // icon: icons.svgClose,
     title: 'Close tab',
     disabled: !closable,
-    action: function(e, target) {
+    action: function (e, target) {
       const currentTabNode = target.closest('.azTabs');
       const currentTabs = azui.Tabs(currentTabNode);
       currentTabs.remove(_getTabId(target.getAttribute('tab-id')));
@@ -38,10 +38,10 @@ const getTabContextMenu = closable => [
     // icon: icons.svgClose,
     title: 'Close other tabs',
     disabled: !closable,
-    action: function(e, target) {
+    action: function (e, target) {
       const currentTabNode = target.closest('.azTabs');
       const currentTabs = azui.Tabs(currentTabNode);
-      siblings(target, '.azTabLabel').forEach(function(element) {
+      siblings(target, '.azTabLabel').forEach(function (element) {
         if (matches(element, '.azClosable')) {
           currentTabs.remove(_getTabId(element.getAttribute('tab-id')));
         }
@@ -53,10 +53,10 @@ const getTabContextMenu = closable => [
     // icon: icons.svgClose,
     title: 'Close tabs to the right',
     disabled: !closable,
-    action: function(e, target) {
+    action: function (e, target) {
       const currentTabNode = target.closest('.azTabs');
       const currentTabs = azui.Tabs(currentTabNode);
-      nextAll(target, '.azTabLabel').forEach(function(element) {
+      nextAll(target, '.azTabLabel').forEach(function (element) {
         if (matches(element, '.azClosable')) {
           currentTabs.remove(_getTabId(element.getAttribute('tab-id')));
         }
@@ -69,10 +69,10 @@ const getTabContextMenu = closable => [
     // icon: icons.svgClose,
     title: 'Close All',
     disabled: !closable,
-    action: function(e, target) {
+    action: function (e, target) {
       const currentTabNode = target.closest('.azTabs');
       const currentTabs = azui.Tabs(currentTabNode);
-      siblings(target, '.azTabLabel').forEach(function(element) {
+      siblings(target, '.azTabLabel').forEach(function (element) {
         if (matches(element, '.azClosable')) {
           currentTabs.remove(_getTabId(element.getAttribute('tab-id')));
         }
@@ -108,8 +108,8 @@ class Tabs extends Base {
 
     // node.style['grid-template-rows'] = `${settings.headerHeight}px 1fr`;
 
-    me.createHeaderClicked = function(cm) {
-      return function(event) {
+    me.createHeaderClicked = function (cm) {
+      return function (event) {
         if (event.type === 'touchend') {
           // event.preventDefault();
           if (cm.rightClick.triggered) {
@@ -129,7 +129,7 @@ class Tabs extends Base {
         }
       };
     };
-    me.closeClicked = function(event) {
+    me.closeClicked = function (event) {
       const currentTabNode = event.target.closest('.azTabs');
       const currentTabs = azui.Tabs(currentTabNode);
       // console.log(event.currentTarget.parentNode.getAttribute('tab-id'));
@@ -231,7 +231,7 @@ class Tabs extends Base {
         draggable.detachedX = false;
         draggable.detachedY = false;
 
-        draggable.stopHook = function() {
+        draggable.stopHook = function () {
           // draggable and droppable need to be in the same sortable in order to
           // share the same place holder, improvement?
           azui.Droppable(elem, me.sortable.dropConfig, true);
@@ -248,7 +248,7 @@ class Tabs extends Base {
       azui.Draggable(node, {
         handle: '.azTabHeader',
         snapDistance: 8,
-        create: function(event, ui) {
+        create: function (event, ui) {
           me.node.style['z-index'] = ++Tabs.z;
           // console.log(event.target.classList.contains('azTabHeader'));
           // console.log(event.target.classList);
@@ -266,7 +266,7 @@ class Tabs extends Base {
       });
     }
 
-    const mouseDownTouchStartEventListener = function(event) {
+    const mouseDownTouchStartEventListener = function (event) {
       me.node.style['z-index'] = ++Tabs.z;
     };
     me.replaceEventListener('mousedown', 'mousedown', mouseDownTouchStartEventListener);

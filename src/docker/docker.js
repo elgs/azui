@@ -2,7 +2,7 @@ import { azObj, Base } from '../utilities/core.js';
 import * as icons from '../utilities/icons.js';
 import { diffPosition, matches, randGen, remove, isTouchDevice } from '../utilities/utilities.js';
 
-azui.Docker = function(el, options, init) {
+azui.Docker = function (el, options, init) {
   return azObj(Docker, el, options, init);
 };
 
@@ -54,7 +54,7 @@ class Docker extends Base {
 
   getContextMenuItems(dockId, winSettings) {
     const me = this;
-    return function() {
+    return function () {
       // console.log(dockId);
       // console.log(me.node);
       const docked = me.node.querySelector(`[az-dock-id='${dockId}']:not(.az-placeholder)`);
@@ -65,7 +65,7 @@ class Docker extends Base {
           icon: icons.svgClose,
           title: 'Close',
           hidden: !winSettings.showCloseButton,
-          action: function(e, target) {
+          action: function (e, target) {
             me.undock(dockId, true);
             return false;
           }
@@ -76,7 +76,7 @@ class Docker extends Base {
           title: 'Minimize Window',
           hidden: !winSettings.showMinimizeButton,
           disabled: state === 'minimized',
-          action: function(e, target) {
+          action: function (e, target) {
             me.minimize(dockId, true);
             return false;
           }
@@ -86,7 +86,7 @@ class Docker extends Base {
           disabled: state === 'normal',
           title: 'Restore Window',
           hidden: !winSettings.showMaximizeButton && !winSettings.showMinimizeButton,
-          action: function(e, target) {
+          action: function (e, target) {
             me.normalize(dockId, true);
             return false;
           }
@@ -96,7 +96,7 @@ class Docker extends Base {
           title: 'Maximize Window',
           hidden: !winSettings.showMaximizeButton,
           disabled: state === 'maximized',
-          action: function(e, target) {
+          action: function (e, target) {
             me.maximize(dockId, true);
             return false;
           }
@@ -107,7 +107,7 @@ class Docker extends Base {
           title: 'Slide Up',
           hidden: !winSettings.showSlideButton,
           disabled: state !== 'normal',
-          action: function(e, target) {
+          action: function (e, target) {
             me.slideup(dockId, true);
             return false;
           }
@@ -117,7 +117,7 @@ class Docker extends Base {
           title: 'Slide Down',
           hidden: !winSettings.showSlideButton,
           disabled: state !== 'slidup',
-          action: function(e, target) {
+          action: function (e, target) {
             me.slidedown(dockId, true);
             return false;
           }

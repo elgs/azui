@@ -1,7 +1,7 @@
 import { azObj, Base } from '../utilities/core.js';
 import { randGen } from '../utilities/utilities.js';
 
-azui.Droppable = function(el, options, init) {
+azui.Droppable = function (el, options, init) {
   // return new Droppable(el, options);
   return azObj(Droppable, el, options, init);
 };

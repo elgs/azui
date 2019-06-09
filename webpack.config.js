@@ -117,7 +117,7 @@ module.exports = (env, argv) => {
       new webpack.BannerPlugin({
         banner: `${pkgJson.name} ${pkgJson.version}\n${pkgJson.homepage}\n@author ${pkgJson.author}\n${
           pkgJson.license
-        } License\nCopyright (c) ${new Date().getFullYear()} ${pkgJson.author}`
+          } License\nCopyright (c) ${new Date().getFullYear()} ${pkgJson.author}`
       }),
       new CleanWebpackPlugin([(isDev ? buildDir : distDir) + '*']),
       new MiniCssExtractPlugin({

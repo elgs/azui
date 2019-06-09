@@ -11,7 +11,7 @@ import {
   siblings
 } from '../utilities/utilities.js';
 
-azui.Draggable = function(el, options, init) {
+azui.Draggable = function (el, options, init) {
   return azObj(Draggable, el, options, init);
 };
 
@@ -30,16 +30,16 @@ class Draggable extends Base {
         snapDistance: 0,
         snapGap: 3,
         // triggerDropEvents: false,
-        create: function(event, ui, me) {
+        create: function (event, ui, me) {
           // console.log('create', ui);
         },
-        start: function(event, ui, me) {
+        start: function (event, ui, me) {
           // console.log('start', ui);
         },
-        drag: function(event, ui, me) {
+        drag: function (event, ui, me) {
           // console.log('drag', ui);
         },
-        stop: function(event, ui, me) {
+        stop: function (event, ui, me) {
           // console.log('stop', ui);
         }
       },
@@ -168,7 +168,7 @@ class Draggable extends Base {
       return ret;
     };
 
-    const onmousemove = function(e) {
+    const onmousemove = function (e) {
       // console.log(e.type, e.currentTarget, me);
       // console.log(e.currentTarget);
       if (!me.selected) {
@@ -292,7 +292,7 @@ class Draggable extends Base {
       }
     };
 
-    const onmouseup = function(e) {
+    const onmouseup = function (e) {
       // console.log('mouseup');
       // console.log(e.type, e.target, me, me.selected);
       if (started && settings.stop(e, me.selected, me) === false) {
@@ -344,7 +344,7 @@ class Draggable extends Base {
       // return false;
     };
 
-    const onmousedown = function(e) {
+    const onmousedown = function (e) {
       // console.log(e.type, e.button, e.target, me, e);
 
       // if (e.type === 'touchstart') {

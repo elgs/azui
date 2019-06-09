@@ -1,7 +1,7 @@
 import { azObj, Base } from '../utilities/core.js';
 import { isTouchDevice } from '../utilities/utilities.js';
 
-azui.DoubleClick = function(el, options, init) {
+azui.DoubleClick = function (el, options, init) {
   // return new DoubleClick(el, options);
   return azObj(DoubleClick, el, options, init);
 };
@@ -14,7 +14,7 @@ class DoubleClick extends Base {
     const settings = Object.assign(
       {
         delay: 500,
-        onDoubleClick: function(e) {
+        onDoubleClick: function (e) {
           // console.log(e);
         }
       },
@@ -25,7 +25,7 @@ class DoubleClick extends Base {
 
     if (isTouchDevice()) {
       let touchtime = 0;
-      me.replaceEventListener('touchstart', 'touchstart', function(event) {
+      me.replaceEventListener('touchstart', 'touchstart', function (event) {
         if (touchtime === 0) {
           touchtime = new Date().getTime();
         } else {
@@ -38,7 +38,7 @@ class DoubleClick extends Base {
         }
       });
     }
-    me.replaceEventListener('dblclick', 'dblclick', function(event) {
+    me.replaceEventListener('dblclick', 'dblclick', function (event) {
       settings.onDoubleClick.call(this, event);
     });
   }

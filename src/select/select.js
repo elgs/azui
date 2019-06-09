@@ -21,7 +21,7 @@ class Select extends Base {
       {
         items: [],
         allowNewItems: true,
-        select: e => {}
+        select: e => { }
       },
       options
     );
@@ -33,11 +33,11 @@ class Select extends Base {
 
     empty(node);
 
-    const showDropdown = function(e, init = false) {
+    const showDropdown = function (e, init = false) {
       // console.log('show');
       // alert(e.currentTarget.outerHTML);
       // console.log(e.currentTarget);
-      const createMenuItem = function(item) {
+      const createMenuItem = function (item) {
         if (!item) {
           const sep = document.createElement('div');
           sep.textContent('&nbsp;');
@@ -50,7 +50,7 @@ class Select extends Base {
         menuItem.classList.add('azMenuItem');
         menuItem.appendChild(titleDiv);
         titleDiv.textContent = title;
-        const onSelect = function(e) {
+        const onSelect = function (e) {
           if (e.type === 'touchstart') {
             // prevent mousedown from being triggered on touch device.
             e.preventDefault();
@@ -71,7 +71,7 @@ class Select extends Base {
           menuItem.addEventListener('touchstart', onSelect);
         }
 
-        const onMouseEnter = function(e) {
+        const onMouseEnter = function (e) {
           highlightIndex = index(e.currentTarget, '.azMenuItem');
           navigateDropdown();
         };
@@ -150,7 +150,7 @@ class Select extends Base {
     let dropdownShown = false;
     let highlightIndex = -1;
 
-    const navigateDropdown = function() {
+    const navigateDropdown = function () {
       // console.log(e.keyCode);
       if (!me.menu) {
         return;
@@ -166,7 +166,7 @@ class Select extends Base {
       selected.classList.add('selected');
     };
 
-    const offDropdown = function(e) {
+    const offDropdown = function (e) {
       // console.log('off');
       // if (e.target === me.selectInput) {
       // return;
@@ -187,7 +187,7 @@ class Select extends Base {
       }
     };
 
-    const toggleDropdown = function(e) {
+    const toggleDropdown = function (e) {
       // console.log(dropdownShown, e.type, e.button, e);
       if (e.type === 'mousedown' && e.button !== 0) {
         return;
@@ -203,7 +203,7 @@ class Select extends Base {
       }
     };
 
-    const onInputKeyUp = function(e) {
+    const onInputKeyUp = function (e) {
       // console.log(me.selectInput.value.trim().length);
       // console.log(e.keyCode, me.selectInput.value.trim().length);
       e.stopPropagation();

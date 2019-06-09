@@ -16,7 +16,7 @@ const upper = lower.toUpperCase();
 const digit = '0123456789';
 const punct = '~!@#$%^&*()_+-=';
 
-export function randGen(size, set = randGenConsts.LowerUpperDigit, include = '', exclude = '') {
+export const randGen = function (size, set = randGenConsts.LowerUpperDigit, include = '', exclude = '') {
   let all = include;
   if ((set & randGenConsts.Lower) > 0) {
     all += lower;
@@ -53,7 +53,7 @@ export function randGen(size, set = randGenConsts.LowerUpperDigit, include = '',
 //     console.log(s.top, s.right, s.bottom, s.left, s.x, s.y, s.width, s.height);
 // };
 
-export const isOutside = function(x, y, bcr) {
+export const isOutside = function (x, y, bcr) {
   // console.log(x, y, document.body.scrollLeft, document.body.scrollTop, document.documentElement.scrollLeft, document.documentElement.scrollTop);
   // _show(bcr);
   return (
@@ -64,15 +64,15 @@ export const isOutside = function(x, y, bcr) {
   );
 };
 
-export const isOutsideX = function(x, bcr) {
+export const isOutsideX = function (x, bcr) {
   return x <= bcr.left + getDocScrollLeft() || x >= bcr.right + getDocScrollLeft();
 };
 
-export const isOutsideY = function(y, bcr) {
+export const isOutsideY = function (y, bcr) {
   return y <= bcr.top + getDocScrollTop() || y >= bcr.bottom + getDocScrollTop();
 };
 
-export const getPositionState = function(source, target, event) {
+export const getPositionState = function (source, target, event) {
   let ret = 0;
   const s = source.getBoundingClientRect();
   const t = target.getBoundingClientRect();
@@ -110,7 +110,7 @@ export const getPositionState = function(source, target, event) {
   return ret;
 };
 
-export const swapElement = function(e0, e1) {
+export const swapElement = function (e0, e1) {
   const temp = document.createElement('div');
   insertBefore(temp, e0);
   insertBefore(e0, e1);
@@ -118,12 +118,12 @@ export const swapElement = function(e0, e1) {
   remove(temp);
 };
 
-export const isTouchDevice = function() {
+export const isTouchDevice = function () {
   // works on most browsers          // works on IE10/11 and Surface
   return 'ontouchstart' in window || navigator.maxTouchPoints;
 };
 
-export const getDocHeight = function() {
+export const getDocHeight = function () {
   return Math.max(
     Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
     Math.max(document.body.offsetHeight, document.documentElement.offsetHeight),
@@ -131,7 +131,7 @@ export const getDocHeight = function() {
   );
 };
 
-export const getDocWidth = function() {
+export const getDocWidth = function () {
   return Math.max(
     Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
     Math.max(document.body.offsetWidth, document.documentElement.offsetWidth),
@@ -139,15 +139,15 @@ export const getDocWidth = function() {
   );
 };
 
-export const getDocScrollLeft = function() {
+export const getDocScrollLeft = function () {
   return Math.max(window.pageXOffset, document.documentElement.scrollLeft, document.body.scrollLeft);
 };
 
-export const getDocScrollTop = function() {
+export const getDocScrollTop = function () {
   return Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop);
 };
 
-export const textWidth = function(elem) {
+export const textWidth = function (elem) {
   const s = parseDOMElement(`<span>${elem.innerHTML}</span>`)[0];
   s.style.visibility = 'hidden';
   insertAfter(s, elem);
@@ -157,7 +157,7 @@ export const textWidth = function(elem) {
   return width;
 };
 
-export const elemSize = function(elem) {
+export const elemSize = function (elem) {
   elem.style.visibility = 'hidden';
   document.body.appendChild(elem);
   const width = getWidth(elem);
@@ -170,7 +170,7 @@ export const elemSize = function(elem) {
   };
 };
 
-export const calcMenuPosition = function(mx, my, mw, mh) {
+export const calcMenuPosition = function (mx, my, mw, mh) {
   // console.log(mx, my);
   // mouse x, y, menu width, height
   const buf = 20;
@@ -210,14 +210,14 @@ export const parseDOMElement = domstring => {
 };
 
 // outer margin to outer margin
-export const outerWidthTrue = function(el) {
+export const outerWidthTrue = function (el) {
   let width = el.offsetWidth;
   const style = getComputedStyle(el);
   width += parseInt(style.marginLeft) + parseInt(style.marginRight);
   return width;
 };
 
-export const outerHeightTrue = function(el) {
+export const outerHeightTrue = function (el) {
   let height = el.offsetHeight;
   const style = getComputedStyle(el);
   height += parseInt(style.marginTop) + parseInt(style.marginBottom);
@@ -225,7 +225,7 @@ export const outerHeightTrue = function(el) {
 };
 
 // inner padding to inner padding
-export const getWidth = function(el) {
+export const getWidth = function (el) {
   let width = el.offsetWidth;
   const style = getComputedStyle(el);
   width -=
@@ -236,7 +236,7 @@ export const getWidth = function(el) {
   return width;
 };
 
-export const getHeight = function(el) {
+export const getHeight = function (el) {
   let height = el.offsetHeight;
   const style = getComputedStyle(el);
   height -=
@@ -248,7 +248,7 @@ export const getHeight = function(el) {
 };
 
 // inner padding to inner padding
-export const setWidth = function(el, w) {
+export const setWidth = function (el, w) {
   const style = getComputedStyle(el);
   if (style['box-sizing'] === 'border-box') {
     const borderLeft = parseInt(style['border-left-width']);
@@ -261,7 +261,7 @@ export const setWidth = function(el, w) {
   }
 };
 
-export const setHeight = function(el, h) {
+export const setHeight = function (el, h) {
   const style = getComputedStyle(el);
   if (style['box-sizing'] === 'border-box') {
     const borderTop = parseInt(style['border-top-width']);
@@ -276,7 +276,7 @@ export const setHeight = function(el, h) {
 };
 
 // outer border to ourter border
-export const setOuterWidth = function(el, w) {
+export const setOuterWidth = function (el, w) {
   const style = getComputedStyle(el);
   if (style['box-sizing'] === 'border-box') {
     el.style.width = w + 'px';
@@ -289,7 +289,7 @@ export const setOuterWidth = function(el, w) {
   }
 };
 
-export const setOuterHeight = function(el, h) {
+export const setOuterHeight = function (el, h) {
   const style = getComputedStyle(el);
   if (style['box-sizing'] === 'border-box') {
     el.style.height = h + 'px';
@@ -302,7 +302,7 @@ export const setOuterHeight = function(el, h) {
   }
 };
 
-export const insertAfter = function(newNode, referenceNode) {
+export const insertAfter = function (newNode, referenceNode) {
   if (referenceNode.nextElementSibling) {
     // console.log(referenceNode, referenceNode.nextElementSibling);
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextElementSibling);
@@ -311,45 +311,45 @@ export const insertAfter = function(newNode, referenceNode) {
   }
 };
 
-export const insertBefore = function(newNode, referenceNode) {
+export const insertBefore = function (newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode);
 };
 
-export const siblings = function(el, selector) {
+export const siblings = function (el, selector) {
   if (selector) {
-    return Array.prototype.filter.call(el.parentNode.children, function(child) {
+    return Array.prototype.filter.call(el.parentNode.children, function (child) {
       return matches(child, selector) && child !== el;
     });
   } else {
-    return Array.prototype.filter.call(el.parentNode.children, function(child) {
+    return Array.prototype.filter.call(el.parentNode.children, function (child) {
       return child !== el;
     });
   }
 };
 
-export const children = function(el, selector) {
+export const children = function (el, selector) {
   if (selector) {
-    return Array.prototype.filter.call(el.children, function(child) {
+    return Array.prototype.filter.call(el.children, function (child) {
       return matches(child, selector) && child !== el;
     });
   } else {
-    return Array.prototype.filter.call(el.children, function(child) {
+    return Array.prototype.filter.call(el.children, function (child) {
       return child !== el;
     });
   }
 };
 
-export const index = function(node, selector) {
+export const index = function (node, selector) {
   let children = node.parentNode.children;
   if (selector) {
-    children = Array.prototype.filter.call(children, function(child) {
+    children = Array.prototype.filter.call(children, function (child) {
       return matches(child, selector);
     });
   }
   return Array.prototype.indexOf.call(children, node);
 };
 
-export const matches = function(el, selector) {
+export const matches = function (el, selector) {
   return (
     el.matches ||
     el.matchesSelector ||
@@ -360,7 +360,7 @@ export const matches = function(el, selector) {
   ).call(el, selector);
 };
 
-export const position = function(el) {
+export const position = function (el) {
   const elStyles = getComputedStyle(el);
   const marginTop = parseInt(elStyles['margin-top']);
   const marginLeft = parseInt(elStyles['margin-left']);
@@ -379,7 +379,7 @@ export const position = function(el) {
   return ret;
 };
 
-export const diffPosition = function(el0, el1) {
+export const diffPosition = function (el0, el1) {
   const bcr0 = el0.getBoundingClientRect();
   const bcr1 = el1.getBoundingClientRect();
 
@@ -397,7 +397,7 @@ export const diffPosition = function(el0, el1) {
   return ret;
 };
 
-export const diffPositionInnerBorder = function(el0, el1) {
+export const diffPositionInnerBorder = function (el0, el1) {
   const el0Styles = getComputedStyle(el0);
   const el0BorderTop = parseInt(el0Styles['border-top-width']);
   const el0BorderLeft = parseInt(el0Styles['border-left-width']);
@@ -422,11 +422,11 @@ export const diffPositionInnerBorder = function(el0, el1) {
   return ret;
 };
 
-export const remove = function(el) {
+export const remove = function (el) {
   el.parentNode.removeChild(el);
 };
 
-export const resolveFunction = function(f) {
+export const resolveFunction = function (f) {
   if (typeof f === 'function') {
     return resolveFunction(f());
   } else {
@@ -434,7 +434,7 @@ export const resolveFunction = function(f) {
   }
 };
 
-export const normalizeIcon = function(i) {
+export const normalizeIcon = function (i) {
   i = resolveFunction(i);
   if (typeof i === 'string') {
     return parseDOMElement(`<span>${i}</span>`)[0];

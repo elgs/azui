@@ -1,7 +1,7 @@
 import { azObj, Base } from '../utilities/core.js';
 import { getHeight, getWidth, resolveDOM, isTouchDevice } from '../utilities/utilities.js';
 
-azui.Layout = function(el, options, init) {
+azui.Layout = function (el, options, init) {
   return azObj(Layout, el, options, init);
 };
 
@@ -47,21 +47,21 @@ class Layout extends Base {
         handles: 's',
         handleSize,
         hideCollapseButton: settings.hideCollapseButton,
-        create: function(e, h) {
+        create: function (e, h) {
           centerHeight = getHeight(me.center);
           centerContent.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = 'none');
           });
         },
-        resize: function(e, h, by) {
+        resize: function (e, h, by) {
           by.dy = Math.min(by.dy, centerHeight);
         },
-        stop: function(e, el) {
+        stop: function (e, el) {
           centerContent.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });
         },
-        collapse: function(e, el) {
+        collapse: function (e, el) {
           centerContent.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });
@@ -81,21 +81,21 @@ class Layout extends Base {
         handleSize,
         hideCollapseButton: settings.hideCollapseButton,
         moveOnResize: false,
-        create: function(e, h) {
+        create: function (e, h) {
           centerWidth = getWidth(me.center);
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = 'none');
           });
         },
-        resize: function(e, h, by) {
+        resize: function (e, h, by) {
           by.dx = Math.max(by.dx, -centerWidth);
         },
-        stop: function(e, el) {
+        stop: function (e, el) {
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });
         },
-        collapse: function(e, el) {
+        collapse: function (e, el) {
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });
@@ -115,21 +115,21 @@ class Layout extends Base {
         handleSize,
         hideCollapseButton: settings.hideCollapseButton,
         moveOnResize: false,
-        create: function(e, h) {
+        create: function (e, h) {
           centerHeight = getHeight(me.center);
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = 'none');
           });
         },
-        resize: function(e, h, by) {
+        resize: function (e, h, by) {
           by.dy = Math.max(by.dy, -centerHeight);
         },
-        stop: function(e, el) {
+        stop: function (e, el) {
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });
         },
-        collapse: function(e, el) {
+        collapse: function (e, el) {
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });
@@ -148,21 +148,21 @@ class Layout extends Base {
         handles: 'e',
         handleSize,
         hideCollapseButton: settings.hideCollapseButton,
-        create: function(e, h) {
+        create: function (e, h) {
           centerWidth = getWidth(me.center);
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = 'none');
           });
         },
-        resize: function(e, h, by) {
+        resize: function (e, h, by) {
           by.dx = Math.min(by.dx, centerWidth);
         },
-        stop: function(e, el) {
+        stop: function (e, el) {
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });
         },
-        collapse: function(e, el) {
+        collapse: function (e, el) {
           node.querySelectorAll('iframe').forEach(iframe => {
             iframe && (iframe.style['pointer-events'] = '');
           });

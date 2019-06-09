@@ -12,7 +12,7 @@ import {
   resolveFunction
 } from '../utilities/utilities.js';
 
-azui.ContextMenu = function(el, options, init) {
+azui.ContextMenu = function (el, options, init) {
   return azObj(ContextMenu, el, options, init);
 };
 
@@ -22,9 +22,9 @@ class ContextMenu extends Base {
   _init(options) {
     const settings = Object.assign(
       {
-        onContextMenu: function(e) {},
-        start: function(e) {},
-        onDismiss: function(e) {},
+        onContextMenu: function (e) { },
+        start: function (e) { },
+        onDismiss: function (e) { },
         items: null,
         target: null
       },
@@ -42,7 +42,7 @@ class ContextMenu extends Base {
 
     let highlightIndex = -1;
 
-    const navigateMenu = function() {
+    const navigateMenu = function () {
       // console.log(me.menu);
       if (!me.menu) {
         return;
@@ -80,7 +80,7 @@ class ContextMenu extends Base {
       }
     };
 
-    const createMenuItem = function(item, menu) {
+    const createMenuItem = function (item, menu) {
       if (!item) {
         const separator = parseDOMElement('<div>&nbsp;</div>')[0];
         separator.classList.add('azMenuSeparator');
@@ -120,7 +120,7 @@ class ContextMenu extends Base {
         });
       }
 
-      const onMouseEnter = function(e) {
+      const onMouseEnter = function (e) {
         highlightIndex = index(e.currentTarget, '.azMenuItem');
         navigateMenu();
       };
@@ -129,7 +129,7 @@ class ContextMenu extends Base {
       return menuItem;
     };
 
-    const onContextMenu = function(e) {
+    const onContextMenu = function (e) {
       // console.log(e.target);
       // console.log(e.currentTarget);
 
@@ -228,7 +228,7 @@ class ContextMenu extends Base {
     };
 
     me.rightClick = azui.RightClick(node, {
-      onRightClick: function(e) {
+      onRightClick: function (e) {
         if (settings.start(e) === false) {
           return false;
         }
