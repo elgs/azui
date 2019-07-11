@@ -1,14 +1,6 @@
-import { azObj, Base } from '../utilities/core.js';
-import * as icons from '../utilities/icons.js';
-import {
-  empty,
-  getDocScrollLeft,
-  getDocScrollTop,
-  index,
-  isTouchDevice,
-  matches,
-  remove
-} from '../utilities/utilities.js';
+import * as icons from '../_utilities/icons.js';
+import { empty, getDocScrollLeft, getDocScrollTop, index, isTouchDevice, matches, remove } from '../_utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
 
 azui.Select = (el, options, init) => azObj(Select, el, options, init);
 

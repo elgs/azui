@@ -1,3 +1,5 @@
+import { dndState } from "../_core/core";
+
 export const randGenConsts = {};
 randGenConsts.None = 0;
 randGenConsts.Lower = 1 << 0;
@@ -78,34 +80,34 @@ export const getPositionState = function (source, target, event) {
   const t = target.getBoundingClientRect();
 
   if (s.bottom > t.top && s.right > t.left && s.top < t.bottom && s.left < t.right) {
-    ret += azui.constants.dndStateConsts.touch;
+    ret += dndState.touch;
   }
 
   const hasTouches = event.touches && event.touches.length;
   const pointerX = hasTouches ? event.touches[0].pageX : event.pageX;
   const pointerY = hasTouches ? event.touches[0].pageY : event.pageY;
   if (!isOutside(pointerX, pointerY, t)) {
-    ret += azui.constants.dndStateConsts.pointer;
+    ret += dndState.pointer;
   }
 
   if (s.top >= t.top && s.left >= t.left && s.bottom <= t.bottom && s.right <= t.right) {
-    ret += azui.constants.dndStateConsts.source_all;
+    ret += dndState.source_all;
   }
 
   if (t.top >= s.top && t.left >= s.left && t.bottom <= s.bottom && t.right <= s.right) {
-    ret += azui.constants.dndStateConsts.target_all;
+    ret += dndState.target_all;
   }
 
   const sx = getDocScrollLeft() + s.left + s.width / 2;
   const sy = getDocScrollTop() + s.top + s.height / 2;
   if (!isOutside(sx, sy, t)) {
-    ret += azui.constants.dndStateConsts.source_center;
+    ret += dndState.source_center;
   }
 
   const tx = getDocScrollLeft() + t.left + t.width / 2;
   const ty = getDocScrollTop() + t.top + t.height / 2;
   if (!isOutside(tx, ty, s)) {
-    ret += azui.constants.dndStateConsts.target_center;
+    ret += dndState.target_center;
   }
   return ret;
 };

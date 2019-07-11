@@ -1,4 +1,4 @@
-import '../utilities/index.css.js';
+import '../_utilities/index.css.js';
 import '../doubleclick/index.css.js';
 import '../draggable/index.css.js';
 import '../resizable/index.css.js';

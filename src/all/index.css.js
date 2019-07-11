@@ -16,5 +16,4 @@ import '../select/index.css.js';
 import '../sortable/index.css.js';
 import '../tabs/index.css.js';
 import '../tree/index.css.js';
-import '../utilities/index.css.js';
 import '../window/index.css.js';

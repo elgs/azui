@@ -11,20 +11,16 @@ const srcDir = path.join(__dirname, '/src/');
 const buildDir = path.join(__dirname, '/build/');
 const distDir = path.join(__dirname, '/dist/');
 
-const listModules = (...excludes) =>
-  fs.readdirSync(srcDir).filter(item => !excludes.includes(item) && fs.statSync(path.join(srcDir, item)).isDirectory());
+const listModules = () => fs.readdirSync(srcDir).filter(item => !item.startsWith('_') && fs.statSync(path.join(srcDir, item)).isDirectory());
 const listHtmls = mod =>
-  fs
-    .readdirSync(path.join(srcDir, mod))
-    .filter(
-      item =>
-        item.toLowerCase().endsWith('.html') &&
-        !item.toLowerCase().endsWith('.tpl.thml') &&
-        fs.statSync(path.join(srcDir, mod, item)).isFile()
-    )
+  fs.readdirSync(path.join(srcDir, mod)).filter(
+    item =>
+      item.toLowerCase().endsWith('.html') &&
+      !item.toLowerCase().endsWith('.tpl.thml') &&
+      fs.statSync(path.join(srcDir, mod, item)).isFile()
+  )
     .sort();
-const flattenDeep = arr =>
-  arr.reduce((acc, val) => (Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val)), []);
+const flattenDeep = arr => arr.reduce((acc, val) => (Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val)), []);
 
 const pkgJson = require('./package.json');
 

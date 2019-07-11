@@ -1,16 +1,5 @@
-import { azObj, Base } from '../utilities/core.js';
-import {
-  calcMenuPosition,
-  getHeight,
-  getWidth,
-  index,
-  isOutside,
-  isTouchDevice,
-  matches,
-  normalizeIcon,
-  parseDOMElement,
-  resolveFunction
-} from '../utilities/utilities.js';
+import { azObj, Base, cursor } from '../_core/core.js';
+import { calcMenuPosition, getHeight, getWidth, index, isOutside, isTouchDevice, matches, normalizeIcon, parseDOMElement, resolveFunction } from '../_utilities/utilities.js';
 
 azui.ContextMenu = function (el, options, init) {
   return azObj(ContextMenu, el, options, init);
@@ -206,8 +195,8 @@ class ContextMenu extends Base {
 
       // console.log(getWidth(menu), getHeight(menu));
       const menuPosition = calcMenuPosition(
-        e.touches ? e.touches[0].clientX : azui.cursor.x || e.clientX,
-        e.touches ? e.touches[0].clientY : azui.cursor.y || e.clientY,
+        e.touches ? e.touches[0].clientX : cursor.x || e.clientX,
+        e.touches ? e.touches[0].clientY : cursor.y || e.clientY,
         getWidth(menu),
         getHeight(menu)
       );

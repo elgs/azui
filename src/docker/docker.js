@@ -1,6 +1,6 @@
-import { azObj, Base } from '../utilities/core.js';
-import * as icons from '../utilities/icons.js';
-import { diffPosition, matches, randGen, remove, isTouchDevice } from '../utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
+import * as icons from '../_utilities/icons.js';
+import { diffPosition, matches, randGen, remove, isTouchDevice } from '../_utilities/utilities.js';
 
 azui.Docker = function (el, options, init) {
   return azObj(Docker, el, options, init);

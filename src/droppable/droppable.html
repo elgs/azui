@@ -64,7 +64,8 @@
     +
     <div class="message"></div>
   </div>
-  <script>
+  <script type="module">
+    import { dndEvent } from '../_core/core.js';
     const source0 = document.querySelector('div#source0');
     azui.Draggable(source0, {
       create: function (e) {
@@ -77,7 +78,7 @@
     const targets = document.querySelectorAll('div.target');
     targets.forEach(target => {
       azui.Droppable(target, {
-        interestedDropEvents: azui.constants.dndEventConsts.all,
+        interestedDropEvents: dndEvent.all,
         source_all_in: function (e) {
           e.detail.target.querySelector('.message').textContent = e.type;
         },

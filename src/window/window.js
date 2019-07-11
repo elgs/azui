@@ -1,6 +1,6 @@
-import { azObj, Base } from '../utilities/core.js';
-import * as icons from '../utilities/icons.js';
-import { isOutside, matches, parseDOMElement, remove, siblings, isTouchDevice } from '../utilities/utilities.js';
+import * as icons from '../_utilities/icons.js';
+import { isOutside, isTouchDevice, matches, parseDOMElement, remove, siblings } from '../_utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
 
 azui.Window = function (el, options, init) {
   return azObj(Window, el, options, init);

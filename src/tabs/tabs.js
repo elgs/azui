@@ -1,17 +1,6 @@
-import { azObj, Base } from '../utilities/core.js';
-import * as icons from '../utilities/icons.js';
-import {
-  getDocScrollLeft,
-  getDocScrollTop,
-  isTouchDevice,
-  matches,
-  nextAll,
-  normalizeIcon,
-  parseDOMElement,
-  randGen,
-  remove,
-  siblings
-} from '../utilities/utilities.js';
+import * as icons from '../_utilities/icons.js';
+import { getDocScrollLeft, getDocScrollTop, isTouchDevice, matches, nextAll, normalizeIcon, parseDOMElement, randGen, remove, siblings } from '../_utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
 
 azui.Tabs = (el, options, init) => azObj(Tabs, el, options, init);
 

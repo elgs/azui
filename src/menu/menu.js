@@ -1,14 +1,5 @@
-import { azObj, Base } from '../utilities/core.js';
-import {
-  isTouchDevice,
-  matches,
-  nextElem,
-  normalizeIcon,
-  parseDOMElement,
-  prevElem,
-  resolveFunction,
-  randGen
-} from '../utilities/utilities.js';
+import { isTouchDevice, matches, nextElem, normalizeIcon, parseDOMElement, prevElem, randGen, resolveFunction } from '../_utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
 
 azui.Menu = function (el, options, init) {
   return azObj(Menu, el, options, init);

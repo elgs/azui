@@ -1,19 +1,6 @@
-import { azObj, Base } from '../utilities/core.js';
-import { svgTriangle } from '../utilities/icons.js';
-import {
-  ancestors,
-  children,
-  diffPosition,
-  getHeight,
-  insertAfter,
-  isTouchDevice,
-  matches,
-  nextElem,
-  normalizeTree,
-  parseDOMElement,
-  prevElem,
-  randGen
-} from '../utilities/utilities.js';
+import { svgTriangle } from '../_utilities/icons.js';
+import { ancestors, children, diffPosition, getHeight, insertAfter, isTouchDevice, matches, nextElem, normalizeTree, parseDOMElement, prevElem, randGen } from '../_utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
 
 azui.Tree = (el, options, init) => azObj(Tree, el, options, init);
 

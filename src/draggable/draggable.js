@@ -1,4 +1,4 @@
-import { azObj, Base } from '../utilities/core.js';
+import { azObj, Base } from '../_core/core.js';
 import {
   diffPosition,
   getDocHeight,
@@ -9,7 +9,8 @@ import {
   isOutside,
   isTouchDevice,
   siblings
-} from '../utilities/utilities.js';
+} from '../_utilities/utilities.js';
+import { dndState, dndEvent } from '../_core/core.js';
 
 azui.Draggable = function (el, options, init) {
   return azObj(Draggable, el, options, init);
@@ -194,7 +195,7 @@ class Draggable extends Base {
           // const dropId = dt.getAttribute('drop-id');
           const ps = getPositionState(node, dt.dt, e);
           // console.log(ps);
-          if (azui.constants.dndEventConsts.dragged & dt.interestedDropEvents) {
+          if (dndEvent.dragged & dt.interestedDropEvents) {
             dt.dt.dispatchEvent(
               new CustomEvent('dragged', {
                 detail: {
@@ -253,14 +254,14 @@ class Draggable extends Base {
         const ps = getPositionState(node, dt.dt, e);
         dropTargetStates[dt.dropId] = ps;
         if (oldPs != undefined && oldPs !== ps) {
-          const states = Object.keys(azui.constants.dndStateConsts);
+          const states = Object.keys(dndState);
           for (const state of states) {
-            const nState = ps & azui.constants.dndStateConsts[state];
-            const oState = oldPs & azui.constants.dndStateConsts[state];
+            const nState = ps & dndState[state];
+            const oState = oldPs & dndState[state];
             // console.log(nState, oState);
             if (nState !== oState) {
               const eventName = state + (!!nState ? '_in' : '_out');
-              if (azui.constants.dndEventConsts[eventName] & dt.interestedDropEvents) {
+              if (dndEvent[eventName] & dt.interestedDropEvents) {
                 dt.dt.dispatchEvent(
                   new CustomEvent(eventName, {
                     detail: {
@@ -328,7 +329,7 @@ class Draggable extends Base {
         // const dropId = dt.getAttribute('drop-id');
         const ps = getPositionState(node, dt.dt, e);
         // console.log(ps);
-        if (azui.constants.dndEventConsts.dropped & dt.interestedDropEvents) {
+        if (dndEvent.dropped & dt.interestedDropEvents) {
           dt.dt.dispatchEvent(
             new CustomEvent('dropped', {
               detail: {

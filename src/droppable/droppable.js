@@ -1,5 +1,5 @@
-import { azObj, Base } from '../utilities/core.js';
-import { randGen } from '../utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
+import { dndEvent, dndState } from '../_core/core.js';
 
 azui.Droppable = function (el, options, init) {
   // return new Droppable(el, options);
@@ -27,7 +27,7 @@ class Droppable extends Base {
         // pointer_out: function (e) {},
         // dragged: function (e) {},
         // dropped: function (e) {},
-        interestedDropEvents: azui.constants.dndEventConsts.all
+        interestedDropEvents: dndEvent.all
       },
       options
     );
@@ -37,7 +37,7 @@ class Droppable extends Base {
 
     node.setAttribute('az-interested-drop-events', settings.interestedDropEvents);
 
-    Object.keys(azui.constants.dndStateConsts).map(state => {
+    Object.keys(dndState).map(state => {
       const stateIn = state + '_in';
       const stateOut = state + '_out';
       if (settings[stateIn]) {

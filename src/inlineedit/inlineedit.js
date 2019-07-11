@@ -1,6 +1,6 @@
-import { azObj, Base } from '../utilities/core.js';
-import * as icons from '../utilities/icons.js';
-import { insertAfter, remove } from '../utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
+import * as icons from '../_utilities/icons.js';
+import { insertAfter, remove } from '../_utilities/utilities.js';
 
 azui.InlineEdit = function (el, options, init) {
   // return new InlineEdit(el, options);

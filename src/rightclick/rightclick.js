@@ -1,5 +1,5 @@
-import { azObj, Base } from '../utilities/core.js';
-import { isTouchDevice } from '../utilities/utilities.js';
+import { isTouchDevice } from '../_utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
 
 azui.RightClick = function (el, options, init) {
   return azObj(RightClick, el, options, init);

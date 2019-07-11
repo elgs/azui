@@ -1,21 +1,5 @@
-import { azObj, Base } from '../utilities/core.js';
-import {
-  diffPositionInnerBorder,
-  getDocScrollLeft,
-  getDocScrollTop,
-  getHeight,
-  getWidth,
-  index,
-  insertAfter,
-  insertBefore,
-  matches,
-  position,
-  remove,
-  setHeight,
-  setWidth,
-  siblings,
-  swapElement
-} from '../utilities/utilities.js';
+import { diffPositionInnerBorder, getDocScrollLeft, getDocScrollTop, getHeight, getWidth, index, insertAfter, insertBefore, matches, position, remove, setHeight, setWidth, siblings, swapElement } from '../_utilities/utilities.js';
+import { azObj, Base, dndEvent } from '../_core/core.js';
 
 azui.Sortable = function (el, options, init) {
   return azObj(Sortable, el, options, init);
@@ -204,7 +188,7 @@ class Sortable extends Base {
 
     if (settings.detachable) {
       azui.Droppable(node, {
-        interestedDropEvents: azui.constants.dndEventConsts.pointer_in | azui.constants.dndEventConsts.pointer_out,
+        interestedDropEvents: dndEvent.pointer_in | dndEvent.pointer_out,
         pointer_in: function (e) {
           // console.log('pointer in fired');
           const source = e.detail.source;
@@ -323,7 +307,7 @@ class Sortable extends Base {
 
     this.dropConfig = {
       interestedDropEvents:
-        azui.constants.dndEventConsts.target_center_in | azui.constants.dndEventConsts.target_center_out,
+        dndEvent.target_center_in | dndEvent.target_center_out,
       target_center_in: function (e) {
         // console.log(e);
         onOverTargetCenter(e);

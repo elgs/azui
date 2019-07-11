@@ -1,7 +1,7 @@
-import { azObj, Base } from '../utilities/core.js';
-import { isTouchDevice, randGen, parseDOMElement } from '../utilities/utilities.js';
+import { azObj, Base } from '../_core/core.js';
+import { isTouchDevice, parseDOMElement, randGen } from '../_utilities/utilities.js';
 
-azui.Accordion = function(el, options, init) {
+azui.Accordion = function (el, options, init) {
   return azObj(Accordion, el, options, init);
 };
 
@@ -54,7 +54,7 @@ class Accordion extends Base {
     const contexMenuItemsForCollapseOthersFalse = [
       {
         title: 'Expand All',
-        action: function(e, target) {
+        action: function (e, target) {
           // console.log(target);
           me.toggleAll(true);
           return false;
@@ -62,7 +62,7 @@ class Accordion extends Base {
       },
       {
         title: 'Collpase All',
-        action: function(e, target) {
+        action: function (e, target) {
           // console.log(target);
           me.toggleAll(false);
           return false;
@@ -70,7 +70,7 @@ class Accordion extends Base {
       },
       {
         title: 'Expand Others',
-        action: function(e, target) {
+        action: function (e, target) {
           // console.log(target);
           const key = target.closest('.azAccordionComponent').getAttribute('acc-key');
           me.toggleOthers(key, true);
@@ -79,7 +79,7 @@ class Accordion extends Base {
       },
       {
         title: 'Collpase Others',
-        action: function(e, target) {
+        action: function (e, target) {
           const key = target.closest('.azAccordionComponent').getAttribute('acc-key');
           // console.log(target);
           me.toggleOthers(key, false);
@@ -91,7 +91,7 @@ class Accordion extends Base {
     const contexMenuItemsForCollapseOthersTrue = [
       {
         title: 'Expand',
-        action: function(e, target) {
+        action: function (e, target) {
           // console.log(target);
           for (const a of me.node.querySelectorAll('.azAccordionHeader')) {
             if (a === target) {
@@ -105,7 +105,7 @@ class Accordion extends Base {
       },
       {
         title: 'Collpase',
-        action: function(e, target) {
+        action: function (e, target) {
           // console.log(target);
           me._toggle(target, false);
           return false;

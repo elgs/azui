@@ -1,5 +1,5 @@
-import { azObj, Base } from '../utilities/core.js';
-import * as icons from '../utilities/icons.js';
+import { azObj, Base } from '../_core/core.js';
+import * as icons from '../_utilities/icons.js';
 import {
   getWidth,
   index,
@@ -14,7 +14,7 @@ import {
   getHeight,
   diffPosition,
   siblings
-} from '../utilities/utilities.js';
+} from '../_utilities/utilities.js';
 
 azui.DataTable = function (el, options, init) {
   return azObj(DataTable, el, options, init);
